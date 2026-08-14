@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#111827"/><stop offset="1" stop-color="#252047"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#76e4f7"/></marker></defs>
+  <rect width="1200" height="620" rx="28" fill="url(#bg)"/>
+  <text x="60" y="78" fill="#fff" font-family="sans-serif" font-size="36" font-weight="700">1. Shader Global共有</text>
+  <rect x="60" y="150" width="310" height="300" rx="22" fill="#202b46" stroke="#76e4f7" stroke-width="3"/>
+  <text x="215" y="205" text-anchor="middle" fill="#76e4f7" font-family="sans-serif" font-size="25" font-weight="700">Controller</text>
+  <text x="95" y="265" fill="#e5e7eb" font-family="sans-serif" font-size="21">位置・回転・色・明るさ</text>
+  <text x="95" y="310" fill="#e5e7eb" font-family="sans-serif" font-size="21">光点・AudioLink・Cookie</text>
+  <text x="95" y="355" fill="#e5e7eb" font-family="sans-serif" font-size="21">→ 共有Vectorへ梱包</text>
+  <path d="M390 300H665" stroke="#76e4f7" stroke-width="7" marker-end="url(#a)"/>
+  <text x="525" y="275" text-anchor="middle" fill="#76e4f7" font-family="sans-serif" font-size="20">VRCShader.SetGlobal…</text>
+  <g fill="#312e5d" stroke="#c4b5fd" stroke-width="3"><rect x="700" y="125" width="420" height="100" rx="20"/><rect x="700" y="260" width="420" height="100" rx="20"/><rect x="700" y="395" width="420" height="100" rx="20"/></g>
+  <g fill="#f5f3ff" font-family="sans-serif" font-size="22"><text x="910" y="184" text-anchor="middle">壁 Material A</text><text x="910" y="319" text-anchor="middle">床 Material B</text><text x="910" y="454" text-anchor="middle">透明面 Material C …</text></g>
+  <text x="60" y="555" fill="#facc15" font-family="sans-serif" font-size="23">同じ値をMaterialごとに書かず、Scene内の全対象Shaderへ一括配信</text>
+</svg>

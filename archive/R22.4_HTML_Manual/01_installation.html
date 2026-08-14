@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01 導入 | R22.4</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">01 / INSTALLATION</div>
+<h1>UnityPackageの導入</h1>
+<p class="lead">R22.4を新規または既存のVCC Worldプロジェクトへ安全にImportします。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a aria-current="page" href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>ページ内</strong>
+<a href="#requirements">必要環境</a>
+<a href="#import">Import手順</a>
+<a href="#folders">フォルダ</a>
+<a href="#upgrade">既存導入時</a>
+<a href="#success">成功条件</a>
+</aside>
+<article class="content">
+<section id="requirements">
+<h2>必要環境</h2>
+<table>
+<tr>
+<th>必須</th>
+<td>Unity 2022.3.22f1、VRChat Creator Companionで作成したWorldプロジェクト、VRChat Worlds SDK／UdonSharp</td>
+</tr>
+<tr>
+<th>任意</th>
+<td>AudioLink、LTCGI、VRC Light Volumes。使用する機能だけ導入します。</td>
+</tr>
+</table>
+<div class="warning">LTCGI・VRCLightVolumes連携Materialを使う場合は、該当パッケージをMirrorBallLightより先に導入してください。通常版のみなら不要です。</div>
+</section>
+<section id="import">
+<h2>Import手順</h2>
+<ol class="steps">
+<li>Unityを閉じる必要はありませんが、Play Modeは終了します。</li>
+<li>Unityメニューで <code>Assets &gt; Import Package &gt; Custom Package...</code> を選び、<code>MirrorBallLightController_R22.4.unitypackage</code> を指定します。</li>
+<li>Import一覧は原則として全項目を選択し、<strong>Import</strong>を押します。</li>
+<li>C#とUdonSharpのコンパイルが終わるまで待ちます。Consoleに赤いエラーが残っている間はPrefabを編集しません。</li>
+<li>
+<a href="02_quickstart.html">設定済みサンプル</a>を配置して動作を確認します。</li>
+</ol>
+</section>
+<section id="folders">
+<h2>Import後の主なフォルダ</h2>
+<table>
+<thead>
+<tr>
+<th>フォルダ</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>Scripts</code>
+</td>
+<td>Controller、Preset、対応UdonSharp Program Asset</td>
+</tr>
+<tr>
+<td>
+<code>Editor</code>
+</td>
+<td>日本語Custom Inspector、Material自動検出、診断ツール</td>
+</tr>
+<tr>
+<td>
+<code>Shaders</code>
+</td>
+<td>通常面、透過面、本体ファセット、連携版Shader</td>
+</tr>
+<tr>
+<td>
+<code>Materials</code>
+</td>
+<td>Standard／LTCGI・VRCLightVolumes用の設定済みMaterial 6種</td>
+</tr>
+<tr>
+<td>
+<code>Prefabs</code>
+</td>
+<td>通常版と連携版を内包する統合Prefab</td>
+</tr>
+<tr>
+<td>
+<code>Examples</code>
+</td>
+<td>設定済みサンプルと4×2形状アトラス</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="upgrade">
+<h2>既存プロジェクトへ導入する場合</h2>
+<p>同じパスのR22系ファイルは上書き対象です。独自に変更したScript／Shader／付属Materialがある場合はImport前に複製またはGitで退避してください。シーン専用に複製したMaterialは通常そのまま残ります。</p>
+<div class="danger">
+<strong>重複クラスを作らない：</strong>
+<code>MirrorBallLightController.cs</code>を別フォルダへコピーすると同名クラスのコンパイルエラーになります。バックアップはUnityプロジェクト外へ置いてください。</div>
+</section>
+<section id="success">
+<h2>導入成功の判定</h2>
+<ul>
+<li>ConsoleにC#／UdonSharp／Shaderの赤いエラーがない</li>
+<li>
+<code>MirrorBallLight_ConfiguredSample.prefab</code>を選択できる</li>
+<li>Controller Inspectorが日本語の10セクションで表示される</li>
+<li>Play Modeで壁の光点とミラーボール回転が表示される</li>
+</ul>
+<p>
+<a href="02_quickstart.html">次へ：設定済みサンプルで確認 →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="index.html">← 目次</a>　<a href="02_quickstart.html">次：設定済みサンプル →</a>
+</div>
+</footer>
+</body>
+</html>

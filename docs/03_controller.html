@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>03 Controller設定 | R23</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">03 / CONTROLLER</div>
+<h1>Controllerの基本・本体・実光・最適化</h1>
+<p class="lead">Inspectorの1・3・4・9・10番と、最下部の保存ボタンを説明します。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a aria-current="page" href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>Inspector</strong>
+<a href="#basic">1 基本設定</a>
+<a href="#avatar">3 アバター実光</a>
+<a href="#facet">4 本体ファセット</a>
+<a href="#integration">9 連携</a>
+<a href="#optimization">10 最適化</a>
+<a href="#buttons">共通ボタン</a>
+</aside>
+<article class="content">
+<section id="basic">
+<h2>1. 基本設定・電源・対象Material</h2>
+<table>
+<thead>
+<tr>
+<th>表示名</th>
+<th>初期値／選択</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>動作範囲</td>
+<td>グローバル</td>
+<td>ローカルは自分だけ、グローバルは電源状態を全員へManual Syncします。</td>
+</tr>
+<tr>
+<td>電源状態</td>
+<td>ON</td>
+<td>反射、本体連動、実光を点灯／消灯します。</td>
+</tr>
+<tr>
+<td>このオブジェクトをクリックして切替</td>
+<td>ON</td>
+<td>Controller GameObjectへのInteractで電源を切り替えます。Colliderが必要です。</td>
+</tr>
+<tr>
+<td>消灯中は回転を停止</td>
+<td>ON</td>
+<td>OFF中の回転位相進行を停止し、再点灯時に続きから回します。</td>
+</tr>
+<tr>
+<td>電源フェード時間（秒）</td>
+<td>0.5 / 0–5</td>
+<td>点灯と消灯を滑らかに補間します。0は即時です。</td>
+</tr>
+<tr>
+<td>ミラーボール本体</td>
+<td>必須</td>
+<td>位置・回転の基準Transformです。光点投影と表示回転の中心になります。</td>
+</tr>
+<tr>
+<td>照射スポットライト（任意）</td>
+<td>任意</td>
+<td>投影方向と位置の基準です。未指定時はボール位置と下向きを使用します。</td>
+</tr>
+<tr>
+<td>反射を表示するマテリアル</td>
+<td>配列</td>
+<td>Controllerが値を書き込むSurface Material一覧です。</td>
+</tr>
+</tbody>
+</table>
+<h3>対象マテリアルをシーンから自動検出</h3>
+<p>シーン内の対応Shaderを使うMaterialを、非アクティブObjectも含めて重複なしで検出し、一覧を置き換えます。新しい壁やガラスを追加した後に実行します。</p>
+</section>
+<section id="avatar">
+<h2>3. アバターへの実光反映（PC向け）</h2>
+<table>
+<thead>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>アバター用リアルタイムライト（任意）</td>
+<td>なし</td>
+<td>アバターへ当たるPC向けRealtime Light。負荷のため1灯・影なし推奨です。</td>
+</tr>
+<tr>
+<td>VRCLightVolumes用オブジェクト（任意）</td>
+<td>なし</td>
+<td>電源と連動してActiveを切り替える別の子GameObjectです。Controller自身は指定不可です。</td>
+</tr>
+<tr>
+<td>アバター用ライトの明るさ</td>
+<td>1.5 / 0–10</td>
+<td>Realtime Lightの基準Intensityです。</td>
+</tr>
+<tr>
+<td>アバター用ライトの範囲</td>
+<td>8 / 0.1–30</td>
+<td>Realtime LightのRangeです。広げすぎると影響範囲と負荷が増えます。</td>
+</tr>
+<tr>
+<td>反射光の色を使用</td>
+<td>ON</td>
+<td>ONはControllerの基本色、OFFはLight側の色を維持します。</td>
+</tr>
+<tr>
+<td>AudioLink入力AudioSource（任意）</td>
+<td>なし</td>
+<td>アバター実光の音量解析元です。壁ShaderのAudioLink入力とは別です。</td>
+</tr>
+<tr>
+<td>アバターライトの反応帯域</td>
+<td>0 / 0–3</td>
+<td>実光の音連動に使う周波数帯を選びます。</td>
+</tr>
+<tr>
+<td>アバター用ライトの音連動量</td>
+<td>0.5 / 0–2</td>
+<td>AudioSource解析結果によるIntensity増加量です。</td>
+</tr>
+</tbody>
+</table>
+<p>「アバター用ライトを安全設定」はPoint／Realtime／影なしへ整えます。詳細は<a href="09_integrations.html">連携ページ</a>を参照してください。</p>
+</section>
+<section id="facet">
+<h2>4. ミラーボール本体ファセット</h2>
+<table>
+<thead>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本体ファセット用マテリアル（任意）</td>
+<td>任意</td>
+<td>通常版本体Material。Controller連動対象です。</td>
+</tr>
+<tr>
+<td>連携版本体ファセット用マテリアル（任意）</td>
+<td>任意</td>
+<td>LTCGI・VRCLightVolumes版本体Material。</td>
+</tr>
+<tr>
+<td>Controllerの色・電源・AudioLink設定と連動</td>
+<td>ON</td>
+<td>本体の色・発光・AudioLink状態をControllerへ合わせます。</td>
+</tr>
+<tr>
+<td>本体ファセットの明るさ倍率</td>
+<td>1 / 0–4</td>
+<td>本体発光だけを倍率調整します。</td>
+</tr>
+<tr>
+<td>本体表示モード</td>
+<td>通常版</td>
+<td>通常版本体と連携版本体のActiveを排他的に切り替えます。</td>
+</tr>
+<tr>
+<td>通常版本体オブジェクト</td>
+<td>Prefab設定済み</td>
+<td>通常版選択時だけActiveになります。</td>
+</tr>
+<tr>
+<td>LTCGI・VRCLightVolumes版本体</td>
+<td>Prefab設定済み</td>
+<td>連携版選択時だけActiveになります。</td>
+</tr>
+</tbody>
+</table>
+<p>「ミラーボールRendererから本体Materialを取得」はRendererから対応Material参照を補完します。</p>
+</section>
+<section id="integration">
+<h2>9. VRCLightVolumes・LTCGI連携</h2>
+<p>「すべてON／すべてOFF」は、対象Materialと本体Materialのうち<code>_LightVolumes</code>／<code>_LTCGI</code>を持つものだけを一括変更し、Material Assetへ保存します。通常版Materialには影響しません。</p>
+</section>
+<section id="optimization">
+<h2>10. 最適化・診断</h2>
+<table>
+<thead>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shader Global共有を使用（推奨）</td>
+<td>ON</td>
+<td>共通パラメーターをMaterialごとではなく一度だけ更新します。同一シーンのGlobal共有Controllerは1個だけにします。</td>
+</tr>
+<tr>
+<td>投影回転をGPUで計算（推奨）</td>
+<td>ON</td>
+<td>回転によるMaterial更新をGPUへ移します。Global共有ON時のみ有効です。</td>
+</tr>
+<tr>
+<td>表示用ミラーボール本体も回転</td>
+<td>ON</td>
+<td>投影だけでなく実際のTransformも回転します。</td>
+</tr>
+<tr>
+<td>マテリアル更新頻度（回/秒）</td>
+<td>30 / 10–90</td>
+<td>動的値の更新上限。低いほどCPU負荷が下がり、高いほどフェードが滑らかです。</td>
+</tr>
+<tr>
+<td>プリセット差分更新の最小値</td>
+<td>0.001</td>
+<td>クロスフェード中の微小な更新を省略する閾値。大きいほど軽量ですが段差が出やすくなります。</td>
+</tr>
+</tbody>
+</table>
+<p>「診断・最適化ウィンドウを開く」から構成検査と推奨修正を実行できます。</p>
+</section>
+<section id="buttons">
+<h2>共通ボタン</h2>
+<table>
+<tr>
+<td>すべて開く／すべて閉じる</td>
+<td>10セクションの折り畳み状態を一括変更します。</td>
+</tr>
+<tr>
+<td>現在の設定をマテリアルへ反映・保存</td>
+<td>Controllerの現在値、Shader Keyword、Texture参照を対象Materialへ反映し、Assetとして保存します。アップロード前に実行してください。</td>
+</tr>
+</table>
+<p>
+<a href="04_effects.html">次へ：反射・光点パラメーター →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="02_quickstart.html">← サンプル</a>　<a href="04_effects.html">次：反射・光点 →</a>
+</div>
+</footer>
+</body>
+</html>

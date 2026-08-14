@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>04 反射・光点 | R22.4</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">04 / EFFECTS</div>
+<h1>回転・反射・カラー・光点</h1>
+<p class="lead">Inspectorの5番と7番。通常面と透過面を分けながら、見た目を設計します。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a aria-current="page" href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>ページ内</strong>
+<a href="#rotation">回転</a>
+<a href="#reflection">反射・透過</a>
+<a href="#distance">距離</a>
+<a href="#color">カラー</a>
+<a href="#spots">光点</a>
+<a href="#blink">点灯</a>
+<a href="#recipes">設定例</a>
+</aside>
+<article class="content">
+<section id="rotation">
+<h2>回転アニメーション</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>ミラーボールを回転する</td>
+<td>ON</td>
+<td>同期時刻を使ったQuaternion回転を有効にします。</td>
+</tr>
+<tr>
+<td>回転速度</td>
+<td>10</td>
+<td>度／秒。負数で逆回転、0で停止します。</td>
+</tr>
+<tr>
+<td>回転軸</td>
+<td>(0,1,0)</td>
+<td>ローカル回転軸。ゼロベクトルは上方向へ補正されます。</td>
+</tr>
+</table>
+</section>
+<section id="reflection">
+<h2>反射光と表示面ごとの調整</h2>
+<table>
+<thead>
+<tr>
+<th>表示名</th>
+<th>初期値／範囲</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基本色</td>
+<td>白</td>
+<td>全光点の基準色。HDR色を強くするとBloomも増えます。</td>
+</tr>
+<tr>
+<td>反射光の明るさ</td>
+<td>2 / 0–10</td>
+<td>反射Emissionの基準強度です。</td>
+</tr>
+<tr>
+<td>明るさの上限</td>
+<td>8 / 1–20</td>
+<td>AudioLink増幅後を含む最大強度を制限し、白飛びを防ぎます。</td>
+</tr>
+<tr>
+<td>通常面の光点明るさ</td>
+<td>1 / 0–3</td>
+<td>Opaque壁・床だけの倍率です。</td>
+</tr>
+<tr>
+<td>透過面の光点明るさ</td>
+<td>1 / 0–3</td>
+<td>ガラス等Transparent面だけの倍率です。</td>
+</tr>
+<tr>
+<td>透過面の本体透明度</td>
+<td>0.25 / 0–1</td>
+<td>光点がない部分を含む素材全体のAlphaです。</td>
+</tr>
+<tr>
+<td>透過面の光点不透明度</td>
+<td>0.8 / 0–1</td>
+<td>光点部分のAlpha寄与です。</td>
+</tr>
+<tr>
+<td>透過マスクの回転追従</td>
+<td>1 / 0–1</td>
+<td>1で透過光点マスクが回転へ完全追従、0で固定寄りになります。</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="distance">
+<h2>距離フェード</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>距離フェード開始</td>
+<td>5</td>
+<td>ミラーボールからこの距離まで最大強度を維持します。</td>
+</tr>
+<tr>
+<td>距離フェード終了</td>
+<td>20</td>
+<td>この距離で光点が消える基準です。開始より大きくします。</td>
+</tr>
+<tr>
+<td>距離による減衰</td>
+<td>2 / 0.1–8</td>
+<td>フェード曲線。大きいほど手前を維持し、終端付近で急に弱くなります。</td>
+</tr>
+<tr>
+<td>距離による減衰を使用</td>
+<td>ON</td>
+<td>距離計算自体を切り替えます。狭い部屋ではOFFで均一表示も可能です。</td>
+</tr>
+</table>
+<div class="note">
+<code>反射が届く距離</code>は内部互換用として保持されますが、R22.4 Inspectorでは開始／終了の2点フェードを主に設定します。</div>
+</section>
+<section id="color">
+<h2>カラフル・ランダム色</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>ランダム色の強さ</td>
+<td>0.85</td>
+<td>0は基本色中心、1は光点ごとのランダム色を強くします。</td>
+</tr>
+<tr>
+<td>色の鮮やかさ</td>
+<td>0.9</td>
+<td>0で白寄り、1で高彩度です。</td>
+</tr>
+<tr>
+<td>色が変化する速度</td>
+<td>0.12</td>
+<td>色相が時間変化する速度。負数で逆方向です。</td>
+</tr>
+<tr>
+<td>色ごとの明滅量</td>
+<td>0.2</td>
+<td>色チャンネルごとの輝度ゆらぎ量です。</td>
+</tr>
+<tr>
+<td>明るさのばらつき</td>
+<td>0.2 / 0–0.5</td>
+<td>光点ごとの固定輝度差を作り、均一感を減らします。</td>
+</tr>
+</table>
+</section>
+<section id="spots">
+<h2>光点・タイル</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>横方向の光点数</td>
+<td>48 / 8–128</td>
+<td>球面分割の横密度。増やすほど小さな光点が増えます。</td>
+</tr>
+<tr>
+<td>縦方向の光点数</td>
+<td>24 / 4–64</td>
+<td>縦密度。横の約半分から調整すると自然です。</td>
+</tr>
+<tr>
+<td>光点の大きさ</td>
+<td>0.32 / 0.05–0.95</td>
+<td>各セル内の発光範囲です。</td>
+</tr>
+<tr>
+<td>光点のぼかし</td>
+<td>0.05</td>
+<td>輪郭の柔らかさ。小さいほど硬い形になります。</td>
+</tr>
+<tr>
+<td>光点の横縦比</td>
+<td>1.1</td>
+<td>1で等倍、1より大きいと横長です。</td>
+</tr>
+<tr>
+<td>光点の形状</td>
+<td>四角</td>
+<td>四角／丸／ひし形／十字／テクスチャから選択します。</td>
+</tr>
+</table>
+<p>テクスチャとアトラスは<a href="06_shapes_cookie.html">形状・Cookieページ</a>で詳しく説明します。</p>
+</section>
+<section id="blink">
+<h2>ランダム点灯・消灯と表面処理</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>ランダム点滅を使用</td>
+<td>ON</td>
+<td>光点セルごとに点灯／消灯を切り替えます。</td>
+</tr>
+<tr>
+<td>同時に点灯する割合</td>
+<td>0.55</td>
+<td>平均して点灯する光点の割合です。0.2で疎、0.8で密です。</td>
+</tr>
+<tr>
+<td>点灯状態の切替速度</td>
+<td>1.2</td>
+<td>ランダム状態を更新する速度です。</td>
+</tr>
+<tr>
+<td>点灯・消灯のフェード</td>
+<td>0.12</td>
+<td>切替境界を滑らかにします。小さいとパキッと切り替わります。</td>
+</tr>
+<tr>
+<td>光点の明滅量</td>
+<td>0.1</td>
+<td>連続的な輝度揺らぎ量です。ランダム点滅とは別に加算されます。</td>
+</tr>
+<tr>
+<td>光点の明滅速度</td>
+<td>1.5</td>
+<td>連続明滅の速さです。</td>
+</tr>
+<tr>
+<td>面の向きで明るさを変える</td>
+<td>OFF</td>
+<td>面法線と投影方向で強度を変えます。凹凸面では自然ですが計算が増えます。</td>
+</tr>
+</table>
+</section>
+<section id="recipes">
+<h2>見た目の設定例</h2>
+<table>
+<tr>
+<th>目的</th>
+<th>おすすめ開始値</th>
+</tr>
+<tr>
+<td>クラブ向けカラフル</td>
+<td>ランダム色 0.9、彩度 1、点灯割合 0.45、切替速度 1.8</td>
+</tr>
+<tr>
+<td>落ち着いた白色</td>
+<td>ランダム色 0.05、彩度 0.2、明滅量 0.05、点灯割合 0.75</td>
+</tr>
+<tr>
+<td>ガラスを控えめに</td>
+<td>透過面明るさ 0.6、本体透明度 0.12、光点不透明度 0.55</td>
+</tr>
+<tr>
+<td>遠距離負荷を抑える</td>
+<td>フェード開始 4、終了 14、減衰 2.5</td>
+</tr>
+</table>
+<p>
+<a href="05_audiolink.html">次へ：AudioLink →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="03_controller.html">← Controller</a>　<a href="05_audiolink.html">次：AudioLink →</a>
+</div>
+</footer>
+</body>
+</html>

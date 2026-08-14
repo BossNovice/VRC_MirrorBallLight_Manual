@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <rect width="1200" height="620" rx="28" fill="#111827"/>
+  <text x="60" y="72" fill="#fff" font-family="sans-serif" font-size="36" font-weight="700">8. 診断・最適化ウィンドウ</text>
+  <rect x="80" y="115" width="1040" height="430" rx="16" fill="#2b2b2b" stroke="#64748b" stroke-width="3"/>
+  <rect x="80" y="115" width="1040" height="54" rx="16" fill="#3a3a3a"/><text x="110" y="151" fill="#fff" font-family="sans-serif" font-size="22">MirrorBall 診断</text>
+  <rect x="120" y="195" width="450" height="58" rx="8" fill="#2563eb"/><text x="345" y="232" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="21">再診断</text><rect x="600" y="195" width="450" height="58" rx="8" fill="#059669"/><text x="825" y="232" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="21">安全に自動修正</text>
+  <g font-family="sans-serif" font-size="21"><rect x="120" y="285" width="930" height="52" rx="8" fill="#183c2d"/><text x="145" y="318" fill="#86efac">OK: Shader Global共有Controller数は安全です（1個）</text><rect x="120" y="350" width="930" height="52" rx="8" fill="#4a3217"/><text x="145" y="383" fill="#fde68a">警告: Atlas TextureのImport設定を確認してください</text><rect x="120" y="415" width="930" height="70" rx="8" fill="#183c2d"/><text x="145" y="447" fill="#86efac">OK: 動的更新 概算 従来54回 → Global共有8回</text></g>
+  <text x="80" y="585" fill="#cbd5e1" font-family="sans-serif" font-size="22">Tools › MirrorBall Light › 診断・最適化</text>
+</svg>

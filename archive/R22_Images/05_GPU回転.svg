@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <rect width="1200" height="620" rx="28" fill="#111827"/>
+  <text x="60" y="78" fill="#fff" font-family="sans-serif" font-size="36" font-weight="700">5. GPU投影回転</text>
+  <g font-family="sans-serif"><rect x="65" y="145" width="300" height="300" rx="150" fill="#172554" stroke="#60a5fa" stroke-width="4"/><text x="215" y="275" text-anchor="middle" fill="#bfdbfe" font-size="25">同期角度</text><text x="215" y="320" text-anchor="middle" fill="#fff" font-size="42" font-weight="700">θ₀</text>
+  <text x="450" y="245" fill="#a7f3d0" font-size="28">＋ GPU時刻 × 回転速度</text><text x="450" y="310" fill="#c4b5fd" font-size="28">＋ 位相補正</text><text x="450" y="375" fill="#facc15" font-size="28">＝ Quaternion回転</text>
+  <circle cx="1000" cy="295" r="150" fill="#05070a" stroke="#ec4899" stroke-width="5"/><g fill="#22d3ee"><rect x="965" y="165" width="70" height="28" transform="rotate(15 1000 179)"/><rect x="1060" y="250" width="70" height="28" transform="rotate(75 1095 264)"/><rect x="920" y="350" width="70" height="28" transform="rotate(-20 955 364)"/></g><path d="M910 160A180 180 0 0 1 1110 195" fill="none" stroke="#ec4899" stroke-width="6"/><polygon points="1115,195 1084,182 1095,215" fill="#ec4899"/></g>
+  <text x="60" y="545" fill="#e5e7eb" font-family="sans-serif" font-size="23">Udonは基準値だけを送り、連続回転は各GPUで計算します。</text>
+</svg>

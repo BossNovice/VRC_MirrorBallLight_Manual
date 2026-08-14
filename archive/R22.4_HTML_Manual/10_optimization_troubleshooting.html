@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>10 最適化・トラブル対処 | R22.4</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">10 / OPTIMIZATION & TROUBLESHOOTING</div>
+<h1>最適化・診断・トラブル対処</h1>
+<p class="lead">負荷を抑える推奨値と、Unityでは見えるがVRChatでは見えない場合の確認順です。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a aria-current="page" href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>ページ内</strong>
+<a href="#budget">推奨負荷</a>
+<a href="#diagnostics">診断</a>
+<a href="#notvisible">光点が出ない</a>
+<a href="#vrchat">VRChatのみ不具合</a>
+<a href="#black">本体が黒い</a>
+<a href="#udon">Udonエラー</a>
+<a href="#release">公開前確認</a>
+</aside>
+<article class="content">
+<section id="budget">
+<h2>推奨負荷設定</h2>
+<table>
+<tr>
+<th>対象</th>
+<th>推奨開始値</th>
+<th>理由</th>
+</tr>
+<tr>
+<td>Controller</td>
+<td>Global共有 ON、GPU投影回転 ON</td>
+<td>Material数に依存するCPU更新を削減します。</td>
+</tr>
+<tr>
+<td>更新頻度</td>
+<td>30回／秒</td>
+<td>見た目と負荷のバランス。静かな演出は15–20でも可。</td>
+</tr>
+<tr>
+<td>Realtime Light</td>
+<td>1灯、影なし、Range最小</td>
+<td>アバター実光の負荷を制限します。</td>
+</tr>
+<tr>
+<td>Sceneプレビュー</td>
+<td>16本</td>
+<td>Editor専用ですが、複雑なScene操作時はOFFも可。</td>
+</tr>
+<tr>
+<td>Surface Facing</td>
+<td>必要時のみON</td>
+<td>追加計算を避けます。</td>
+</tr>
+<tr>
+<td>Shaderバリアント</td>
+<td>使わないAudioLink／Cookie／Atlas／連携をOFF</td>
+<td>使用Keywordとビルド対象を限定します。</td>
+</tr>
+</table>
+<div class="warning">Shader Global共有を使うControllerは同一シーンで1個にしてください。複数あると最後に更新したControllerの値が全対応Materialへ反映されます。</div>
+</section>
+<section id="diagnostics">
+<h2>診断・最適化ウィンドウ</h2>
+<p>Controllerの10番から開き、参照、Material、Shader、Program Asset、Keyword、Global共有の競合を確認します。自動修正前にSceneとMaterialを保存し、修正後はConsoleと見た目を再確認します。</p>
+</section>
+<section id="notvisible">
+<h2>光点が表示されない</h2>
+<ol>
+<li>Controllerの電源状態と「反射光の明るさ」を確認</li>
+<li>ミラーボール本体参照が正しいか確認</li>
+<li>対象Rendererが対応ShaderのMaterialを使用しているか確認</li>
+<li>対象Material配列へ登録、または自動検出</li>
+<li>距離フェード終了より対象面が遠くないか確認</li>
+<li>点灯割合が0、光点サイズが極端に小さくないか確認</li>
+<li>Cookieや形状Textureが黒一色になっていないか確認</li>
+<li>設定反映・保存を実行</li>
+</ol>
+</section>
+<section id="vrchat">
+<h2>Unityでは見えるがVRChatでは形状が反映されない</h2>
+<ol>
+<li>TextureがAssets配下の保存済みAssetか</li>
+<li>Material AssetがTextureを参照しているか</li>
+<li>Controllerの対象Materialにアップロードされる実Materialが登録されているか</li>
+<li>「現在の設定をマテリアルへ反映・保存」を押したか</li>
+<li>Atlasの横×縦と使用数が正しいか</li>
+<li>Play Mode中だけ変更していないか</li>
+<li>アップロード後にVRChatキャッシュではなく新しいBuildを確認しているか</li>
+</ol>
+<div class="danger">Runtime生成Textureはアップロード対象になりません。これはUnity Editorで見えてもVRChatで白形状へ戻る代表的な原因です。</div>
+</section>
+<section id="black">
+<h2>ミラーボール本体が黒い</h2>
+<ol>
+<li>ShaderがMirrorBallFacetBody系か</li>
+<li>鏡片の基本色が黒、Alpha 0になっていないか</li>
+<li>「暗所での最低表示明るさ」を0.08以上にする</li>
+<li>目地の太さを0.035付近へ戻す</li>
+<li>Cubemap未設定でも最低輝度が見えるか確認</li>
+<li>Controllerの電源ON、本体ファセット明るさ倍率1以上</li>
+<li>連携版ならLTCGI／LightVolumesの導入とMaterial整合を確認</li>
+</ol>
+</section>
+<section id="udon">
+<h2>UdonSharp Program Assetエラー</h2>
+<table>
+<tr>
+<th>症状</th>
+<th>対処</th>
+</tr>
+<tr>
+<td>Program SourceがNone</td>
+<td>Import完了を待ち、Controller Scriptと付属Program Assetが存在するか確認します。</td>
+</tr>
+<tr>
+<td>同名クラスエラー</td>
+<td>Project内の重複した<code>MirrorBallLightController.cs</code>を探し、バックアップをProject外へ移します。</td>
+</tr>
+<tr>
+<td>Program Asset is null</td>
+<td>先に全C#エラーを解消し、Unity再起動後も残る場合は付属Program Assetを再Importします。</td>
+</tr>
+<tr>
+<td>別PackageのUdonエラー</td>
+<td>MirrorBallLightより先にそのPackageのコンパイルエラーを解消します。UdonSharpは全体エラーがあると変換を保留します。</td>
+</tr>
+</table>
+</section>
+<section id="release">
+<h2>VRChat公開前チェックリスト</h2>
+<ul>
+<li>Consoleの赤エラー0件</li>
+<li>AudioLinkテストモードOFF</li>
+<li>使用モードと本体／Surface Materialが一致</li>
+<li>TextureとCubemapがAssets配下</li>
+<li>Material自動検出後に設定反映・保存</li>
+<li>Global共有Controllerが1個</li>
+<li>Realtime Lightは1灯・影なし・必要範囲だけ</li>
+<li>ClientSimで電源、同期、プリセット、透過面を確認</li>
+<li>Build & TestしたVRChatクライアントで形状とAudioLinkを確認</li>
+</ul>
+<div class="tip">
+<strong>完了：</strong>以上を満たせばR22.4 UnityPackageの基本構成、演出、連携、公開前確認まで完了です。</div>
+<p>
+<a href="index.html">マニュアル目次へ戻る →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="09_integrations.html">← 連携</a>　<a href="index.html">目次へ戻る →</a>
+</div>
+</footer>
+</body>
+</html>

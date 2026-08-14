@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R17 ライブプリセット切替 詳細マニュアル</title>
+<style>
+:root{--bg:#0b0f18;--panel:#151c2a;--panel2:#1d2739;--text:#edf3ff;--muted:#aab7ce;--cyan:#55d9ff;--purple:#b095ff;--green:#69e6a5;--yellow:#ffd073;--red:#ff8799;--line:#303c53;--code:#080b11}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 85% 0,#281f52 0,transparent 30%),linear-gradient(145deg,#090c13,#101726 55%,#0b101b);color:var(--text);font:15px/1.75 system-ui,-apple-system,"Segoe UI","Yu Gothic UI","Meiryo",sans-serif}a{color:var(--cyan)}header{padding:50px 24px 38px;border-bottom:1px solid var(--line)}header>div,.page{max-width:1180px;margin:auto}.badge{display:inline-block;padding:4px 10px;border:1px solid #6f5bb2;border-radius:999px;background:#241e40;color:#ddcfff;font-size:12px}h1{font-size:clamp(30px,5vw,48px);line-height:1.2;margin:15px 0 9px}header p{max-width:790px;color:var(--muted);font-size:17px}.page{display:grid;grid-template-columns:255px minmax(0,1fr);gap:28px;padding:28px 20px 70px}nav{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;background:#111824e8;border:1px solid var(--line);border-radius:14px;padding:15px}nav strong{display:block;margin-bottom:7px}nav a{display:block;padding:5px 8px;color:var(--muted);text-decoration:none;border-radius:7px}nav a:hover{background:var(--panel2);color:var(--text)}main{min-width:0}section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:25px;margin-bottom:21px;box-shadow:0 12px 30px #0004}h2{margin:0 0 15px;padding-bottom:9px;border-bottom:1px solid var(--line);font-size:25px}h3{margin:24px 0 8px;font-size:18px;color:#dfe9ff}h4{color:var(--cyan);margin:16px 0 5px}.steps{list-style:none;counter-reset:s;padding:0}.steps>li{counter-increment:s;position:relative;padding:0 0 20px 48px}.steps>li:before{content:counter(s);position:absolute;left:0;top:1px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#061019;font-weight:800}.note,.warn,.ok,.danger{padding:12px 15px;border-left:4px solid var(--cyan);border-radius:5px;background:#152635;margin:14px 0}.warn{border-color:var(--yellow);background:#2c2518}.ok{border-color:var(--green);background:#14291f}.danger{border-color:var(--red);background:#301b22}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:12px}.card{background:var(--panel2);border:1px solid #35435d;border-radius:11px;padding:14px}.card h3,.card h4{margin-top:0}code,kbd{font-family:Consolas,"SFMono-Regular",monospace;background:var(--code);color:#dce8ff;border:1px solid #344157;border-radius:5px;padding:2px 6px}pre{margin:12px 0;padding:15px;overflow:auto;background:var(--code);border:1px solid var(--line);border-radius:9px;line-height:1.55;color:#dbe7ff}pre code{padding:0;border:0;background:none}table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}th,td{padding:10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{background:#101725;color:var(--cyan)}.flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:14px;background:#0e1420;border-radius:10px;border:1px solid var(--line)}.node{padding:7px 10px;border-radius:7px;background:#23304a;border:1px solid #455677}.arrow{color:var(--cyan);font-weight:bold}.pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#283550;color:#dce7ff;font-size:12px;margin:2px}.check{list-style:"✓  ";padding-left:22px}.check li::marker{color:var(--green);font-weight:bold}.mini{color:var(--muted);font-size:13px}@media(max-width:820px){.page{display:block}nav{position:relative;top:0;max-height:none;margin-bottom:20px}section{padding:18px}table{display:block;overflow-x:auto}}@media print{body{background:#fff;color:#111;font-size:10.5pt}header{padding:15px 0;background:none}.page{display:block;padding:0}nav{display:none}section{background:#fff;border:1px solid #bbb;box-shadow:none;break-inside:avoid}.card,.note,.warn,.ok,.danger,.flow{background:#f3f3f3;color:#111}pre,code,kbd{background:#eee;color:#111}a{color:#111;text-decoration:none}}
+</style>
+</head>
+<body>
+<header><div><span class="badge">MirrorBallLightController R17</span><h1>ライブプリセット切替<br>詳細マニュアル</h1><p>プリセットの準備、番号の考え方、順送り・逆送り・番号指定、3Dスイッチ、Unity UI、UdonSharp／Udon Graph、Local／Global同期までを切替操作に絞って解説します。</p></div></header>
+<div class="page">
+<nav><strong>目次</strong><a href="#overview">1. 切替の仕組み</a><a href="#prepare">2. 事前準備</a><a href="#events">3. イベント一覧</a><a href="#nextprev">4. 順送り・逆送り</a><a href="#direct">5. 番号指定</a><a href="#switch3d">6. 3Dスイッチ</a><a href="#unityui">7. Unity UI</a><a href="#udonsharp">8. UdonSharp例</a><a href="#udongraph">9. Udon Graph</a><a href="#network">10. Local／Global</a><a href="#test">11. テスト</a><a href="#trouble">12. トラブル確認</a></nav>
+<main>
+
+<section id="overview"><h2>1. プリセット切替の仕組み</h2><p>R17では、Controllerの <b>プリセット一覧</b> に登録された <code>MirrorBallLightPreset</code> を番号で選択します。番号は<b>0から開始</b>します。</p><table><thead><tr><th>一覧上の位置</th><th>内部番号</th><th>例</th></tr></thead><tbody><tr><td>1番目</td><td><code>0</code></td><td>ゆったりレインボー</td></tr><tr><td>2番目</td><td><code>1</code></td><td>低音パルス</td></tr><tr><td>3番目</td><td><code>2</code></td><td>高速クラブ</td></tr></tbody></table><div class="flow"><span class="node">スイッチ操作</span><span class="arrow">→</span><span class="node">Custom Event</span><span class="arrow">→</span><span class="node">番号を決定</span><span class="arrow">→</span><span class="node">Preset値をControllerへ適用</span><span class="arrow">→</span><span class="node">Materialを更新</span></div><div class="note">Controller自身をInteractすると切り替わるのは電源です。プリセット切替には、後述するCustom Eventを送るスイッチまたはUdon処理を使用します。</div></section>
+
+<section id="prepare"><h2>2. 切替前の準備</h2><ol class="steps"><li>Controller Inspectorの <b>2. ライブプリセット</b> を開きます。</li><li><b>ライブプリセットを使用</b> をONにします。</li><li><b>新しいプリセットを追加</b> で必要なパターンを作成します。</li><li>各子GameObjectの <b>プリセット名</b> と演出値を設定します。</li><li>Controllerの <b>プリセット一覧</b> に、使用順どおり登録されていることを確認します。</li><li>一覧が合わない場合は <b>一覧を子から自動検出</b> を押します。</li><li><b>選択番号をプレビュー適用</b> で各番号の内容を確認します。</li></ol><h3>関連設定</h3><table><tr><th>設定</th><th>意味</th></tr><tr><td>ライブプリセットを使用</td><td>OFFの場合、切替イベントを受けても何も変更しません。</td></tr><tr><td>開始時に選択中プリセットを適用</td><td>World開始時に <code>currentPresetIndex</code> の内容を適用します。通常はONを推奨します。</td></tr><tr><td>プリセットの動作範囲</td><td>切替を自分だけにするか、全プレイヤーへ同期するかを選びます。</td></tr><tr><td>選択プリセット番号</td><td><code>ApplySelectedPreset</code> が使用する番号です。Inspector上では0から入力します。</td></tr></table><div class="warn">子GameObjectのHierarchy順とプリセット一覧の順番が常に自動連動するわけではありません。並べ替え後は「一覧を子から自動検出」とプレビューで番号を確認してください。</div></section>
+
+<section id="events"><h2>3. 使用できるCustom Event</h2><table><thead><tr><th>イベント名</th><th>動作</th><th>引数</th></tr></thead><tbody><tr><td><code>NextPreset</code></td><td>次のプリセットへ進みます。末尾なら0へ戻ります。</td><td>不要</td></tr><tr><td><code>PreviousPreset</code></td><td>前のプリセットへ戻ります。0なら末尾へ移動します。</td><td>不要</td></tr><tr><td><code>ReloadCurrentPreset</code></td><td>現在選ばれているプリセットを再適用します。</td><td>不要</td></tr><tr><td><code>ApplySelectedPreset</code></td><td><code>presetSelectionIndex</code> の番号を適用します。</td><td>事前に番号を設定</td></tr></tbody></table><div class="danger">Custom Event名は大文字・小文字を区別します。空白や括弧を付けず、表の名前をそのまま使用してください。</div><p><code>SelectPreset(int)</code> はController内部／UdonSharpから直接使用できる引数付きメソッドですが、文字列だけを送る通常のCustom Eventには引数を渡せません。汎用スイッチから番号指定する場合は <code>presetSelectionIndex</code> を設定してから <code>ApplySelectedPreset</code> を送ります。</p></section>
+
+<section id="nextprev"><h2>4. 順送り・逆送りで切り替える</h2><p>最も簡単で壊れにくい方法です。番号をスイッチ側に持たせる必要がありません。</p><div class="grid"><div class="card"><h3>次へボタン</h3><p>対象：ControllerのUdonBehaviour</p><p>Event：<code>NextPreset</code></p><p>例：0 → 1 → 2 → 0</p></div><div class="card"><h3>前へボタン</h3><p>対象：ControllerのUdonBehaviour</p><p>Event：<code>PreviousPreset</code></p><p>例：0 → 2 → 1 → 0</p></div></div><ol class="steps"><li>スイッチ用GameObjectを作成します。</li><li>Colliderと、Interactを処理するUdonBehaviourを追加します。</li><li>送信先にMirrorBallLightControllerのUdonBehaviourを設定します。</li><li>イベント名へ <code>NextPreset</code> または <code>PreviousPreset</code> を設定します。</li><li>Play Modeで末尾から先頭へ正しくループすることを確認します。</li></ol><div class="ok">複数のボタンを用意する場合でも、次へ／前へ方式ならプリセット数を増やした後にスイッチ設定を変更する必要がありません。</div></section>
+
+<section id="direct"><h2>5. 特定番号へ直接切り替える</h2><p>「赤」「青」「クラブ」など、パターンごとの専用ボタンを作る場合に使います。</p><div class="flow"><span class="node"><code>presetSelectionIndex = 2</code></span><span class="arrow">→</span><span class="node"><code>ApplySelectedPreset</code></span><span class="arrow">→</span><span class="node">一覧の3番目を適用</span></div><h3>重要な順序</h3><ol><li>Controllerの変数 <code>presetSelectionIndex</code> へ番号を設定する</li><li>同じControllerへ <code>ApplySelectedPreset</code> を送る</li></ol><p>イベントだけを先に送ると、以前の番号または初期値0が適用されます。</p><h3>範囲外の番号</h3><p>Controllerは番号を有効範囲へ補正します。例えばプリセットが3個の場合、使用できる番号は0～2です。3以上を指定すると2へ、負数を指定すると0へ補正されます。ただし意図しないパターンになるため、スイッチ側の番号を正しく設定してください。</p></section>
+
+<section id="switch3d"><h2>6. ワールド内の3Dスイッチ</h2><p>3Dボタンは通常、Collider付きGameObjectの <code>Interact()</code> からControllerへイベントを送ります。</p><h3>順送りスイッチ</h3><ol class="steps"><li>Cubeなどを作成し、Colliderを残します。</li><li>Interact可能なUdonSharpBehaviourまたはUdon Graphを追加します。</li><li>Controller参照を設定します。</li><li>Interact時に <code>NextPreset</code> を送ります。</li><li>必要なら表示Textへ「次のパターン」と記載します。</li></ol><h3>番号指定スイッチ</h3><p>各スイッチに番号を持たせ、Interact時にControllerの変数を設定してから適用イベントを送ります。具体的なコードは「8. UdonSharp例」を参照してください。</p><div class="note">スイッチの反応範囲や操作可否はスイッチ側Udonの設定です。MirrorBall Controllerの「このオブジェクトをクリックして切替」は電源用なので、プリセットスイッチ側には使用しません。</div></section>
+
+<section id="unityui"><h2>7. Unity UI Buttonから切り替える</h2><p>VRChatのUnity UI Buttonは、通常のC# MonoBehaviourを直接実行するのではなく、UdonBehaviourを経由してCustom Eventを送る構成にします。</p><ol class="steps"><li>World Space CanvasへButtonを作成します。</li><li>Buttonと同じ、または別GameObjectへ切替用UdonSharpBehaviourを追加します。</li><li>Buttonの <b>On Click()</b> に切替用UdonBehaviourを登録します。</li><li>切替用Behaviourの公開イベントを選び、その中からControllerへ <code>NextPreset</code> などを送ります。</li><li>VRChat UI入力に必要なCollider、VRC Ui Shape、Layer等をプロジェクト構成に合わせて設定します。</li></ol><div class="warn">Unity UIのOn ClickへControllerの引数付き <code>SelectPreset(int)</code> を直接登録する構成は、Udon変換や同期を安定して通らない可能性があります。切替用UdonSharpBehaviourを経由する方式を推奨します。</div></section>
+
+<section id="udonsharp"><h2>8. UdonSharpスイッチ実装例</h2><p>以下は別ファイルとして作成する最小例です。ファイル名とpublicクラス名を一致させてください。</p><h3>次へ進むスイッチ</h3><pre><code>using UdonSharp;
+using UnityEngine;
+
+public class MirrorBallNextPresetSwitch : UdonSharpBehaviour
+{
+    public MirrorBallLightController controller;
+
+    public override void Interact()
+    {
+        if (controller != null)
+            controller.SendCustomEvent("NextPreset");
+    }
+}</code></pre><h3>番号を指定するスイッチ</h3><pre><code>using UdonSharp;
+using UnityEngine;
+
+public class MirrorBallPresetSelectSwitch : UdonSharpBehaviour
+{
+    public MirrorBallLightController controller;
+    [Min(0)] public int presetIndex;
+
+    public override void Interact()
+    {
+        if (controller == null) return;
+        controller.presetSelectionIndex = presetIndex;
+        controller.SendCustomEvent("ApplySelectedPreset");
+    }
+}</code></pre><h3>UdonBehaviour参照だけを使う汎用例</h3><pre><code>using UdonSharp;
+using UnityEngine;
+using VRC.Udon;
+
+public class MirrorBallPresetGenericSwitch : UdonSharpBehaviour
+{
+    public UdonBehaviour controller;
+    [Min(0)] public int presetIndex;
+
+    public override void Interact()
+    {
+        if (controller == null) return;
+        controller.SetProgramVariable("presetSelectionIndex", presetIndex);
+        controller.SendCustomEvent("ApplySelectedPreset");
+    }
+}</code></pre><div class="note">同じ番号へ直接切り替えるだけなら、Controller型を参照する2番目の例が読みやすくなります。パッケージへの型依存を避けたい汎用スイッチでは3番目を使用できます。</div></section>
+
+<section id="udongraph"><h2>9. Udon Graphで設定する場合</h2><h3>次へ進む</h3><div class="flow"><span class="node">Event Interact</span><span class="arrow">→</span><span class="node">Send Custom Event</span><span class="arrow">→</span><span class="node">Target: Controller<br>Name: NextPreset</span></div><h3>番号指定</h3><div class="flow"><span class="node">Event Interact</span><span class="arrow">→</span><span class="node">Set Program Variable<br>presetSelectionIndex</span><span class="arrow">→</span><span class="node">Send Custom Event<br>ApplySelectedPreset</span></div><p>Set Program Variableの対象とSend Custom Eventの対象は、どちらも同じMirrorBall ControllerのUdonBehaviourです。変数名は <code>presetSelectionIndex</code> と完全一致させます。</p><div class="danger">番号設定とイベント送信の実行順を逆にしないでください。Graph上でフロー線を使い、Set Program Variableの完了後にSend Custom Eventへ進めます。</div></section>
+
+<section id="network"><h2>10. Local／Global切替の違い</h2><table><thead><tr><th>プリセットの動作範囲</th><th>結果</th><th>通信</th></tr></thead><tbody><tr><td>ローカル（自分だけ）</td><td>操作した本人だけが選択した演出を見る</td><td>なし</td></tr><tr><td>グローバル（全員に同期）</td><td>選択番号を全員へ同期。途中参加者も同じ番号を復元</td><td>Manual同期</td></tr></tbody></table><h3>Globalの処理</h3><ol><li>操作したプレイヤーがControllerのOwnerになります。</li><li><code>currentPresetIndex</code> が更新されます。</li><li>操作したプレイヤーへプリセットが即時適用されます。</li><li><code>RequestSerialization()</code> で番号を同期します。</li><li>他プレイヤーは受信後、同じ番号のローカルPreset値を適用します。</li></ol><div class="warn"><b>同期されるのはPresetの全数値ではなく選択番号です。</b>全クライアントはアップロードされた同じWorldを使用するため通常は一致しますが、テスト中にクライアントごとに異なるSceneビルドを使うと表示が一致しません。</div><h3>電源同期との関係</h3><p><b>動作範囲</b>は電源用、<b>プリセットの動作範囲</b>はPreset用です。別々に設定できます。</p><table><tr><th>例</th><th>電源</th><th>プリセット</th></tr><tr><td>会場管理者が全員の演出を操作</td><td>Global</td><td>Global</td></tr><tr><td>電源は共有、演出は各自で選択</td><td>Global</td><td>Local</td></tr><tr><td>個人用プレビュー</td><td>Local</td><td>Local</td></tr></table></section>
+
+<section id="test"><h2>11. 推奨テスト手順</h2><h3>Editorで内容を確認</h3><ol class="steps"><li>プリセット番号0を指定し、<b>選択番号をプレビュー適用</b> を押します。</li><li>番号を1、2と変更し、色・光点・回転・透過面が意図どおり変わるか確認します。</li><li>Texture形状のPresetではProject内Textureが設定されていることを確認します。</li></ol><h3>Play Mode／ClientSim</h3><ol class="steps"><li><code>NextPreset</code> で末尾から0へループするか確認します。</li><li><code>PreviousPreset</code> で0から末尾へループするか確認します。</li><li>番号指定スイッチが0始まりで正しいPresetを選ぶか確認します。</li><li>Local設定では他クライアントに影響しないことを確認します。</li><li>Global設定では他クライアントと途中参加者が同じ番号になることを確認します。</li></ol><h3>アップロード前</h3><ul class="check"><li>ライブプリセットを使用＝ON</li><li>プリセット一覧にnullなし</li><li>番号と表示名の対応を確認済み</li><li>スイッチのイベント名が完全一致</li><li>Global使用時は複数クライアントで確認済み</li><li>Consoleに赤いコンパイルエラーなし</li></ul></section>
+
+<section id="trouble"><h2>12. 切り替わらない場合の確認</h2><table><thead><tr><th>症状</th><th>確認項目</th></tr></thead><tbody><tr><td>何も変化しない</td><td>ライブプリセットを使用がONか／一覧が空でないか／対象Presetがnullでないか</td></tr><tr><td>常に最初のPresetになる</td><td><code>presetSelectionIndex</code> をイベント送信前に設定しているか</td></tr><tr><td>1つずれたPresetになる</td><td>番号は0始まり。画面上の1番目は番号0</td></tr><tr><td>次へ進むが途中で止まる</td><td>一覧途中にnullがないか／イベント名が <code>NextPreset</code> か</td></tr><tr><td>自分だけ変わる</td><td>プリセットの動作範囲をGlobalに設定したか</td></tr><tr><td>他プレイヤーと違うPresetになる</td><td>一覧の数・順番が同じSceneビルドか／Global設定か</td></tr><tr><td>見た目が変わらない項目がある</td><td>その値がMirrorBallLightPresetへ保存されている対象か／対象Materialが登録済みか</td></tr><tr><td>Texture形状だけ表示されない</td><td>TextureがProject内アセットか／Presetの形状がTextureか／Texture参照が設定済みか</td></tr></tbody></table><div class="ok">切替確認では、Presetごとの基本色や光点サイズを一時的に大きく変えると判別しやすくなります。動作確認後に本来の値へ戻してください。</div></section>
+
+<p class="mini" style="text-align:center">MirrorBallLightController R17 · Live Preset Switching Manual</p>
+</main></div>
+</body>
+</html>

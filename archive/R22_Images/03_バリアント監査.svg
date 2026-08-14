@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <rect width="1200" height="620" rx="28" fill="#111827"/>
+  <text x="60" y="78" fill="#fff" font-family="sans-serif" font-size="36" font-weight="700">3. Shaderバリアント保証・監査</text>
+  <g font-family="sans-serif"><rect x="70" y="145" width="290" height="315" rx="22" fill="#1e293b" stroke="#a78bfa" stroke-width="3"/><text x="215" y="195" text-anchor="middle" fill="#c4b5fd" font-size="25" font-weight="700">Scene / Preset</text><text x="105" y="250" fill="#e5e7eb" font-size="21">・Target Material</text><text x="105" y="295" fill="#e5e7eb" font-size="21">・AudioLink</text><text x="105" y="340" fill="#e5e7eb" font-size="21">・ランダム点灯</text><text x="105" y="385" fill="#e5e7eb" font-size="21">・距離 / 面方向</text>
+  <path d="M385 300H585" stroke="#76e4f7" stroke-width="7"/><polygon points="585,300 555,282 555,318" fill="#76e4f7"/>
+  <rect x="605" y="145" width="515" height="315" rx="22" fill="#172554" stroke="#60a5fa" stroke-width="3"/><text x="862" y="195" text-anchor="middle" fill="#93c5fd" font-size="25" font-weight="700">ビルド前監査</text><text x="650" y="250" fill="#e5e7eb" font-size="21">✓ 静的KeywordをControllerと一致</text><text x="650" y="295" fill="#e5e7eb" font-size="21">✓ 旧形状Keywordを除去</text><text x="650" y="340" fill="#e5e7eb" font-size="21">✓ Atlas / Cookie Textureを確認</text><text x="650" y="385" fill="#e5e7eb" font-size="21">✓ 不足・競合を日本語で警告</text></g>
+  <text x="70" y="535" fill="#facc15" font-family="sans-serif" font-size="23">形状とAtlasはランタイム分岐へ統合し、プリセット切替時の欠落を防止</text>
+</svg>

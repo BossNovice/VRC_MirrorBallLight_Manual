@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MirrorBallLightController R23 マニュアル</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">VRChat WORLD SYSTEM</div>
+<h1>MirrorBallLightController 完全マニュアル</h1>
+<p class="lead">R23 UnityPackage版の導入から、設定済みサンプル、Controller全項目、Shader、AudioLink、LTCGI・VRCLightVolumes、ライブプリセット、負荷対策までを日本語で説明します。</p>
+<span class="version">R23 / Unity 2022.3.22f1</span>
+<p><a href="../R23/README.md">GitHub版マニュアル</a>　<a href="https://github.com/BossNovice/VRC_MirrorBallLight">本体リポジトリ</a></p>
+<nav class="nav">
+<a aria-current="page" href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<section>
+<h2>このマニュアルの使い方</h2>
+<div class="flow">
+<span>初めて導入 <b>→</b>
+</span>
+<span>01 導入 <b>→</b>
+</span>
+<span>02 サンプル <b>→</b>
+</span>
+<span>03 Controller</span>
+</div>
+<p>既に動作している場合は、目的のページへ直接進んでください。Inspectorの折り畳み番号とページ内見出しを一致させています。</p>
+</section>
+<section>
+<h2>内容別ページ</h2>
+<div class="card-grid">
+<a class="card" href="01_installation.html">
+<strong>01 導入</strong>
+<span>必要パッケージ、UnityPackage Import、フォルダ構成</span>
+</a>
+<a class="card" href="02_quickstart.html">
+<strong>02 設定済みサンプル</strong>
+<span>mirrorballとmirrorball_light_wallで最短確認</span>
+</a>
+<a class="card" href="03_controller.html">
+<strong>03 Controller</strong>
+<span>電源、対象Material、実光、本体、最適化の全項目</span>
+</a>
+<a class="card" href="04_effects.html">
+<strong>04 反射・光点</strong>
+<span>色、明るさ、距離、点灯、透過面の設定</span>
+</a>
+<a class="card" href="05_audiolink.html">
+<strong>05 AudioLink</strong>
+<span>帯域別反応、Material個別マスク、履歴、実光</span>
+</a>
+<a class="card" href="06_shapes_cookie.html">
+<strong>06 形状・Cookie</strong>
+<span>単一テクスチャ、アトラス、2D／Cubemap投影</span>
+</a>
+<a class="card" href="07_presets.html">
+<strong>07 ライブプリセット</strong>
+<span>追加、保存、クロスフェード、UIイベント接続</span>
+</a>
+<a class="card" href="08_materials.html">
+<strong>08 Material・Shader</strong>
+<span>通常面、透過面、個別発光パターン、本体ファセット</span>
+</a>
+<a class="card" href="09_integrations.html">
+<strong>09 照明連携</strong>
+<span>LTCGI、VRCLightVolumes、アバターへの実光</span>
+</a>
+<a class="card" href="10_optimization_troubleshooting.html">
+<strong>10 最適化・トラブル対処</strong>
+<span>推奨値、診断、表示されない時の確認順</span>
+</a>
+</div>
+</section>
+<section>
+<h2>収録物</h2>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>場所</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UnityPackage</td>
+<td>
+<code>Releases/MirrorBallLightController_R23.unitypackage</code>
+</td>
+</tr>
+<tr>
+<td>設定済みサンプル</td>
+<td>
+<code>Assets/MirrorBallLight/Examples/ConfiguredSample/MirrorBallLight_ConfiguredSample.prefab</code>
+</td>
+</tr>
+<tr>
+<td>統合Prefab</td>
+<td>
+<code>Assets/MirrorBallLight/Prefabs/MirrorBallLight.prefab</code>
+</td>
+</tr>
+<tr>
+<td>形状アトラス例</td>
+<td>
+<code>Assets/MirrorBallLight/Examples/ShapeAtlas/SampleShapeAtlas_4x2.png</code>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<strong>表記について：</strong>「初期値」は新規Controller／Materialのコード上の値です。設定済みPrefabでは参照があらかじめ割り当てられています。</div>
+</section>
+</main>
+<footer>
+<div class="wrap">MirrorBallLightController R23 HTML Manual — <a href="01_installation.html">導入を開始</a>
+</div>
+</footer>
+</body>
+</html>

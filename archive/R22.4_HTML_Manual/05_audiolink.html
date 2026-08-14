@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>05 AudioLink | R22.4</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">05 / AUDIOLINK</div>
+<h1>AudioLink連動</h1>
+<p class="lead">明るさ・サイズ・色・アバター実光へ別々の帯域を割り当て、履歴による伝播を作れます。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a aria-current="page" href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>ページ内</strong>
+<a href="#setup">準備</a>
+<a href="#bands">帯域</a>
+<a href="#response">反応量</a>
+<a href="#history">履歴</a>
+<a href="#test">テスト</a>
+<a href="#avatar">実光</a>
+</aside>
+<article class="content">
+<section id="setup">
+<h2>準備</h2>
+<ol class="steps">
+<li>VCCでAudioLinkを導入し、公式AudioLink Prefabをシーンへ配置します。</li>
+<li>AudioLink側へワールドの音源を接続します。</li>
+<li>Controllerの「AudioLinkを使用」をONにします。</li>
+<li>テストモードで見た目を作り、最後にテストモードをOFFにします。</li>
+<li>「現在の設定をマテリアルへ反映・保存」を実行します。</li>
+</ol>
+</section>
+<section id="bands">
+<h2>用途別の反応帯域</h2>
+<table>
+<thead>
+<tr>
+<th>値</th>
+<th>目安</th>
+<th>向いている演出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>低音</td>
+<td>キック、ベース、全体の明るさ</td>
+</tr>
+<tr>
+<td>1</td>
+<td>低中音</td>
+<td>スネア下部、リズム</td>
+</tr>
+<tr>
+<td>2</td>
+<td>中高音</td>
+<td>ボーカル、メロディ、色変化</td>
+</tr>
+<tr>
+<td>3</td>
+<td>高音</td>
+<td>ハイハット、細かなきらめき</td>
+</tr>
+</tbody>
+</table>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>用途</th>
+</tr>
+<tr>
+<td>明るさの反応帯域</td>
+<td>0</td>
+<td>Emission増幅</td>
+</tr>
+<tr>
+<td>光点サイズの反応帯域</td>
+<td>0</td>
+<td>光点拡大</td>
+</tr>
+<tr>
+<td>色変化の反応帯域</td>
+<td>2</td>
+<td>色相変化</td>
+</tr>
+<tr>
+<td>アバターライトの反応帯域</td>
+<td>0</td>
+<td>AudioSource解析による実光Intensity</td>
+</tr>
+</table>
+<div class="note">コード上には旧互換フィールド「反応する帯域（0：低音～3：高音）」が保持されていますが、R22.4 Custom Inspectorでは表示されません。現在は用途別の3帯域を設定します。</div>
+</section>
+<section id="response">
+<h2>反応量と安定化</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>音による明るさの増加</td>
+<td>2 / 0–10</td>
+<td>音量ピーク時のEmission倍率。最終値は「明るさの上限」で制限されます。</td>
+</tr>
+<tr>
+<td>音による光点サイズの増加</td>
+<td>0.18 / 0–1</td>
+<td>音に合わせた光点サイズ増加量です。</td>
+</tr>
+<tr>
+<td>音による色変化の増加</td>
+<td>0.35 / 0–2</td>
+<td>帯域値による色相変化の量です。</td>
+</tr>
+<tr>
+<td>音声反応の平滑化</td>
+<td>0.65 / 0–1</td>
+<td>高いほど急変を抑え、滑らかになります。</td>
+</tr>
+<tr>
+<td>音声反応のしきい値</td>
+<td>0.05 / 0–1</td>
+<td>小さなノイズを無視する下限です。</td>
+</tr>
+</table>
+</section>
+<section id="history">
+<h2>履歴・伝播</h2>
+<table>
+<tr>
+<th>AudioLink履歴モード</th>
+<th>動作</th>
+</tr>
+<tr>
+<td>全体を同時反応</td>
+<td>現在値を全光点へ同時適用します。</td>
+</tr>
+<tr>
+<td>上下へ伝播</td>
+<td>縦位置に応じた履歴サンプルを読み、波が上下へ流れます。</td>
+</tr>
+<tr>
+<td>回転方向へ伝播</td>
+<td>球面の横方向に履歴差を作ります。</td>
+</tr>
+<tr>
+<td>光点ごとにランダム</td>
+<td>セルごとに異なる履歴位置を使います。</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>AudioLink基本遅延（履歴サンプル）</td>
+<td>0 / 0–124。全体の履歴読み取り開始位置です。</td>
+</tr>
+<tr>
+<td>光点ごとの遅延差</td>
+<td>24 / 0–124。モード1–3で位置ごとに広げる履歴幅です。</td>
+</tr>
+</table>
+</section>
+<section id="test">
+<h2>音源なしでテスト</h2>
+<p>「AudioLinkテストモード」をONにすると、Shaderへ固定の「テスト音量」（初期値0.5）を渡します。Unity Editorで反応量・上限・光点サイズを確認できます。アップロード前にはOFFへ戻してください。</p>
+<div class="warning">テストモードがONのままだと、VRChat上でも固定入力が優先され、実際の音へ反応しません。</div>
+</section>
+<section id="avatar">
+<h2>アバター実光のAudioLink連動</h2>
+<p>壁のShaderはAudioLinkテクスチャを参照しますが、Realtime Lightは「AudioLink入力AudioSource」をControllerがSpectrum解析します。AudioSource未指定時は実光の音連動が行われません。</p>
+<table>
+<tr>
+<td>アバター用ライトの音連動量</td>
+<td>0.5 / 0–2。0で一定、値を上げるほど音量によるIntensity変化が増えます。</td>
+</tr>
+<tr>
+<td>明るさの安全性</td>
+<td>顔への強い点滅を避けるため0.2–0.6程度から調整します。</td>
+</tr>
+</table>
+<p>
+<a href="06_shapes_cookie.html">次へ：形状・Cookie →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="04_effects.html">← 反射・光点</a>　<a href="06_shapes_cookie.html">次：形状・Cookie →</a>
+</div>
+</footer>
+</body>
+</html>

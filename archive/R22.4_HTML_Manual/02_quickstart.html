@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>02 設定済みサンプル | R22.4</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">02 / QUICK START</div>
+<h1>設定済みサンプルで最短確認</h1>
+<p class="lead">壁・ミラーボール・Spot Light・Controllerを関連付け済みのPrefabです。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a aria-current="page" href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>ページ内</strong>
+<a href="#place">配置</a>
+<a href="#objects">構成</a>
+<a href="#verify">確認</a>
+<a href="#reuse">自分のワールドへ</a>
+</aside>
+<article class="content">
+<section id="place">
+<h2>配置する</h2>
+<ol class="steps">
+<li>Projectで <code>Assets/MirrorBallLight/Examples/ConfiguredSample</code> を開きます。</li>
+<li>
+<code>MirrorBallLight_ConfiguredSample.prefab</code>をHierarchyへドラッグします。</li>
+<li>Scene内で壁が他のオブジェクトに隠れない位置へ移動します。</li>
+<li>Play Modeへ入り、壁の光点、ミラーボール回転、Spot Lightを確認します。</li>
+</ol>
+<div class="tip">初期状態は<strong>通常版</strong>です。LTCGI・VRCLightVolumesを導入していなくても確認できます。</div>
+</section>
+<section id="objects">
+<h2>Prefab内の設定</h2>
+<table>
+<thead>
+<tr>
+<th>オブジェクト</th>
+<th>役割</th>
+<th>設定済み内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>MirrorBallLight_ConfiguredSample</code>
+</td>
+<td>ルート／Controller</td>
+<td>UdonSharp Program Asset、対象Material 6種、電源、各参照</td>
+</tr>
+<tr>
+<td>
+<code>mirrorball</code>
+</td>
+<td>回転Root</td>
+<td>通常版本体と連携版本体を子に保持</td>
+</tr>
+<tr>
+<td>
+<code>mirrorball_light_wall</code>
+</td>
+<td>反射確認用の壁</td>
+<td>Standard通常面Materialを割り当て</td>
+</tr>
+<tr>
+<td>
+<code>mirrorball_spotlight</code>
+</td>
+<td>ミラーボールへの照射</td>
+<td>Spot 45°、Range 12、Intensity 2、影なし、ボール方向へ設定</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="verify">
+<h2>正しく動かない場合の確認順</h2>
+<ol>
+<li>Consoleの赤いエラーをすべて解消する</li>
+<li>Controllerの「ミラーボール本体」が<code>mirrorball</code>を参照しているか</li>
+<li>「反射を表示するマテリアル」に壁のMaterialが含まれるか</li>
+<li>MaterialのShaderが<code>MirrorBallLight/MirrorBallSurfaceAuto</code>か</li>
+<li>「電源状態」がON、「反射光の明るさ」が0より大きいか</li>
+</ol>
+</section>
+<section id="reuse">
+<h2>自分の壁へ適用する</h2>
+<ol class="steps">
+<li>対象壁のMaterialを複製します。</li>
+<li>通常の壁なら<code>MirrorBallLight/MirrorBallSurfaceAuto</code>、ガラスなら<code>MirrorBallLight/MirrorBallSurfaceAutoTransparent</code>へ変更します。</li>
+<li>元のBase Texture、Color、Normal Mapなどを移します。</li>
+<li>Controllerの「対象マテリアルをシーンから自動検出」を押します。</li>
+<li>「現在の設定をマテリアルへ反映・保存」を押します。</li>
+</ol>
+<div class="warning">付属Materialを直接編集すると、サンプルと統合Prefabの見た目にも共有されます。ワールド固有の調整ではMaterialを複製してください。</div>
+<p>
+<a href="03_controller.html">次へ：Controller全項目 →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="01_installation.html">← 導入</a>　<a href="03_controller.html">次：Controller →</a>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>09 LTCGI・VRCLightVolumes | R23</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">09 / INTEGRATIONS</div>
+<h1>LTCGI・VRCLightVolumes・アバター実光</h1>
+<p class="lead">統合Prefab内で本体を切り替え、対応Materialとシーン側コンポーネントを接続します。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a aria-current="page" href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>ページ内</strong>
+<a href="#mode">表示モード</a>
+<a href="#lv">VRCLightVolumes</a>
+<a href="#ltcgi">LTCGI</a>
+<a href="#avatar">アバター実光</a>
+<a href="#sample">サンプル切替</a>
+</aside>
+<article class="content">
+<section id="mode">
+<h2>通常版と連携版</h2>
+<table>
+<tr>
+<th>モード</th>
+<th>本体</th>
+<th>Surface Material</th>
+</tr>
+<tr>
+<td>通常版</td>
+<td>
+<code>MirrorBallFacetBody</code>
+</td>
+<td>名前が<code>_Standard</code>で終わる付属Material</td>
+</tr>
+<tr>
+<td>LTCGI・VRCLightVolumes版</td>
+<td>
+<code>MirrorBallFacetBody (VRCLightVolumes + LTCGI)</code>
+</td>
+<td>名前が<code>_LTCGI_LightVolumes</code>で終わる付属Material</td>
+</tr>
+</table>
+<p>Controllerの「本体表示モード」は本体球だけを切り替えます。壁・床・ガラスのMaterialは自動差し替えされないため、使用モードに合うMaterialを割り当てます。</p>
+</section>
+<section id="lv">
+<h2>VRCLightVolumes</h2>
+<p>連携Shaderの「VRCLightVolumesを使用」はLight Volumeからの照明をSurface／本体へ反映するKeywordです。Controllerの「すべてON」で対応MaterialのKeywordも同時に設定します。</p>
+<ol class="steps">
+<li>VRC Light Volumesをプロジェクトへ導入します。</li>
+<li>シーンへ必要なLight Volume Manager／Volumeを配置してBakeまたは設定します。</li>
+<li>連携Materialを対象Rendererへ割り当てます。</li>
+<li>Controllerの本体表示モードを連携版へ変更します。</li>
+<li>9番の「すべてON」を押し、設定を保存します。</li>
+</ol>
+<div class="note">「VRCLightVolumes用オブジェクト」はMaterialのToggleとは別で、アバター向けDynamic Volume等のGameObjectを電源連動させる参照です。</div>
+</section>
+<section id="ltcgi">
+<h2>LTCGI</h2>
+<table>
+<tr>
+<th>Material項目</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>LTCGIを使用</td>
+<td>LTCGI連携処理を有効にします。</td>
+</tr>
+<tr>
+<td>LTCGI拡散色</td>
+<td>LTCGIのDiffuse寄与へ掛ける色です。</td>
+</tr>
+<tr>
+<td>LTCGI反射色</td>
+<td>Specular寄与へ掛ける色です。</td>
+</tr>
+</table>
+<p>LTCGI側で対象Rendererを登録し、LTCGIの手順に従ってBake／Updateします。ControllerのONだけではLTCGIデータそのものは生成されません。</p>
+</section>
+<section id="avatar">
+<h2>アバターへの実光</h2>
+<h3>Realtime Light方式</h3>
+<p>ControllerへPoint Lightを1灯割り当てます。「安全設定」ボタンでRealtime、影なしへ設定し、Rangeを必要最小限にします。PC向けで、ワールド全体のRealtime Light数に注意します。</p>
+<h3>VRCLightVolumes方式</h3>
+<p>DynamicなPoint Light Volumeを別の子GameObjectとして構成し、「VRCLightVolumes用オブジェクト」へ指定します。Controllerは電源フェードに合わせてGameObjectの有効状態を管理します。</p>
+<div class="warning">Realtime LightとVolumeを両方強くすると二重に明るく見える可能性があります。片方ずつ確認し、必要な分だけ併用してください。</div>
+</section>
+<section id="sample">
+<h2>設定済みサンプルを連携版へ変更</h2>
+<ol>
+<li>LTCGIとVRC Light Volumesを先に導入します。</li>
+<li>Controllerの「本体表示モード」を「LTCGI・VRCLightVolumes版」へ変更します。</li>
+<li>
+<code>mirrorball_light_wall</code>へ<code>ReflectionSurface_LTCGI_LightVolumes</code>を割り当てます。</li>
+<li>「対象マテリアルをシーンから自動検出」を実行します。</li>
+<li>「すべてON」と「現在の設定をマテリアルへ反映・保存」を押します。</li>
+<li>各連携パッケージ側のシーン設定を完了します。</li>
+</ol>
+<p>
+<a href="10_optimization_troubleshooting.html">次へ：最適化・トラブル対処 →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="08_materials.html">← Material</a>　<a href="10_optimization_troubleshooting.html">次：最適化・対処 →</a>
+</div>
+</footer>
+</body>
+</html>

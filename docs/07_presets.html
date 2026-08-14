@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>07 ライブプリセット | R23</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">07 / LIVE PRESETS</div>
+<h1>ライブプリセットとクロスフェード</h1>
+<p class="lead">必要数だけPresetを追加し、UIやUdon Custom Eventから切り替えます。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a aria-current="page" href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>ページ内</strong>
+<a href="#controller">Controller項目</a>
+<a href="#create">作成</a>
+<a href="#preset">Preset項目</a>
+<a href="#events">切替イベント</a>
+<a href="#crossfade">クロスフェード</a>
+</aside>
+<article class="content">
+<section id="controller">
+<h2>2. ライブプリセット</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>ライブプリセットを使用</td>
+<td>OFF</td>
+<td>Preset配列と切替処理を有効にします。</td>
+</tr>
+<tr>
+<td>開始時に選択中プリセットを適用</td>
+<td>ON</td>
+<td>Start時に現在の同期番号を適用します。</td>
+</tr>
+<tr>
+<td>プリセットの動作範囲</td>
+<td>グローバル</td>
+<td>ローカルは自分だけ、グローバルは選択番号と開始時刻を同期します。</td>
+</tr>
+<tr>
+<td>プリセット一覧</td>
+<td>配列</td>
+<td>適用順。番号は0から始まります。</td>
+</tr>
+<tr>
+<td>選択プリセット番号（0から）</td>
+<td>0</td>
+<td>
+<code>ApplySelectedPreset</code>で適用する番号です。</td>
+</tr>
+<tr>
+<td>クロスフェード時間（秒）</td>
+<td>0.8</td>
+<td>0で即時、値を増やすと演出設定を補間します。</td>
+</tr>
+<tr>
+<td>クロスフェード曲線</td>
+<td>滑らか</td>
+<td>線形／滑らか／ゆっくり開始／ゆっくり終了です。</td>
+</tr>
+</table>
+</section>
+<section id="create">
+<h2>プリセットを作る</h2>
+<ol class="steps">
+<li>Controllerで「新しいプリセットを追加」を押します。子GameObjectとPresetコンポーネントが追加されます。</li>
+<li>Controller側で基準となる見た目を作ります。</li>
+<li>「選択プリセット番号」を保存先番号へ合わせます。</li>
+<li>「現在値を選択プリセットへ保存」を押します。</li>
+<li>必要数だけ繰り返し、「一覧を子から自動検出」で配列を整理します。</li>
+<li>「選択番号をプレビュー適用」でEdit Modeの見た目を確認します。</li>
+</ol>
+</section>
+<section id="preset">
+<h2>Presetに保存される項目</h2>
+<p>Presetは次の演出値を保持します。Controllerの必須参照、電源範囲、最適化設定などは切り替えません。</p>
+<table>
+<thead>
+<tr>
+<th>分類</th>
+<th>保存される項目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>回転・反射</td>
+<td>回転速度、基本色、反射光明るさ、通常面／透過面明るさ、透過Alpha</td>
+</tr>
+<tr>
+<td>カラー</td>
+<td>ランダム色、彩度、色相速度、色明滅</td>
+</tr>
+<tr>
+<td>AudioLink</td>
+<td>用途別帯域、明るさ／サイズ／色の増加、履歴モード／遅延</td>
+</tr>
+<tr>
+<td>投影Cookie</td>
+<td>使用状態、方式、2D／Cube Texture、強さ、色、Tiling、Offset、回転</td>
+</tr>
+<tr>
+<td>光点</td>
+<td>タイル数、サイズ、ぼかし、比率、形状、単一Texture、アトラス設定、点灯割合、切替、明滅</td>
+</tr>
+<tr>
+<td>距離</td>
+<td>フェード開始／終了、減衰曲線</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="events">
+<h2>実行中の切替イベント</h2>
+<table>
+<tr>
+<th>Custom Event名</th>
+<th>動作</th>
+</tr>
+<tr>
+<td>
+<code>NextPreset</code>
+</td>
+<td>次のPresetへ移動し、末尾から先頭へ循環します。</td>
+</tr>
+<tr>
+<td>
+<code>PreviousPreset</code>
+</td>
+<td>前のPresetへ移動し、先頭から末尾へ循環します。</td>
+</tr>
+<tr>
+<td>
+<code>ApplySelectedPreset</code>
+</td>
+<td>「選択プリセット番号」をクロスフェード適用します。</td>
+</tr>
+<tr>
+<td>
+<code>ApplySelectedPresetImmediately</code>
+</td>
+<td>同番号を補間なしで即時適用します。</td>
+</tr>
+<tr>
+<td>
+<code>ReloadCurrentPreset</code>
+</td>
+<td>現在番号を再読込します。</td>
+</tr>
+<tr>
+<td>
+<code>TogglePower</code>／<code>TurnOn</code>／<code>TurnOff</code>
+</td>
+<td>電源UI用イベントです。</td>
+</tr>
+<tr>
+<td>
+<code>UseStandardLightingVariant</code>
+</td>
+<td>通常版本体へ切り替えます。</td>
+</tr>
+<tr>
+<td>
+<code>UseIntegratedLightingVariant</code>
+</td>
+<td>連携版本体へ切り替えます。</td>
+</tr>
+</table>
+<h3>Unity UI Buttonへ接続</h3>
+<ol>
+<li>ButtonのOn ClickへController GameObjectを登録します。</li>
+<li>
+<code>UdonBehaviour.SendCustomEvent(string)</code>を選びます。</li>
+<li>文字列へ上表のEvent名を正確に入力します。</li>
+</ol>
+<div class="warning">大文字・小文字を含め完全一致が必要です。グローバル切替では操作したPlayerがOwnershipを取得して同期します。</div>
+</section>
+<section id="crossfade">
+<h2>クロスフェードの注意</h2>
+<ul>
+<li>遷移中の新しい切替要求は、現在の遷移が終わるまで受け付けません。</li>
+<li>Textureは数値のような連続補間ではなく、遷移途中で切り替わります。</li>
+<li>「プリセット差分更新の最小値」を上げすぎると段階的に見えます。</li>
+<li>グローバルではサーバー時刻を基準にするため、参加者間の進行が揃います。</li>
+</ul>
+<p>
+<a href="08_materials.html">次へ：Material・Shader →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="06_shapes_cookie.html">← 形状・Cookie</a>　<a href="08_materials.html">次：Material →</a>
+</div>
+</footer>
+</body>
+</html>

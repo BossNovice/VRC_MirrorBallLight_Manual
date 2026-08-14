@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>08 Material・Shader | R23</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">08 / MATERIALS</div>
+<h1>Material・Shader設定</h1>
+<p class="lead">通常面、透明面、本体ファセットと、Controllerが上書きする範囲を整理します。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a aria-current="page" href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>ページ内</strong>
+<a href="#list">Shader一覧</a>
+<a href="#surface">壁・床</a>
+<a href="#transparent">透明面</a>
+<a href="#individual-pattern">個別発光設定</a>
+<a href="#facet">本体</a>
+<a href="#controller">上書き範囲</a>
+</aside>
+<article class="content">
+<section id="list">
+<h2>Shader一覧</h2>
+<table>
+<tr>
+<th>用途</th>
+<th>Shader名</th>
+</tr>
+<tr>
+<td>通常面</td>
+<td>
+<code>MirrorBallLight/MirrorBallSurfaceAuto</code>
+</td>
+</tr>
+<tr>
+<td>透明面</td>
+<td>
+<code>MirrorBallLight/MirrorBallSurfaceAutoTransparent</code>
+</td>
+</tr>
+<tr>
+<td>通常版本体</td>
+<td>
+<code>MirrorBallLight/MirrorBallFacetBody</code>
+</td>
+</tr>
+<tr>
+<td>連携通常面</td>
+<td>
+<code>MirrorBallLight/Integrations/MirrorBallSurfaceAuto (VRCLightVolumes + LTCGI)</code>
+</td>
+</tr>
+<tr>
+<td>連携透明面</td>
+<td>
+<code>MirrorBallLight/Integrations/MirrorBallSurfaceAutoTransparent (VRCLightVolumes + LTCGI)</code>
+</td>
+</tr>
+<tr>
+<td>連携本体</td>
+<td>
+<code>MirrorBallLight/Integrations/MirrorBallFacetBody (VRCLightVolumes + LTCGI)</code>
+</td>
+</tr>
+</table>
+</section>
+<section id="surface">
+<h2>通常の壁・床</h2>
+<table>
+<tr>
+<th>Material項目</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>壁・床の基本テクスチャ</td>
+<td>元のAlbedo／Base Mapです。</td>
+</tr>
+<tr>
+<td>ノーマルマップ</td>
+<td>凹凸情報。Texture Import TypeをNormal mapにします。</td>
+</tr>
+<tr>
+<td>ノーマルマップの強さ</td>
+<td>0で無効、1で標準、2で強調します。</td>
+</tr>
+<tr>
+<td>壁・床の基本色</td>
+<td>Textureへ乗算される色です。</td>
+</tr>
+<tr>
+<td>反射光の基本色</td>
+<td>光点Emissionの基準HDR色です。Controllerへ登録している場合は「基本色」から更新されます。</td>
+</tr>
+<tr>
+<td>金属感</td>
+<td>0は非金属、1は金属寄りです。</td>
+</tr>
+<tr>
+<td>滑らかさ</td>
+<td>高いほど環境反射が鋭くなります。</td>
+</tr>
+</table>
+<p>反射光以下の演出項目はControllerと同名です。Controllerへ登録している場合はController側を正として設定します。</p>
+</section>
+<section id="transparent">
+<h2>ガラス・透明／半透明オブジェクト</h2>
+<table>
+<tr>
+<th>Material項目</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>透明度</td>
+<td>素材全体のAlpha。Controllerの「透過面の本体透明度」で更新されます。</td>
+</tr>
+<tr>
+<td>反射光部分の不透明度</td>
+<td>光点部分の見え方。Controllerの「透過面の光点不透明度」で更新されます。</td>
+</tr>
+<tr>
+<td>透過マスクの回転追従</td>
+<td>透明マスクを投影回転へ追従させます。</td>
+</tr>
+<tr>
+<td>深度書き込み</td>
+<td>通常OFF。重なり順問題を改善する場合だけONを試しますが、他の透明物を隠す場合があります。</td>
+</tr>
+<tr>
+<td>面の描画</td>
+<td>Backは表面、Frontは裏面、Offは両面を描画します。ガラス板を両側から見る場合はOffを検討します。</td>
+</tr>
+</table>
+<div class="warning">透明Shaderは描画順の制約があります。Particle、別のガラス、鏡などと重なる場合はRender QueueとZWriteをシーンごとに確認してください。</div>
+</section>
+<section id="individual-pattern">
+<h2>R23 Material個別AudioLink・発光パターン</h2>
+<p>4種類のSurface Shader（通常／透明／LTCGI・VRCLightVolumes通常／同透明）で使用できます。これらはMaterial固有値であり、Controllerの「Shader Global共有を使用」がONでも上書きされません。</p>
+<table>
+<tr><th>項目</th><th>初期値</th><th>効果</th></tr>
+<tr><td>個別AudioLinkマスクを使用</td><td>OFF</td><td>Material固有の音声反応領域を有効化します。</td></tr>
+<tr><td>AudioLink反応マスク</td><td>白</td><td>白＝反応、黒＝音による変化なし。TextureのTiling／Offsetも利用できます。</td></tr>
+<tr><td>AudioLinkマスクの強さ</td><td>1</td><td>0で無効、1で完全適用します。</td></tr>
+<tr><td>AudioLinkマスクを反転</td><td>OFF</td><td>白黒を反転します。</td></tr>
+<tr><td>個別発光パターンを使用</td><td>OFF</td><td>反射光へMaterial固有の模様・色を適用します。</td></tr>
+<tr><td>発光パターンテクスチャ</td><td>白</td><td>RGBを発光色、AlphaまたはRGB輝度を発光マスクとして使用します。</td></tr>
+<tr><td>発光パターンの色</td><td>白</td><td>Texture色へ乗算するHDR色です。</td></tr>
+<tr><td>発光パターンの適用量</td><td>1</td><td>0で元の反射、1でパターンを完全適用します。</td></tr>
+<tr><td>発光パターンを反転</td><td>OFF</td><td>発光する場所と消える場所を反転します。</td></tr>
+<tr><td>発光パターンのスクロール速度</td><td>0, 0</td><td>X／Y方向へUVを毎秒スクロールします。</td></tr>
+<tr><td>発光パターンの音連動量</td><td>0</td><td>このMaterialだけAudioLink明滅を追加します。</td></tr>
+</table>
+<p>透明Shaderでは個別発光パターンがEmissionだけでなく反射光部分のAlphaにも反映されるため、消灯箇所だけが透明になります。ガラス本体の基礎透明度には影響しません。</p>
+<div class="note">個別マスクと発光パターンはミラーボール反射部分だけへ適用されます。LTCGIやVRCLightVolumesから受ける環境照明そのものはマスクしません。</div>
+</section>
+<section id="facet">
+<h2>MirrorBallFacetBody</h2>
+<table>
+<thead>
+<tr>
+<th>分類</th>
+<th>項目</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基本</td>
+<td>鏡片の基本色／金属感／滑らかさ</td>
+<td>本体の基礎PBR表現です。暗所では基本色を完全な黒にしないでください。</td>
+</tr>
+<tr>
+<td>Facet Layout</td>
+<td>横方向の鏡片数／縦方向の鏡片数</td>
+<td>鏡片の密度です。初期値48×24。</td>
+</tr>
+<tr>
+<td>Facet Layout</td>
+<td>鏡片の形状</td>
+<td>Square等の鏡片輪郭を選びます。</td>
+</tr>
+<tr>
+<td>Facet Layout</td>
+<td>目地の太さ／目地境界のぼかし／目地の色</td>
+<td>鏡片の境界を作ります。太すぎると球全体が暗くなります。</td>
+</tr>
+<tr>
+<td>Facet Normal</td>
+<td>鏡片面の平面化</td>
+<td>球の連続法線を鏡片ごとの平面へ近づけます。初期0.88。</td>
+</tr>
+<tr>
+<td>Facet Normal</td>
+<td>鏡片ごとの傾き</td>
+<td>法線をランダムにずらし反射方向を散らします。</td>
+</tr>
+<tr>
+<td>Facet Normal</td>
+<td>鏡片ごとの色むら</td>
+<td>均一さを崩します。</td>
+</tr>
+<tr>
+<td>暗所対策</td>
+<td>暗所での最低表示明るさ</td>
+<td>環境光が弱い場所でも真っ黒になるのを防ぎます。初期0.08。</td>
+</tr>
+<tr>
+<td>反射</td>
+<td>反射Cubemap（任意）／反射・スパークル色／Cubemap反射の強さ</td>
+<td>任意Cubemapの反射と、反射・きらめきのHDR色を調整します。</td>
+</tr>
+<tr>
+<td>スパークル</td>
+<td>スパークルの強さ／スパークルの鋭さ／スパークルの明滅量／スパークルの明滅速度</td>
+<td>視線と鏡片法線が合う箇所のきらめきの強度、範囲、時間変化を調整します。</td>
+</tr>
+<tr>
+<td>安全</td>
+<td>発光の上限</td>
+<td>本体Emissionの最大値です。初期8。</td>
+</tr>
+<tr>
+<td>AudioLink</td>
+<td>AudioLinkを使用／反応する帯域（0低音～3高音）／音によるスパークル増加／音声反応のしきい値／AudioLinkテストモード／テスト音量</td>
+<td>本体スパークルを指定帯域へ反応させます。テストモードは公開前にOFFにします。</td>
+</tr>
+</tbody>
+</table>
+<div class="tip">本体が黒い場合は、基本色、暗所での最低表示明るさ、目地の太さ、Cubemap、Controllerの電源・本体明るさ倍率の順で確認します。</div>
+</section>
+<section id="controller">
+<h2>Controller連動とMaterial直編集</h2>
+<ul>
+<li>Controllerの対象Materialへ登録したSurfaceは、色・明るさ・共通AudioLink・光点・Cookie・距離・Texture参照・共通Keywordを更新されます。</li>
+<li>Base Texture、Normal Map、基本色、金属感、滑らかさ、R23の個別AudioLinkマスクと個別発光パターンはMaterial側で設定します。</li>
+<li>本体は「Controllerの色・電源・AudioLink設定と連動」がONの時だけ演出値が同期します。</li>
+<li>Edit Mode変更をAssetへ残すには「現在の設定をマテリアルへ反映・保存」を押します。</li>
+</ul>
+<p>
+<a href="09_integrations.html">次へ：LTCGI・VRCLightVolumes →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="07_presets.html">← プリセット</a>　<a href="09_integrations.html">次：連携 →</a>
+</div>
+</footer>
+</body>
+</html>

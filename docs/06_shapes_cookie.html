@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>06 形状・Cookie | R23</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">06 / SHAPES & COOKIE</div>
+<h1>光点形状・テクスチャアトラス・投影Cookie</h1>
+<p class="lead">Project内に保存されたTextureを使い、VRChatビルドへ確実に含めます。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="01_installation.html">導入</a>
+<a href="02_quickstart.html">サンプル</a>
+<a href="03_controller.html">Controller</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="05_audiolink.html">AudioLink</a>
+<a aria-current="page" href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="07_presets.html">プリセット</a>
+<a href="08_materials.html">Material</a>
+<a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<div class="layout">
+<aside class="toc">
+<strong>ページ内</strong>
+<a href="#single">単一形状</a>
+<a href="#atlas">アトラス</a>
+<a href="#import">Texture設定</a>
+<a href="#cookie">Cookie</a>
+<a href="#preview">プレビュー</a>
+</aside>
+<article class="content">
+<section id="single">
+<h2>単一の光点形状</h2>
+<table>
+<tr>
+<th>選択</th>
+<th>動作</th>
+</tr>
+<tr>
+<td>四角</td>
+<td>セルに沿う標準形状です。</td>
+</tr>
+<tr>
+<td>丸</td>
+<td>中心からの距離で円形にします。</td>
+</tr>
+<tr>
+<td>ひし形</td>
+<td>45度回転した菱形です。</td>
+</tr>
+<tr>
+<td>十字</td>
+<td>縦横バーを組み合わせます。</td>
+</tr>
+<tr>
+<td>テクスチャ</td>
+<td>「光点形状テクスチャ」の明度／Alphaをマスクとして使います。</td>
+</tr>
+</table>
+<p>テクスチャは白が点灯、黒が消灯、中間色が半透明境界です。透明背景PNGも利用できます。</p>
+</section>
+<section id="atlas">
+<h2>複数形状アトラス</h2>
+<p>「複数形状アトラスを使用」をONにすると単一形状より優先され、光点セルごとにタイルが固定ランダム配置されます。</p>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>光点形状アトラス</td>
+<td>なし</td>
+<td>複数マスクを格子状に並べたTextureです。</td>
+</tr>
+<tr>
+<td>アトラス横分割数</td>
+<td>4 / 1–8</td>
+<td>横方向のセル数です。</td>
+</tr>
+<tr>
+<td>アトラス縦分割数</td>
+<td>2 / 1–8</td>
+<td>縦方向のセル数です。</td>
+</tr>
+<tr>
+<td>使用する形状数</td>
+<td>8 / 1–64</td>
+<td>左上から使用するタイル数。横×縦を超えた分は容量までに制限されます。</td>
+</tr>
+<tr>
+<td>形状配置シード</td>
+<td>0</td>
+<td>同じアトラスの配置パターンを変更します。</td>
+</tr>
+</table>
+<h3>付属サンプル</h3>
+<p>
+<code>Assets/MirrorBallLight/Examples/ShapeAtlas/SampleShapeAtlas_4x2.png</code>を設定し、横4・縦2・使用数8にします。</p>
+<div class="tip">形状の周囲に1～2px程度の余白を入れると隣セルの色が混ざりにくくなります。</div>
+</section>
+<section id="import">
+<h2>Texture Import Settings</h2>
+<table>
+<tr>
+<th>項目</th>
+<th>推奨</th>
+</tr>
+<tr>
+<td>Texture Type</td>
+<td>Default</td>
+</tr>
+<tr>
+<td>sRGB</td>
+<td>マスクだけならOFF、色も使う場合はON</td>
+</tr>
+<tr>
+<td>Alpha Source</td>
+<td>Input Texture Alpha</td>
+</tr>
+<tr>
+<td>Wrap Mode</td>
+<td>Clamp</td>
+</tr>
+<tr>
+<td>Filter Mode</td>
+<td>Bilinear。硬いピクセル形状ならPoint</td>
+</tr>
+<tr>
+<td>Compression</td>
+<td>NoneまたはHigh Quality。小さなマスクの崩れを確認</td>
+</tr>
+</table>
+<div class="danger">実行中に生成したTexture、Project外の画像、未保存の一時TextureはVRChatへアップロードされません。必ずAssets配下のTexture Assetを参照してください。</div>
+</section>
+<section id="cookie">
+<h2>8. 高度な投影Cookie</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>投影Cookieを使用</td>
+<td>OFF</td>
+<td>Cookie Keywordを有効にします。</td>
+</tr>
+<tr>
+<td>投影方式</td>
+<td>2D Cookie</td>
+<td>OFF／2D／Cubemap。用途に一致するTextureを指定します。</td>
+</tr>
+<tr>
+<td>2D投影Cookie</td>
+<td>なし</td>
+<td>Spot Light方向を基準に平面投影します。</td>
+</tr>
+<tr>
+<td>Cubemap投影Cookie</td>
+<td>なし</td>
+<td>ミラーボール中心から全方向へ球状投影します。</td>
+</tr>
+<tr>
+<td>Cookieマスクの強さ</td>
+<td>1</td>
+<td>0で無効、1でCookieマスクを完全適用します。</td>
+</tr>
+<tr>
+<td>Cookie色の混合量</td>
+<td>0</td>
+<td>0は明度マスクだけ、1はCookieのRGB色も強く反映します。</td>
+</tr>
+<tr>
+<td>Cookieタイリング</td>
+<td>(1,1)</td>
+<td>2D Cookieの繰り返し倍率です。</td>
+</tr>
+<tr>
+<td>Cookieオフセット</td>
+<td>(0,0)</td>
+<td>2D CookieのUV位置を移動します。</td>
+</tr>
+<tr>
+<td>Cookie回転速度</td>
+<td>0</td>
+<td>Cookie自体を時間回転させます。負数で逆方向です。</td>
+</tr>
+</table>
+<div class="note">2Dは照射方向が明確なステージ、Cubemapは部屋全体へ模様を配る用途に向いています。</div>
+</section>
+<section id="preview">
+<h2>Sceneビュー投影プレビュー</h2>
+<table>
+<tr>
+<td>投影プレビューを表示</td>
+<td>Scene Viewにガイドを表示します。ゲーム実行やビルドには描画されません。</td>
+</tr>
+<tr>
+<td>プレビュー光線数</td>
+<td>16 / 4–64。多いほど輪郭を把握しやすい一方、Scene表示が増えます。</td>
+</tr>
+<tr>
+<td>プレビュー半径</td>
+<td>5 / 0.5–30。ガイドの表示距離です。</td>
+</tr>
+</table>
+<p>
+<a href="07_presets.html">次へ：ライブプリセット →</a>
+</p>
+</section>
+</article>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<a href="05_audiolink.html">← AudioLink</a>　<a href="07_presets.html">次：プリセット →</a>
+</div>
+</footer>
+</body>
+</html>

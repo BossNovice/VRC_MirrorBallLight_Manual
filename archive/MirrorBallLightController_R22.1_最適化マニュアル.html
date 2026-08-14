@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MirrorBallLightController R22.1 最適化マニュアル</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#151d31;--line:#34415d;--ink:#eef2ff;--muted:#b7c1d6;--accent:#76e4f7;--yellow:#facc15;--green:#86efac}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#070b14,#15102c);color:var(--ink);font:16px/1.75 system-ui,"Yu Gothic UI","Meiryo",sans-serif}main{max-width:1080px;margin:auto;padding:48px 24px 96px}h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.2;margin:.2em 0}h2{font-size:1.8rem;border-bottom:1px solid var(--line);padding-bottom:.35em;margin-top:2.5em}h3{font-size:1.25rem;color:var(--accent)}p,li{color:var(--muted)}a{color:var(--accent)}.lead{font-size:1.18rem;color:#fff}.badge{display:inline-block;padding:.25em .7em;border:1px solid var(--accent);border-radius:999px;color:var(--accent);margin-right:.5em}.card{background:rgba(21,29,49,.94);border:1px solid var(--line);border-radius:18px;padding:22px;margin:22px 0}.figure{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:18px;background:#111827;margin:18px 0}.renders{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.renders figure{margin:0}.renders img{width:100%;border-radius:12px}.renders figcaption{text-align:center;color:var(--muted);font-size:.9rem}.setting{display:grid;grid-template-columns:minmax(250px,1fr) 2fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}.setting>*{background:var(--panel);padding:12px 16px}.ok{color:var(--green)}.warn{color:var(--yellow)}code{background:#0a1020;padding:.15em .4em;border-radius:5px;color:#cffafe}nav{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}nav a{padding:7px 12px;background:#172554;border-radius:9px;text-decoration:none}@media(max-width:700px){.setting{grid-template-columns:1fr}.renders{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<span class="badge">R22.1</span><span class="badge">VRChat World / PC</span>
+<h1>MirrorBallLightController<br>最適化・診断マニュアル</h1>
+<p class="lead">R22系で追加した「1・2・3・5・8」の機能を、Unity上の日本語項目と対応させて説明します。R22.1ではUnity上の表示名をバージョン非依存に整理しました。</p>
+<nav><a href="#install">導入</a><a href="#f1">1 Global共有</a><a href="#f2">2 差分更新</a><a href="#f3">3 バリアント監査</a><a href="#f5">5 GPU回転</a><a href="#f8">8 診断</a><a href="#textures">サンプルTexture</a></nav>
+
+<h2 id="install">導入と最初の設定</h2>
+<ol><li>R22.1 ZIP内の <code>Assets/MirrorBallLight</code> をUnityプロジェクトの <code>Assets</code> へコピーします。</li><li>Unityのコンパイル完了後、既存ControllerのInspectorを開きます。</li><li>「10. 最適化・診断」の <strong>Shader Global共有を使用（推奨）</strong> と <strong>投影回転をGPUで計算（推奨）</strong> をONにします。</li><li><strong>現在の設定をマテリアルへ反映・保存</strong> を押し、続けて <strong>診断・最適化ウィンドウを開く</strong> から診断します。</li></ol>
+<div class="card"><strong class="warn">重要:</strong> Global共有はScene全体で1系統です。複数のControllerを別設定で同時に動かす場合は、主ControllerだけONにし、他は「Shader Global共有」をOFFにしてください。</div>
+
+<h2 id="f1">1. Shader Global共有</h2>
+<img class="figure" src="R22_Images/01_ShaderGlobal共有.svg" alt="Controllerから複数MaterialへGlobal値を一括配信する図">
+<p>R21までは位置、回転、色、電源などをTarget Materialごとに書き込んでいました。R22では共有値をVectorへ梱包し、<code>VRCShader.SetGlobal…</code> で全対応Shaderへ一括配信します。診断画面の概算では、6 Materialなら動的Setterは従来約54回からGlobal共有約8回になります。</p>
+<div class="setting"><strong>Unityの表示</strong><strong>意味・推奨値</strong><span>Shader Global共有を使用（推奨）</span><span>ON推奨。R22対応Shaderへ共有値を一括送信します。</span><span>対象マテリアル</span><span>初回のKeyword設定と種類判定には引き続き必要です。削除しないでください。</span></div>
+<p class="warn">外部ShaderやR21以前のSurface ShaderはGlobal値を読みません。必ずR22.1同梱の4種類のSurface Shaderを使ってください。</p>
+
+<h2 id="f2">2. クロスフェード差分更新</h2>
+<img class="figure" src="R22_Images/02_差分更新.svg" alt="クロスフェードの微小差分を省略する図">
+<p>ライブプリセットのクロスフェード中、前回反映値との差が小さいフレームを省略します。見た目の滑らかさを維持しつつ、短時間に同じ値を何度も送る負荷を減らします。形状・Texture・AudioLink帯域などの離散値は、従来どおり遷移中央で安全に切り替わります。</p>
+<div class="setting"><strong>Unityの表示</strong><strong>意味・推奨値</strong><span>プリセット差分更新の最小値</span><span>初期値 <code>0.001</code> 推奨。大きくすると更新は減りますが、低速フェードで段差が見える可能性があります。</span><span>マテリアル更新頻度（回/秒）</span><span>30を基準に、遠景中心なら20、滑らかさ重視なら45程度から調整します。</span></div>
+
+<h2 id="f3">3. Shaderバリアント保証・監査</h2>
+<img class="figure" src="R22_Images/03_バリアント監査.svg" alt="SceneとPresetをビルド前に監査する図">
+<p>Texture形状とAtlas形状はKeyword別Shaderから、1つのランタイム安全分岐へ統合しました。これにより、アップロード後にプリセットで形状を切り替えた際、必要なShaderバリアントが削除されて表示されない事故を防ぎます。AudioLink・ランダム点灯・面方向・距離フェード・Global共有は静的Keywordとして残し、Controller設定とMaterialを診断機能が一致させます。</p>
+<ul><li>通常Surface Shaderの独立ローカルKeyword要因は、理論上の組合せが64から32へ減少します。</li><li>VRCLightVolumes連携版は、LightVolumes分を含め128から64へ減少します。</li><li>実際のコンパイル数にはSurface Shaderが生成する照明バリアントも加わります。</li></ul>
+<p>通常のUnity Build直前にも監査が走ります。VRChat SDK側の独自ビルド経路では実行タイミングが異なる可能性があるため、アップロード前に診断ボタンを押す運用を推奨します。</p>
+
+<h2 id="f5">5. GPU投影回転</h2>
+<img class="figure" src="R22_Images/05_GPU回転.svg" alt="GPU時刻と同期角度からQuaternion回転を計算する図">
+<p>Controllerは同期基準角度と位相だけを送り、連続する投影回転はShader内で計算します。回転軸はQuaternionで処理するため、任意軸の精度と途中参加時の同期を維持しながら、毎更新のMaterial回転値送信を省略できます。</p>
+<div class="setting"><strong>Unityの表示</strong><strong>意味・推奨値</strong><span>投影回転をGPUで計算（推奨）</span><span>Global共有と組み合わせてON。OFF時は従来のCPU回転値を使用します。</span><span>表示用ミラーボール本体も回転</span><span>球体Meshも回すならON。投影だけを回してTransform更新を省略する場合はOFF。</span><span>回転速度 / 回転軸</span><span>従来と同じ項目です。電源OFF時停止設定も反映されます。</span></div>
+<h3>Unity 2022.3 実描画テスト</h3>
+<div class="renders"><figure><img src="R22_Images/05_GPU回転_0度.png" alt="GPU回転0度"><figcaption>通常版・位相0度</figcaption></figure><figure><img src="R22_Images/05_GPU回転_90度.png" alt="GPU回転90度"><figcaption>通常版・位相90度</figcaption></figure><figure><img src="R22_Images/05_GPU回転_透過面.png" alt="透過連携版GPU回転"><figcaption>透過＋LV/LTCGI版</figcaption></figure></div>
+<p class="ok">位相0度と90度の比較で47,992ピクセルが変化し、通常版・透過連携版の両方でGlobal値とGPU回転を確認しています。</p>
+
+<h2 id="f8">8. 診断・最適化ウィンドウ</h2>
+<img class="figure" src="R22_Images/08_診断ウィンドウ.svg" alt="診断ウィンドウの画面図">
+<p>Controller Inspectorの「10. 最適化・診断」、またはUnityメニュー <code>Tools › MirrorBall Light › 診断・最適化</code> から開きます。</p>
+<h3>確認する項目</h3>
+<ul><li>Global共有Controllerの重複</li><li>Target Materialの重複・対象外Shader</li><li>ControllerとMaterial Keywordの不一致</li><li>旧方式の形状Keyword残留</li><li>Atlas / Texture形状 / 2D Cookie / Cubemapの未設定</li><li>Atlasの容量超過とTexture Import設定</li><li>従来方式とGlobal共有方式の動的Setter概算</li></ul>
+<p><strong>安全に自動修正</strong> は、対応MaterialのKeyword・非表示プロパティと、Atlas Textureの <code>Clamp / MipMap OFF / Alpha Is Transparency ON</code> を修正します。参照オブジェクトの自動置換やPreset削除は行いません。</p>
+
+<h2 id="textures">サンプルTextureについて</h2>
+<p>今回の5機能は最適化・診断機能のため、新しい専用Textureは必要ありません。Textureが必要な形状確認には、R21から同梱している <a href="https://github.com/BossNovice/VRC_MirrorBallLight/blob/agent/fix-facet-body-black/Assets/MirrorBallLight/Examples/ShapeAtlas/SampleShapeAtlas_4x2.png">SampleShapeAtlas_4x2.png</a>（四角・丸・ひし形・十字・星・ハート・六角形・リング）を使用できます。診断機能はこのTextureのImport設定も検査します。</p>
+
+<h2>推奨チェック手順</h2>
+<ol><li>対象マテリアルをシーンから自動検出</li><li>現在の設定をマテリアルへ反映・保存</li><li>診断画面で「安全に自動修正」</li><li>Consoleの赤エラーが0であることを確認</li><li>Play Modeで電源、Presetクロスフェード、GPU回転を確認</li><li>VRChat Build & Test後にアップロード</li></ol>
+<div class="card"><strong>互換モード:</strong> 問題の切り分け時は「投影回転をGPUで計算」をOFF、それでも改善しない場合は「Shader Global共有」もOFFにすると、R21相当のMaterial個別更新へ戻せます。</div>
+</main></body></html>
