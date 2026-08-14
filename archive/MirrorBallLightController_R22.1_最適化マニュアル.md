@@ -74,7 +74,7 @@ Inspectorの「10. 最適化・診断」、または `Tools > MirrorBall Light >
 
 ## サンプルTexture
 
-今回の5機能は最適化・診断機能のため、新しい専用Textureは不要です。形状と診断の確認には、本体リポジトリの [4×2サンプル形状Atlas](https://github.com/BossNovice/VRC_MirrorBallLight/blob/agent/fix-facet-body-black/Assets/MirrorBallLight/Examples/ShapeAtlas/SampleShapeAtlas_4x2.png) を使用できます。
+今回の5機能は最適化・診断機能のため、新しい専用Textureは不要です。形状と診断の確認には、[4×2サンプル形状Atlas](../assets/ShapeAtlas/SampleShapeAtlas_4x2.png) を使用できます。
 
 ## アップロード前チェック
 

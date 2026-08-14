@@ -1,6 +1,6 @@
 # VRC MirrorBallLight R23 GitHub版マニュアル
 
-[HTML版マニュアル](../docs/index.html) | [本体リポジトリ](https://github.com/BossNovice/VRC_MirrorBallLight) | [R23 ZIP](https://github.com/BossNovice/VRC_MirrorBallLight/blob/agent/fix-facet-body-black/Releases/MirrorBallLightController_R23.zip)
+[HTML版マニュアル](../docs/index.html)
 
 ## 必須環境
 
@@ -60,7 +60,7 @@ R21では、1枚のTextureを同じ大きさのセルへ分割し、各光点へ
 
 1. Controllerの `7. 光点・形状・ランダム点灯` を開きます。
 2. `複数形状アトラスを使用` をONにします。
-3. `光点形状アトラス` に `Assets/MirrorBallLight/Examples/ShapeAtlas/SampleShapeAtlas_4x2.png` を設定します。
+3. [サンプル形状アトラス](../assets/ShapeAtlas/SampleShapeAtlas_4x2.png) をUnityプロジェクトのAssets配下へ保存し、`光点形状アトラス` に設定します。
 4. `アトラス横分割数` を4、`アトラス縦分割数` を2、`使用する形状数` を8にします。
 5. `形状配置シード` を変更して好みの配置にします。同じシードなら再生や再入室後も配置は変わりません。
 6. `現在の設定をマテリアルへ反映・保存` を押します。
@@ -293,6 +293,8 @@ R23では、同じControllerに登録した壁・床・ガラスでも、各Mate
 - `Cookie回転速度`: ミラーボールの回転とは別にCookieだけをY軸回転
 
 2D Cookieは左右がつながる画像を推奨します。色を使わずマスクだけ使う場合はグレースケール画像とし、色混合量を0にします。CubemapはTexture Import SettingsでTexture ShapeをCubeに設定してください。設定後は `現在の設定をマテリアルへ反映・保存` を押します。
+
+[サンプルCookie・マスク](../assets/CookieMasks/README_サンプルCookie.html) には、2Dグレースケール、カラースパイラル、調整用グリッド、Cubemap Crossのカラー／グレースケールを収録しています。
 
 ライブプリセットにはCookie方式、Texture参照、マスク・色・Tiling・Offset・回転速度とAudioLink履歴設定も保存されます。Cookie Textureと投影方式はクロスフェード中央で切り替わり、強度・色・Tiling・Offset・回転速度は連続補間されます。
 
