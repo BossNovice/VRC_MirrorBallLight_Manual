@@ -8,6 +8,20 @@ R24では受光面Shaderを、建築物、ガラス、金属、複雑なUVを持
 
 UnityPackage／ZIPには、マニュアルリポジトリのサンプルと同内容のShape Atlas、2D Cookie、Cubemap Cross、調整用マスクを `Assets/MirrorBallLight/Samples/` 以下へ収録しています。Cubemapと2D TextureのImport設定も適用済みです。
 
+## Material Translate／Translate Copy
+
+既存の壁・床・ガラスをHierarchyで右クリックし、`MirrorBall Light > マテリアル` からMirrorBallLight Shaderへ変換できます。Project上でMaterial Assetを右クリックした場合も同じ操作が可能です。
+
+- `Translate（直接変換）`: 元Material自体のShaderを変更します。共有Materialを使う他オブジェクトにも反映されます。
+- `Translate Copy（複製して変換・推奨）`: 元Materialを残し、`Assets/MirrorBallLight/Generated/ConvertedMaterials/`へ変換コピーを作成してRendererへ割り当てます。
+- `Translate to LTCGI・LightVolumes`: 連携版Shaderへ直接変換します。
+- `Translate Copy to LTCGI・LightVolumes`: 連携版Shaderのコピーを作成します。
+- `変換内容を確認`: 変更せずに元Shaderと変換先Shaderを一覧表示します。
+
+通常面／透明面はShader名、RenderType、Render Queue、Standard系の透明設定、Base Color Alphaから自動判定します。選択GameObjectの子Rendererと複数Materialに対応し、同じSceneのControllerが見つかった場合は変換Materialを対象一覧へ追加します。
+
+引継ぎ対象はBase Texture、Base Color、Tiling、Offset、Normal Map、Normal強度、Metallic、Smoothness、透明度、Cull、Render Queue、GI、GPU Instancingです。PoiyomiやlilToonなどの独自合成、MatCap、Outline、特殊Emission、複数レイヤーはMirrorBallLight側に同等機能がないため完全には変換できない可能性があります。詳細は[Material Translateページ](../docs/12_material_translate.html)を参照してください。
+
 | 機能 | Controller上の場所 | 主な用途 |
 |---|---|---|
 | 座標方式 | `8. 高度な投影・Sceneプレビュー` | UV、ワールド平面、オブジェクト平面、トライプラナー、球面を選択 |
