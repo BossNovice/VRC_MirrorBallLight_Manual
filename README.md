@@ -1,23 +1,23 @@
 # VRC MirrorBallLight Manual
 
-VRChat World向け `VRC_MirrorBallLight` のマニュアル専用リポジトリです。現在の対応バージョンは **R23** です。
+VRChat World向け `VRC_MirrorBallLight` のマニュアル専用リポジトリです。現在の対応バージョンは **R24** です。
 
 ## 現行マニュアル
 
-- [GitHub版・導入から全設定まで](R23/README.md)
+- [GitHub版・導入から全設定まで](R24/README.md)
 - [HTML版・内容別マニュアル](docs/index.html)
 - [サンプル形状アトラス](assets/ShapeAtlas/SampleShapeAtlas_4x2.png)
 - [サンプルCookie・マスク](assets/CookieMasks/README_サンプルCookie.html)
 
 ## フォルダ構成
 
-- `R23/README.md`: GitHub上で読む最新版Markdownマニュアル
+- `R24/README.md`: GitHub上で読む最新版Markdownマニュアル
 - `docs/`: 最新版の複数ページHTMLマニュアル
 - `assets/`: マニュアル内で使用する画像・サンプルTexture
-- `archive/`: R22.4以前の旧版マニュアルと図解
+- `archive/`: R23以前の旧版マニュアルと図解
 
 ## 更新方針
 
 - `VRC_MirrorBallLight` の機能更新時は、関連するGitHub版とHTML版を同時に更新します。
-- `docs/` と `R23/` は現行版だけを扱います。
+- `docs/` と `R24/` は現行版だけを扱います。
 - 旧版は参照用として `archive/` に保存しますが、今後の本体リリースZIP／UnityPackageには同梱しません。

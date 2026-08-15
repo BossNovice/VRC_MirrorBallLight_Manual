@@ -1,6 +1,54 @@
-# VRC MirrorBallLight R23 GitHub版マニュアル
+# VRC MirrorBallLight R24 GitHub版マニュアル
 
 [HTML版マニュアル](../docs/index.html)
+
+## R24 ワールド用Shader拡張
+
+R24では受光面Shaderを、建築物、ガラス、金属、複雑なUVを持つモデルへ適用しやすい構成へ拡張しました。新機能は初期値OFFまたは従来相当値のため、R23 Materialを上書きしても基本表示は維持されます。
+
+| 機能 | Controller上の場所 | 主な用途 |
+|---|---|---|
+| 座標方式 | `8. 高度な投影・Sceneプレビュー` | UV、ワールド平面、オブジェクト平面、トライプラナー、球面を選択 |
+| 透過描画方式 | `5. 回転・反射・カラー` | プリマルチプライ、加算、ソフト加算、ディザ透過 |
+| 深度フェード | `5. 回転・反射・カラー` | ガラスと壁・床の交差境界を柔らかくする |
+| 環境光適応 | `8. 高度な投影・Sceneプレビュー` | Ambient／Light Probeに合わせて光点強度を補正 |
+| 材質反応 | 同上 | Smoothness、Metallic、Normalに応じて広がりと強度を変更 |
+| Fresnel | 同上 | 斜め視点で反射を強調し、光点を横方向へ伸ばす |
+| プリズム色分散 | 同上 | 光点輪郭へRGB分離を加える |
+| プロシージャル形状 | `7. 光点・形状・ランダム点灯` | 六角形、星、リング、ハートをTextureなしで使用 |
+| Keyword整理 | `10. 最適化・診断` | 数値分岐とTexture分岐を整理し、不要Keywordを自動除去 |
+| フォールバック | `8. 高度な投影`／本体Material | 未設定反射を発光色またはReflection Probeで補う |
+
+### 座標方式
+
+- `UV`: 従来どおりMesh UVを使用します。既存Material向けです。
+- `ワールド平面`: ワールドXZ座標で固定します。複数オブジェクト間で模様を連続させる用途に向きます。
+- `オブジェクト平面`: オブジェクトローカルXZ座標を使い、移動・回転へ追従します。
+- `トライプラナー`: XY／XZ／YZの3方向から合成し、柱や岩などUVが不均一なMeshの継ぎ目を抑えます。Texture参照が3倍になるため高品質設定です。
+- `ミラーボール球面`: ミラーボールから受光点へ向かう方向を球面UVへ変換します。
+
+座標方式はMaterial個別の `AudioLink反応マスク` と `発光パターンテクスチャ` に適用されます。`投影座標のスケール` と `投影座標のオフセット` で密度と位置を調整してください。
+
+### 透過描画と深度フェード
+
+- `プリマルチプライ`: ガラスの標準設定です。
+- `加算`: 黒背景を残さず発光だけを強く見せます。
+- `ソフト加算`: 明るい背景で白飛びしにくい加算表示です。
+- `ディザ透過`: Alpha Blendの重なり順問題を抑えます。深度書き込みは自動的にONになります。
+
+`深度フェードを使用` は透明Shaderだけで使用できます。交差フェード距離を大きくすると境界が広く柔らかくなります。Camera Depth Textureが利用できない描画環境では効果が限定される可能性があります。
+
+### 環境光・材質・Fresnel・色分散
+
+すべて初期値0で従来表示を維持します。最初は `環境光への適応量 0.3`、`材質反応の適用量 0.35`、`フレネル反射の強さ 0.25`、`プリズム色分散 0.05` 程度から調整してください。法線方向の影響を上げすぎると裏向きの面で光点が消えやすくなります。
+
+### プロシージャル形状
+
+`光点の形状` へ従来の四角、丸、ひし形、十字、Textureに加えて、六角形、星、リング、ハートを追加しました。追加4形状はShader内で生成されるためTextureやマスクは不要です。複数形状を同時表示する場合は、従来どおり[サンプル形状アトラス](../assets/ShapeAtlas/SampleShapeAtlas_4x2.png)を使用します。
+
+### フォールバック
+
+受光面では `フォールバック発光量` を0より大きくすると、Cookieや反射色の設定不足で主発光が弱い場合にも基本形状を表示できます。ミラーボール本体Shaderでは `Reflection Probeをフォールバックに使用` が初期ONで、指定Cubemapが黒または未設定の場合にProbeを参照します。Reflection Probeも利用できない場合は `反射がない場合の色／明るさ` が使われます。
 
 ## 必須環境
 
@@ -12,7 +60,7 @@
 ## 導入
 
 1. LTCGI・VRCLightVolumes連携を使用する場合は、両パッケージを先に導入します。
-2. `MirrorBallLightController_R23.unitypackage` を `Assets > Import Package > Custom Package` から開き、すべてImportします。
+2. `MirrorBallLightController_R24.unitypackage` を `Assets > Import Package > Custom Package` から開き、すべてImportします。
 3. UnityのC#・UdonSharpコンパイルが終わるまで待ちます。
 4. `Assets/MirrorBallLight/Prefabs/MirrorBallLight.prefab` をシーンへ配置します。
 5. Prefabに付属する `ReflectionSurface` Materialを壁・床・天井へ、`ReflectionSurfaceTransparent` Materialをガラスなどへ割り当てます。

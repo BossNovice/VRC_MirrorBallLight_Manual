@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>11 R24ワールドShader拡張 | R24</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="eyebrow">R24 WORLD SHADER</div>
+<h1>ワールド用Shader拡張</h1>
+<p class="lead">建築物、透明面、金属、複雑なUVへ反射光を安定して配置するR24機能をまとめます。</p>
+<nav class="nav">
+<a href="index.html">目次</a>
+<a href="04_effects.html">反射・光点</a>
+<a href="06_shapes_cookie.html">形状・Cookie</a>
+<a href="08_materials.html">Material</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a>
+<a aria-current="page" href="11_r24_world_shader.html">R24拡張</a>
+</nav>
+</div>
+</header>
+<main class="wrap">
+<section>
+<h2>既存Materialとの互換性</h2>
+<p>R24の追加演出は初期値OFFまたは従来相当値です。UV、プリマルチプライ、環境反応0、材質反応0、Fresnel 0、色分散0、フォールバック発光0が既定値です。</p>
+<div class="tip">更新直後は見た目を維持したまま、必要な機能だけ少しずつ有効化してください。</div>
+</section>
+
+<section id="coordinates">
+<h2>1. マスク・模様の座標方式</h2>
+<p>Controllerの「8. 高度な投影・Sceneプレビュー」で設定します。Material個別AudioLinkマスクと個別発光パターンの両方へ適用されます。</p>
+<table>
+<tr><th>方式</th><th>挙動</th><th>推奨用途</th></tr>
+<tr><td>UV</td><td>Mesh UVをそのまま使用</td><td>従来Material、壁、床</td></tr>
+<tr><td>ワールド平面</td><td>ワールドXZへ固定投影</td><td>複数Meshをまたぐ連続模様</td></tr>
+<tr><td>オブジェクト平面</td><td>ローカルXZへ投影</td><td>移動・回転する舞台装置</td></tr>
+<tr><td>トライプラナー</td><td>XY／XZ／YZを法線方向で合成</td><td>柱、岩、曲面、UVの歪んだMesh</td></tr>
+<tr><td>ミラーボール球面</td><td>ボールから受光点への方向を球面UV化</td><td>ボール中心と連動した模様</td></tr>
+</table>
+<p>投影座標のスケールを上げると模様が細かくなります。トライプラナー境界の鋭さを上げると各軸の切り替わりが明確になります。</p>
+<div class="warning">トライプラナーは対象Textureを3回参照します。多数の大面積Materialでは負荷を確認してください。</div>
+</section>
+
+<section id="transparency">
+<h2>4・5. 透過描画方式と深度フェード</h2>
+<table>
+<tr><th>透過描画方式</th><th>特徴</th><th>注意</th></tr>
+<tr><td>プリマルチプライ</td><td>色縁が暗くなりにくい標準ガラス</td><td>透明物同士の並び順制約は残ります</td></tr>
+<tr><td>加算</td><td>発光を強く重ねる</td><td>明るい背景では白飛びしやすくなります</td></tr>
+<tr><td>ソフト加算</td><td>背景輝度に応じて加算を抑える</td><td>物理的なガラスより演出向けです</td></tr>
+<tr><td>ディザ透過</td><td>画面上の点配置で半透明を表現</td><td>深度書き込みがONになり、粒状感が出ます</td></tr>
+</table>
+<p>深度フェードは透明面と壁・床が交差する部分へ適用します。「交差フェード距離」を大きくすると広い範囲で柔らかくなり、「交差部分の最低透明度」で完全消失を防げます。</p>
+<div class="note">Depth Textureが得られないカメラ・描画環境では深度フェードが限定的になる可能性があります。</div>
+</section>
+
+<section id="surface-response">
+<h2>6・7・8. 環境光・材質・Fresnel</h2>
+<table>
+<tr><th>項目</th><th>初期値</th><th>効果</th></tr>
+<tr><td>環境光への適応量</td><td>0</td><td>Ambient／Light Probeの明るさを反射光へ混合します。</td></tr>
+<tr><td>暗所での環境補正</td><td>0.65</td><td>暗い場所での倍率です。</td></tr>
+<tr><td>明所での環境補正</td><td>1.25</td><td>明るい場所での倍率です。</td></tr>
+<tr><td>環境光の検出感度</td><td>1</td><td>環境光を明所と判断する速さです。</td></tr>
+<tr><td>材質反応の適用量</td><td>0</td><td>Smoothness、Metallic、Normalによる変化を混合します。</td></tr>
+<tr><td>粗い面での広がり</td><td>0.35</td><td>粗い面ほど光点を広げます。</td></tr>
+<tr><td>金属面の強調</td><td>0.6</td><td>Metallicが高い面の反射を増やします。</td></tr>
+<tr><td>法線方向の影響</td><td>0.35</td><td>Normal Mapを含む面方向で強度を調整します。</td></tr>
+<tr><td>フレネル反射の強さ</td><td>0</td><td>斜め視点で光点を強くします。</td></tr>
+<tr><td>フレネル反射の範囲</td><td>4</td><td>大きいほど輪郭付近へ効果を絞ります。</td></tr>
+<tr><td>斜め視点での光点の伸び</td><td>0</td><td>斜めから見た光点を横方向へ伸ばします。</td></tr>
+</table>
+<p>開始例は環境光0.3、材質反応0.35、Fresnel 0.25です。効果を同時に最大へすると明るさ上限へ張り付きやすくなります。</p>
+</section>
+
+<section id="chromatic">
+<h2>9. プリズム色分散</h2>
+<p>光点の輪郭勾配を使ってRGBを分離します。0.03～0.08程度はガラスや金属のアクセント、0.15以上はライブ演出向けです。画面空間微分を使うため、遠距離では自動的に細い表現へ収束します。</p>
+</section>
+
+<section id="procedural">
+<h2>12. プロシージャル形状</h2>
+<table>
+<tr><th>形状</th><th>特徴</th></tr>
+<tr><td>六角形</td><td>壁・床へ幾何学的な反射を配置</td></tr>
+<tr><td>星</td><td>ステージ向けの鋭い光点</td></tr>
+<tr><td>リング</td><td>中心が抜けた柔らかな光輪</td></tr>
+<tr><td>ハート</td><td>イベント向けの装飾形状</td></tr>
+</table>
+<p>4形状はTexture不要です。複数種類を同時配置したい場合は<a href="../assets/ShapeAtlas/SampleShapeAtlas_4x2.png">サンプル形状アトラス</a>を使用してください。</p>
+</section>
+
+<section id="variants">
+<h2>18. Shader Keyword整理</h2>
+<p>R24ではランダム点滅、表面向き、距離減衰を数値分岐へ統合し、旧Keywordを診断機能で除去します。KeywordはAudioLink、Material個別Texture、透明Depth Fade、VRCLightVolumesなどTexture参照や描画構造が変わる機能へ限定しています。</p>
+<p>更新後に「Tools &gt; MirrorBall Light &gt; 診断・最適化」の安全な自動修正を一度実行してください。</p>
+</section>
+
+<section id="fallback">
+<h2>20. フォールバック表示</h2>
+<ul>
+<li>受光面：フォールバック発光色と発光量で、主反射が弱い場合の最低表示を指定します。</li>
+<li>本体：指定Cubemapが未設定または黒い場合、Reflection Probeを参照します。</li>
+<li>Reflection Probeもない場合：本体Materialの「反射がない場合の色／明るさ」を使います。</li>
+<li>AudioLinkがない場合：従来どおり音声値0として通常演出を継続します。</li>
+<li>形状TextureやCookieが未設定の場合：Shader既定の白Textureから基本形状を表示します。</li>
+</ul>
+<div class="tip">通常運用では受光面のフォールバック発光量を0のままにし、設定切り分け時だけ0.1～0.3へ上げる方法を推奨します。</div>
+</section>
+
+<section>
+<h2>サンプルTexture・マスク</h2>
+<p>R24の追加プロシージャル形状はTexture不要です。座標投影とフォールバック確認には、既存の<a href="../assets/CookieMasks/README_サンプルCookie.html">2D／Cubemap Cookie・マスク</a>と<a href="../assets/ShapeAtlas/SampleShapeAtlas_4x2.png">形状アトラス</a>を使用できます。</p>
+</section>
+</main>
+<footer><div class="wrap"><a href="10_optimization_troubleshooting.html">← 最適化・対処</a>　<a href="index.html">目次へ</a></div></footer>
+</body>
+</html>

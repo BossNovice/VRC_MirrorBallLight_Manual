@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>04 反射・光点 | R23</title>
+<title>04 反射・光点 | R24</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -116,6 +116,11 @@
 <td>1 / 0–1</td>
 <td>1で透過光点マスクが回転へ完全追従、0で固定寄りになります。</td>
 </tr>
+<tr><td>透過描画方式</td><td>プリマルチプライ</td><td>プリマルチプライ／加算／ソフト加算／ディザ透過を選択します。</td></tr>
+<tr><td>透過面の深度書き込み</td><td>OFF</td><td>重なり順を改善できますが、後方の透明物を隠す可能性があります。</td></tr>
+<tr><td>Alpha To Coverage</td><td>OFF</td><td>MSAA使用時の輪郭を滑らかにします。</td></tr>
+<tr><td>深度フェードを使用</td><td>OFF</td><td>透明面と他オブジェクトの交差境界を柔らかくします。</td></tr>
+<tr><td>交差フェード距離</td><td>0.15</td><td>交差部分から元の透明度へ戻る距離です。</td></tr>
 </tbody>
 </table>
 </section>
@@ -222,10 +227,10 @@
 <tr>
 <td>光点の形状</td>
 <td>四角</td>
-<td>四角／丸／ひし形／十字／テクスチャから選択します。</td>
+<td>四角／丸／ひし形／十字／テクスチャ／六角形／星／リング／ハートから選択します。</td>
 </tr>
 </table>
-<p>テクスチャとアトラスは<a href="06_shapes_cookie.html">形状・Cookieページ</a>で詳しく説明します。</p>
+<p>六角形、星、リング、ハートはTexture不要です。テクスチャとアトラスは<a href="06_shapes_cookie.html">形状・Cookieページ</a>、R24の表面機能は<a href="11_r24_world_shader.html">R24ワールドShader拡張</a>で説明します。</p>
 </section>
 <section id="blink">
 <h2>ランダム点灯・消灯と表面処理</h2>

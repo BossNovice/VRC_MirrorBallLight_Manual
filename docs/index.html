@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MirrorBallLightController R23 マニュアル</title>
+<title>MirrorBallLightController R24 マニュアル</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -11,9 +11,9 @@
 <div class="wrap">
 <div class="eyebrow">VRChat WORLD SYSTEM</div>
 <h1>MirrorBallLightController 完全マニュアル</h1>
-<p class="lead">R23 UnityPackage版の導入から、設定済みサンプル、Controller全項目、Shader、AudioLink、LTCGI・VRCLightVolumes、ライブプリセット、負荷対策までを日本語で説明します。</p>
-<span class="version">R23 / Unity 2022.3.22f1</span>
-<p><a href="../R23/README.md">GitHub版マニュアル</a></p>
+<p class="lead">R24 UnityPackage版の導入から、設定済みサンプル、ワールド表面Shader、AudioLink、LTCGI・VRCLightVolumes、ライブプリセット、負荷対策までを日本語で説明します。</p>
+<span class="version">R24 / Unity 2022.3.22f1</span>
+<p><a href="../R24/README.md">GitHub版マニュアル</a></p>
 <nav class="nav">
 <a aria-current="page" href="index.html">目次</a>
 <a href="01_installation.html">導入</a>
@@ -26,6 +26,7 @@
 <a href="08_materials.html">Material</a>
 <a href="09_integrations.html">連携</a>
 <a href="10_optimization_troubleshooting.html">最適化・対処</a>
+<a href="11_r24_world_shader.html">R24拡張</a>
 </nav>
 </div>
 </header>
@@ -86,6 +87,10 @@
 <strong>10 最適化・トラブル対処</strong>
 <span>推奨値、診断、表示されない時の確認順</span>
 </a>
+<a class="card" href="11_r24_world_shader.html">
+<strong>11 R24ワールドShader拡張</strong>
+<span>投影座標、透過方式、深度、環境・材質反応、Fresnel、フォールバック</span>
+</a>
 </div>
 </section>
 <section>
@@ -101,7 +106,7 @@
 <tr>
 <td>UnityPackage</td>
 <td>
-<code>Releases/MirrorBallLightController_R23.unitypackage</code>
+<code>Releases/MirrorBallLightController_R24.unitypackage</code>
 </td>
 </tr>
 <tr>
@@ -135,7 +140,7 @@
 </section>
 </main>
 <footer>
-<div class="wrap">MirrorBallLightController R23 HTML Manual — <a href="01_installation.html">導入を開始</a>
+<div class="wrap">MirrorBallLightController R24 HTML Manual — <a href="01_installation.html">導入を開始</a>
 </div>
 </footer>
 </body>

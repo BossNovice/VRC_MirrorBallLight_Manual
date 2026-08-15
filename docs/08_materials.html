@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>08 Material・Shader | R23</title>
+<title>08 Material・Shader | R24</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -149,6 +149,8 @@
 <td>面の描画</td>
 <td>Backは表面、Frontは裏面、Offは両面を描画します。ガラス板を両側から見る場合はOffを検討します。</td>
 </tr>
+<tr><td>透過描画方式</td><td>プリマルチプライ、加算、ソフト加算、ディザ透過を切り替えます。</td></tr>
+<tr><td>深度フェード</td><td>Camera Depth Textureを使って交差境界のAlphaとEmissionを弱めます。</td></tr>
 </table>
 <div class="warning">透明Shaderは描画順の制約があります。Particle、別のガラス、鏡などと重なる場合はRender QueueとZWriteをシーンごとに確認してください。</div>
 </section>
@@ -228,6 +230,8 @@
 <td>反射Cubemap（任意）／反射・スパークル色／Cubemap反射の強さ</td>
 <td>任意Cubemapの反射と、反射・きらめきのHDR色を調整します。</td>
 </tr>
+<tr><td>反射</td><td>Reflection Probeをフォールバックに使用</td><td>指定Cubemapが未設定または黒い場合にワールドのReflection Probeへ切り替えます。</td></tr>
+<tr><td>反射</td><td>反射がない場合の色／明るさ</td><td>Reflection Probeも利用できない場合の最低表示を指定します。</td></tr>
 <tr>
 <td>スパークル</td>
 <td>スパークルの強さ／スパークルの鋭さ／スパークルの明滅量／スパークルの明滅速度</td>
@@ -251,7 +255,7 @@
 <h2>Controller連動とMaterial直編集</h2>
 <ul>
 <li>Controllerの対象Materialへ登録したSurfaceは、色・明るさ・共通AudioLink・光点・Cookie・距離・Texture参照・共通Keywordを更新されます。</li>
-<li>Base Texture、Normal Map、基本色、金属感、滑らかさ、R23の個別AudioLinkマスクと個別発光パターンはMaterial側で設定します。</li>
+<li>Base Texture、Normal Map、基本色、金属感、滑らかさ、Material個別AudioLinkマスクと個別発光パターンはMaterial側で設定します。</li>
 <li>本体は「Controllerの色・電源・AudioLink設定と連動」がONの時だけ演出値が同期します。</li>
 <li>Edit Mode変更をAssetへ残すには「現在の設定をマテリアルへ反映・保存」を押します。</li>
 </ul>
