@@ -13,7 +13,8 @@ VRChat World向け `VRC_MirrorBallLight` のマニュアル専用リポジトリ
 
 - `R24/README.md`: GitHub上で読む最新版Markdownマニュアル
 - `docs/`: 最新版の複数ページHTMLマニュアル
-- `assets/`: マニュアル内で使用する画像・サンプルTexture
+- `assets/`: GitHub版マニュアルで使用する画像・サンプルTexture
+- `docs/assets/`: GitHub Pages版HTMLから参照する同一サンプルの公開用コピー
 - `archive/`: R23以前の旧版マニュアルと図解
 
 ## 更新方針
