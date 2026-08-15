@@ -6,6 +6,8 @@
 
 R24では受光面Shaderを、建築物、ガラス、金属、複雑なUVを持つモデルへ適用しやすい構成へ拡張しました。新機能は初期値OFFまたは従来相当値のため、R23 Materialを上書きしても基本表示は維持されます。
 
+UnityPackage／ZIPには、マニュアルリポジトリのサンプルと同内容のShape Atlas、2D Cookie、Cubemap Cross、調整用マスクを `Assets/MirrorBallLight/Samples/` 以下へ収録しています。Cubemapと2D TextureのImport設定も適用済みです。
+
 | 機能 | Controller上の場所 | 主な用途 |
 |---|---|---|
 | 座標方式 | `8. 高度な投影・Sceneプレビュー` | UV、ワールド平面、オブジェクト平面、トライプラナー、球面を選択 |
