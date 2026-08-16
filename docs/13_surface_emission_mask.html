@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>13 表面Emission・Mask | R25</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">13 / SURFACE EMISSION &amp; MASK</div>
+<h1>壁・床・ガラス本体を発光させる</h1>
+<p class="lead">ミラーボールの回転光点とは独立したEmissionとMaskを、各Materialへ設定します。</p>
+<nav class="nav">
+<a href="index.html">目次</a><a href="02_quickstart.html">サンプル</a><a href="04_effects.html">反射・光点</a>
+<a href="08_materials.html">Material</a><a href="10_optimization_troubleshooting.html">最適化・対処</a>
+<a href="12_material_translate.html">Material変換</a><a aria-current="page" href="13_surface_emission_mask.html">表面Emission</a>
+</nav>
+</div></header>
+<main class="wrap"><div class="layout">
+<aside class="toc"><strong>ページ内</strong><a href="#difference">機能の違い</a><a href="#steps">設定手順</a><a href="#parameters">全項目</a><a href="#wall">壁の例</a><a href="#glass">ガラスの例</a><a href="#translate">Translate</a><a href="#performance">負荷</a></aside>
+<article class="content">
+<section id="difference">
+<h2>反射光点との違い</h2>
+<table><tr><th>機能</th><th>発光するもの</th><th>制御元</th></tr>
+<tr><td>ミラーボール反射光</td><td>回転・点滅する光点</td><td>Controllerとライブプリセット</td></tr>
+<tr><td>R23 個別発光パターン</td><td>反射光点の色・形をMaterialごとに変化</td><td>Material固有</td></tr>
+<tr><td>R25 表面Emission</td><td>壁紙、看板、床、ガラス自体の模様</td><td>Material固有</td></tr></table>
+<p>R25表面EmissionはControllerの電源をOFFにしても表示されます。常設看板や発光ガラスなど、素材自身の発光に使用してください。</p>
+</section>
+<section id="steps">
+<h2>設定手順</h2>
+<ol>
+<li>壁・床には <code>MirrorBallLight/MirrorBallSurfaceAuto</code>、ガラスには <code>MirrorBallLight/MirrorBallSurfaceAutoTransparent</code> を割り当てます。照明連携版にも同じ項目があります。</li>
+<li>Material Inspectorの見出し <code>Surface Emission Mask</code>（表面Emission・マスク）で <strong>表面Emissionを使用</strong> をONにします。</li>
+<li><strong>表面Emissionテクスチャ</strong>、HDRの<strong>表面Emissionカラー</strong>、<strong>表面Emissionの強さ</strong>を設定します。</li>
+<li>発光場所を絞る場合は<strong>表面Emissionマスクを使用</strong>をONにし、白黒Textureを割り当てます。</li>
+<li><code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code>を開き、「安全に自動修正」を実行してからVRChatへBuildします。</li>
+</ol>
+<div class="tip">単色発光だけならEmission Textureは初期の白のままで、HDRカラーと強さだけを調整できます。</div>
+</section>
+<section id="parameters">
+<h2>R25項目一覧</h2>
+<table><tr><th>Unity表示</th><th>初期値</th><th>効果</th></tr>
+<tr><td>表面Emissionを使用</td><td>OFF</td><td>表面発光と追加Texture読込を有効化します。</td></tr>
+<tr><td>表面Emissionテクスチャ</td><td>白</td><td>RGBを発光色として読み取ります。Tiling／Offsetを使用できます。</td></tr>
+<tr><td>表面Emissionカラー</td><td>白</td><td>Textureへ乗算するHDR色です。</td></tr>
+<tr><td>表面Emissionの強さ</td><td>1</td><td>0～20の発光倍率。Bloomを見ながら調整します。</td></tr>
+<tr><td>表面Emissionマスクを使用</td><td>OFF</td><td>専用の白黒Maskを有効化します。</td></tr>
+<tr><td>表面Emissionマスク</td><td>白</td><td>白が発光、黒が非発光です。Emission Textureとは別のTiling／Offsetを使用できます。</td></tr>
+<tr><td>表面Emissionマスクの強さ</td><td>1</td><td>0はMaskなし、0.5は半分、1は完全適用です。</td></tr>
+<tr><td>表面Emissionマスクを反転</td><td>OFF</td><td>白と黒の役割を反転します。</td></tr></table>
+</section>
+<section id="wall"><h2>通常の壁・床の推奨開始値</h2>
+<ul><li>表面Emissionカラー: HDR白または目的色</li><li>表面Emissionの強さ: 0.5～2</li><li>Mask強さ: 1</li></ul>
+<p>壁全体を強く発光させるとミラーボール光点との明暗差が減ります。背景発光は控えめにし、光点のReflection Intensityを上にする設定から始めます。</p>
+<p>Mask例: <a href="assets/CookieMasks/2D_Grayscale_WaveBands_2048x1024.png">グレースケール波形Mask</a></p>
+</section>
+<section id="glass"><h2>ガラス・半透明面の推奨開始値</h2>
+<ul><li>透明度: 0.05～0.3</li><li>表面Emissionの強さ: 0.2～1.5</li><li>透過描画方式: まずプリマルチプライ</li></ul>
+<p>透明Shaderでは表面Emissionも深度フェードへ追従します。交差部だけ発光が弱い場合は「深度フェードを使用」をOFFにして原因を切り分けてください。描画順の問題がある場合はRender QueueとZWriteも確認します。</p>
+</section>
+<section id="translate"><h2>既存MaterialからのTranslate</h2>
+<p>Standardなど一般的なShaderのEmission Map、Emission Color、Emission強度、Emission Mask候補をR25項目へ引き継ぎます。元MaterialでEmission KeywordがON、または明示的な有効設定がある場合に表面EmissionをONにします。</p>
+<div class="warning">Poiyomi／lilToonなどの複数Emissionレイヤー、スクロールや点滅、Packed Mask、独自Blendは1組のR25表面Emissionへ完全変換できない可能性があります。Translate Copyを使い、元Materialを残して比較してください。</div>
+</section>
+<section id="performance"><h2>負荷とVRChat Build</h2>
+<p>表面EmissionがOFFのMaterialではローカルShader Keywordにより追加Textureサンプリングを除外します。ONではEmission Textureを1回、MaskもONならさらに1回読みます。同じ設定を使う面はMaterialを共有すると管理しやすくなります。</p>
+<p>VRChatで反映されない場合は、Materialの <code>表面Emissionを使用</code> がONであること、診断で <code>_MB_SURFACE_EMISSION</code> が同期されていること、使用MaterialがBuild対象Sceneから参照されていることを確認してください。</p>
+</section>
+</article></div></main>
+<footer><div class="wrap"><a href="12_material_translate.html">← Material変換</a>　<a href="index.html">目次へ</a></div></footer>
+</body></html>

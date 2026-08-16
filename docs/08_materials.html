@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>08 Material・Shader | R24</title>
+<title>08 Material・Shader | R25</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -35,6 +35,7 @@
 <a href="#surface">壁・床</a>
 <a href="#transparent">透明面</a>
 <a href="#individual-pattern">個別発光設定</a>
+<a href="#surface-emission">表面Emission</a>
 <a href="#facet">本体</a>
 <a href="#controller">上書き範囲</a>
 </aside>
@@ -173,6 +174,19 @@
 </table>
 <p>透明Shaderでは個別発光パターンがEmissionだけでなく反射光部分のAlphaにも反映されるため、消灯箇所だけが透明になります。ガラス本体の基礎透明度には影響しません。</p>
 <div class="note">個別マスクと発光パターンはミラーボール反射部分だけへ適用されます。LTCGIやVRCLightVolumesから受ける環境照明そのものはマスクしません。</div>
+</section>
+<section id="surface-emission">
+<h2>R25 壁・ガラス表面Emission／Mask</h2>
+<p>4種類のSurface Shaderすべてで、回転する反射光とは独立した表面発光をMaterialごとに設定できます。Controllerやライブプリセットからは上書きされません。</p>
+<table>
+<tr><th>Material項目</th><th>効果</th></tr>
+<tr><td>表面Emissionを使用</td><td>追加の表面発光をONにします。OFF時は追加Textureを読みません。</td></tr>
+<tr><td>表面Emissionテクスチャ</td><td>壁紙、看板、ガラス模様などの発光RGBを指定します。</td></tr>
+<tr><td>表面Emissionカラー／強さ</td><td>HDR色と0～20の倍率を乗算します。</td></tr>
+<tr><td>表面Emissionマスクを使用</td><td>白＝発光、黒＝非発光の専用Maskを有効化します。</td></tr>
+<tr><td>Maskの強さ／反転</td><td>Mask適用量と白黒反転を調整します。</td></tr>
+</table>
+<p><a href="13_surface_emission_mask.html">設定例、ガラスでの注意、Translate範囲を含むR25詳細ページへ</a></p>
 </section>
 <section id="facet">
 <h2>MirrorBallFacetBody</h2>
