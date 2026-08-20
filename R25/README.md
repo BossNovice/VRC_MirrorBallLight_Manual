@@ -1,4 +1,4 @@
-# VRC MirrorBallLight R25 GitHub版マニュアル
+# VRC MirrorBallLight R25.1 GitHub版マニュアル
 
 [HTML版マニュアル](../docs/index.html)
 
@@ -11,6 +11,21 @@ R25では、回転するミラーボール反射光とは別に、壁・床・�
 3. `表面Emissionカラー` でHDR色、`表面Emissionの強さ` で明るさを調整します。
 4. 発光領域を限定する場合は `表面Emissionマスクを使用` をONにし、白黒Maskを割り当てます。白が発光、黒が非発光です。
 5. `表面Emissionマスクの強さ` は0でMaskなし、1で完全適用です。`表面Emissionマスクを反転` で白黒を入れ替えられます。
+
+### R25.1 表面Emission専用AudioLink
+
+Material Inspectorの `2. 表面Emission・AudioLink` を開き、`表面EmissionをAudioLink連動` をONにします。これは反射光点側のAudioLinkとは独立したMaterial固有設定です。
+
+- `表面Emissionの反応帯域`: 0=低音、1=低中音、2=中高音、3=高音
+- `無音時の表面Emission明るさ`: 音がない時に残す倍率。完全消灯は0
+- `音による表面Emission増加`: 選択帯域に反応して加える明るさ
+- `表面Emission反応しきい値`: 小さな音を無視する境界
+- `表面Emission AudioLinkパターン`: 音で明るくなる場所を指定するTexture
+- `AudioLinkパターンの適用量／反転／スクロール速度`: パターンの効き方と移動
+
+付属の `Samples/CookieMasks/2D_Grayscale_WaveBands_2048x1024.png` を反応パターンの開始例として使用できます。白い領域ほど音への反応が強くなります。使わないMaterialでは専用KeywordがOFFになり、追加Texture参照はコンパイル対象から除外されます。
+
+R25.1ではMaterial Inspectorを用途別の日本語折り畳みへ整理しました。Controller Inspectorも初期状態では基本設定だけを開き、必要な演出項目を個別に展開する構成です。
 
 Emission TextureとMaskは、それぞれ独立したTiling／Offsetを使用できます。透明Shaderではガラスの透明度と深度フェードへ追従し、壁用Shaderでは不透明な表面発光として加算されます。Controllerへ対象Materialを登録しても、このR25設定はMaterial固有値として維持されます。
 
@@ -90,7 +105,7 @@ UnityPackage／ZIPには、マニュアルリポジトリのサンプルと同�
 ## 導入
 
 1. LTCGI・VRCLightVolumes連携を使用する場合は、両パッケージを先に導入します。
-2. `MirrorBallLightController_R25.unitypackage` を `Assets > Import Package > Custom Package` から開き、すべてImportします。
+2. `MirrorBallLightController_R25.1.unitypackage` を `Assets > Import Package > Custom Package` から開き、すべてImportします。
 3. UnityのC#・UdonSharpコンパイルが終わるまで待ちます。
 4. `Assets/MirrorBallLight/Prefabs/MirrorBallLight.prefab` をシーンへ配置します。
 5. Prefabに付属する `ReflectionSurface` Materialを壁・床・天井へ、`ReflectionSurfaceTransparent` Materialをガラスなどへ割り当てます。
@@ -405,7 +420,9 @@ R23では、同じControllerに登録した壁・床・ガラスでも、各Mate
 - `MirrorBallLight/Integrations/MirrorBallSurfaceAuto (VRCLightVolumes + LTCGI)`
 - `MirrorBallLight/Integrations/MirrorBallSurfaceAutoTransparent (VRCLightVolumes + LTCGI)`
 
-使用前にVCCまたは各公式VPMから `VRC Light Volumes 2.x` と `LTCGI` をプロジェクトへ追加してください。連携版Shaderは両パッケージの公式includeを参照するため、どちらかが未導入だと連携版Shaderだけがコンパイルエラーになります。未導入環境では従来の通常版Shaderを使用してください。
+使用前にVCCまたは各公式VPMから互換性のある組み合わせを追加してください。安定版の `VRC Light Volumes 2.x` には `LTCGI 1.7.2`、`VRCLightVolumes 3.0.0-dev.14以降` には `LTCGI 1.7.3以降` を使用します。VRCLV 3.0.0-dev.12／dev.13はLTCGI非互換です。連携版Shaderは両パッケージの公式includeを参照するため、未導入または非互換の組み合わせでは連携版だけがコンパイルエラーになります。
+
+`LTCGI 1.7.2 + VRCLV 2.x` または `LTCGI 1.7.3以降 + VRCLV 3.0.0-dev.14以降` のどちらかへ揃えてください。LTCGIのバージョン番号とVRCLVのメジャーバージョンを混同しないよう注意してください。
 
 1. VRCLightVolumesのLight Volume Setupと必要なVolumeをシーンへ配置し、Bakeします。
 2. LTCGI ControllerとArea LightまたはScreenを公式手順に従って配置し、LTCGIデータを更新します。

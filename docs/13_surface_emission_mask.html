@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>13 表面Emission・Mask | R25</title>
+<title>13 表面Emission・AudioLink・Mask | R25.1</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
 <header><div class="wrap">
 <div class="eyebrow">13 / SURFACE EMISSION &amp; MASK</div>
 <h1>壁・床・ガラス本体を発光させる</h1>
-<p class="lead">ミラーボールの回転光点とは独立したEmissionとMaskを、各Materialへ設定します。</p>
+<p class="lead">ミラーボールの回転光点とは独立したEmission、AudioLink帯域・反応パターン、Maskを各Materialへ設定します。</p>
 <nav class="nav">
 <a href="index.html">目次</a><a href="02_quickstart.html">サンプル</a><a href="04_effects.html">反射・光点</a>
 <a href="08_materials.html">Material</a><a href="10_optimization_troubleshooting.html">最適化・対処</a>
@@ -18,7 +18,7 @@
 </nav>
 </div></header>
 <main class="wrap"><div class="layout">
-<aside class="toc"><strong>ページ内</strong><a href="#difference">機能の違い</a><a href="#steps">設定手順</a><a href="#parameters">全項目</a><a href="#wall">壁の例</a><a href="#glass">ガラスの例</a><a href="#translate">Translate</a><a href="#performance">負荷</a></aside>
+<aside class="toc"><strong>ページ内</strong><a href="#difference">機能の違い</a><a href="#steps">設定手順</a><a href="#audiolink">AudioLink</a><a href="#parameters">全項目</a><a href="#wall">壁の例</a><a href="#glass">ガラスの例</a><a href="#translate">Translate</a><a href="#performance">負荷</a></aside>
 <article class="content">
 <section id="difference">
 <h2>反射光点との違い</h2>
@@ -32,12 +32,23 @@
 <h2>設定手順</h2>
 <ol>
 <li>壁・床には <code>MirrorBallLight/MirrorBallSurfaceAuto</code>、ガラスには <code>MirrorBallLight/MirrorBallSurfaceAutoTransparent</code> を割り当てます。照明連携版にも同じ項目があります。</li>
-<li>Material Inspectorの見出し <code>Surface Emission Mask</code>（表面Emission・マスク）で <strong>表面Emissionを使用</strong> をONにします。</li>
+<li>Material Inspectorの <code>2. 表面Emission・AudioLink</code> を開き、<strong>表面Emissionを使用</strong> をONにします。</li>
 <li><strong>表面Emissionテクスチャ</strong>、HDRの<strong>表面Emissionカラー</strong>、<strong>表面Emissionの強さ</strong>を設定します。</li>
 <li>発光場所を絞る場合は<strong>表面Emissionマスクを使用</strong>をONにし、白黒Textureを割り当てます。</li>
 <li><code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code>を開き、「安全に自動修正」を実行してからVRChatへBuildします。</li>
 </ol>
 <div class="tip">単色発光だけならEmission Textureは初期の白のままで、HDRカラーと強さだけを調整できます。</div>
+</section>
+<section id="audiolink">
+<h2>表面Emission専用AudioLink</h2>
+<ol>
+<li><strong>表面EmissionをAudioLink連動</strong>をONにします。</li>
+<li><strong>表面Emissionの反応帯域</strong>を0（低音）～3（高音）から選びます。</li>
+<li><strong>無音時の表面Emission明るさ</strong>を0.1～0.3、<strong>音による表面Emission増加</strong>を1～3から調整します。</li>
+<li>場所ごとに反応を変える場合は<strong>表面Emission AudioLinkパターン</strong>へ白黒Textureを設定します。付属の<a href="assets/CookieMasks/2D_Grayscale_WaveBands_2048x1024.png">波形パターン</a>を試せます。</li>
+<li>必要に応じて適用量、反転、スクロール速度を設定します。</li>
+</ol>
+<div class="note">反射光点の「AudioLinkを使用」がOFFでも、この専用ToggleがONなら表面Emissionだけを音へ反応させられます。共通のAudioLinkテストモード／テスト音量も利用できます。</div>
 </section>
 <section id="parameters">
 <h2>R25項目一覧</h2>
@@ -50,6 +61,16 @@
 <tr><td>表面Emissionマスク</td><td>白</td><td>白が発光、黒が非発光です。Emission Textureとは別のTiling／Offsetを使用できます。</td></tr>
 <tr><td>表面Emissionマスクの強さ</td><td>1</td><td>0はMaskなし、0.5は半分、1は完全適用です。</td></tr>
 <tr><td>表面Emissionマスクを反転</td><td>OFF</td><td>白と黒の役割を反転します。</td></tr></table>
+<table><tr><th>Unity表示</th><th>初期値</th><th>効果</th></tr>
+<tr><td>表面EmissionをAudioLink連動</td><td>OFF</td><td>Material固有のAudioLink反応を有効化します。</td></tr>
+<tr><td>表面Emissionの反応帯域</td><td>0</td><td>0=低音、1=低中音、2=中高音、3=高音です。</td></tr>
+<tr><td>無音時の表面Emission明るさ</td><td>0.25</td><td>無音時に残す発光倍率です。0で音がない時は消灯します。</td></tr>
+<tr><td>音による表面Emission増加</td><td>2</td><td>選択帯域の入力に掛ける明るさです。</td></tr>
+<tr><td>表面Emission反応しきい値</td><td>0.05</td><td>小さな入力を無視します。</td></tr>
+<tr><td>表面Emission AudioLinkパターン</td><td>白</td><td>白い場所ほど音へ強く反応します。</td></tr>
+<tr><td>AudioLinkパターンの適用量</td><td>1</td><td>0で均一反応、1でTextureを完全適用します。</td></tr>
+<tr><td>AudioLinkパターンを反転</td><td>OFF</td><td>反応する場所を反転します。</td></tr>
+<tr><td>AudioLinkパターンのスクロール速度</td><td>0,0</td><td>パターンを時間で移動します。</td></tr></table>
 </section>
 <section id="wall"><h2>通常の壁・床の推奨開始値</h2>
 <ul><li>表面Emissionカラー: HDR白または目的色</li><li>表面Emissionの強さ: 0.5～2</li><li>Mask強さ: 1</li></ul>
@@ -65,7 +86,7 @@
 <div class="warning">Poiyomi／lilToonなどの複数Emissionレイヤー、スクロールや点滅、Packed Mask、独自Blendは1組のR25表面Emissionへ完全変換できない可能性があります。Translate Copyを使い、元Materialを残して比較してください。</div>
 </section>
 <section id="performance"><h2>負荷とVRChat Build</h2>
-<p>表面EmissionがOFFのMaterialではローカルShader Keywordにより追加Textureサンプリングを除外します。ONではEmission Textureを1回、MaskもONならさらに1回読みます。同じ設定を使う面はMaterialを共有すると管理しやすくなります。</p>
+<p>表面EmissionがOFFのMaterialではローカルShader Keywordにより追加Textureサンプリングを除外します。ONではEmission Textureを1回、MaskもONならさらに1回読みます。専用AudioLinkがONの場合だけAudioLink Textureと反応パターンを追加で読みます。</p>
 <p>VRChatで反映されない場合は、Materialの <code>表面Emissionを使用</code> がONであること、診断で <code>_MB_SURFACE_EMISSION</code> が同期されていること、使用MaterialがBuild対象Sceneから参照されていることを確認してください。</p>
 </section>
 </article></div></main>

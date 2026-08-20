@@ -1,6 +1,6 @@
 # VRC MirrorBallLight Manual
 
-VRChat World向け `VRC_MirrorBallLight` のマニュアル専用リポジトリです。現在の対応バージョンは **R25** です。
+VRChat World向け `VRC_MirrorBallLight` のマニュアル専用リポジトリです。現在の対応バージョンは **R25.1** です。
 
 ## 現行マニュアル
 
