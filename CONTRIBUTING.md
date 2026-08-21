@@ -27,6 +27,16 @@ hotfix/YYYYMMDD-NN   緊急修正のみ
 - マージ後はブランチを削除する（自動削除を有効化済み）
 - `main` へ直接pushせず、必ずPRを経由する
 
+### mainの保護
+
+このリポジトリはpublicのため、GitHubのruleset（`main protection`）で保護しています。
+`main` への直接pushはサーバー側で拒否されます（`GH013: Changes must be made through a pull request.`）。
+併せて、`main` の削除と強制pushも禁止しています。レビュー承認は必須にしていません（1人開発のため）。
+
+本体リポジトリはFreeプランのprivateリポジトリでこの機能が使えないため、
+手元のGit hookとpush検知ワークフローで代替しています。保護の強さがリポジトリごとに
+異なるのはこの制約によるものです。詳細は本体リポジトリの `.ci/README.md` を参照してください。
+
 ## フォルダ構成のルール
 
 - 現行版マニュアルは `R<バージョン>/README.md`（例: `R27.2/README.md`）
