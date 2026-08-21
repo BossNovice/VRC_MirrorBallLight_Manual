@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>09 LTCGI・VRCLightVolumes | R25</title>
+<title>09 LTCGI・VRCLightVolumes | R26.1</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -40,6 +40,7 @@
 <article class="content">
 <section id="mode">
 <h2>通常版と連携版</h2>
+<div class="warning"><strong>バージョンを組で揃えてください。</strong> VRCLightVolumes 2.xにはLTCGI 1.7.2、VRCLV 3.0.0-dev.14以降にはLTCGI 1.7.3以降を使用します。VRCLV 3.0.0-dev.12／dev.13はLTCGI非互換です。</div>
 <table>
 <tr>
 <th>モード</th>
@@ -74,6 +75,8 @@
 <li>9番の「すべてON」を押し、設定を保存します。</li>
 </ol>
 <div class="note">「VRCLightVolumes用オブジェクト」はMaterialのToggleとは別で、アバター向けDynamic Volume等のGameObjectを電源連動させる参照です。</div>
+<h3>R25.2 ワールド法線の反映</h3>
+<p>VRCLightVolumes 3.x環境では、<code>LightVolumeSH</code>へワールド法線を渡すようになり、法線方向に応じたライト・シャドウ評価が通常面・透過面・本体ファセットへ反映されます。曲面や斜面での陰影がより自然になりますが、Material設定や導入手順に変更はありません。VRCLightVolumes 2.x環境では従来の5引数APIのまま動作するため、導入側で意識する必要はありません。</p>
 </section>
 <section id="ltcgi">
 <h2>LTCGI</h2>

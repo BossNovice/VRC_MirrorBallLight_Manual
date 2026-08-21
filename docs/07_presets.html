@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>07 ライブプリセット | R25</title>
+<title>07 ライブプリセット | R27.2</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -94,6 +94,40 @@
 <li>必要数だけ繰り返し、「一覧を子から自動検出」で配列を整理します。</li>
 <li>「選択番号をプレビュー適用」でEdit Modeの見た目を確認します。</li>
 </ol>
+<h3>演出プリセット（R27.2）</h3>
+<p>「演出プリセットを追加（Slow Drift／Club Pulse／Jump A〜C）」を押すと、シードフェードを使った既製の演出セットが子GameObjectとして5つ作成されます。現在のController設定を土台に、演出ごとに異なる値だけを差し替えるため、色や明るさなど作り込んだ設定はそのまま引き継がれます。追加Assetは同梱されません。</p>
+<table>
+<thead>
+<tr>
+<th>プリセット</th>
+<th>動作</th>
+<th>Atlasシード周期</th>
+<th>本体シード周期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Slow Drift</td>
+<td>穏やかに変化し続ける</td>
+<td>67秒</td>
+<td>19秒</td>
+</tr>
+<tr>
+<td>Club Pulse</td>
+<td>短周期で派手に切り替わる</td>
+<td>8秒</td>
+<td>3秒</td>
+</tr>
+<tr>
+<td>Jump A／B／C</td>
+<td>自動フェードなし。プリセット切替で絵柄が変わる</td>
+<td>―</td>
+<td>―</td>
+</tr>
+</tbody>
+</table>
+<div class="note">Slow DriftとClub Pulseは周期を整数比にしていません。67秒と19秒のように揃わない値にすることで、壁の光点と本体の鏡片が同時に模様替えして見える反復感を避けています。</div>
+<p>Jump A〜Cは自動フェードを使わず、固定シードの値だけが異なるプリセットです。<code>NextPreset</code>などで切り替えると絵柄が変わり、遷移自体はプリセットのクロスフェードが滑らかにします。追加時にクロスフェード時間を1.5秒以上、曲線を「滑らか」へ寄せるのはこのためです。</p>
 </section>
 <section id="preset">
 <h2>Presetに保存される項目</h2>
@@ -127,11 +161,16 @@
 <td>タイル数、サイズ、ぼかし、比率、形状、単一Texture、アトラス設定、点灯割合、切替、明滅</td>
 </tr>
 <tr>
+<td>シード</td>
+<td>光点形状Atlasのシード・自動フェード・周期。本体ファセットのシード設定は「本体シード設定をこのプリセットで指定」がONのPresetのみ</td>
+</tr>
+<tr>
 <td>距離</td>
 <td>フェード開始／終了、減衰曲線</td>
 </tr>
 </tbody>
 </table>
+<div class="note">R27.2より前に作成したPresetには本体ファセットのシード設定を保存する項目自体がありません。そのPresetへ切り替えても本体シード設定はControllerの現在値が維持されます（意図しない上書きを避けるための仕様）。持たせたい場合は対象番号を選び「現在値を選択プリセットへ保存」を押してください。保存時に自動でONになります。</div>
 </section>
 <section id="events">
 <h2>実行中の切替イベント</h2>

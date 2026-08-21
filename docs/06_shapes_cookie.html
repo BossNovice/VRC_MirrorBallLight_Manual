@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>06 形状・Cookie | R25</title>
+<title>06 形状・Cookie | R26.1</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -106,7 +106,18 @@
 <td>0</td>
 <td>同じアトラスの配置パターンを変更します。</td>
 </tr>
+<tr>
+<td>シードを自動フェード</td>
+<td>OFF</td>
+<td>ONにすると、下の周期ごとに新しいシードへ滑らかにクロスフェードします。</td>
+</tr>
+<tr>
+<td>シード変化の周期（秒）</td>
+<td>20 / 1–300</td>
+<td>次のシードへ完全に切り替わるまでの秒数です。サーバー時刻基準のため全員が同じタイミングで切り替わります。</td>
+</tr>
 </table>
+<div class="note">シード値自体を補間すると配置がチラつくため、内部では旧シードと新シードそれぞれのアトラス表示をサンプリングしてブレンドしています。R26.1では静止状態でも設定済みのマテリアル更新頻度でフェードが継続し、透明背景AtlasもMask値を正しく補間します。設定後は「現在の設定をマテリアルへ反映・保存」を押してください。OFF時は追加のTextureサンプリングは発生しません。</div>
 <h3>付属サンプル</h3>
 <p>
 <a href="assets/ShapeAtlas/SampleShapeAtlas_4x2.png">SampleShapeAtlas_4x2.png</a>をUnityプロジェクトのAssets配下へ保存して設定し、横4・縦2・使用数8にします。</p>
