@@ -1,0 +1,24 @@
+# HTMLマニュアルのバージョン表記とリンクを検証します。
+#
+# バージョン表記が全14ページへ散らばっていた結果、R25〜R27.2までばらばらにドリフトしました。
+# 現在は docs/index.html の1箇所だけを正としており、そこから外れたら気づけるようにしています。
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-docs:
+    name: バージョン表記とリンクの検証
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: HTMLマニュアルを検証
+        shell: pwsh
+        run: ./.ci/Validate-Docs.ps1
