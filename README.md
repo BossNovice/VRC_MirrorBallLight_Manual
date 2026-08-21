@@ -16,6 +16,7 @@ VRChat World向け `VRC_MirrorBallLight` のマニュアル専用リポジトリ
 - `assets/`: GitHub版マニュアルで使用する画像・サンプルTexture
 - `docs/assets/`: GitHub Pages版HTMLから参照する同一サンプルの公開用コピー
 - `archive/`: R27以前の旧版マニュアルと図解
+- `R25/README.md`: 配布済みUnityPackage内のリンク互換用の移転案内。中身は最新版とアーカイブへの誘導だけです
 
 ## 更新方針
 
