@@ -41,6 +41,8 @@
 <section id="mode">
 <h2>通常版と連携版</h2>
 <div class="warning"><strong>バージョンを組で揃えてください。</strong> VRCLightVolumes 2.xにはLTCGI 1.7.2、VRCLV 3.0.0-dev.14以降にはLTCGI 1.7.3以降を使用します。VRCLV 3.0.0-dev.12／dev.13はLTCGI非互換です。</div>
+<div class="warning"><strong>MirrorBallLightより先に導入してください。</strong> 連携版Shaderは <code>Packages/red.sim.lightvolumes/Shaders/LightVolumes.cginc</code> と <code>Packages/at.pimaker.ltcgi/Shaders/LTCGI_structs.cginc</code> を直接includeするため、後から導入するとImport時にShaderのコンパイルエラーが出ます。</div>
+<div class="tip">R27.6.2以降、<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> が最初の行で依存Packageの有無とバージョンを表示します。未導入の場合は原因と対処も表示します。</div>
 <table>
 <tr>
 <th>モード</th>

@@ -265,6 +265,26 @@
 </table>
 <div class="tip">本体が黒い場合は、基本色、暗所での最低表示明るさ、目地の太さ、Cubemap、Controllerの電源・本体明るさ倍率の順で確認します。</div>
 </section>
+<section id="keyword-migration">
+<h2>R27.6で廃止したShader Keyword</h2>
+<p>R27.6では、Importにかかる時間を約12分から約1.5分へ短縮しました。Shader Keywordの本数がImport時間を大きく左右するため、軽い機能のKeywordを実行時の切り替えへ移しています。</p>
+<div class="note"><b>Materialの設定と描画結果は変わりません。</b> Inspectorの操作方法も同じです。移行が必要なのは、下表のKeywordを<b>アニメーションクリップやスクリプトから直接操作していた場合だけ</b>です。</div>
+<table>
+<tr><th>廃止したKeyword</th><th>移行先のプロパティ</th><th>Inspectorでの項目</th></tr>
+<tr><td><code>_MB_DEPTH_FADE</code></td><td><code>_UseDepthFade</code></td><td>深度フェードを使用</td></tr>
+<tr><td><code>_MB_MATERIAL_AUDIO_MASK</code></td><td><code>_UseMaterialAudioMask</code></td><td>個別AudioLinkマスクを使用</td></tr>
+<tr><td><code>_MB_SURFACE_EMISSION_AUDIOLINK</code></td><td><code>_UseSurfaceEmissionAudioLink</code></td><td>表面EmissionをAudioLink連動</td></tr>
+<tr><td><code>_MB_ATLAS_SEED_FADE</code></td><td>なし（Controllerの設定が決めます）</td><td>—</td></tr>
+<tr><td><code>_MB_FACET_SEED_FADE</code></td><td>なし（同上）</td><td>—</td></tr>
+</table>
+<h3>アニメーションからの移行手順</h3>
+<ol>
+<li>該当のアニメーションクリップを開き、Materialの Keyword を切り替えているカーブを探します。</li>
+<li>そのカーブを削除し、代わりに上表の移行先プロパティを 0（OFF）または 1（ON）で操作するカーブへ置き換えます。</li>
+<li>シードの自動フェード2種はControllerの設定が決めるため、Material側での切り替え対象ではありません。Controllerの項目を操作してください。</li>
+</ol>
+<div class="tip">Materialに残っている廃止Keywordは、<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> の「安全に自動修正」で削除できます。Keywordと設定値が食い違っている場合は、どちらの状態で動作するかも表示します。自動修正が演出設定そのものを書き換えることはありません。</div>
+</section>
 <section id="controller">
 <h2>Controller連動とMaterial直編集</h2>
 <ul>

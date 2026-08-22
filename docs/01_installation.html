@@ -50,7 +50,8 @@
 <td>AudioLink、LTCGI、VRC Light Volumes。使用する機能だけ導入します。</td>
 </tr>
 </table>
-<div class="warning">LTCGI・VRCLightVolumes連携Materialを使う場合は、該当パッケージをMirrorBallLightより先に導入してください。通常版のみなら不要です。</div>
+<div class="warning"><b>LTCGI・VRCLightVolumes連携Materialを使う場合は、該当パッケージをMirrorBallLightより先に導入してください。</b> 連携版Shaderはこの2つのPackageのファイルを直接includeするため、後から導入するとImport時にShaderのコンパイルエラーが出ます。通常版のみなら不要です。</div>
+<div class="note">Importにかかる時間の大半はShaderのコンパイルです。新規プロジェクトへの初回Importは実測で約128秒（R27.5以前は約810秒）でした。2回目以降のUnity起動は10数秒です。時間は環境によって変わります。</div>
 </section>
 <section id="import">
 <h2>Import手順</h2>
