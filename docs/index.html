@@ -12,7 +12,7 @@
 <div class="eyebrow">VRChat WORLD SYSTEM</div>
 <h1>MirrorBallLightController 完全マニュアル</h1>
 <p class="lead">UnityPackage版の導入から、設定済みサンプル、壁・ガラス表面Emission／AudioLink／Mask、LTCGI・VRCLightVolumes、ライブプリセット、負荷対策までを日本語で説明します。</p>
-<span class="version">対象バージョン R27.3 / Unity 2022.3.22f1</span>
+<span class="version">対象バージョン R27.6.4 / Unity 2022.3.22f1</span>
 <p><a href="../manual/README.md">GitHub版マニュアル</a></p>
 <nav class="nav">
 <a aria-current="page" href="index.html">目次</a>
@@ -33,6 +33,21 @@
 </div>
 </header>
 <main class="wrap">
+<section>
+<h2>更新される方へ</h2>
+<div class="warning"><b>R27.1／R27.2／R27.3 をお使いの場合は必ず更新してください。</b> これらの版はImport時にUdonSharpのコンパイルが失敗し、プロジェクト内のU#スクリプト全体が壊れます（R27.4で修正）。</div>
+<div class="note"><b>R26／R26.1／R27 をお使いの場合は更新を推奨します。</b> シードの自動フェードで、パターンが途中からまったく変化しなくなる不具合がありました（R27.6.3で修正）。</div>
+<h3>R27.4以降の主な変更</h3>
+<table>
+<tr><th>版</th><th>内容</th><th>利用者への影響</th></tr>
+<tr><td>R27.6.3</td><td>シード自動フェードでパターンが途中から変化しなくなる不具合を修正</td><td><b>同じ設定でもパターンの出現順序が従来と変わります。</b>形状の種類・パラメーターの意味・操作方法・Materialの設定は変わりません</td></tr>
+<tr><td>R27.6.1／R27.6.2</td><td>シード自動フェードを停止したときにパターンが固まる／前のシードが残る不具合を修正</td><td>設定変更は不要です</td></tr>
+<tr><td>R27.6.2</td><td>Editorのドメインリロードのたびに走っていた余分なUdonSharpコンパイルを停止。診断ウィンドウへ依存Package確認とKeyword移行診断を追加</td><td>Editorの待ち時間が減ります</td></tr>
+<tr><td>R27.6</td><td>Importにかかる時間を約12分から約1.5分へ短縮</td><td>Materialの設定と描画結果は変わりません。<b>廃止したShader Keywordをアニメーションで操作していた場合は移行が必要です</b>（<a href="08_materials.html">Material</a>を参照）</td></tr>
+<tr><td>R27.4</td><td>Import時のUdonSharpコンパイルエラーと、光点形状9種のMaterial Inspector表示エラーを修正</td><td>形状の選択が日本語のポップアップになります</td></tr>
+</table>
+<p>版ごとの詳しい移行手順は <a href="../manual/README.md">GitHub版マニュアル</a> の「出発バージョン別の移行ガイド」を参照してください。</p>
+</section>
 <section>
 <h2>このマニュアルの使い方</h2>
 <div class="flow">

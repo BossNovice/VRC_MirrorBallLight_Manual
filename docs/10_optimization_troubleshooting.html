@@ -147,7 +147,49 @@
 <td>別PackageのUdonエラー</td>
 <td>MirrorBallLightより先にそのPackageのコンパイルエラーを解消します。UdonSharpは全体エラーがあると変換を保留します。</td>
 </tr>
+<tr>
+<td><code>Method is not exposed to Udon</code></td>
+<td>R27.1〜R27.3をImportすると発生します。R27.4以降へ更新してください。該当版はそのままでは使用できません。</td>
+</tr>
+<tr>
+<td><code>Failed to create material drawer Enum</code></td>
+<td>R27.3以前のMaterial Inspectorで発生します。R27.4以降へ更新してください。光点形状の選択が日本語のポップアップになります。</td>
+</tr>
 </table>
+</section>
+<section id="import-time">
+<h2>Importに時間がかかる</h2>
+<p>Importにかかる時間の大半はShaderのコンパイルです。新規プロジェクトへunitypackageを初回Importしたときの実測値は次のとおりです。</p>
+<table>
+<tr><th></th><th>R27.5まで</th><th>R27.6以降</th></tr>
+<tr><td>unitypackageの初回Import</td><td>810秒</td><td><b>128秒</b></td></tr>
+<tr><td>2回目以降のUnity起動</td><td>12秒</td><td>14秒</td></tr>
+</table>
+<p>R27.6以降も128秒のうち約102秒はShaderのコンパイルで、VRCLightVolumes／LTCGI連携版の3本が大部分を占めます。<b>時間は環境によって変わります。</b></p>
+<div class="tip">Importは1回で終わります。2回目以降のUnity起動は10数秒です。Libraryフォルダを削除すると再度かかるため、消さない運用にすると待ち時間が減ります。</div>
+<div class="note">R27.6.2以降、UdonSharp Program Assetが正常な場合はEditorのドメインリロードで余分なUdonSharpコンパイルが走らなくなりました。スクリプトの変更やPlay Modeの出入りでの待ち時間が減ります。</div>
+</section>
+<section id="pattern-frozen">
+<h2>シードの自動フェードでパターンが変化しない</h2>
+<p>R27.6.2以前には、シードの自動フェードでパターンが途中からまったく変化しなくなる不具合がありました。周期を1〜2秒など短く設定すると顕著ですが、周期に関わらず発生します。<b>R26以降のすべての版が該当します。</b></p>
+<p><b>R27.6.3で修正しました。</b>更新すると解消します。この修正により、同じ設定でもパターンの出現順序は従来版と一致しなくなります。形状の種類・パラメーターの意味・Materialの設定は変わりません。</p>
+<p>更新後も変化しない場合は、次を確認してください。</p>
+<ul>
+<li>Controllerの「シードを時間で自動変化」がONになっているか</li>
+<li>光点形状のアトラスを使用する設定になっているか（アトラス側のフェードはアトラス使用時のみ動作します）</li>
+<li>Play Mode中か。Edit Modeでは時間経過による変化は動作しません</li>
+</ul>
+</section>
+<section id="animation-keyword">
+<h2>アニメーションでMaterialを切り替えても効かない</h2>
+<p>R27.6で一部のShader Keywordを廃止し、実行時のプロパティ切り替えへ移しました。<b>アニメーションクリップからKeywordを直接操作していた場合は効かなくなります。</b></p>
+<p>移行先のプロパティと手順は <a href="08_materials.html#keyword-migration">Material・Shader設定の「R27.6で廃止したShader Keyword」</a> を参照してください。</p>
+</section>
+<section id="dependency">
+<h2>連携版ShaderでImport時にエラーが出る</h2>
+<p>連携版Shaderは <code>Packages/red.sim.lightvolumes/Shaders/LightVolumes.cginc</code> と <code>Packages/at.pimaker.ltcgi/Shaders/LTCGI_structs.cginc</code> を直接includeします。<b>MirrorBallLightより先にVRCLightVolumesとLTCGIを導入してください。</b>後から導入するとImport時にShaderのコンパイルエラーが出ます。</p>
+<p>R27.6.2以降、<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> が最初の行で依存Packageの有無とバージョンを表示します。未導入の場合は原因と対処も表示します。</p>
+<p>連携機能を使わない場合は、素の版Shader（MirrorBallSurfaceAuto／MirrorBallSurfaceAutoTransparent／MirrorBallFacetBody）のMaterialを使用してください。この2つのPackageは不要です。</p>
 </section>
 <section id="release">
 <h2>VRChat公開前チェックリスト</h2>
