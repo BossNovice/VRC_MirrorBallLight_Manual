@@ -294,7 +294,7 @@ UnityPackage／ZIPには、マニュアルリポジトリのサンプルと同�
 ## 導入
 
 1. LTCGI・VRCLightVolumes連携を使用する場合は、両パッケージを先に導入します。
-2. `MirrorBallLightController_R27.2.unitypackage` を `Assets > Import Package > Custom Package` から開き、すべてImportします。
+2. `MirrorBallLightController_*.unitypackage` を `Assets > Import Package > Custom Package` から開き、すべてImportします。
 3. UnityのC#・UdonSharpコンパイルが終わるまで待ちます。
 4. `Assets/MirrorBallLight/Prefabs/MirrorBallLight.prefab` をシーンへ配置します。
 5. Prefabに付属する `ReflectionSurface` Materialを壁・床・天井へ、`ReflectionSurfaceTransparent` Materialをガラスなどへ割り当てます。
