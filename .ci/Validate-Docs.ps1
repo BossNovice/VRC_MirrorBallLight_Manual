@@ -246,6 +246,27 @@ elseif ($versionMatches.Count -eq 1)
     }
 }
 
+# --- 動作確認表の「未確認」の残り（R28.2で追加） -----------------------------
+# 本体の Set-Version.ps1 -Scaffold は、動作確認表へ新しい版の行を「未確認」で追加します。
+# 実機確認の実績を自動で「済」と書かないためです。ただし、そのままリリースされると
+# 表が意味を失います。**現行版の行に「未確認」が残っていたら落とします。**
+# 過去の版の行は対象外です（そのときに確認できなかった事実の記録なので残します）。
+$readmePath = Join-Path $repository "manual/README.md"
+if ((Test-Path -LiteralPath $readmePath) -and (Test-Path -LiteralPath $compatibilityPath))
+{
+    $currentVersion = (Get-Content -LiteralPath $compatibilityPath -Raw | ConvertFrom-Json).manual
+    if (![string]::IsNullOrWhiteSpace($currentVersion))
+    {
+        $pending = Get-Content -LiteralPath $readmePath |
+            Where-Object { $_ -match "^\|\s*$([regex]::Escape($currentVersion))\s*\|" -and $_ -match "未確認" }
+        foreach ($row in $pending)
+        {
+            $problems.Add("動作確認表に $currentVersion の未確認が残っています。確認した結果を書くか、" +
+                "確認しない組み合わせなら行を削除してください: $($row.Trim())")
+        }
+    }
+}
+
 Write-Output "HTML $($pages.Count) ページ、Markdown $($markdowns.Count) ファイルを検査しました。"
 if ($problems.Count -gt 0)
 {
