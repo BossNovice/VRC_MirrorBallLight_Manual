@@ -222,6 +222,30 @@ if ((Test-Path -LiteralPath $manualReadme) -and $versionMatches.Count -eq 1)
     }
 }
 
+# --- compatibility.json との整合（R28.1で追加） ------------------------------
+# 本体リポジトリはこのファイルを取得して版対応を照合します（本体はPrivate、
+# マニュアルはPublicなので、相互照合は本体のCIで行います）。
+# こちら側では、docs/index.html の対象バージョンと一致しているかだけを見ます。
+$compatibilityPath = Join-Path $repository "compatibility.json"
+if (!(Test-Path -LiteralPath $compatibilityPath))
+{
+    $problems.Add("compatibility.json がありません。本体との版対応の照合に使うため必要です。")
+}
+elseif ($versionMatches.Count -eq 1)
+{
+    $compatibility = Get-Content -LiteralPath $compatibilityPath -Raw | ConvertFrom-Json
+    $declared = [regex]::Match($versionMatches[0].Groups[1].Value, 'R[0-9][0-9.]*')
+    if ($declared.Success -and $compatibility.manual -ne $declared.Value)
+    {
+        $problems.Add("compatibility.json の manual が docs/index.html の対象バージョンと一致しません: " +
+            "compatibility.json=$($compatibility.manual) / docs/index.html=$($declared.Value)")
+    }
+    if ([string]::IsNullOrWhiteSpace($compatibility.coreExpected))
+    {
+        $problems.Add("compatibility.json の coreExpected が空です。対応する本体の版を書いてください。")
+    }
+}
+
 Write-Output "HTML $($pages.Count) ページ、Markdown $($markdowns.Count) ファイルを検査しました。"
 if ($problems.Count -gt 0)
 {
