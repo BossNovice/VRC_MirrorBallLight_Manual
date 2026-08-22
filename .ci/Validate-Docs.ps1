@@ -93,7 +93,160 @@ foreach ($page in $pages)
     }
 }
 
-Write-Output "HTML $($pages.Count) ページを検査しました。"
+# --- Markdownの相対リンクと画像リンク（R28.1で追加） -------------------------
+# HTMLだけを見ていたため、manual/README.md のリンク切れを検出できませんでした。
+$markdowns = @()
+foreach ($name in @("manual", "docs", ".")) {
+    $dir = Join-Path $repository $name
+    if (!(Test-Path -LiteralPath $dir)) { continue }
+    $markdowns += Get-ChildItem -LiteralPath $dir -Filter "*.md" -File
+}
+foreach ($markdown in $markdowns)
+{
+    $text = Get-Content -LiteralPath $markdown.FullName -Raw
+    foreach ($hit in [regex]::Matches($text, '\]\(([^)\s]+)\)'))
+    {
+        $target = $hit.Groups[1].Value
+        if ($target -match '^(https?:|mailto:|#)') { continue }
+        $target = ($target -split '#')[0]
+        if ([string]::IsNullOrWhiteSpace($target)) { continue }
+        $resolved = Join-Path $markdown.DirectoryName $target
+        if (!(Test-Path -LiteralPath $resolved))
+        {
+            $problems.Add("Markdownのリンク先が存在しません: $($markdown.Name) → $target")
+        }
+    }
+}
+
+# --- ファイル名の大文字・小文字不一致 ---------------------------------------
+# WindowsのNTFSは大小を区別しないため、Test-Pathだけでは通ってしまいます。
+# GitHub Pages（Linux）では区別されるので、実ファイル名と一致するか個別に確認します。
+function Test-ExactPath
+{
+    param([string]$Path)
+    $full = [System.IO.Path]::GetFullPath($Path)
+    $directory = [System.IO.Path]::GetDirectoryName($full)
+    $leaf = [System.IO.Path]::GetFileName($full)
+    if (!(Test-Path -LiteralPath $directory)) { return $false }
+    $entries = Get-ChildItem -LiteralPath $directory -Force | ForEach-Object { $_.Name }
+    return ($entries -ccontains $leaf)
+}
+
+foreach ($page in $pages)
+{
+    $text = Get-Content -LiteralPath $page.FullName -Raw
+    foreach ($hit in [regex]::Matches($text, '(?:href|src)="([^"#:]+)"'))
+    {
+        $target = $hit.Groups[1].Value
+        if ($target -match '^(https?:|mailto:|//)') { continue }
+        $resolved = Join-Path $page.DirectoryName $target
+        if ((Test-Path -LiteralPath $resolved) -and !(Test-ExactPath $resolved))
+        {
+            $problems.Add("大文字・小文字が実ファイルと一致しません（GitHub Pagesで壊れます）: $($page.Name) → $target")
+        }
+    }
+}
+
+# --- docs/assets の参照切れ -------------------------------------------------
+$docsAssets = Join-Path $docs "assets"
+if (Test-Path -LiteralPath $docsAssets)
+{
+    foreach ($page in $pages)
+    {
+        $text = Get-Content -LiteralPath $page.FullName -Raw
+        foreach ($hit in [regex]::Matches($text, '(?:href|src)="(assets/[^"#:]+)"'))
+        {
+            $resolved = Join-Path $page.DirectoryName $hit.Groups[1].Value
+            if (!(Test-Path -LiteralPath $resolved))
+            {
+                $problems.Add("docs/assets の参照が存在しません: $($page.Name) → $($hit.Groups[1].Value)")
+            }
+        }
+    }
+}
+
+# --- 通常の導入手順に版付きパッケージ名が残っていないか ---------------------
+# HTMLは上で見ていますが、manual/README.md が対象外でした。
+# 歴史説明・変更履歴・移行ガイドの記述は残すため、「導入」節だけを見ます。
+$manualReadme = Join-Path $repository "manual/README.md"
+if (Test-Path -LiteralPath $manualReadme)
+{
+    $lines = Get-Content -LiteralPath $manualReadme
+    $inInstall = $false
+    for ($i = 0; $i -lt $lines.Count; $i++)
+    {
+        $line = $lines[$i]
+        if ($line -match '^##\s') { $inInstall = ($line -match '導入') }
+        if (!$inInstall) { continue }
+        $hit = [regex]::Match($line, 'MirrorBallLightController_R[0-9][0-9.]*\.unitypackage')
+        if ($hit.Success)
+        {
+            $problems.Add("導入手順に版付きのファイル名が残っています（`MirrorBallLightController_*.unitypackage` にしてください）: manual/README.md の $($i + 1) 行目 → $($hit.Value)")
+        }
+    }
+}
+
+# --- 本体リポジトリ・成果物へのダウンロードリンクを置かない -----------------
+# ユーザー方針です。マニュアルは配布物の入手先を案内しません。
+$linkTargets = @()
+$linkTargets += $pages
+$linkTargets += $markdowns
+foreach ($file in $linkTargets)
+{
+    $text = Get-Content -LiteralPath $file.FullName -Raw
+    foreach ($pattern in @(
+        'https?://github\.com/[^"\s)]*VRC_MirrorBallLight(?!_Manual)[^"\s)]*/releases[^"\s)]*',
+        'https?://[^"\s)]*\.unitypackage',
+        'https?://[^"\s)]*MirrorBallLightController[^"\s)]*\.zip'))
+    {
+        foreach ($hit in [regex]::Matches($text, $pattern))
+        {
+            $problems.Add("本体リポジトリ／成果物のダウンロードリンクは置かない方針です: $($file.Name) → $($hit.Value)")
+        }
+    }
+}
+
+# --- 対象バージョンがマニュアル内で一致しているか ---------------------------
+# 本体リポジトリはCIから参照できないため、マニュアル内の整合だけを見ます。
+# docs/index.html の対象バージョンが、manual/README.md の対応表にも載っていること。
+if ((Test-Path -LiteralPath $manualReadme) -and $versionMatches.Count -eq 1)
+{
+    $declared = [regex]::Match($versionMatches[0].Groups[1].Value, 'R[0-9][0-9.]*')
+    if ($declared.Success)
+    {
+        $readmeText = Get-Content -LiteralPath $manualReadme -Raw
+        if ($readmeText -notmatch [regex]::Escape($declared.Value))
+        {
+            $problems.Add("docs/index.html の対象バージョン $($declared.Value) が manual/README.md に出てきません。対応表と移行ガイドを更新してください。")
+        }
+    }
+}
+
+# --- compatibility.json との整合（R28.1で追加） ------------------------------
+# 本体リポジトリはこのファイルを取得して版対応を照合します（本体はPrivate、
+# マニュアルはPublicなので、相互照合は本体のCIで行います）。
+# こちら側では、docs/index.html の対象バージョンと一致しているかだけを見ます。
+$compatibilityPath = Join-Path $repository "compatibility.json"
+if (!(Test-Path -LiteralPath $compatibilityPath))
+{
+    $problems.Add("compatibility.json がありません。本体との版対応の照合に使うため必要です。")
+}
+elseif ($versionMatches.Count -eq 1)
+{
+    $compatibility = Get-Content -LiteralPath $compatibilityPath -Raw | ConvertFrom-Json
+    $declared = [regex]::Match($versionMatches[0].Groups[1].Value, 'R[0-9][0-9.]*')
+    if ($declared.Success -and $compatibility.manual -ne $declared.Value)
+    {
+        $problems.Add("compatibility.json の manual が docs/index.html の対象バージョンと一致しません: " +
+            "compatibility.json=$($compatibility.manual) / docs/index.html=$($declared.Value)")
+    }
+    if ([string]::IsNullOrWhiteSpace($compatibility.coreExpected))
+    {
+        $problems.Add("compatibility.json の coreExpected が空です。対応する本体の版を書いてください。")
+    }
+}
+
+Write-Output "HTML $($pages.Count) ページ、Markdown $($markdowns.Count) ファイルを検査しました。"
 if ($problems.Count -gt 0)
 {
     foreach ($problem in $problems) { Write-Output "NG: $problem" }
