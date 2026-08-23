@@ -251,6 +251,12 @@ elseif ($versionMatches.Count -eq 1)
 # 実機確認の実績を自動で「済」と書かないためです。ただし、そのままリリースされると
 # 表が意味を失います。**現行版の行に「未確認」が残っていたら落とします。**
 # 過去の版の行は対象外です（そのときに確認できなかった事実の記録なので残します）。
+#
+# 「未確認」と「未実施」は別物として扱います。
+#   未確認 … Scaffoldが置いたままで、まだ誰も見ていない。リリースを止めます
+#   未実施 … 確認しないと判断した。理由を書くことを条件に通します
+# 「未実施」を素通しにすると、確認しない理由を書かずに済ませられてしまうため、
+# 現行版に「未実施」があるときは理由の記載を必須にします。
 $readmePath = Join-Path $repository "manual/README.md"
 if ((Test-Path -LiteralPath $readmePath) -and (Test-Path -LiteralPath $compatibilityPath))
 {
@@ -262,7 +268,17 @@ if ((Test-Path -LiteralPath $readmePath) -and (Test-Path -LiteralPath $compatibi
         foreach ($row in $pending)
         {
             $problems.Add("動作確認表に $currentVersion の未確認が残っています。確認した結果を書くか、" +
-                "確認しない組み合わせなら行を削除してください: $($row.Trim())")
+                "確認しない判断なら理由付きで「未実施」にしてください: $($row.Trim())")
+        }
+
+        $lines = Get-Content -LiteralPath $readmePath
+        $notRun = $lines | Where-Object {
+            $_ -match "^\|\s*$([regex]::Escape($currentVersion))\s*\|" -and $_ -match "未実施"
+        }
+        if ($notRun -and !($lines | Where-Object { $_ -match "^\*\*未実施\*\*:" }))
+        {
+            $problems.Add("動作確認表に $currentVersion の未実施がありますが、理由が書かれていません。" +
+                "`**未実施**:` で始まる行に、なぜ確認しないのかを書いてください。")
         }
     }
 }

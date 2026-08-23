@@ -12,7 +12,7 @@
 <div class="eyebrow">VRChat WORLD SYSTEM</div>
 <h1>MirrorBallLightController 完全マニュアル</h1>
 <p class="lead">UnityPackage版の導入から、設定済みサンプル、壁・ガラス表面Emission／AudioLink／Mask、LTCGI・VRCLightVolumes、ライブプリセット、負荷対策までを日本語で説明します。</p>
-<span class="version">対象バージョン R28.1 / Unity 2022.3.22f1</span>
+<span class="version">対象バージョン R28.2 / Unity 2022.3.22f1</span>
 <p><a href="../manual/README.md">GitHub版マニュアル</a></p>
 <nav class="nav">
 <a aria-current="page" href="index.html">目次</a>
@@ -40,6 +40,7 @@
 <h3>R27.4以降の主な変更</h3>
 <table>
 <tr><th>版</th><th>内容</th><th>利用者への影響</th></tr>
+<tr><td>R28.2</td><td>クロスフェード中に届いたプリセット切替要求を1件だけ予約し、フェード終了後に実行できるようになりました（既定はOFF）</td><td>既定では実行時の挙動は変わりません。同期する値は増えていません</td></tr>
 <tr><td>R28.1</td><td>Shader Global共有が有効なControllerが同一シーンに複数ある場合、Buildを止めるようになりました</td><td>実行時の挙動は変わりません。該当しない場合、R28からの変化はありません</td></tr>
 <tr><td>R28</td><td>Shader Global共有の書き込みを、値が変わったときだけ行うよう変更</td><td>設定と描画結果は変わりません。<b>Global共有は1つのControllerだけで使用してください</b>（複数ある場合は診断ウィンドウが警告します）</td></tr>
 <tr><td>R27.6.3</td><td>シード自動フェードでパターンが途中から変化しなくなる不具合を修正</td><td><b>同じ設定でもパターンの出現順序が従来と変わります。</b>形状の種類・パラメーターの意味・操作方法・Materialの設定は変わりません</td></tr>
