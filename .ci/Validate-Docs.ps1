@@ -382,6 +382,18 @@ if ((Test-Path -LiteralPath $readmePath) -and (Test-Path -LiteralPath $compatibi
     }
 }
 
+# --- docs_html.zip が docs/ と一致しているか（2026-08-23で追加） --------------
+# GitHub Pages を有効にしていないため、docs/index.html へのリンクを開いても
+# HTMLのソースが表示されるだけで読めません。zipで配布し、リンクもzipを指します。
+# **zipは配布物であって正ではありません。** docs/ を変えたら作り直す必要があり、
+# 忘れると古い内容が配られ続けます。ここで検出します。
+$zipCheck = & pwsh -NoProfile -File (Join-Path $repository ".ci/Build-ManualZip.ps1") `
+    -RepositoryPath $repository -Verify 2>&1
+if ($LASTEXITCODE -ne 0)
+{
+    foreach ($line in $zipCheck) { $problems.Add(($line | Out-String).Trim()) }
+}
+
 Write-Output "HTML $($pages.Count) ページ、Markdown $($markdowns.Count) ファイルを検査しました。"
 if ($problems.Count -gt 0)
 {
