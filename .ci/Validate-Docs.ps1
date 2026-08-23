@@ -271,14 +271,94 @@ if ((Test-Path -LiteralPath $readmePath) -and (Test-Path -LiteralPath $compatibi
                 "確認しない判断なら理由付きで「未実施」にしてください: $($row.Trim())")
         }
 
+        # 「未実施」は理由を書けば通りますが、それだけだと「理由を書けば永久に通る」に
+        # なります。期限と延長回数まで機械的に見て、放置と無限延長を検出します。
         $lines = Get-Content -LiteralPath $readmePath
         $notRun = $lines | Where-Object {
             $_ -match "^\|\s*$([regex]::Escape($currentVersion))\s*\|" -and $_ -match "未実施"
         }
-        if ($notRun -and !($lines | Where-Object { $_ -match "^\*\*未実施\*\*:" }))
+        $blockStarts = @()
+        for ($i = 0; $i -lt $lines.Count; $i++)
+        {
+            if ($lines[$i] -match "^\*\*未実施\*\*:") { $blockStarts += $i }
+        }
+
+        if ($notRun -and $blockStarts.Count -eq 0)
         {
             $problems.Add("動作確認表に $currentVersion の未実施がありますが、理由が書かれていません。" +
-                "`**未実施**:` で始まる行に、なぜ確認しないのかを書いてください。")
+                "``**未実施**:`` で始まるブロックに、理由種別・理由詳細・期限・担当・次アクション・" +
+                "更新日・延長回数を書いてください。")
+        }
+
+        # 期限は「今日」と比べます。リリース時だけでなく、mainへ向いたPRのたびに見ます。
+        # 放置を検出したいので、実行日基準でなければ意味がありません。
+        $today = [datetime]::Now.Date
+        foreach ($start in $blockStarts)
+        {
+            $label = ($lines[$start] -replace "^\*\*未実施\*\*:\s*", "").Trim()
+
+            # ブロックは箇条書きが途切れるまでです。
+            $body = New-Object 'System.Collections.Generic.List[string]'
+            for ($i = $start + 1; $i -lt $lines.Count; $i++)
+            {
+                if ($lines[$i] -match "^\s*-\s" -or $lines[$i] -match "^\s+\S") { $body.Add($lines[$i]) }
+                elseif ([string]::IsNullOrWhiteSpace($lines[$i])) { break }
+                else { break }
+            }
+            $text = $body -join "`n"
+
+            function Get-Field { param([string]$Name)
+                $m = [regex]::Match($text, "(?m)^\s*-\s*$Name\s*:\s*(.+)$")
+                if ($m.Success) { return $m.Groups[1].Value.Trim() }
+                return $null
+            }
+
+            foreach ($required in @("理由種別", "理由詳細", "期限", "担当", "次アクション", "更新日", "延長回数"))
+            {
+                if (!(Get-Field $required))
+                {
+                    $problems.Add("未実施ブロック『$label』に $required がありません。")
+                }
+            }
+
+            $kind = Get-Field "理由種別"
+            if ($kind -and $kind -notin @("ENV_UNAVAILABLE", "EXTERNAL_BLOCKER", "TIMEBOX"))
+            {
+                $problems.Add("未実施ブロック『$label』の理由種別が想定外です: $kind " +
+                    "（ENV_UNAVAILABLE / EXTERNAL_BLOCKER / TIMEBOX のいずれか）")
+            }
+
+            $deadline = Get-Field "期限"
+            if ($deadline)
+            {
+                $parsed = [datetime]::MinValue
+                if (![datetime]::TryParseExact($deadline, "yyyy-MM-dd", $null,
+                        [System.Globalization.DateTimeStyles]::None, [ref]$parsed))
+                {
+                    $problems.Add("未実施ブロック『$label』の期限が YYYY-MM-DD ではありません: $deadline")
+                }
+                elseif ($parsed.Date -lt $today)
+                {
+                    $problems.Add("未実施ブロック『$label』の期限が過ぎています: $deadline。" +
+                        "確認して表を更新するか、理由詳細に延長の理由を追記したうえで期限・更新日・" +
+                        "延長回数を更新してください。")
+                }
+            }
+
+            $extensions = Get-Field "延長回数"
+            if ($extensions)
+            {
+                $count = 0
+                if (![int]::TryParse($extensions, [ref]$count))
+                {
+                    $problems.Add("未実施ブロック『$label』の延長回数が数値ではありません: $extensions")
+                }
+                elseif ($count -gt 2)
+                {
+                    $problems.Add("未実施ブロック『$label』の延長回数が $count 回です。" +
+                        "3回以上の延長は認めていません。確認するか、確認しないと決めて表から行を外してください。")
+                }
+            }
         }
     }
 }
