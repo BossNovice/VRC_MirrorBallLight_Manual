@@ -1,6 +1,6 @@
 # VRC MirrorBallLight GitHub版マニュアル
 
-[HTML版マニュアル](../docs/index.html)
+[HTML版マニュアル（zip）](https://github.com/BossNovice/VRC_MirrorBallLight_Manual/raw/main/docs_html.zip)
 
 ## バージョン対応表・移行ガイド
 
@@ -396,7 +396,7 @@ R25.1ではMaterial Inspectorを用途別の日本語折り畳みへ整理しま
 
 Emission TextureとMaskは、それぞれ独立したTiling／Offsetを使用できます。透明Shaderではガラスの透明度と深度フェードへ追従し、壁用Shaderでは不透明な表面発光として加算されます。Controllerへ対象Materialを登録しても、このR25設定はMaterial固有値として維持されます。
 
-既存Materialを `Translate`／`Translate Copy` した場合、一般的なEmission Map、Emission Color、Emission強度、Emission Maskを可能な範囲で引き継ぎます。複数Emissionレイヤー、独自UVアニメーション、特殊なMask Packingは完全には再現できない可能性があります。詳細は[表面Emission／Maskページ](../docs/13_surface_emission_mask.html)を参照してください。
+既存Materialを `Translate`／`Translate Copy` した場合、一般的なEmission Map、Emission Color、Emission強度、Emission Maskを可能な範囲で引き継ぎます。複数Emissionレイヤー、独自UVアニメーション、特殊なMask Packingは完全には再現できない可能性があります。詳細はHTML版マニュアル（zip）の「表面Emission／Mask」のページを参照してください。
 
 ## R24 ワールド用Shader拡張
 
@@ -416,7 +416,7 @@ UnityPackage／ZIPには、マニュアルリポジトリのサンプルと同�
 
 通常面／透明面はShader名、RenderType、Render Queue、Standard系の透明設定、Base Color Alphaから自動判定します。選択GameObjectの子Rendererと複数Materialに対応し、同じSceneのControllerが見つかった場合は変換Materialを対象一覧へ追加します。
 
-引継ぎ対象はBase Texture、Base Color、Tiling、Offset、Normal Map、Normal強度、一般的なEmission Map／色／強度／Mask、Metallic、Smoothness、透明度、Cull、Render Queue、GI、GPU Instancingです。PoiyomiやlilToonなどの独自合成、MatCap、Outline、複数Emissionレイヤーや独自アニメーションは完全には変換できない可能性があります。詳細は[Material Translateページ](../docs/12_material_translate.html)を参照してください。
+引継ぎ対象はBase Texture、Base Color、Tiling、Offset、Normal Map、Normal強度、一般的なEmission Map／色／強度／Mask、Metallic、Smoothness、透明度、Cull、Render Queue、GI、GPU Instancingです。PoiyomiやlilToonなどの独自合成、MatCap、Outline、複数Emissionレイヤーや独自アニメーションは完全には変換できない可能性があります。詳細はHTML版マニュアル（zip）の「Material Translate」のページを参照してください。
 
 | 機能 | Controller上の場所 | 主な用途 |
 |---|---|---|
