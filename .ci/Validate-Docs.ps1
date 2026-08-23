@@ -293,6 +293,7 @@ if ((Test-Path -LiteralPath $readmePath) -and (Test-Path -LiteralPath $compatibi
         # 期限は「今日」と比べます。リリース時だけでなく、mainへ向いたPRのたびに見ます。
         # 放置を検出したいので、実行日基準でなければ意味がありません。
         $today = [datetime]::Now.Date
+        $seenTrackingIds = @{}
         foreach ($start in $blockStarts)
         {
             $label = ($lines[$start] -replace "^\*\*未実施\*\*:\s*", "").Trim()
@@ -313,12 +314,30 @@ if ((Test-Path -LiteralPath $readmePath) -and (Test-Path -LiteralPath $compatibi
                 return $null
             }
 
-            foreach ($required in @("理由種別", "理由詳細", "期限", "担当", "次アクション", "更新日", "延長回数"))
+            foreach ($required in @("追跡ID", "理由種別", "理由詳細", "期限", "担当", "次アクション", "更新日", "延長回数"))
             {
                 if (!(Get-Field $required))
                 {
                     $problems.Add("未実施ブロック『$label』に $required がありません。")
                 }
+            }
+
+            # 追跡IDは公開して差し支えない識別子です。本体リポジトリはPrivateなので、
+            # Issue番号を公開マニュアルへ必須で載せても読者は開けません。IDだけを共通の
+            # 目印にして、Issueとの対応は本体側で持ちます。
+            $trackingId = Get-Field "追跡ID"
+            if ($trackingId)
+            {
+                if ($trackingId -notmatch '^R[0-9][0-9.]*-UNEXEC-[0-9]{2}$')
+                {
+                    $problems.Add("未実施ブロック『$label』の追跡IDが書式に合いません: $trackingId " +
+                        "（R28.2-UNEXEC-01 の形式）")
+                }
+                elseif ($seenTrackingIds.ContainsKey($trackingId))
+                {
+                    $problems.Add("追跡ID $trackingId が重複しています。1つの未実施につき1つにしてください。")
+                }
+                else { $seenTrackingIds[$trackingId] = $true }
             }
 
             $kind = Get-Field "理由種別"
