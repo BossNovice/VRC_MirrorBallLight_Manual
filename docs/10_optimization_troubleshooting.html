@@ -83,6 +83,30 @@
 <div class="warning">Shader Global共有を使うControllerは同一シーンで1個にしてください。複数あると最後に更新したControllerの値が全対応Materialへ反映されます。</div>
 </section>
 <section id="diagnostics">
+<h2>遠い面と電源OFFのときの描画（R29）</h2>
+<p>R29から、光点がまったく映らない面では光点の計算そのものを行わなくなりました。設定は不要で、見た目も変わりません。</p>
+<p>これまでは、遠くて光点が消えている面でも形・色・点滅をひととおり計算してから最後に0を掛けて消していました。先に消えるかどうかを判定するようにしています。</p>
+<table>
+<tr>
+<th>条件</th>
+<th>効果</th>
+</tr>
+<tr>
+<td><code>距離フェードを使用</code> がONで、<code>フェード終了距離</code> より遠い面</td>
+<td>あり。広いワールドほど効きます。</td>
+</tr>
+<tr>
+<td>電源がOFFのとき</td>
+<td>あり。</td>
+</tr>
+<tr>
+<td><code>距離フェードを使用</code> がOFF</td>
+<td>ありません。</td>
+</tr>
+</table>
+<p><code>距離フェードを使用</code> がOFFだと、どの面も「消える」と判定されないため効果がありません。広いワールドで軽さを優先する場合はONにしてください。</p>
+<p>半透明版のShaderは対象外です。半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、計算を飛ばすと見た目が変わってしまいます。</p>
+
 <h2>診断・最適化ウィンドウ</h2>
 <p>Controllerの10番から開き、参照、Material、Shader、Program Asset、Keyword、Global共有の競合を確認します。自動修正前にSceneとMaterialを保存し、修正後はConsoleと見た目を再確認します。</p>
 </section>
