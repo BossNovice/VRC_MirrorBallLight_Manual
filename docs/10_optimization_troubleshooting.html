@@ -118,6 +118,11 @@
 <p>Controllerの10番から開き、参照、Material、Shader、Program Asset、Keyword、Global共有の競合を確認します。自動修正前にSceneとMaterialを保存し、修正後はConsoleと見た目を再確認します。</p>
 </section>
 <section id="notvisible">
+<h2>Playモードで「Field for System.Int32 does not exist」が出る</h2>
+<p><strong>R29.2で直しました。</strong> R28.1からR29.1までを使っている場合に出ます。</p>
+<p>Playモード中にControllerのInspectorを開くと、再描画のたびにこのエラーがConsoleへ出ていました。<strong>Editorのログに出るだけで、ワールドの動作やアップロードには影響しません。</strong> 設定値が失われることもありません。</p>
+<p>Error Pause を有効にしていると作業が止まるため、気になる場合はR29.2以降へ更新してください。更新すれば出なくなります。</p>
+
 <h2>光点が表示されない</h2>
 <ol>
 <li>Controllerの電源状態と「反射光の明るさ」を確認</li>
