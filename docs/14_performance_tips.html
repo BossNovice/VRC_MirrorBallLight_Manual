@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>14 動作が重い場合のTips | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">14 / PERFORMANCE TIPS</div>
+<h1>動作が重い場合のTips</h1>
+<p class="lead">まず原因がCPUかGPUかを確かめてから手を打ちます。原因を確かめずに設定を変えても、たいてい何も変わりません。</p>
+<nav class="nav">
+<a href="index.html">目次</a><a href="03_controller.html">Controller</a><a href="04_effects.html">反射・光点</a>
+<a href="08_materials.html">Material</a><a href="09_integrations.html">連携</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a><a aria-current="page" href="14_performance_tips.html">重い場合のTips</a>
+</nav>
+</div></header>
+<main><div class="wrap"><article>
+
+<section id="first"><h2>最初に：CPUとGPUのどちらが原因かを確かめる</h2>
+<p><strong>これを飛ばさないでください。</strong> CPUが原因のときにGPU向けの手を打っても、フレームレートは1つも改善しません。逆も同じです。</p>
+<ol>
+<li>Unityの <code>Window &gt; Analysis &gt; Profiler</code> を開きます</li>
+<li>Play Modeに入り、重いと感じる場所で静止します</li>
+<li><code>CPU Usage</code> と <code>GPU Usage</code> の両方を見ます</li>
+</ol>
+<div class="warning"><strong>グラフを目で比べないでください。</strong> 1フレームごとの揺れが大きく、設定変更による差はその中に埋もれます。判断するなら、数百フレーム分の<strong>中央値</strong>を数字で比べてください。平均は使わないでください。スパイク1回で動いてしまいます。</div>
+<table>
+<tr><th>状態</th><th>原因</th><th>読むところ</th></tr>
+<tr><td>CPU時間 &gt; GPU時間</td><td>CPU律速</td><td>下の「CPUが原因のとき」</td></tr>
+<tr><td>GPU時間 &gt; CPU時間</td><td>GPU律速</td><td>下の「GPUが原因のとき」</td></tr>
+<tr><td>どちらも予算内なのに重い</td><td>このアセット以外が原因の可能性</td><td>アバター数、他のShader、ミラーなど</td></tr>
+</table>
+<p>60fpsなら1フレームの予算は約16.7ms、90fpsなら約11msです。<strong>GPU時間が2〜3msしかないなら、このアセットの描画は原因ではありません。</strong> そこを削っても数字は動きません。</p>
+</section>
+
+<section id="gpu"><h2>GPUが原因のとき</h2>
+
+<h3>1. 距離フェードを有効にして、終了距離を詰める（効果が大きい）</h3>
+<p><strong>R29から、距離フェードは軽量化のスイッチになりました。</strong> 終了距離より遠い面では、光点の形・色・点滅の計算そのものを行いません。</p>
+<table>
+<tr><th>設定</th><th>結果</th></tr>
+<tr><td><code>距離フェードを使用</code> ON、終了距離が短い</td><td>遠い面の計算がまるごと省かれます</td></tr>
+<tr><td><code>距離フェードを使用</code> OFF</td><td><strong>省略は起きません。</strong> どの面も「消える」と判定されないためです</td></tr>
+</table>
+<p>広いワールドほど効きます。まず終了距離を実際に光を届かせたい範囲まで詰めてください。</p>
+<div class="warning">この省略は<strong>不透明版のShaderで大きく、半透明版では小さい</strong>です。半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、形の計算を省けません。</div>
+
+<h3>2. 電源をOFFにしているときの負荷も下がっています</h3>
+<p>R29から、電源OFFの間も同じ仕組みで計算を省きます。演出を使わない時間が長いワールドでは、電源を切っておく価値があります。</p>
+
+<h3>3. 半透明版の重なりを減らす</h3>
+<p>半透明は<strong>重なった枚数だけ描画されます</strong>（オーバードロー）。同じ画素を何枚も塗ると、そのぶん素直に重くなります。</p>
+<ul>
+<li>半透明の面を何枚も重ねて配置しない</li>
+<li>カメラが至近距離まで寄れる場所に大きな半透明面を置かない</li>
+<li><strong>不透明で済むところは不透明版のShaderを使う。</strong> 省略が効きやすく、重なりの問題もありません</li>
+</ul>
+
+<h3>4. 画面に占める面積を小さくする</h3>
+<p>Shaderの負荷は<strong>塗る画素の数に比例</strong>します。巨大な面を画面いっぱいに映す構図は、それだけで重くなります。壁を分割して遠い部分には別のMaterialを割り当てる、といった対処が有効です。</p>
+
+<h3>5. 影響するピクセルライトの数を減らす</h3>
+<p>1つの面に当たるリアルタイムライトが増えると、そのぶん描画が追加で走ります。<code>Project Settings &gt; Quality &gt; Pixel Light Count</code> と、各ライトの <code>Range</code>・<code>Render Mode</code> を見直してください。</p>
+
+<h3>6. テクスチャの設定を見直す</h3>
+<p>光点形状・アトラス・Cookie・各種Maskに必要以上に大きなテクスチャを使っていないか確認してください。圧縮形式（BC系）とMipmapが有効かどうかも効きます。</p>
+</section>
+
+<section id="cpu"><h2>CPUが原因のとき</h2>
+
+<h3>1. 更新頻度と対象Material数の積を見る</h3>
+<p>負荷は <code>マテリアル更新頻度</code> そのものではなく、<strong>対象Material数との積</strong>で決まります。1枚なら90回でも軽く、20枚なら30回でも重くなります。</p>
+<table>
+<tr><th>方針</th><th>更新頻度の目安</th></tr>
+<tr><td>滑らかさ優先</td><td>45〜60</td></tr>
+<tr><td>標準</td><td>30（初期値）</td></tr>
+<tr><td>負荷優先</td><td>15〜20</td></tr>
+</table>
+
+<h3>2. Shader Global共有を使う</h3>
+<p><code>Shader Global共有を使用</code> をONにすると、動的な値をMaterialごとではなくScene共通値として一括送信します。<strong>対象Materialが多いほど効きます。</strong></p>
+<div class="warning">Shader Global共有が有効なControllerは、ワールドに<strong>1つだけ</strong>にしてください。複数あると同じ値を奪い合い、結果が実行のたびに変わります。<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> がこれをエラーとして知らせます。</div>
+
+<h3>3. GPUで回転させる</h3>
+<p><code>投影回転をGPUで計算</code> がONなら、連続回転はGPU時刻から生成され、Transformの回転値を毎フレーム送る必要がなくなります。<code>表示用ミラーボール本体も回転</code> をOFFにすると、球体のTransform更新も止まります。</p>
+
+<h3>4. プリセットの差分更新</h3>
+<p>ライブプリセットは <code>プリセット差分更新の最小値</code> 未満の微小な補間更新を省きます。初期値は0.001です。</p>
+</section>
+
+<section id="diagnose"><h2>設定の矛盾を先に潰す</h2>
+<p><code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> を実行してください。負荷に関係する項目も知らせます。</p>
+<ul>
+<li>更新頻度 × 対象Material数が大きすぎる場合の警告</li>
+<li>Shader Global共有が有効なControllerが複数ある場合のエラー</li>
+<li>機能をONにしたのに必要なものが設定されていない組み合わせ</li>
+</ul>
+<p>この画面が出す負荷のしきい値は<strong>経験的な目安であり、実機で計測した値ではありません</strong>。参考として使ってください。</p>
+</section>
+
+<section id="notes"><h2>知っておくと判断が早くなること</h2>
+<h3>設定を変えても数字が動かないとき</h3>
+<p>そもそもGPU律速になっていない可能性が高いです。「最初に」の手順に戻って、CPUとGPUのどちらが原因かを確かめ直してください。</p>
+<h3>使っていない機能は既に省かれています</h3>
+<p>Cookie・形状アトラス・ランダム点滅・各種Maskは、OFFのときShaderの内部で分岐して読み飛ばしています。<strong>使っていない機能をOFFにして回るより、上の1〜5を先に見てください。</strong></p>
+<h3>Import時間と実行時の重さは別のものです</h3>
+<p>導入時のImportが長いことと、ワールドが実行時に重いことは無関係です。Importについては<a href="10_optimization_troubleshooting.html">最適化・対処</a>を参照してください。</p>
+</section>
+
+</article></div></main>
+<footer><div class="wrap"><a href="13_surface_emission_mask.html">← 表面Emission</a>　<a href="index.html">目次へ</a></div></footer>
+</body></html>
