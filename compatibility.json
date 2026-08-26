@@ -6,6 +6,6 @@
     "本体のCIは公開されているこのファイルを認証なしで読めますが、逆はPATが必要になるためです。",
     "docs/index.html の対象バージョンを変えたら、manual と coreExpected も同時に更新してください。"
   ],
-  "manual": "R29.2",
-  "coreExpected": "R29.2"
+  "manual": "R29.3",
+  "coreExpected": "R29.3"
 }
