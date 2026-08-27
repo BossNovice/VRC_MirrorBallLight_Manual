@@ -91,6 +91,34 @@
 <p>ライブプリセットは <code>プリセット差分更新の最小値</code> 未満の微小な補間更新を省きます。初期値は0.001です。</p>
 </section>
 
+<section id="many"><h2>オブジェクトが多いとき</h2>
+
+<p>壁・床・柱など、<strong>反射を受ける面をたくさん置いた場合</strong>の話です。CPUとGPUで事情が違います。</p>
+
+<h3>1. 毎フレームのCPUは、オブジェクトの数では増えません</h3>
+<p><code>Shader Global共有を使用</code> がON（初期値）なら、毎フレームの送信は<strong>Scene共通値を1回書くだけ</strong>です。面が1枚でも100枚でも、毎フレームのCPUコストは変わりません。</p>
+<p>対象Materialを1本ずつ回す処理は、<strong>プリセットを切り替えたときや設定を変えたときだけ</strong>走ります。毎フレームではありません。</p>
+<div class="warning"><strong>ここを切ると話が変わります。</strong> <code>Shader Global共有を使用</code> をOFFにすると、毎フレーム<strong>Materialごとに20回前後の値送信</strong>を行います。この場合だけ、対象Material数にそのまま比例して重くなります。面を多く置くなら、ONのまま使ってください。</div>
+
+<h3>2. 見た目が同じ面は、Materialを1つにまとめる</h3>
+<p>Shader Global共有がONのとき、光点の位置・色・明るさといった<strong>動く値はすべてScene共通値から来ます。</strong> つまり<strong>面ごとにMaterialを分ける必要がありません。</strong></p>
+<table>
+<tr><th>分ける必要があるか</th><th>例</th></tr>
+<tr><td><strong>不要</strong>（1つにまとめられます）</td><td>同じ壁材が続く、同じ床が広がっている</td></tr>
+<tr><td>必要</td><td>面ごとに<code>基本テクスチャ</code>・<code>基本色</code>・ノーマルマップ・タイリングを変えたい</td></tr>
+</table>
+<p>まとめると、Controllerの<code>対象Material</code>のリストも短くなり、設定変更時の処理が軽くなります。Unityが<strong>まとめて描きやすくなる</strong>という効果もあります。</p>
+
+<h3>3. 動かない面には <code>Batching Static</code> を付ける</h3>
+<p>面の数が増えると、<strong>描画命令（ドローコール）の数</strong>が効いてきます。壁や床のように動かないオブジェクトは、Inspector右上の <code>Static</code> から <code>Batching Static</code> を有効にしてください。同じMaterialのものがまとめて描かれます。</p>
+<p><strong>Shaderの設定では減りません。</strong> ドローコールはUnity側のまとめ方で決まるためです。上の「Materialを1つにまとめる」と組み合わせると効果が出ます。</p>
+<div class="warning">静的バッチングはメッシュを事前に結合するため、<strong>ビルドサイズとメモリが増えます。</strong> 巨大なメッシュを大量に含めると逆効果になることがあります。</div>
+
+<h3>4. 面の数より、塗る画素の数を見てください</h3>
+<p>GPU側は<strong>面の枚数ではなく、画面に塗られる画素の数</strong>で決まります。小さな面を100枚置いても、画面の隅にしか映らないなら負荷はわずかです。逆に大きな面が1枚でも画面いっぱいなら重くなります。</p>
+<p>したがって、面が多いときの手当ても上の「GPUが原因のとき」と同じです。<strong>距離フェードの終了距離を詰める</strong>のが最も効きます。</p>
+</section>
+
 <section id="diagnose"><h2>設定の矛盾を先に潰す</h2>
 <p><code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> を実行してください。負荷に関係する項目も知らせます。</p>
 <ul>
