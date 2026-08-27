@@ -251,6 +251,60 @@
 </section>
 </article>
 </div>
+
+<h2>他のUdonから操作する（外部制御API）</h2>
+<p><strong>他のギミックからミラーボールを操作できます。</strong> DJブースのボタン、ライブ演出のタイムライン、独自のUIなどから呼ぶ想定です。</p>
+<p><code>UdonBehaviour.SendCustomEvent</code> はイベント名を<strong>文字列</strong>で呼びます。ここに載せた名前は<strong>変えません。</strong> 変えると、それを呼んでいるワールドが静かに壊れるためです。</p>
+
+<h3>そのまま呼べるもの（引数なし）</h3>
+<table>
+<thead><tr><th>イベント名</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><code>TurnOn</code> / <code>TurnOff</code> / <code>TogglePower</code></td><td>電源</td></tr>
+<tr><td><code>NextPreset</code> / <code>PreviousPreset</code></td><td>プリセットを送る・戻す</td></tr>
+<tr><td><code>ReloadCurrentPreset</code></td><td>今のプリセットを入れ直す</td></tr>
+<tr><td><code>ApplySelectedPreset</code></td><td><code>presetSelectionIndex</code> の番号へ切り替える</td></tr>
+<tr><td><code>ApplySelectedPresetImmediately</code></td><td>同上。クロスフェードなし</td></tr>
+<tr><td><code>UseStandardLightingVariant</code> / <code>UseIntegratedLightingVariant</code></td><td>連携版の切替</td></tr>
+<tr><td><code>ApplyLightingVariant</code></td><td>現在の設定で連携版を反映</td></tr>
+<tr><td><code>UseLocalPresetScope</code> / <code>UseGlobalPresetScope</code></td><td>プリセットの同期範囲</td></tr>
+<tr><td><code>UsePowerLocalScope</code> / <code>UsePowerGlobalScope</code></td><td>電源の同期範囲</td></tr>
+<tr><td><code>ApplyToMaterials</code> / <code>ApplyStaticSettings</code></td><td>設定をマテリアルへ反映</td></tr>
+</tbody>
+</table>
+
+<h3>番号を指定してプリセットを選ぶ</h3>
+<p><strong><code>SelectPreset</code> は引数を取るため <code>SendCustomEvent</code> では呼べません。</strong> 番号を指定するときは次のようにします。</p>
+<pre><code>mirrorBall.SetProgramVariable("apiPresetIndex", 2);
+mirrorBall.SendCustomEvent("RequestSelectPreset");
+
+int result = (int)mirrorBall.GetProgramVariable("apiLastResultCode");
+// 0 なら成功</code></pre>
+
+<h3>結果を確かめる</h3>
+<table>
+<thead><tr><th>変数名</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><code>apiLastResultCode</code></td><td>直前の操作の結果。<strong>0 が成功</strong></td></tr>
+<tr><td><code>apiStateRevision</code></td><td>状態が変わるたびに1つ増える目印</td></tr>
+</tbody>
+</table>
+<table>
+<thead><tr><th>値</th><th>意味</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>成功した</td></tr>
+<tr><td>1</td><td>プリセットが無効（「ライブプリセットを使用」がOFF、または一覧が空）</td></tr>
+<tr><td>2</td><td>指定した番号のプリセットが未設定</td></tr>
+<tr><td>3</td><td>切替中のため<strong>予約した</strong>（「切替中の要求を1件だけ予約」が有効）</td></tr>
+<tr><td>4</td><td>切替中のため<strong>無視した</strong>（同上が無効。<strong>これが既定です</strong>）</td></tr>
+</tbody>
+</table>
+<p><strong>3 と 4 は別物です。</strong> 3 は切替が終わってから適用されますが、4 は捨てられます。</p>
+<p><code>apiStateRevision</code> は、<strong>副作用が見えにくい操作でも効いたかどうかを確かめる</strong>ための目印です。たとえば連携版の切替はオブジェクトの有効・無効を変えるだけなので、外からは分かりません。この値が増えていれば処理は走っています。</p>
+
+<h3>従来の書き方も使えます</h3>
+<p><code>presetSelectionIndex</code> を直接書いてから <code>ApplySelectedPreset</code> を送る方法も、<strong>これまでどおり動きます。</strong> 既存のワールドはそのままで構いません。新しく書くときは <code>apiPresetIndex</code> と <code>RequestSelectPreset</code> をお使いください。</p>
+
 </main>
 <footer>
 <div class="wrap">
