@@ -695,6 +695,71 @@ Udonスイッチから任意番号を選ぶ場合は、Controllerの `presetSele
 
 R14.1以降はUnity/UdonSharp側の自動表示名に依存せず、Custom Inspectorが全フィールドの日本語ラベルを明示します。`Rotation Speed`、`Reflection Range`、`Horizontal Tiles`などの英語表記は、それぞれ`回転速度`、`反射が届く距離`、`横方向の光点数`として表示されます。
 
+## 他のUdonから操作する（外部制御API）
+
+**他のギミックからミラーボールを操作できます。** DJブースのボタン、ライブ演出の
+タイムライン、独自のUIなどから呼ぶ想定です。
+
+`UdonBehaviour.SendCustomEvent` はイベント名を**文字列**で呼びます。ここに載せた
+名前は**変えません。** 変えると、それを呼んでいるワールドが静かに壊れるためです。
+
+### そのまま呼べるもの（引数なし）
+
+| イベント名 | 内容 |
+| --- | --- |
+| `TurnOn` / `TurnOff` / `TogglePower` | 電源 |
+| `NextPreset` / `PreviousPreset` | プリセットを送る・戻す |
+| `ReloadCurrentPreset` | 今のプリセットを入れ直す |
+| `ApplySelectedPreset` | `presetSelectionIndex` の番号へ切り替える |
+| `ApplySelectedPresetImmediately` | 同上。クロスフェードなし |
+| `UseStandardLightingVariant` / `UseIntegratedLightingVariant` | 連携版の切替 |
+| `ApplyLightingVariant` | 現在の設定で連携版を反映 |
+| `UseLocalPresetScope` / `UseGlobalPresetScope` | プリセットの同期範囲 |
+| `UsePowerLocalScope` / `UsePowerGlobalScope` | 電源の同期範囲 |
+| `ApplyToMaterials` / `ApplyStaticSettings` | 設定をマテリアルへ反映 |
+
+### 番号を指定してプリセットを選ぶ
+
+**`SelectPreset` は引数を取るため `SendCustomEvent` では呼べません。** 番号を指定する
+ときは次のようにします。
+
+```csharp
+mirrorBall.SetProgramVariable("apiPresetIndex", 2);
+mirrorBall.SendCustomEvent("RequestSelectPreset");
+
+int result = (int)mirrorBall.GetProgramVariable("apiLastResultCode");
+// 0 なら成功
+```
+
+### 結果を確かめる
+
+| 変数名 | 内容 |
+| --- | --- |
+| `apiLastResultCode` | 直前の操作の結果。**0 が成功** |
+| `apiStateRevision` | 状態が変わるたびに1つ増える目印 |
+
+結果コードの意味です。
+
+| 値 | 意味 |
+| --- | --- |
+| 0 | 成功した |
+| 1 | プリセットが無効（`ライブプリセットを使用` がOFF、または一覧が空） |
+| 2 | 指定した番号のプリセットが未設定 |
+| 3 | 切替中のため**予約した**（`切替中の要求を1件だけ予約` が有効） |
+| 4 | 切替中のため**無視した**（同上が無効。**これが既定です**） |
+
+**3 と 4 は別物です。** 3 は切替が終わってから適用されますが、4 は捨てられます。
+
+`apiStateRevision` は、**副作用が見えにくい操作でも効いたかどうかを確かめる**ための
+目印です。たとえば連携版の切替はオブジェクトの有効・無効を変えるだけなので、外から
+は分かりません。この値が増えていれば処理は走っています。
+
+### 従来の書き方も使えます
+
+`presetSelectionIndex` を直接書いてから `ApplySelectedPreset` を送る方法も、**これまで
+どおり動きます。** 既存のワールドはそのままで構いません。新しく書くときは
+`apiPresetIndex` と `RequestSelectPreset` をお使いください。
+
 ## ガラス・透明・半透明オブジェクト
 
 透明面には `MirrorBallLight/MirrorBallSurfaceAutoTransparent` を使用してください。通常壁用のOpaque版とは描画順、Blend、深度書き込みを分離しています。Materials自動検出ボタンは両方のShaderを検出します。
