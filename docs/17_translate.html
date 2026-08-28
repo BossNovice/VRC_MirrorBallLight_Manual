@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>12 Material Translate | MirrorBallLight</title>
+<title>既存の壁・ガラスMaterialを変換 | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -15,8 +15,8 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="11_r24_world_shader.html">← ワールドShader</a>
-<a href="13_surface_emission_mask.html">表面Emission →</a>
+<a href="16_integrations.html">← LTCGI・LightVolumes</a>
+<a href="18_troubleshoot.html">うまく動かない →</a>
 </nav>
 </header>
 <div class="shell">
@@ -24,32 +24,51 @@
 <button class="toggle" aria-expanded="false">ページ一覧を開く</button>
 <div class="panel">
 <a class="home" href="index.html">目次</a>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
 </li>
-<li><a href="02_quickstart.html"><span>サンプル</span></a>
+<li><a href="02_sample.html">サンプルで確かめる</a>
 </li>
-<li><a href="03_controller.html"><span>Controller</span></a>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
 </li>
-<li><a href="04_effects.html"><span>反射・光点</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
 </li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+<li><a href="05_motion.html">回転・反射・色</a>
 </li>
-<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<li><a href="06_spots.html">光点の形と量</a>
 </li>
-<li><a href="07_presets.html"><span>プリセット</span></a>
+<li><a href="07_cookie.html">Cookie投影</a>
 </li>
-<li><a href="08_materials.html"><span>Material</span></a>
+<li><a href="08_surface.html">壁・床のMaterial</a>
 </li>
-<li><a href="09_integrations.html"><span>連携</span></a>
+<li><a href="09_glass.html">ガラスのMaterial</a>
 </li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+<li><a href="10_body.html">ミラーボール本体</a>
 </li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+<li><a href="11_emission.html">表面Emission・Mask</a>
 </li>
-<li><a aria-current="page" href="12_material_translate.html"><span>Material変換</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
+</li>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a aria-current="page" href="17_translate.html">既存Materialの変換</a>
 <ul class="inpage">
+<li><a href="#s9">このページでできること</a></li>
 <li><a href="#s1">推奨手順：Translate Copy</a></li>
 <li><a href="#s2">右クリックメニュー</a></li>
 <li><a href="#s3">通常面／透明面の自動判定</a></li>
@@ -58,23 +77,28 @@
 <li><a href="#s6">元へ戻す方法</a></li>
 </ul>
 </li>
-<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
 </li>
-<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+<li><a href="19_heavy.html">重い</a>
 </li>
-<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+<li><a href="20_release.html">公開前チェック</a>
 </li>
-</ol>
-</div>
-</nav>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
-<div class="eyebrow">12 / MATERIAL TRANSLATE</div>
+<div class="eyebrow">連携する</div>
 <h1>既存の壁・ガラスMaterialを変換</h1>
-<p class="lead">PoiyomiのTranslate／Translate Copyに近い操作で、既存設定をMirrorBallLight Shaderへ移します。</p>
-
-<section>
-<h2 id="s1">推奨手順：Translate Copy</h2>
+<p class="lead">PoiyomiのTranslate／Translate Copyに近い操作で、既存設定を移します。</p>
+<section id="s9">
+<h2>このページでできること</h2>
+<p>既存の壁・ガラスは、HierarchyまたはProjectの右クリックメニューから設定を可能な範囲で引き継いで変換できます。元Materialを保持する場合はTranslate Copyを使用してください。</p>
+<p><a href="17_translate.html">Material Translate／Translate Copyの詳細</a></p>
+</section>
+<section id="s1">
+<h2>推奨手順：Translate Copy</h2>
 <ol>
 <li>Hierarchyで壁、床、天井、ガラスのGameObjectを選択します。</li>
 <li>右クリックして <code>MirrorBall Light &gt; マテリアル &gt; Translate Copy（複製して変換・推奨）</code> を選びます。</li>
@@ -84,9 +108,8 @@
 </ol>
 <div class="tip">初回は必ずTranslate Copyを推奨します。見た目を確認した後、不要になった元Materialを手動で整理してください。</div>
 </section>
-
-<section>
-<h2 id="s2">右クリックメニュー</h2>
+<section id="s2">
+<h2>右クリックメニュー</h2>
 <table>
 <tr><th>メニュー</th><th>動作</th></tr>
 <tr><td>Translate（直接変換）</td><td>元Material自体のShaderを変更します。Undo対応ですが、同じMaterialを共有する全Objectへ影響します。</td></tr>
@@ -97,9 +120,8 @@
 </table>
 <p>同じメニューはProjectウィンドウでMaterial Assetを右クリックした場合にも表示されます。Project側のTranslate CopyはコピーAssetを作成し、作成物を選択状態にします。</p>
 </section>
-
-<section>
-<h2 id="s3">通常面／透明面の自動判定</h2>
+<section id="s3">
+<h2>通常面／透明面の自動判定</h2>
 <p>次の情報を順に確認し、ひとつでも透明条件に該当すればTransparent版へ変換します。</p>
 <ul>
 <li>Shader名にTransparent、Glass、Fadeが含まれる</li>
@@ -110,9 +132,8 @@
 </ul>
 <div class="note">Cutoutだけを使うMaterialや独自Shaderでは判定が異なる可能性があります。実行前に「変換内容を確認」を使用してください。</div>
 </section>
-
-<section>
-<h2 id="s4">引き継ぐ設定</h2>
+<section id="s4">
+<h2>引き継ぐ設定</h2>
 <table>
 <tr><th>元Materialの候補</th><th>MirrorBallLight側</th></tr>
 <tr><td>Base Map／Main Texture、Tiling、Offset</td><td>壁・床の基本Texture</td></tr>
@@ -128,9 +149,8 @@
 <tr><td>GPU Instancing、Double Sided GI、GI Flags</td><td>同じMaterial設定を維持</td></tr>
 </table>
 </section>
-
-<section>
-<h2 id="s5">完全変換できない設定</h2>
+<section id="s5">
+<h2>完全変換できない設定</h2>
 <p>Poiyomi、lilToon、独自Shaderの次の機能はMirrorBallLight側に同じ機能がないため、完全には再現できない可能性があります。</p>
 <ul>
 <li>複数レイヤーTextureと独自ブレンド</li>
@@ -141,9 +161,8 @@
 </ul>
 <p>変換後はSceneビューでBase Texture、Normal、透明度、表面Emission／Maskを確認し、Controllerの設定をMaterialへ反映してからVRChatへアップロードしてください。</p>
 </section>
-
-<section>
-<h2 id="s6">元へ戻す方法</h2>
+<section id="s6">
+<h2>元へ戻す方法</h2>
 <ul>
 <li>Translate直後ならUnityのUndoを使用します。</li>
 <li>Translate CopyではRendererへ元Materialを再割り当てします。</li>
@@ -151,8 +170,8 @@
 </ul>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
-<a href="11_r24_world_shader.html">← ワールドShader拡張</a>
-<a href="13_surface_emission_mask.html">表面Emission・Mask →</a>
+<a href="16_integrations.html">← LTCGI・VRCLightVolumes連携</a>
+<a href="18_troubleshoot.html">うまく動かないとき →</a>
 </nav>
 </div>
 </main>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>02 設定済みサンプル | MirrorBallLight</title>
+<title>設定済みサンプルで最短確認 | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -15,8 +15,8 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="01_installation.html">← 導入</a>
-<a href="03_controller.html">Controller →</a>
+<a href="01_install.html">← 導入する</a>
+<a href="03_apply.html">自分の壁へ適用する →</a>
 </nav>
 </header>
 <div class="shell">
@@ -24,54 +24,71 @@
 <button class="toggle" aria-expanded="false">ページ一覧を開く</button>
 <div class="panel">
 <a class="home" href="index.html">目次</a>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
 </li>
-<li><a aria-current="page" href="02_quickstart.html"><span>サンプル</span></a>
+<li><a aria-current="page" href="02_sample.html">サンプルで確かめる</a>
 <ul class="inpage">
 <li><a href="#place">配置する</a></li>
 <li><a href="#objects">Prefab内の設定</a></li>
 <li><a href="#prefab">Prefabのまま使うときの注意</a></li>
 <li><a href="#verify">正しく動かない場合の確認順</a></li>
-<li><a href="#reuse">自分の壁へ適用する</a></li>
 </ul>
 </li>
-<li><a href="03_controller.html"><span>Controller</span></a>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
 </li>
-<li><a href="04_effects.html"><span>反射・光点</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
 </li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+<li><a href="05_motion.html">回転・反射・色</a>
 </li>
-<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<li><a href="06_spots.html">光点の形と量</a>
 </li>
-<li><a href="07_presets.html"><span>プリセット</span></a>
+<li><a href="07_cookie.html">Cookie投影</a>
 </li>
-<li><a href="08_materials.html"><span>Material</span></a>
+<li><a href="08_surface.html">壁・床のMaterial</a>
 </li>
-<li><a href="09_integrations.html"><span>連携</span></a>
+<li><a href="09_glass.html">ガラスのMaterial</a>
 </li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+<li><a href="10_body.html">ミラーボール本体</a>
 </li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+<li><a href="11_emission.html">表面Emission・Mask</a>
 </li>
-<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
 </li>
-<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
 </li>
-<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+<li><a href="14_udon.html">Udonから操作する</a>
 </li>
-<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+<li><a href="15_show.html">演出をUdonで組む</a>
 </li>
-</ol>
-</div>
-</nav>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
-<div class="eyebrow">02 / QUICK START</div>
+<div class="eyebrow">はじめて置く</div>
 <h1>設定済みサンプルで最短確認</h1>
-<p class="lead">壁・ミラーボール・Spot Light・Controllerを関連付け済みのPrefabです。</p>
-
+<p class="lead">壁・ミラーボール・Spot Light・Controllerを関連付け済みのPrefabで、動くところまでを確かめます。</p>
 <section id="place">
 <h2>配置する</h2>
 <ol class="steps">
@@ -140,7 +157,6 @@
 <div class="warning"><strong><code>Apply</code> は付属のPrefabを書き換えます。</strong> ワールド固有の調整を <code>Apply</code> すると、他のシーンで置いたものや、次に置くものにも付いて回ります。<strong>迷ったら <code>Apply</code> は押さないでください。</strong> インスタンス側の変更だけで足ります。</div>
 <div class="tip">自分のワールド用に作り込むなら、Hierarchyのインスタンスを右クリックして <code>Prefab &gt; Unpack</code> するか、別名のPrefabとして保存してください。<strong>付属のPrefabを直接育てると、次の版を入れたときに手作業が要ります。</strong></div>
 </section>
-
 <section id="verify">
 <h2>正しく動かない場合の確認順</h2>
 <ol>
@@ -151,23 +167,9 @@
 <li>「電源状態」がON、「反射光の明るさ」が0より大きいか</li>
 </ol>
 </section>
-<section id="reuse">
-<h2>自分の壁へ適用する</h2>
-<ol class="steps">
-<li>対象壁のMaterialを複製します。</li>
-<li>通常の壁なら<code>MirrorBallLight/MirrorBallSurfaceAuto</code>、ガラスなら<code>MirrorBallLight/MirrorBallSurfaceAutoTransparent</code>へ変更します。</li>
-<li>元のBase Texture、Color、Normal Mapなどを移します。</li>
-<li>Controllerの「対象マテリアルをシーンから自動検出」を押します。</li>
-<li>「現在の設定をマテリアルへ反映・保存」を押します。</li>
-</ol>
-<div class="warning">付属Materialを直接編集すると、サンプルと統合Prefabの見た目にも共有されます。ワールド固有の調整ではMaterialを複製してください。</div>
-<p>
-<a href="03_controller.html">次へ：Controller全項目 →</a>
-</p>
-</section>
 <nav class="pagenav" aria-label="前後のページ">
-<a href="01_installation.html">← 導入</a>
-<a href="03_controller.html">Controller設定 →</a>
+<a href="01_install.html">← UnityPackageの導入</a>
+<a href="03_apply.html">自分の壁・床へ適用する →</a>
 </nav>
 </div>
 </main>

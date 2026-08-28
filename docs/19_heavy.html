@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>14 動作が重い場合のTips | MirrorBallLight</title>
+<title>動作が重い場合 | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -15,8 +15,8 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="13_surface_emission_mask.html">← 表面Emission</a>
-<a href="15_advanced_usage.html">拡張的な使い方 →</a>
+<a href="18_troubleshoot.html">← うまく動かない</a>
+<a href="20_release.html">公開前チェック →</a>
 </nav>
 </header>
 <div class="shell">
@@ -24,56 +24,76 @@
 <button class="toggle" aria-expanded="false">ページ一覧を開く</button>
 <div class="panel">
 <a class="home" href="index.html">目次</a>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
 </li>
-<li><a href="02_quickstart.html"><span>サンプル</span></a>
+<li><a href="02_sample.html">サンプルで確かめる</a>
 </li>
-<li><a href="03_controller.html"><span>Controller</span></a>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
 </li>
-<li><a href="04_effects.html"><span>反射・光点</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
 </li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+<li><a href="05_motion.html">回転・反射・色</a>
 </li>
-<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<li><a href="06_spots.html">光点の形と量</a>
 </li>
-<li><a href="07_presets.html"><span>プリセット</span></a>
+<li><a href="07_cookie.html">Cookie投影</a>
 </li>
-<li><a href="08_materials.html"><span>Material</span></a>
+<li><a href="08_surface.html">壁・床のMaterial</a>
 </li>
-<li><a href="09_integrations.html"><span>連携</span></a>
+<li><a href="09_glass.html">ガラスのMaterial</a>
 </li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+<li><a href="10_body.html">ミラーボール本体</a>
 </li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+<li><a href="11_emission.html">表面Emission・Mask</a>
 </li>
-<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
 </li>
-<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
 </li>
-<li><a aria-current="page" href="14_performance_tips.html"><span>重い場合のTips</span></a>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a aria-current="page" href="19_heavy.html">重い</a>
 <ul class="inpage">
 <li><a href="#first">最初に：CPUとGPUのどちらが原因かを確かめる</a></li>
 <li><a href="#gpu">GPUが原因のとき</a></li>
 <li><a href="#cpu">CPUが原因のとき</a></li>
 <li><a href="#many">オブジェクトが多いとき</a></li>
-<li><a href="#diagnose">設定の矛盾を先に潰す</a></li>
+<li><a href="#budget">推奨負荷設定</a></li>
+<li><a href="#skip-hidden">自動で効く軽量化</a></li>
 <li><a href="#notes">知っておくと判断が早くなること</a></li>
 </ul>
 </li>
-<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+<li><a href="20_release.html">公開前チェック</a>
 </li>
-</ol>
-</div>
-</nav>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
-<div class="eyebrow">14 / PERFORMANCE TIPS</div>
-<h1>動作が重い場合のTips</h1>
-<p class="lead">まず原因がCPUかGPUかを確かめてから手を打ちます。原因を確かめずに設定を変えても、たいてい何も変わりません。</p>
-
-<section id="first"><h2>最初に：CPUとGPUのどちらが原因かを確かめる</h2>
+<div class="eyebrow">困ったとき</div>
+<h1>動作が重い場合</h1>
+<p class="lead">原因がCPUかGPUかを確かめてから手を打ちます。確かめずに設定を変えても、たいてい何も変わりません。</p>
+<section id="first">
+<h2>最初に：CPUとGPUのどちらが原因かを確かめる</h2>
 <p><strong>これを飛ばさないでください。</strong> CPUが原因のときにGPU向けの手を打っても、フレームレートは1つも改善しません。逆も同じです。</p>
 <ol>
 <li>Unityの <code>Window &gt; Analysis &gt; Profiler</code> を開きます</li>
@@ -93,8 +113,8 @@
 </table>
 <p>60fpsなら1フレームの予算は約16.7ms、90fpsなら約11msです。<strong>GPU時間が2〜3msしかないなら、このアセットの描画は原因ではありません。</strong> そこを削っても数字は動きません。</p>
 </section>
-
-<section id="gpu"><h2>GPUが原因のとき</h2>
+<section id="gpu">
+<h2>GPUが原因のとき</h2>
 
 <h3>1. 距離フェードを有効にして、終了距離を詰める（効果が大きい）</h3>
 <p><strong>距離フェードは軽量化のスイッチです。</strong> 終了距離より遠い面では、光点の形・色・点滅の計算そのものを行いません。</p>
@@ -126,8 +146,8 @@
 <h3>6. テクスチャの設定を見直す</h3>
 <p>光点形状・アトラス・Cookie・各種Maskに必要以上に大きなテクスチャを使っていないか確認してください。圧縮形式（BC系）とMipmapが有効かどうかも効きます。</p>
 </section>
-
-<section id="cpu"><h2>CPUが原因のとき</h2>
+<section id="cpu">
+<h2>CPUが原因のとき</h2>
 
 <h3>1. 更新頻度と対象Material数の積を見る</h3>
 <p>負荷は <code>マテリアル更新頻度</code> そのものではなく、<strong>対象Material数との積</strong>で決まります。1枚なら90回でも軽く、20枚なら30回でも重くなります。</p>
@@ -148,8 +168,8 @@
 <h3>4. プリセットの差分更新</h3>
 <p>ライブプリセットは <code>プリセット差分更新の最小値</code> 未満の微小な補間更新を省きます。初期値は0.001です。</p>
 </section>
-
-<section id="many"><h2>オブジェクトが多いとき</h2>
+<section id="many">
+<h2>オブジェクトが多いとき</h2>
 
 <p>壁・床・柱など、<strong>反射を受ける面をたくさん置いた場合</strong>の話です。CPUとGPUで事情が違います。</p>
 
@@ -176,28 +196,90 @@
 <p>GPU側は<strong>面の枚数ではなく、画面に塗られる画素の数</strong>で決まります。小さな面を100枚置いても、画面の隅にしか映らないなら負荷はわずかです。逆に大きな面が1枚でも画面いっぱいなら重くなります。</p>
 <p>したがって、面が多いときの手当ても上の「GPUが原因のとき」と同じです。<strong>距離フェードの終了距離を詰める</strong>のが最も効きます。</p>
 </section>
-
-<section id="diagnose"><h2>設定の矛盾を先に潰す</h2>
-<p><code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> を実行してください。負荷に関係する項目も知らせます。</p>
-<ul>
-<li>更新頻度 × 対象Material数が大きすぎる場合の警告</li>
-<li>Shader Global共有が有効なControllerが複数ある場合のエラー</li>
-<li>機能をONにしたのに必要なものが設定されていない組み合わせ</li>
-</ul>
-<p>この画面が出す負荷のしきい値は<strong>経験的な目安であり、実機で計測した値ではありません</strong>。参考として使ってください。</p>
+<section id="budget">
+<h2>推奨負荷設定</h2>
+<p>実際に重いときの手順は <a href="19_heavy.html">動作が重い場合のTips</a> にまとめています。<strong>原因がCPUかGPUかを確かめてから設定を変えてください。</strong></p>
+<table>
+<tr>
+<th>対象</th>
+<th>推奨開始値</th>
+<th>理由</th>
+</tr>
+<tr>
+<td>Controller</td>
+<td>Global共有 ON、GPU投影回転 ON</td>
+<td>Material数に依存するCPU更新を削減します。</td>
+</tr>
+<tr>
+<td>更新頻度</td>
+<td>30回／秒</td>
+<td>見た目と負荷のバランス。静かな演出は15–20でも可。</td>
+</tr>
+<tr>
+<td>Realtime Light</td>
+<td>1灯、影なし、Range最小</td>
+<td>アバター実光の負荷を制限します。</td>
+</tr>
+<tr>
+<td>Sceneプレビュー</td>
+<td>16本</td>
+<td>Editor専用ですが、複雑なScene操作時はOFFも可。</td>
+</tr>
+<tr>
+<td>Surface Facing</td>
+<td>必要時のみON</td>
+<td>追加計算を避けます。</td>
+</tr>
+<tr>
+<td>Shaderバリアント</td>
+<td>使わないAudioLink／Cookie／Atlas／連携をOFF</td>
+<td>使用Keywordとビルド対象を限定します。</td>
+</tr>
+</table>
+<div class="warning">Shader Global共有を使うControllerは同一シーンで1個にしてください。複数あると最後に更新したControllerの値が全対応Materialへ反映されます。</div>
 </section>
-
-<section id="notes"><h2>知っておくと判断が早くなること</h2>
+<section id="skip-hidden">
+<h2>自動で効く軽量化</h2>
+<p>光点がまったく映らない面では光点の計算そのものを行わなくなりました。設定は不要で、見た目も変わりません。</p>
+<p>これまでは、遠くて光点が消えている面でも形・色・点滅をひととおり計算してから最後に0を掛けて消していました。先に消えるかどうかを判定するようにしています。</p>
+<table>
+<tr>
+<th>条件</th>
+<th>効果</th>
+</tr>
+<tr>
+<td><code>距離フェードを使用</code> がONで、<code>フェード終了距離</code> より遠い面</td>
+<td>あり。広いワールドほど効きます。</td>
+</tr>
+<tr>
+<td>電源がOFFのとき</td>
+<td>あり。</td>
+</tr>
+<tr>
+<td><code>距離フェードを使用</code> がOFF</td>
+<td>ありません。</td>
+</tr>
+</table>
+<p><code>距離フェードを使用</code> がOFFだと、どの面も「消える」と判定されないため効果がありません。広いワールドで軽さを優先する場合はONにしてください。</p>
+<p>半透明版のShaderは対象外です。半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、計算を飛ばすと見た目が変わってしまいます。</p>
+<h3>半透明版での効き方</h3>
+<p>半透明版のShaderでも色の計算を「光点が映らない画素では行わない」ようにしました。設定は不要で、見た目も変わりません。</p>
+<p>効く条件は不透明版と同じです（<code>距離フェードを使用</code> がONで <code>フェード終了距離</code> より遠い面、または電源がOFFのとき）。</p>
+<p><strong>軽くなる度合いは不透明版より小さいです。</strong> 半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、形の計算は飛ばせません。飛ばせるのは色の計算だけです。</p>
+<p>あわせて、<code>プリズム色分散</code> を有効にしたときにフェード境界の1〜2ピクセルで色が不安定になり得る箇所を直しました。実際に症状が出た報告はありません。この項目の初期値は0（無効）で、無効なら影響はありません。</p>
+</section>
+<section id="notes">
+<h2>知っておくと判断が早くなること</h2>
 <h3>設定を変えても数字が動かないとき</h3>
 <p>そもそもGPU律速になっていない可能性が高いです。「最初に」の手順に戻って、CPUとGPUのどちらが原因かを確かめ直してください。</p>
 <h3>使っていない機能は既に省かれています</h3>
 <p>Cookie・形状アトラス・ランダム点滅・各種Maskは、OFFのときShaderの内部で分岐して読み飛ばしています。<strong>使っていない機能をOFFにして回るより、上の1〜5を先に見てください。</strong></p>
 <h3>Import時間と実行時の重さは別のものです</h3>
-<p>導入時のImportが長いことと、ワールドが実行時に重いことは無関係です。Importについては<a href="10_optimization_troubleshooting.html">最適化・対処</a>を参照してください。</p>
+<p>導入時のImportが長いことと、ワールドが実行時に重いことは無関係です。Importについては<a href="18_troubleshoot.html">最適化・対処</a>を参照してください。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
-<a href="13_surface_emission_mask.html">← 表面Emission・Mask</a>
-<a href="15_advanced_usage.html">拡張的な使い方 →</a>
+<a href="18_troubleshoot.html">← うまく動かないとき</a>
+<a href="20_release.html">診断と公開前チェック →</a>
 </nav>
 </div>
 </main>

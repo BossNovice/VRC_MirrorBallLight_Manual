@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>15 拡張的な使い方 | MirrorBallLight</title>
+<title>演出をUdonで組む | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -15,7 +15,8 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="14_performance_tips.html">← 重い場合のTips</a>
+<a href="14_udon.html">← Udonから操作する</a>
+<a href="16_integrations.html">LTCGI・LightVolumes →</a>
 </nav>
 </header>
 <div class="shell">
@@ -23,44 +24,44 @@
 <button class="toggle" aria-expanded="false">ページ一覧を開く</button>
 <div class="panel">
 <a class="home" href="index.html">目次</a>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
 </li>
-<li><a href="02_quickstart.html"><span>サンプル</span></a>
+<li><a href="02_sample.html">サンプルで確かめる</a>
 </li>
-<li><a href="03_controller.html"><span>Controller</span></a>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
 </li>
-<li><a href="04_effects.html"><span>反射・光点</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
 </li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+<li><a href="05_motion.html">回転・反射・色</a>
 </li>
-<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<li><a href="06_spots.html">光点の形と量</a>
 </li>
-<li><a href="07_presets.html"><span>プリセット</span></a>
+<li><a href="07_cookie.html">Cookie投影</a>
 </li>
-<li><a href="08_materials.html"><span>Material</span></a>
+<li><a href="08_surface.html">壁・床のMaterial</a>
 </li>
-<li><a href="09_integrations.html"><span>連携</span></a>
+<li><a href="09_glass.html">ガラスのMaterial</a>
 </li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+<li><a href="10_body.html">ミラーボール本体</a>
 </li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+<li><a href="11_emission.html">表面Emission・Mask</a>
 </li>
-<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
 </li>
-<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
 </li>
-<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+<li><a href="14_udon.html">Udonから操作する</a>
 </li>
-<li><a aria-current="page" href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+<li><a aria-current="page" href="15_show.html">演出をUdonで組む</a>
 <ul class="inpage">
-<li><a href="#prereq">このページの前提</a></li>
-<li><a href="#base">共通の下ごしらえ</a></li>
-<li><a href="#recipe-power">ボタンで電源を切り替える</a></li>
-<li><a href="#scope">同期範囲を設計する</a></li>
-<li><a href="#recipe-local">自分だけ消せるようにする</a></li>
-<li><a href="#ownership">所有権はいつ動くか</a></li>
 <li><a href="#recipe-dj">曲ごとに演出を出す</a></li>
 <li><a href="#readback">結果を読み取って分岐する</a></li>
 <li><a href="#recipe-multi">複数台をまとめて操る</a></li>
@@ -68,131 +69,29 @@
 <li><a href="#pitfalls">やってはいけないこと</a></li>
 </ul>
 </li>
-</ol>
-</div>
-</nav>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
-<div class="eyebrow">15 / ADVANCED USAGE</div>
-<h1>拡張的な使い方</h1>
-<p class="lead">Inspectorで設定して置くだけ、から先の話です。ワールド側のUdonから動かす、同期範囲を設計する、複数台をまとめて操る、といった使い方を、実際の設定手順つきでまとめます。</p>
-
-<section id="prereq"><h2>このページの前提</h2>
-<p>イベント名と結果コードの一覧は<a href="07_presets.html#api">プリセット</a>の「他のUdonから操作する（外部制御API）」にあります。<strong>先にそちらを読んでください。</strong> このページはその一覧を使って何を組み立てられるか、という話です。</p>
-<p>このページに出てくるコードはUdonSharp（U#）です。UdonSharpの導入とスクリプトの作り方そのものは扱いません。</p>
-<p>このページの図は<strong>模式図です。</strong> Inspectorの見た目そのものではありません。項目名は実物と合わせてあります。</p>
-<div class="tip">イベント名の文字列は、<strong>自分のスクリプトの中で定数にまとめておくと安全です。</strong> 同じ名前を何か所にも直接書くと、直すときに1か所だけ取り残します。</div>
-<div class="warning"><strong>イベント名は変えないでください。</strong> <code>SendCustomEvent</code> は名前を文字列で呼びます。名前を変えると、それを呼んでいるワールドがエラーも出さずに静かに壊れます。</div>
-</section>
-
-<section id="base"><h2>共通の下ごしらえ</h2>
-<p>以下のレシピはすべて、<strong>Controllerへの参照を持ったUdonBehaviour</strong>から始まります。まずこれを作ります。</p>
-<ol class="steps">
-<li>Hierarchyで空のGameObjectを作ります。名前は <code>MirrorBallRemote</code> など、役割が分かるものにします。</li>
-<li>新しいU#スクリプトを作り、そのGameObjectへ付けます。</li>
-<li>スクリプトへ <code>public UdonBehaviour mirrorBall;</code> を宣言します。</li>
-<li>Inspectorに現れた <strong>Mirror Ball</strong> の欄へ、<strong>Controllerが付いているGameObject</strong>をHierarchyからドラッグします。</li>
-</ol>
-<div class="warning"><strong>ドラッグするのはControllerが付いた側です。</strong> 子の <code>mirrorball</code>（回転Root）ではありません。ここを間違えると、実行するまで気づけません。設定済みサンプルなら <code>MirrorBallLight_ConfiguredSample</code> がその位置です。</div>
-<p>参照が取れているかは、Play Modeに入って一度だけ <code>TogglePower</code> を呼べば分かります。何も起きなければ参照先が違います。</p>
-</section>
-
-<section id="recipe-power"><h2>ボタンで電源を切り替える</h2>
-<h3>まず、スクリプトが要るかを確かめる</h3>
-<p>ミラーボール自体をクリックして点け消しするだけなら、<strong>スクリプトは要りません。</strong></p>
-<table>
-<thead><tr><th>Controllerの場所</th><th>項目</th><th>設定</th></tr></thead>
-<tbody>
-<tr><td>1. 基本設定・電源・対象Material</td><td>このオブジェクトをクリックして切替</td><td>ON（初期値）</td></tr>
-<tr><td>1. 基本設定・電源・対象Material</td><td>電源状態</td><td>初期状態をここで決めます</td></tr>
-<tr><td>1. 基本設定・電源・対象Material</td><td>電源フェード時間（秒）</td><td>0にすると即座に切り替わります</td></tr>
-</tbody>
-</table>
-<div class="tip">この方法でクリックできるのは、<strong>Controllerが付いたGameObjectにColliderがある場合だけ</strong>です。手が届かない高さに吊るしてある場合も、下のスクリプト方式にします。</div>
-<h3>離れた場所のスイッチから切り替える</h3>
-<p>壁のスイッチなど、別のオブジェクトから操作する場合です。「共通の下ごしらえ」で作ったスクリプトへ、次を書きます。</p>
-<pre><code>public override void Interact()
-{
-    mirrorBall.SendCustomEvent("TogglePower");
-}</code></pre>
-<ol class="steps">
-<li>スイッチにするGameObjectへ<strong>Colliderを付けます。</strong> これが無いとクリックできません。Colliderのほかに、オブジェクトが有効であること、手が届く距離にあること、<code>public override void Interact()</code> の形が正しいことも必要です。</li>
-<li>上のスクリプトをそのGameObjectへ付けます。</li>
-<li><strong>Mirror Ball</strong> の欄へControllerを入れます。</li>
-<li>ミラーボール側の「このオブジェクトをクリックして切替」はOFFにします。<strong>両方を生かすなら、役割を分けてください。</strong> 例えば本体クリックは <code>TurnOff</code> だけ、壁のスイッチは <code>TogglePower</code>、といった分け方です。どちらも <code>TogglePower</code> にすると、二重に反応したときに状態が逆転します。</li>
-</ol>
-<p>Unity UIのButtonから呼ぶ場合は、スクリプトを書かずにButtonの <code>On Click</code> から直接呼べます。手順は<a href="07_presets.html#api">プリセット</a>にあります。</p>
-</section>
-
-<section id="scope"><h2>同期範囲を設計する</h2>
-<p>プリセットと電源は、<strong>それぞれ別に</strong>「全員で共有する（グローバル）」か「その人だけ（ローカル）」かを選べます。2つは独立しているので、組み合わせは4通りあります。</p>
-<figure>
-<img src="assets/diagrams/scope-matrix.svg" alt="プリセットの動作範囲と電源の動作範囲を組み合わせた4通りの用途。両方グローバルはライブ会場、プリセットのみグローバルは演出を揃えつつ消す自由を残す構成、電源のみグローバルは点灯状態だけ共有する構成、両方ローカルは個人宅ワールド。">
-<figcaption>「プリセットの動作範囲」と「動作範囲」は別々の設定です。0がローカル専用、1が同期です。どちらも初期値は1です。</figcaption>
-</figure>
-<h3>Inspectorでの場所</h3>
-<table>
-<thead><tr><th>設定したいもの</th><th>Controllerの場所</th><th>項目</th></tr></thead>
-<tbody>
-<tr><td>電源の同期範囲</td><td>1. 基本設定・電源・対象Material</td><td>動作範囲</td></tr>
-<tr><td>プリセットの同期範囲</td><td>2. ライブプリセット</td><td>プリセットの動作範囲</td></tr>
-</tbody>
-</table>
-<h3>切り替えは専用の入口から呼ぶ</h3>
-<div class="tip">このページで「イベント名」「<code>api</code> で始まる変数」として挙げているものは、<strong>外から呼ばれる前提の入口です。</strong> それ以外のフィールドの動きは実装の都合で変わることがあります。</div>
-<p>動作範囲はどちらも public なフィールドなので直接書き換えられますが、<strong>専用の入口から呼んでください。</strong></p>
-<table>
-<thead><tr><th>呼ぶもの</th><th>直接書き換えとの違い</th></tr></thead>
-<tbody>
-<tr><td><code>UseLocalPresetScope</code> / <code>UseGlobalPresetScope</code></td><td>切替中の予約がその場で破棄されます。直接書き換えると次のUpdateまで残ります</td></tr>
-<tr><td><code>UsePowerLocalScope</code> / <code>UsePowerGlobalScope</code></td><td>見た目にその場で反映されます。直接書き換えると次のUpdateまで遅れます</td></tr>
-</tbody>
-</table>
-<div class="warning"><strong>電源の状態は範囲ごとに別々に持っています。</strong> ローカル専用と同期とで、点いている・消えているを別に覚えています。切り替えると、その範囲が覚えていた状態が有効になるため、2つが食い違っていれば<strong>切り替えた瞬間に点いたり消えたりします。</strong></div>
-<h3>回転角の引き継ぎ</h3>
-<p>電源の範囲をグローバルからローカルへ移すときは、そのときの回転角をローカル側が引き継ぎます。<strong>切り替えても回転が飛びません。</strong></p>
-<p>逆向き（ローカルからグローバル）では引き継ぎません。全員で共有している時間軸へ戻るので、そちらに合わせます。ここで引き継いでしまうと、自分の都合で他の人の見え方を動かすことになります。</p>
-</section>
-
-<section id="recipe-local"><h2>自分だけ消せるようにする</h2>
-<p>演出は全員で揃えたまま、まぶしさが苦手な人には自分の画面だけ消してもらう構成です。ライブ会場でよく要る形です。</p>
-<h3>Inspectorでの設定</h3>
-<table>
-<thead><tr><th>Controllerの場所</th><th>項目</th><th>設定</th></tr></thead>
-<tbody>
-<tr><td>2. ライブプリセット</td><td>プリセットの動作範囲</td><td>1（同期のまま。演出は揃えます）</td></tr>
-<tr><td>1. 基本設定・電源・対象Material</td><td>動作範囲</td><td>0（ローカル専用にします）</td></tr>
-</tbody>
-</table>
-<p>この2つを設定しておけば、来場者がミラーボールをクリックして消しても、他の人の画面は消えません。演出のプリセットは全員そろったままです。</p>
-<div class="tip"><strong>実行中に範囲そのものを切り替える必要は、たいていありません。</strong> 最初からこの組み合わせで固定しておくほうが確実です。</div>
-<h3>実行中に切り替える場合</h3>
-<p>どうしても実行中に切り替えるなら、<strong>切り替えた後の見え方が変わりうる</strong>ことに注意してください。範囲ごとに点灯状態を別に持っているためです。</p>
-<pre><code>public UdonBehaviour mirrorBall;
-
-public override void Interact()
-{
-    // 自分の画面だけの扱いに移します
-    mirrorBall.SendCustomEvent("UsePowerLocalScope");
-
-    // 移った先が覚えている状態がそのまま出ます。
-    // 望む状態が決まっているなら、ここで明示的に指定します。
-    mirrorBall.SendCustomEvent("TurnOff");
-}</code></pre>
-<p><code>TurnOn</code> / <code>TurnOff</code> のように<strong>結果が一意に決まるイベントで締めてください。</strong> <code>TogglePower</code> で締めると、切替前の状態しだいで点いたり消えたりします。</p>
-</section>
-
-<section id="ownership"><h2>所有権はいつ動くか</h2>
-<p>同期する設定を書き換えるときは、書く前に所有権を取ります。<strong>所有者でないまま同期変数へ書くと、押した本人の手元だけ変わり、他の人には届きません。</strong> しかも本人には正しく見えるので気づけません。その人が後で所有者になると、ズレた値が全員へ配られます。</p>
-<figure>
-<img src="assets/diagrams/ownership-timeline.svg" alt="ボタンを押してから他の人に届くまでの流れ。押した人の中でイベント呼び出し、所有権の確認と取得、値の書き込みと配信要求が起き、ネットワークを経て他の人へ反映される。ネットワークの区間には決まった所要時間がない。">
-<figcaption>所有権を取るのは、プリセットか電源のどちらかがグローバルのときだけです。両方ローカルなら何もしません。同期する必要がないところで所有権を取ると、無用な奪い合いになるためです。</figcaption>
-</figure>
-<div class="tip"><strong>Controllerの公開イベントを使うかぎり</strong>、ワールド側で <code>Networking.SetOwner</code> を自分で呼ぶ必要はありません。必要なときだけ内部で取ります。<strong>ワールド全体で所有権を意識しなくてよい、という意味ではありません。</strong> 他のギミックの所有権は、これまでどおりそちらで扱ってください。</div>
-<p>所有権の移動はネットワーク越しの要求です。<strong>呼んだ直後に他の人の画面へ届いているとは限りません。</strong> 変化したかどうかは <code>apiStateRevision</code> で見てください。時間で待つと、回線の状況次第で外れます。</p>
-</section>
-
-<section id="recipe-dj"><h2>曲ごとに演出を出す</h2>
+<div class="eyebrow">演出する</div>
+<h1>演出をUdonで組む</h1>
+<p class="lead">曲ごとの切り替え、結果の読み取り、複数台の同時操作、実行中の画質切替です。</p>
+<section id="recipe-dj">
+<h2>曲ごとに演出を出す</h2>
 <p>DJブースのボタンや、ライブ演出のタイムラインから、曲ごとに決まったプリセットを出す構成です。</p>
 <h3>Inspectorでの設定</h3>
 <table>
@@ -251,8 +150,8 @@ mirrorBall.SendCustomEvent("ApplySelectedPresetImmediately");</code></pre>
 <div class="tip"><strong>クロスフェードは曲の繋ぎ、即時切替は打点に使います。</strong> 決めの瞬間にクロスフェードを挟むと、拍から遅れて到達するため合いません。</div>
 <div class="warning"><strong>連続で叩かないでください。</strong> クロスフェード中にさらに切替を投げると、結果コード3または4が返ります。タイムラインから機械的に投げる場合ほどここが詰まります。<strong>切替の間隔は、クロスフェード時間より長く取ってください。</strong></div>
 </section>
-
-<section id="readback"><h2>結果を読み取って分岐する</h2>
+<section id="readback">
+<h2>結果を読み取って分岐する</h2>
 <p>操作しっぱなしにせず、結果を見て次を決められます。</p>
 <figure>
 <img src="assets/diagrams/preset-request-flow.svg" alt="切替要求の判定順。ライブプリセットが無効なら1、切替の途中なら3または4、番号が未設定なら2、すべて通れば0が返る。1と2は待っても直らず、3と4は待てば通る。">
@@ -315,8 +214,8 @@ public void RequestWithRetry()
 <h3>失敗したときに黙って諦めない</h3>
 <p><code>3</code> と <code>4</code> は<strong>失敗ではなく「今は無理」です。</strong> ボタンを無効表示にする、少し待って押し直させる、といった扱いが合います。<code>1</code> と <code>2</code> は設定側の問題なので、待っても直りません。</p>
 </section>
-
-<section id="recipe-multi"><h2>複数台をまとめて操る</h2>
+<section id="recipe-multi">
+<h2>複数台をまとめて操る</h2>
 <p>1つのUIから複数のミラーボールを同時に動かせます。<strong>Controllerごとに同じイベントを送ってください。</strong></p>
 <figure>
 <img src="assets/diagrams/multi-ball-wiring.svg" alt="自分で書いたUdonBehaviourの配列に3台のControllerを入れ、同じイベントを順に送る構成。台ごとに違う番号を指定することもできる。">
@@ -352,10 +251,10 @@ public void ApplyPerBall()
         mirrorBalls[i].SendCustomEvent("RequestSelectPreset");
     }
 }</code></pre>
-<div class="warning"><strong>台数を増やすと重くなります。</strong> 見えていない場所のミラーボールまで動かし続けていないか確かめてください。距離フェードや更新頻度の設計は<a href="14_performance_tips.html">重い場合のTips</a>の「オブジェクトが多いとき」にまとめてあります。</div>
+<div class="warning"><strong>台数を増やすと重くなります。</strong> 見えていない場所のミラーボールまで動かし続けていないか確かめてください。距離フェードや更新頻度の設計は<a href="19_heavy.html">重い場合のTips</a>の「オブジェクトが多いとき」にまとめてあります。</div>
 </section>
-
-<section id="recipe-variant"><h2>実行中に画質を落とす</h2>
+<section id="recipe-variant">
+<h2>実行中に画質を落とす</h2>
 <p>人数が増えたときや、他の演出が重なる場面で、連携版から通常版へ落とす構成です。ワールド内の設定メニューから来場者に選ばせることもできます。</p>
 <figure>
 <img src="assets/diagrams/variant-switch.svg" alt="本体表示モードの切替では、通常版の本体オブジェクトと連携版の本体オブジェクトの表示状態が入れ替わる。壁や床のMaterialは自動では変わらない。">
@@ -381,11 +280,11 @@ public void UseHighQuality()
 {
     mirrorBall.SendCustomEvent("UseIntegratedLightingVariant");
 }</code></pre>
-<div class="warning">連携版に切り替えるには、その連携Packageが導入済みである必要があります。導入されていないプロジェクトでは連携版のShaderがそもそも入っていません。導入の判定は<a href="09_integrations.html">連携</a>を参照してください。</div>
+<div class="warning">連携版に切り替えるには、その連携Packageが導入済みである必要があります。導入されていないプロジェクトでは連携版のShaderがそもそも入っていません。導入の判定は<a href="16_integrations.html">連携</a>を参照してください。</div>
 <p>壁・床・ガラスのMaterialは自動では変わりません。<strong>両方のモードで見え方を確かめてください。</strong> 通常版のMaterialのまま連携版の本体へ切り替えると、本体だけが変わって周りが取り残されます。</p>
 </section>
-
-<section id="pitfalls"><h2>やってはいけないこと</h2>
+<section id="pitfalls">
+<h2>やってはいけないこと</h2>
 <table>
 <thead><tr><th>やってはいけない</th><th>理由</th></tr></thead>
 <tbody>
@@ -398,8 +297,8 @@ public void UseHighQuality()
 </table>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
-<a href="14_performance_tips.html">← 動作が重い場合のTips</a>
-<a href="index.html">目次へ戻る →</a>
+<a href="14_udon.html">← 他のUdonから操作する</a>
+<a href="16_integrations.html">LTCGI・VRCLightVolumes連携 →</a>
 </nav>
 </div>
 </main>

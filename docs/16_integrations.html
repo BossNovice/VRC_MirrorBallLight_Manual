@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>09 LTCGI・VRCLightVolumes | MirrorBallLight</title>
+<title>LTCGI・VRCLightVolumes連携 | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -15,8 +15,8 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="08_materials.html">← Material</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処 →</a>
+<a href="15_show.html">← 演出をUdonで組む</a>
+<a href="17_translate.html">既存Materialの変換 →</a>
 </nav>
 </header>
 <div class="shell">
@@ -24,55 +24,74 @@
 <button class="toggle" aria-expanded="false">ページ一覧を開く</button>
 <div class="panel">
 <a class="home" href="index.html">目次</a>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
 </li>
-<li><a href="02_quickstart.html"><span>サンプル</span></a>
+<li><a href="02_sample.html">サンプルで確かめる</a>
 </li>
-<li><a href="03_controller.html"><span>Controller</span></a>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
 </li>
-<li><a href="04_effects.html"><span>反射・光点</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
 </li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+<li><a href="05_motion.html">回転・反射・色</a>
 </li>
-<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<li><a href="06_spots.html">光点の形と量</a>
 </li>
-<li><a href="07_presets.html"><span>プリセット</span></a>
+<li><a href="07_cookie.html">Cookie投影</a>
 </li>
-<li><a href="08_materials.html"><span>Material</span></a>
+<li><a href="08_surface.html">壁・床のMaterial</a>
 </li>
-<li><a aria-current="page" href="09_integrations.html"><span>連携</span></a>
+<li><a href="09_glass.html">ガラスのMaterial</a>
+</li>
+<li><a href="10_body.html">ミラーボール本体</a>
+</li>
+<li><a href="11_emission.html">表面Emission・Mask</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
+</li>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a aria-current="page" href="16_integrations.html">LTCGI・LightVolumes</a>
 <ul class="inpage">
 <li><a href="#mode">通常版と連携版</a></li>
 <li><a href="#verified">動作確認済みの組み合わせ</a></li>
 <li><a href="#lv">VRCLightVolumes</a></li>
 <li><a href="#ltcgi">LTCGI</a></li>
 <li><a href="#avatar">アバターへの実光</a></li>
+<li><a href="#integration">Controllerの「すべてON／すべてOFF」</a></li>
 <li><a href="#sample">設定済みサンプルを連携版へ変更</a></li>
 </ul>
 </li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+<li><a href="17_translate.html">既存Materialの変換</a>
 </li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
 </li>
-<li><a href="12_material_translate.html"><span>Material変換</span></a>
+<li><a href="19_heavy.html">重い</a>
 </li>
-<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+<li><a href="20_release.html">公開前チェック</a>
 </li>
-<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
-</li>
-<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
-</li>
-</ol>
-</div>
-</nav>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
-<div class="eyebrow">09 / INTEGRATIONS</div>
-<h1>LTCGI・VRCLightVolumes・アバター実光</h1>
-<p class="lead">統合Prefab内で本体を切り替え、対応Materialとシーン側コンポーネントを接続します。</p>
-
+<div class="eyebrow">連携する</div>
+<h1>LTCGI・VRCLightVolumes連携</h1>
+<p class="lead">連携版Shaderの使い方と、アバターへ実際の光を当てる方法です。</p>
 <section id="mode">
 <h2>通常版と連携版</h2>
 <div class="warning"><strong>バージョンを組で揃えてください。</strong> VRCLightVolumes 2.xにはLTCGI 1.7.2、VRCLV 3.0.0-dev.14以降にはLTCGI 1.7.3以降を使用します。VRCLV 3.0.0-dev.12／dev.13はLTCGI非互換です。</div>
@@ -121,7 +140,6 @@
 <div class="warning">表にない組み合わせは<strong>確かめていません。</strong> 「問題が無いことを確認した」という意味ではありません。VRCLightVolumes 2.xとLTCGI 1.7.3のような組み替えは、上の「バージョンを組で揃えてください」に反します。</div>
 <p>各行の但し書きは<a href="https://github.com/BossNovice/VRC_MirrorBallLight_Manual/blob/main/manual/README.md">GitHub版マニュアル</a>にあります。<strong>そちらが正です。</strong> 過去の版の記録は<a href="https://github.com/BossNovice/VRC_MirrorBallLight_Manual/blob/main/archive/RELEASE_NOTES.md">過去の版の変更履歴</a>へ移してあります。</p>
 </section>
-
 <section id="lv">
 <h2>VRCLightVolumes</h2>
 <p>連携Shaderの「VRCLightVolumesを使用」はLight Volumeからの照明をSurface／本体へ反映するKeywordです。Controllerの「すべてON」で対応MaterialのKeywordも同時に設定します。</p>
@@ -165,6 +183,63 @@
 <h3>VRCLightVolumes方式</h3>
 <p>DynamicなPoint Light Volumeを別の子GameObjectとして構成し、「VRCLightVolumes用オブジェクト」へ指定します。Controllerは電源フェードに合わせてGameObjectの有効状態を管理します。</p>
 <div class="warning">Realtime LightとVolumeを両方強くすると二重に明るく見える可能性があります。片方ずつ確認し、必要な分だけ併用してください。</div>
+<h3>Controller側の設定</h3>
+<table>
+<thead>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>アバター用リアルタイムライト（任意）</td>
+<td>なし</td>
+<td>アバターへ当たるPC向けRealtime Light。負荷のため1灯・影なし推奨です。</td>
+</tr>
+<tr>
+<td>VRCLightVolumes用オブジェクト（任意）</td>
+<td>なし</td>
+<td>電源と連動してActiveを切り替える別の子GameObjectです。Controller自身は指定不可です。</td>
+</tr>
+<tr>
+<td>アバター用ライトの明るさ</td>
+<td>1.5 / 0–10</td>
+<td>Realtime Lightの基準Intensityです。</td>
+</tr>
+<tr>
+<td>アバター用ライトの範囲</td>
+<td>8 / 0.1–30</td>
+<td>Realtime LightのRangeです。広げすぎると影響範囲と負荷が増えます。</td>
+</tr>
+<tr>
+<td>反射光の色を使用</td>
+<td>ON</td>
+<td>ONはControllerの基本色、OFFはLight側の色を維持します。</td>
+</tr>
+<tr>
+<td>AudioLink入力AudioSource（任意）</td>
+<td>なし</td>
+<td>アバター実光の音量解析元です。壁ShaderのAudioLink入力とは別です。</td>
+</tr>
+<tr>
+<td>アバターライトの反応帯域</td>
+<td>0 / 0–3</td>
+<td>実光の音連動に使う周波数帯を選びます。</td>
+</tr>
+<tr>
+<td>アバター用ライトの音連動量</td>
+<td>0.5 / 0–2</td>
+<td>AudioSource解析結果によるIntensity増加量です。</td>
+</tr>
+</tbody>
+</table>
+<p>「アバター用ライトを安全設定」はPoint／Realtime／影なしへ整えます。詳細は<a href="16_integrations.html">連携ページ</a>を参照してください。</p>
+</section>
+<section id="integration">
+<h2>Controllerの「すべてON／すべてOFF」</h2>
+<p>「すべてON／すべてOFF」は、対象Materialと本体Materialのうち<code>_LightVolumes</code>／<code>_LTCGI</code>を持つものだけを一括変更し、Material Assetへ保存します。通常版Materialには影響しません。</p>
 </section>
 <section id="sample">
 <h2>設定済みサンプルを連携版へ変更</h2>
@@ -178,12 +253,12 @@
 <li>各連携パッケージ側のシーン設定を完了します。</li>
 </ol>
 <p>
-<a href="10_optimization_troubleshooting.html">次へ：最適化・トラブル対処 →</a>
+<a href="18_troubleshoot.html">次へ：最適化・トラブル対処 →</a>
 </p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
-<a href="08_materials.html">← Material・Shader</a>
-<a href="10_optimization_troubleshooting.html">最適化・トラブル対処 →</a>
+<a href="15_show.html">← 演出をUdonで組む</a>
+<a href="17_translate.html">既存の壁・ガラスMaterialを変換 →</a>
 </nav>
 </div>
 </main>

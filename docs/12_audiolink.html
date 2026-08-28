@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AudioLink連動 | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="11_emission.html">← 表面Emission・Mask</a>
+<a href="13_presets.html">ライブプリセット →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
+</li>
+<li><a href="02_sample.html">サンプルで確かめる</a>
+</li>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
+</li>
+<li><a href="05_motion.html">回転・反射・色</a>
+</li>
+<li><a href="06_spots.html">光点の形と量</a>
+</li>
+<li><a href="07_cookie.html">Cookie投影</a>
+</li>
+<li><a href="08_surface.html">壁・床のMaterial</a>
+</li>
+<li><a href="09_glass.html">ガラスのMaterial</a>
+</li>
+<li><a href="10_body.html">ミラーボール本体</a>
+</li>
+<li><a href="11_emission.html">表面Emission・Mask</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a aria-current="page" href="12_audiolink.html">AudioLink連動</a>
+<ul class="inpage">
+<li><a href="#setup">準備</a></li>
+<li><a href="#bands">用途別の反応帯域</a></li>
+<li><a href="#response">反応量と安定化</a></li>
+<li><a href="#history">履歴・伝播</a></li>
+<li><a href="#material-mask">MaterialごとのAudioLink反応マスク</a></li>
+<li><a href="#individual-pattern">Material個別AudioLink・発光パターン</a></li>
+<li><a href="#test">音源なしでテスト</a></li>
+<li><a href="#avatar">アバター実光のAudioLink連動</a></li>
+</ul>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
+</li>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
+<main id="content">
+<div class="page">
+<div class="eyebrow">音に反応させる</div>
+<h1>AudioLink連動</h1>
+<p class="lead">音に合わせて明るさ・サイズ・色を動かします。Materialごとに反応を変えることもできます。</p>
+<section id="setup">
+<h2>準備</h2>
+<ol class="steps">
+<li>VCCでAudioLinkを導入し、公式AudioLink Prefabをシーンへ配置します。</li>
+<li>AudioLink側へワールドの音源を接続します。</li>
+<li>Controllerの「AudioLinkを使用」をONにします。</li>
+<li>テストモードで見た目を作り、最後にテストモードをOFFにします。</li>
+<li>「現在の設定をマテリアルへ反映・保存」を実行します。</li>
+</ol>
+</section>
+<section id="bands">
+<h2>用途別の反応帯域</h2>
+<table>
+<thead>
+<tr>
+<th>値</th>
+<th>目安</th>
+<th>向いている演出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>低音</td>
+<td>キック、ベース、全体の明るさ</td>
+</tr>
+<tr>
+<td>1</td>
+<td>低中音</td>
+<td>スネア下部、リズム</td>
+</tr>
+<tr>
+<td>2</td>
+<td>中高音</td>
+<td>ボーカル、メロディ、色変化</td>
+</tr>
+<tr>
+<td>3</td>
+<td>高音</td>
+<td>ハイハット、細かなきらめき</td>
+</tr>
+</tbody>
+</table>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>用途</th>
+</tr>
+<tr>
+<td>明るさの反応帯域</td>
+<td>0</td>
+<td>Emission増幅</td>
+</tr>
+<tr>
+<td>光点サイズの反応帯域</td>
+<td>0</td>
+<td>光点拡大</td>
+</tr>
+<tr>
+<td>色変化の反応帯域</td>
+<td>2</td>
+<td>色相変化</td>
+</tr>
+<tr>
+<td>アバターライトの反応帯域</td>
+<td>0</td>
+<td>AudioSource解析による実光Intensity</td>
+</tr>
+</table>
+<div class="note">コード上には旧互換フィールド「反応する帯域（0：低音～3：高音）」が保持されていますが、Custom Inspectorでは表示されません。現在は用途別の3帯域を設定します。</div>
+</section>
+<section id="response">
+<h2>反応量と安定化</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>音による明るさの増加</td>
+<td>2 / 0–10</td>
+<td>音量ピーク時のEmission倍率。最終値は「明るさの上限」で制限されます。</td>
+</tr>
+<tr>
+<td>音による光点サイズの増加</td>
+<td>0.18 / 0–1</td>
+<td>音に合わせた光点サイズ増加量です。</td>
+</tr>
+<tr>
+<td>音による色変化の増加</td>
+<td>0.35 / 0–2</td>
+<td>帯域値による色相変化の量です。</td>
+</tr>
+<tr>
+<td>音声反応の平滑化</td>
+<td>0.65 / 0–1</td>
+<td>高いほど急変を抑え、滑らかになります。</td>
+</tr>
+<tr>
+<td>音声反応のしきい値</td>
+<td>0.05 / 0–1</td>
+<td>小さなノイズを無視する下限です。</td>
+</tr>
+</table>
+</section>
+<section id="history">
+<h2>履歴・伝播</h2>
+<table>
+<tr>
+<th>AudioLink履歴モード</th>
+<th>動作</th>
+</tr>
+<tr>
+<td>全体を同時反応</td>
+<td>現在値を全光点へ同時適用します。</td>
+</tr>
+<tr>
+<td>上下へ伝播</td>
+<td>縦位置に応じた履歴サンプルを読み、波が上下へ流れます。</td>
+</tr>
+<tr>
+<td>回転方向へ伝播</td>
+<td>球面の横方向に履歴差を作ります。</td>
+</tr>
+<tr>
+<td>光点ごとにランダム</td>
+<td>セルごとに異なる履歴位置を使います。</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>AudioLink基本遅延（履歴サンプル）</td>
+<td>0 / 0–124。全体の履歴読み取り開始位置です。</td>
+</tr>
+<tr>
+<td>光点ごとの遅延差</td>
+<td>24 / 0–124。モード1–3で位置ごとに広げる履歴幅です。</td>
+</tr>
+</table>
+</section>
+<section id="material-mask">
+<h2>MaterialごとのAudioLink反応マスク</h2>
+<p>Controllerの共通AudioLink設定を保ったまま、壁・床・ガラスなどのMaterialごとに「どの部分を音へ反応させるか」と「どの模様で発光させるか」を分けられます。設定はControllerではなく、対象MaterialのInspectorで行います。</p>
+<table>
+<tr><th>Material表示名</th><th>効果</th></tr>
+<tr><td>個別AudioLinkマスクを使用</td><td>ONにすると、このMaterialだけAudioLink反応マスクを参照します。</td></tr>
+<tr><td>AudioLink反応マスク</td><td>白い部分は通常どおり音へ反応し、黒い部分はAudioLinkによる明るさ・サイズ・色変化を抑えます。灰色は中間です。</td></tr>
+<tr><td>AudioLinkマスクの強さ</td><td>0でマスクなし、1でTextureを完全適用します。</td></tr>
+<tr><td>AudioLinkマスクを反転</td><td>白黒の役割を反転します。</td></tr>
+<tr><td>個別発光パターンを使用</td><td>ONにすると、このMaterialの反射光へ固有の模様を乗算します。</td></tr>
+<tr><td>発光パターンテクスチャ</td><td>RGBは発光色、Alphaは発光量として使われます。AlphaがないTextureではRGB輝度をマスクに使用します。</td></tr>
+<tr><td>発光パターンの色／適用量／反転</td><td>模様のHDR色、元の反射との混合量、白黒反転を設定します。</td></tr>
+<tr><td>発光パターンのスクロール速度</td><td>XとYでUVを時間移動します。0,0なら固定です。</td></tr>
+<tr><td>発光パターンの音連動量</td><td>この模様だけに追加するAudioLink明るさ倍率です。Controllerの共通増加量へ加算され、最終値は明るさ上限で制限されます。</td></tr>
+</table>
+<div class="tip">例：壁Aは縦縞マスク、壁Bは市松模様、ガラスは円形グラデーションというように、同じControllerへ登録したまま別々の演出を設定できます。</div>
+<div class="warning">ON/OFFを変更した後は、Unityメニューの <code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> で「安全に自動修正」を実行してください。VRChatビルドへ必要なMaterial固有Keywordが確実に保存されます。</div>
+</section>
+<section id="individual-pattern">
+<h2>Material個別AudioLink・発光パターン</h2>
+<p>4種類のSurface Shader（通常／透明／LTCGI・VRCLightVolumes通常／同透明）で使用できます。これらはMaterial固有値であり、Controllerの「Shader Global共有を使用」がONでも上書きされません。</p>
+<table>
+<tr><th>項目</th><th>初期値</th><th>効果</th></tr>
+<tr><td>個別AudioLinkマスクを使用</td><td>OFF</td><td>Material固有の音声反応領域を有効化します。</td></tr>
+<tr><td>AudioLink反応マスク</td><td>白</td><td>白＝反応、黒＝音による変化なし。TextureのTiling／Offsetも利用できます。</td></tr>
+<tr><td>AudioLinkマスクの強さ</td><td>1</td><td>0で無効、1で完全適用します。</td></tr>
+<tr><td>AudioLinkマスクを反転</td><td>OFF</td><td>白黒を反転します。</td></tr>
+<tr><td>個別発光パターンを使用</td><td>OFF</td><td>反射光へMaterial固有の模様・色を適用します。</td></tr>
+<tr><td>発光パターンテクスチャ</td><td>白</td><td>RGBを発光色、AlphaまたはRGB輝度を発光マスクとして使用します。</td></tr>
+<tr><td>発光パターンの色</td><td>白</td><td>Texture色へ乗算するHDR色です。</td></tr>
+<tr><td>発光パターンの適用量</td><td>1</td><td>0で元の反射、1でパターンを完全適用します。</td></tr>
+<tr><td>発光パターンを反転</td><td>OFF</td><td>発光する場所と消える場所を反転します。</td></tr>
+<tr><td>発光パターンのスクロール速度</td><td>0, 0</td><td>X／Y方向へUVを毎秒スクロールします。</td></tr>
+<tr><td>発光パターンの音連動量</td><td>0</td><td>このMaterialだけAudioLink明滅を追加します。</td></tr>
+</table>
+<p>透明Shaderでは個別発光パターンがEmissionだけでなく反射光部分のAlphaにも反映されるため、消灯箇所だけが透明になります。ガラス本体の基礎透明度には影響しません。</p>
+<div class="note">個別マスクと発光パターンはミラーボール反射部分だけへ適用されます。LTCGIやVRCLightVolumesから受ける環境照明そのものはマスクしません。</div>
+</section>
+<section id="test">
+<h2>音源なしでテスト</h2>
+<p>「AudioLinkテストモード」をONにすると、Shaderへ固定の「テスト音量」（初期値0.5）を渡します。Unity Editorで反応量・上限・光点サイズを確認できます。アップロード前にはOFFへ戻してください。</p>
+<div class="warning">テストモードがONのままだと、VRChat上でも固定入力が優先され、実際の音へ反応しません。</div>
+</section>
+<section id="avatar">
+<h2>アバター実光のAudioLink連動</h2>
+<p>壁のShaderはAudioLinkテクスチャを参照しますが、Realtime Lightは「AudioLink入力AudioSource」をControllerがSpectrum解析します。AudioSource未指定時は実光の音連動が行われません。</p>
+<table>
+<tr>
+<td>アバター用ライトの音連動量</td>
+<td>0.5 / 0–2。0で一定、値を上げるほど音量によるIntensity変化が増えます。</td>
+</tr>
+<tr>
+<td>明るさの安全性</td>
+<td>顔への強い点滅を避けるため0.2–0.6程度から調整します。</td>
+</tr>
+</table>
+<p>
+<a href="06_spots.html">次へ：形状・Cookie →</a>
+</p>
+</section>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="11_emission.html">← 壁・ガラス表面のEmissionとMask</a>
+<a href="13_presets.html">ライブプリセットとクロスフェード →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>

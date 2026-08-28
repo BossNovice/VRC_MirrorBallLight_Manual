@@ -15,7 +15,7 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="01_installation.html">導入 →</a>
+<a href="01_install.html">導入する →</a>
 </nav>
 </header>
 <div class="shell">
@@ -26,45 +26,44 @@
 <ul class="inpage">
 <li><a href="#s1">このマニュアルの使い方</a></li>
 <li><a href="#features">主な機能</a></li>
-<li><a href="#s2">内容別ページ</a></li>
+<li><a href="#pages">内容別ページ</a></li>
 <li><a href="#limits">使えない環境と注意事項</a></li>
 <li><a href="#s3">収録物</a></li>
 </ul>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
-</li>
-<li><a href="02_quickstart.html"><span>サンプル</span></a>
-</li>
-<li><a href="03_controller.html"><span>Controller</span></a>
-</li>
-<li><a href="04_effects.html"><span>反射・光点</span></a>
-</li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
-</li>
-<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
-</li>
-<li><a href="07_presets.html"><span>プリセット</span></a>
-</li>
-<li><a href="08_materials.html"><span>Material</span></a>
-</li>
-<li><a href="09_integrations.html"><span>連携</span></a>
-</li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
-</li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
-</li>
-<li><a href="12_material_translate.html"><span>Material変換</span></a>
-</li>
-<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
-</li>
-<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
-</li>
-<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
-</li>
-</ol>
-</div>
-</nav>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a></li>
+<li><a href="02_sample.html">サンプルで確かめる</a></li>
+<li><a href="03_apply.html">自分の壁へ適用する</a></li>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a></li>
+<li><a href="05_motion.html">回転・反射・色</a></li>
+<li><a href="06_spots.html">光点の形と量</a></li>
+<li><a href="07_cookie.html">Cookie投影</a></li>
+<li><a href="08_surface.html">壁・床のMaterial</a></li>
+<li><a href="09_glass.html">ガラスのMaterial</a></li>
+<li><a href="10_body.html">ミラーボール本体</a></li>
+<li><a href="11_emission.html">表面Emission・Mask</a></li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a></li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a></li>
+<li><a href="14_udon.html">Udonから操作する</a></li>
+<li><a href="15_show.html">演出をUdonで組む</a></li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a></li>
+<li><a href="17_translate.html">既存Materialの変換</a></li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a></li>
+<li><a href="19_heavy.html">重い</a></li>
+<li><a href="20_release.html">公開前チェック</a></li>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
 <div class="eyebrow">VRChat WORLD SYSTEM</div>
@@ -72,7 +71,6 @@
 <p class="lead">UnityPackage版の導入から、設定済みサンプル、壁・ガラス表面Emission／AudioLink／Mask、LTCGI・VRCLightVolumes、ライブプリセット、負荷対策までを日本語で説明します。</p>
 <p><span class="version">対象バージョン R29.4.2 / Unity 2022.3.22f1</span></p>
 <p><a href="https://github.com/BossNovice/VRC_MirrorBallLight_Manual/blob/main/manual/README.md">GitHub版マニュアル</a></p>
-
 <section>
 <h2 id="s1">このマニュアルの使い方</h2>
 <div class="flow">
@@ -91,80 +89,117 @@
 <table>
 <thead><tr><th>分類</th><th>できること</th><th>説明のあるページ</th></tr></thead>
 <tbody>
-<tr><td>回転と電源</td><td>任意軸のQuaternion回転、途中参加者へ揃える時刻同期、ローカル／グローバルの電源</td><td><a href="03_controller.html">Controller</a></td></tr>
-<tr><td>光点</td><td>ランダム点灯、カラフル、Texture形状、複数形状アトラスのセル別ランダム配置と配置シードのクロスフェード、六角形・星・リング・ハート</td><td><a href="04_effects.html">反射・光点</a>／<a href="06_shapes_cookie.html">形状・Cookie</a></td></tr>
-<tr><td>面ごとの調整</td><td>通常面と透明／半透明面の個別調整、透明描画方式、深度フェード、Normal Map、UV／平面／トライプラナー／球面の投影</td><td><a href="08_materials.html">Material</a>／<a href="11_r24_world_shader.html">ワールドShader</a></td></tr>
-<tr><td>音との連動</td><td>GPU AudioLinkと用途別の帯域、履歴の伝播、MaterialごとのAudioLink反応マスクと発光パターン</td><td><a href="05_audiolink.html">AudioLink</a></td></tr>
-<tr><td>表面Emission</td><td>壁・床・ガラス本体の独立したEmission Texture／HDR色／強度、白黒Maskと反転・適用強度</td><td><a href="13_surface_emission_mask.html">表面Emission</a></td></tr>
-<tr><td>ミラーボール本体</td><td>四角・三角の鏡片を手続き的に描くファセットShader、Reflection ProbeとCubemap、環境光・材質応答・Fresnel・色収差</td><td><a href="03_controller.html">Controller</a></td></tr>
-<tr><td>照明連携</td><td>VRCLightVolumes・LTCGI連携版のShader</td><td><a href="09_integrations.html">連携</a></td></tr>
-<tr><td>演出</td><td>ライブプリセットとクロスフェード、2D／Cubemap Cookie投影、Sceneビューの投影ガイド</td><td><a href="07_presets.html">プリセット</a>／<a href="06_shapes_cookie.html">形状・Cookie</a></td></tr>
-<tr><td>制作を助けるもの</td><td>日本語のCustom Inspector、対象Materialの自動検出、連携機能の一括切替、日本語の診断と安全な自動修正、Material Translate／Translate Copy</td><td><a href="10_optimization_troubleshooting.html">最適化・対処</a>／<a href="12_material_translate.html">Material変換</a></td></tr>
-<tr><td>負荷対策</td><td>Shader Keywordの削減、GPUでの投影回転、プリセットの差分更新、VRCShader Global共有、Reflection Probeと固定色のFallback</td><td><a href="14_performance_tips.html">重い場合のTips</a></td></tr>
+<tr><td>回転と電源</td><td>任意軸のQuaternion回転、途中参加者へ揃える時刻同期、ローカル／グローバルの電源</td><td><a href="04_controller.html">Controller</a></td></tr>
+<tr><td>光点</td><td>ランダム点灯、カラフル、Texture形状、複数形状アトラスのセル別ランダム配置と配置シードのクロスフェード、六角形・星・リング・ハート</td><td><a href="05_motion.html">反射・光点</a>／<a href="06_spots.html">形状・Cookie</a></td></tr>
+<tr><td>面ごとの調整</td><td>通常面と透明／半透明面の個別調整、透明描画方式、深度フェード、Normal Map、UV／平面／トライプラナー／球面の投影</td><td><a href="03_apply.html">Material</a>／<a href="06_spots.html">ワールドShader</a></td></tr>
+<tr><td>音との連動</td><td>GPU AudioLinkと用途別の帯域、履歴の伝播、MaterialごとのAudioLink反応マスクと発光パターン</td><td><a href="12_audiolink.html">AudioLink</a></td></tr>
+<tr><td>表面Emission</td><td>壁・床・ガラス本体の独立したEmission Texture／HDR色／強度、白黒Maskと反転・適用強度</td><td><a href="11_emission.html">表面Emission</a></td></tr>
+<tr><td>ミラーボール本体</td><td>四角・三角の鏡片を手続き的に描くファセットShader、Reflection ProbeとCubemap、環境光・材質応答・Fresnel・色収差</td><td><a href="04_controller.html">Controller</a></td></tr>
+<tr><td>照明連携</td><td>VRCLightVolumes・LTCGI連携版のShader</td><td><a href="16_integrations.html">連携</a></td></tr>
+<tr><td>演出</td><td>ライブプリセットとクロスフェード、2D／Cubemap Cookie投影、Sceneビューの投影ガイド</td><td><a href="13_presets.html">プリセット</a>／<a href="06_spots.html">形状・Cookie</a></td></tr>
+<tr><td>制作を助けるもの</td><td>日本語のCustom Inspector、対象Materialの自動検出、連携機能の一括切替、日本語の診断と安全な自動修正、Material Translate／Translate Copy</td><td><a href="18_troubleshoot.html">最適化・対処</a>／<a href="17_translate.html">Material変換</a></td></tr>
+<tr><td>負荷対策</td><td>Shader Keywordの削減、GPUでの投影回転、プリセットの差分更新、VRCShader Global共有、Reflection Probeと固定色のFallback</td><td><a href="19_heavy.html">重い場合のTips</a></td></tr>
 </tbody>
 </table>
-
-<h2 id="s2">内容別ページ</h2>
-<div class="card-grid">
-<a class="card" href="01_installation.html">
-<strong>01 導入</strong>
-<span>必要パッケージ、UnityPackage Import、フォルダ構成</span>
+</section>
+<section>
+<h2 id="pages">内容別ページ</h2>
+<div class="grp-head"><strong>はじめて置く</strong><span>3 ページ</span></div>
+<div class="grp-grid">
+<a class="card" href="01_install.html">
+<strong>UnityPackageの導入</strong>
+<span>必要環境とImport手順、導入できたかの確かめ方</span>
 </a>
-<a class="card" href="02_quickstart.html">
-<strong>02 設定済みサンプル</strong>
-<span>mirrorballとmirrorball_light_wallで最短確認</span>
+<a class="card" href="02_sample.html">
+<strong>設定済みサンプルで最短確認</strong>
+<span>設定済みPrefabを置いて、動くところまでを確かめる</span>
 </a>
-<a class="card" href="03_controller.html">
-<strong>03 Controller</strong>
-<span>電源、対象Material、実光、本体、最適化の全項目</span>
+<a class="card" href="03_apply.html">
+<strong>自分の壁・床へ適用する</strong>
+<span>使うShaderを選び、自分の壁・床へ割り当てる</span>
 </a>
-<a class="card" href="04_effects.html">
-<strong>04 反射・光点</strong>
-<span>色、明るさ、距離、点灯、透過面の設定</span>
+</div>
+<div class="grp-head"><strong>見え方を決める</strong><span>8 ページ</span></div>
+<div class="grp-grid">
+<a class="card" href="04_controller.html">
+<strong>ControllerのInspector</strong>
+<span>10個の折りたたみの構成と、設定を保存するボタン</span>
 </a>
-<a class="card" href="05_audiolink.html">
-<strong>05 AudioLink</strong>
-<span>帯域別反応、Material個別マスク、履歴、実光</span>
+<a class="card" href="05_motion.html">
+<strong>回転・反射光・色</strong>
+<span>回り方、反射光の強さ・色、距離による減衰</span>
 </a>
-<a class="card" href="06_shapes_cookie.html">
-<strong>06 形状・Cookie</strong>
-<span>単一テクスチャ、アトラス、2D／Cubemap投影</span>
+<a class="card" href="06_spots.html">
+<strong>光点の形・量・点滅</strong>
+<span>光点1つの形と大きさ、同時に光る割合、複数形状のアトラス</span>
 </a>
-<a class="card" href="07_presets.html">
-<strong>07 ライブプリセット</strong>
-<span>追加、保存、クロスフェード、UIイベント接続</span>
+<a class="card" href="07_cookie.html">
+<strong>2D・Cubemap Cookieの投影</strong>
+<span>光点の代わりに模様を投影する。Sceneビューでの確認</span>
 </a>
-<a class="card" href="08_materials.html">
-<strong>08 Material・Shader</strong>
-<span>通常面、透過面、個別発光パターン、本体ファセット</span>
+<a class="card" href="08_surface.html">
+<strong>壁・床のMaterial</strong>
+<span>不透明面の設定。座標方式と材質の応答</span>
 </a>
-<a class="card" href="09_integrations.html">
-<strong>09 照明連携</strong>
-<span>LTCGI、VRCLightVolumes、アバターへの実光</span>
+<a class="card" href="09_glass.html">
+<strong>ガラス・透明／半透明面</strong>
+<span>透過面の設定。描画方式と深度フェード</span>
 </a>
-<a class="card" href="10_optimization_troubleshooting.html">
-<strong>10 最適化・トラブル対処</strong>
-<span>推奨値、診断、表示されない時の確認順</span>
+<a class="card" href="10_body.html">
+<strong>ミラーボール本体のファセット</strong>
+<span>本体球の鏡片の見え方と、暗い場所での担保</span>
 </a>
-<a class="card" href="11_r24_world_shader.html">
-<strong>11 ワールドShader拡張</strong>
-<span>投影座標、透過方式、深度、環境・材質反応、Fresnel、フォールバック</span>
+<a class="card" href="11_emission.html">
+<strong>壁・ガラス表面のEmissionとMask</strong>
+<span>面そのものを光らせる。光点を出さないエリアの指定</span>
 </a>
-<a class="card" href="12_material_translate.html">
-<strong>12 Material Translate</strong>
-<span>既存の壁・ガラスを右クリックし、設定を保持してShader変換</span>
+</div>
+<div class="grp-head"><strong>音に反応させる</strong><span>1 ページ</span></div>
+<div class="grp-grid">
+<a class="card" href="12_audiolink.html">
+<strong>AudioLink連動</strong>
+<span>音に合わせて明るさ・サイズ・色を動かす</span>
 </a>
-<a class="card" href="13_surface_emission_mask.html">
-<strong>13 表面Emission・AudioLink・Mask</strong>
-<span>壁・床・ガラス本体の発光Texture、専用AudioLink帯域・パターン・MaskをMaterial別に設定</span>
+</div>
+<div class="grp-head"><strong>演出する</strong><span>3 ページ</span></div>
+<div class="grp-grid">
+<a class="card" href="13_presets.html">
+<strong>ライブプリセットとクロスフェード</strong>
+<span>演出をまとめて切り替える。作り方と切替イベント</span>
 </a>
-<a class="card" href="14_performance_tips.html">
-<strong>14 動作が重い場合のTips</strong>
-<span>原因がCPUかGPUかを確かめてから手を打つ。距離フェード・オーバードロー・更新頻度の見直し</span>
+<a class="card" href="14_udon.html">
+<strong>他のUdonから操作する</strong>
+<span>ワールドのギミックから動かす。同期範囲と所有権</span>
 </a>
-<a class="card" href="15_advanced_usage.html">
-<strong>15 拡張的な使い方</strong>
-<span>ワールドのUdonから操作する、同期範囲を設計する、複数台をまとめて操る、実行中に連携版を切り替える</span>
+<a class="card" href="15_show.html">
+<strong>演出をUdonで組む</strong>
+<span>曲ごとの切り替え、結果の読み取り、複数台の同時操作</span>
+</a>
+</div>
+<div class="grp-head"><strong>連携する</strong><span>2 ページ</span></div>
+<div class="grp-grid">
+<a class="card" href="16_integrations.html">
+<strong>LTCGI・VRCLightVolumes連携</strong>
+<span>連携版Shaderと、アバターへ実際の光を当てる</span>
+</a>
+<a class="card" href="17_translate.html">
+<strong>既存の壁・ガラスMaterialを変換</strong>
+<span>既存の壁・ガラスMaterialを変換する</span>
+</a>
+</div>
+<div class="grp-head"><strong>困ったとき</strong><span>3 ページ</span></div>
+<div class="grp-grid">
+<a class="card" href="18_troubleshoot.html">
+<strong>うまく動かないとき</strong>
+<span>症状から原因へたどる。Import時のエラーも</span>
+</a>
+<a class="card" href="19_heavy.html">
+<strong>動作が重い場合</strong>
+<span>CPUかGPUかを確かめてから手を打つ</span>
+</a>
+<a class="card" href="20_release.html">
+<strong>診断と公開前チェック</strong>
+<span>診断ウィンドウと、公開前に見る項目</span>
 </a>
 </div>
 </section>
@@ -181,7 +216,8 @@
 </tbody>
 </table>
 <div class="note">光点は実際の反射光ではありません。<strong>壁MaterialのEmissionとして描いています。</strong> また、対象Materialの値を書き換える方式なので、同じMaterialを別の部屋でも使う場合は複製してください。</div>
-
+</section>
+<section>
 <h2 id="s3">収録物</h2>
 <table>
 <thead>
@@ -226,7 +262,7 @@
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <span></span>
-<a href="01_installation.html">導入 →</a>
+<a href="01_install.html">UnityPackageの導入 →</a>
 </nav>
 </div>
 </main>
