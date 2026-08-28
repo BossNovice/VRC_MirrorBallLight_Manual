@@ -62,6 +62,18 @@ img{max-width:100%;height:auto}
  text-decoration:none;color:var(--text);font-size:.93rem}
 .sidebar .home:hover{background:var(--panel)}
 .sidebar .home[aria-current=page]{background:#1f2d42;color:var(--accent2);font-weight:700}
+.sidebar .grp{margin:0 0 1.05rem}
+.sidebar .grp-name{color:var(--text);font-weight:700;font-size:.88rem;padding:0 .5rem;margin:0 0 .2rem}
+.sidebar .grp ul{list-style:none;margin:0;padding:0 0 0 .5rem;border-left:2px solid var(--line2)}
+.sidebar .grp li{margin:0}
+.sidebar .grp li>a{display:block;padding:.26rem .5rem;border-radius:.42rem;text-decoration:none;
+ color:var(--muted);font-size:.9rem;line-height:1.55}
+.sidebar .grp li>a:hover{background:var(--panel);color:var(--text)}
+.sidebar .grp li>a[aria-current=page]{background:#1f2d42;color:var(--accent2);font-weight:700}
+.grp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:10px 0 26px}
+.grp-head{display:flex;align-items:baseline;gap:10px;margin:26px 0 0}
+.grp-head strong{font-size:1.05rem;color:var(--accent2)}
+.grp-head span{color:var(--muted);font-size:.88rem}
 .inpage{margin:.3rem 0 .4rem;padding:.3rem 0 .3rem .95rem;
  border-left:2px solid var(--line2);list-style:none}
 .inpage li{margin:0}

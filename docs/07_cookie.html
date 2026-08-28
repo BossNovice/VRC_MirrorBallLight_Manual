@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2D・Cubemap Cookieの投影 | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="06_spots.html">← 光点の形と量</a>
+<a href="08_surface.html">壁・床のMaterial →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
+</li>
+<li><a href="02_sample.html">サンプルで確かめる</a>
+</li>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
+</li>
+<li><a href="05_motion.html">回転・反射・色</a>
+</li>
+<li><a href="06_spots.html">光点の形と量</a>
+</li>
+<li><a aria-current="page" href="07_cookie.html">Cookie投影</a>
+<ul class="inpage">
+<li><a href="#cookie">高度な投影Cookie</a></li>
+<li><a href="#preview">Sceneビュー投影プレビュー</a></li>
+<li><a href="#s9">同梱のサンプルTexture・マスク</a></li>
+</ul>
+</li>
+<li><a href="08_surface.html">壁・床のMaterial</a>
+</li>
+<li><a href="09_glass.html">ガラスのMaterial</a>
+</li>
+<li><a href="10_body.html">ミラーボール本体</a>
+</li>
+<li><a href="11_emission.html">表面Emission・Mask</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
+</li>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
+<main id="content">
+<div class="page">
+<div class="eyebrow">見え方を決める</div>
+<h1>2D・Cubemap Cookieの投影</h1>
+<p class="lead">光点の代わりに模様を投影します。Sceneビューでの確認方法もここです。</p>
+<section id="cookie">
+<h2>高度な投影Cookie</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>投影Cookieを使用</td>
+<td>OFF</td>
+<td>Cookie Keywordを有効にします。</td>
+</tr>
+<tr>
+<td>投影方式</td>
+<td>2D Cookie</td>
+<td>OFF／2D／Cubemap。用途に一致するTextureを指定します。</td>
+</tr>
+<tr>
+<td>2D投影Cookie</td>
+<td>なし</td>
+<td>Spot Light方向を基準に平面投影します。</td>
+</tr>
+<tr>
+<td>Cubemap投影Cookie</td>
+<td>なし</td>
+<td>ミラーボール中心から全方向へ球状投影します。</td>
+</tr>
+<tr>
+<td>Cookieマスクの強さ</td>
+<td>1</td>
+<td>0で無効、1でCookieマスクを完全適用します。</td>
+</tr>
+<tr>
+<td>Cookie色の混合量</td>
+<td>0</td>
+<td>0は明度マスクだけ、1はCookieのRGB色も強く反映します。</td>
+</tr>
+<tr>
+<td>Cookieタイリング</td>
+<td>(1,1)</td>
+<td>2D Cookieの繰り返し倍率です。</td>
+</tr>
+<tr>
+<td>Cookieオフセット</td>
+<td>(0,0)</td>
+<td>2D CookieのUV位置を移動します。</td>
+</tr>
+<tr>
+<td>Cookie回転速度</td>
+<td>0</td>
+<td>Cookie自体を時間回転させます。負数で逆方向です。</td>
+</tr>
+</table>
+<div class="note">2Dは照射方向が明確なステージ、Cubemapは部屋全体へ模様を配る用途に向いています。</div>
+<p><a href="assets/CookieMasks/README_サンプルCookie.html">サンプルCookie・マスク一覧</a>から、2D／Cubemap用のPNGを利用できます。</p>
+</section>
+<section id="preview">
+<h2>Sceneビュー投影プレビュー</h2>
+<table>
+<tr>
+<td>投影プレビューを表示</td>
+<td>Scene Viewにガイドを表示します。ゲーム実行やビルドには描画されません。</td>
+</tr>
+<tr>
+<td>プレビュー光線数</td>
+<td>16 / 4–64。多いほど輪郭を把握しやすい一方、Scene表示が増えます。</td>
+</tr>
+<tr>
+<td>プレビュー半径</td>
+<td>5 / 0.5–30。ガイドの表示距離です。</td>
+</tr>
+</table>
+<p>
+<a href="13_presets.html">次へ：ライブプリセット →</a>
+</p>
+</section>
+<section id="s9">
+<h2>同梱のサンプルTexture・マスク</h2>
+<p>追加のプロシージャル形状はTexture不要です。座標投影とフォールバック確認には、既存の<a href="assets/CookieMasks/README_サンプルCookie.html">2D／Cubemap Cookie・マスク</a>と<a href="assets/ShapeAtlas/SampleShapeAtlas_4x2.png">形状アトラス</a>を使用できます。</p>
+<p>同じサンプルはUnityPackage／ZIPの<code>Assets/MirrorBallLight/Samples/</code>にも収録され、Cubemap CrossはCube、2D／Atlasは2D TextureとしてImport設定済みです。</p>
+</section>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="06_spots.html">← 光点の形・量・点滅</a>
+<a href="08_surface.html">壁・床のMaterial →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>13 表面Emission・AudioLink・Mask | MirrorBallLight</title>
+<title>壁・ガラス表面のEmissionとMask | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -15,8 +15,8 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="12_material_translate.html">← Material変換</a>
-<a href="14_performance_tips.html">重い場合のTips →</a>
+<a href="10_body.html">← ミラーボール本体</a>
+<a href="12_audiolink.html">AudioLink連動 →</a>
 </nav>
 </header>
 <div class="shell">
@@ -24,57 +24,87 @@
 <button class="toggle" aria-expanded="false">ページ一覧を開く</button>
 <div class="panel">
 <a class="home" href="index.html">目次</a>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
 </li>
-<li><a href="02_quickstart.html"><span>サンプル</span></a>
+<li><a href="02_sample.html">サンプルで確かめる</a>
 </li>
-<li><a href="03_controller.html"><span>Controller</span></a>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
 </li>
-<li><a href="04_effects.html"><span>反射・光点</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
 </li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+<li><a href="05_motion.html">回転・反射・色</a>
 </li>
-<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<li><a href="06_spots.html">光点の形と量</a>
 </li>
-<li><a href="07_presets.html"><span>プリセット</span></a>
+<li><a href="07_cookie.html">Cookie投影</a>
 </li>
-<li><a href="08_materials.html"><span>Material</span></a>
+<li><a href="08_surface.html">壁・床のMaterial</a>
 </li>
-<li><a href="09_integrations.html"><span>連携</span></a>
+<li><a href="09_glass.html">ガラスのMaterial</a>
 </li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+<li><a href="10_body.html">ミラーボール本体</a>
 </li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
-</li>
-<li><a href="12_material_translate.html"><span>Material変換</span></a>
-</li>
-<li><a aria-current="page" href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+<li><a aria-current="page" href="11_emission.html">表面Emission・Mask</a>
 <ul class="inpage">
+<li><a href="#surface-emission">壁・ガラス表面Emission／AudioLink／Mask</a></li>
 <li><a href="#difference">反射光点との違い</a></li>
 <li><a href="#steps">設定手順</a></li>
 <li><a href="#audiolink">表面Emission専用AudioLink</a></li>
 <li><a href="#parameters">項目一覧</a></li>
-<li><a href="#wall">通常の壁・床の推奨開始値</a></li>
-<li><a href="#glass">ガラス・半透明面の推奨開始値</a></li>
 <li><a href="#translate">既存MaterialからのTranslate</a></li>
 <li><a href="#performance">負荷とVRChat Build</a></li>
 </ul>
 </li>
-<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
 </li>
-<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
 </li>
-</ol>
-</div>
-</nav>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
-<div class="eyebrow">13 / SURFACE EMISSION &amp; MASK</div>
-<h1>壁・床・ガラス本体を発光させる</h1>
-<p class="lead">ミラーボールの回転光点とは独立したEmission、AudioLink帯域・反応パターン、Maskを各Materialへ設定します。</p>
-
+<div class="eyebrow">見え方を決める</div>
+<h1>壁・ガラス表面のEmissionとMask</h1>
+<p class="lead">反射光とは別に、面そのものを光らせます。光点を出さないエリアの指定もここです。</p>
+<section id="surface-emission">
+<h2>壁・ガラス表面Emission／AudioLink／Mask</h2>
+<p>4種類のSurface Shaderすべてで、回転する反射光とは独立した表面発光をMaterialごとに設定できます。Controllerやライブプリセットからは上書きされません。</p>
+<table>
+<tr><th>Material項目</th><th>効果</th></tr>
+<tr><td>表面Emissionを使用</td><td>追加の表面発光をONにします。OFF時は追加Textureを読みません。</td></tr>
+<tr><td>表面Emissionテクスチャ</td><td>壁紙、看板、ガラス模様などの発光RGBを指定します。</td></tr>
+<tr><td>表面Emissionカラー／強さ</td><td>HDR色と0～20の倍率を乗算します。</td></tr>
+<tr><td>表面Emissionマスクを使用</td><td>白＝発光、黒＝非発光の専用Maskを有効化します。</td></tr>
+<tr><td>Maskの強さ／反転</td><td>Mask適用量と白黒反転を調整します。</td></tr>
+</table>
+<p><a href="11_emission.html">専用帯域・反応パターン、ガラスでの注意、Translate範囲を含む詳細ページへ</a></p>
+</section>
 <section id="difference">
 <h2>反射光点との違い</h2>
 <table><tr><th>機能</th><th>発光するもの</th><th>制御元</th></tr>
@@ -126,27 +156,27 @@
 <tr><td>AudioLinkパターンの適用量</td><td>1</td><td>0で均一反応、1でTextureを完全適用します。</td></tr>
 <tr><td>AudioLinkパターンを反転</td><td>OFF</td><td>反応する場所を反転します。</td></tr>
 <tr><td>AudioLinkパターンのスクロール速度</td><td>0,0</td><td>パターンを時間で移動します。</td></tr></table>
-</section>
-<section id="wall"><h2>通常の壁・床の推奨開始値</h2>
+<h3>通常の壁・床の推奨開始値</h3>
 <ul><li>表面Emissionカラー: HDR白または目的色</li><li>表面Emissionの強さ: 0.5～2</li><li>Mask強さ: 1</li></ul>
 <p>壁全体を強く発光させるとミラーボール光点との明暗差が減ります。背景発光は控えめにし、光点のReflection Intensityを上にする設定から始めます。</p>
 <p>Mask例: <a href="assets/CookieMasks/2D_Grayscale_WaveBands_2048x1024.png">グレースケール波形Mask</a></p>
-</section>
-<section id="glass"><h2>ガラス・半透明面の推奨開始値</h2>
+<h3>ガラス・半透明面の推奨開始値</h3>
 <ul><li>透明度: 0.05～0.3</li><li>表面Emissionの強さ: 0.2～1.5</li><li>透過描画方式: まずプリマルチプライ</li></ul>
 <p>透明Shaderでは表面Emissionも深度フェードへ追従します。交差部だけ発光が弱い場合は「深度フェードを使用」をOFFにして原因を切り分けてください。描画順の問題がある場合はRender QueueとZWriteも確認します。</p>
 </section>
-<section id="translate"><h2>既存MaterialからのTranslate</h2>
+<section id="translate">
+<h2>既存MaterialからのTranslate</h2>
 <p>Standardなど一般的なShaderのEmission Map、Emission Color、Emission強度、Emission Mask候補を表面Emission項目へ引き継ぎます。元MaterialでEmission KeywordがON、または明示的な有効設定がある場合に表面EmissionをONにします。</p>
 <div class="warning">Poiyomi／lilToonなどの複数Emissionレイヤー、スクロールや点滅、Packed Mask、独自Blendは1組の表面Emissionへ完全変換できない可能性があります。Translate Copyを使い、元Materialを残して比較してください。</div>
 </section>
-<section id="performance"><h2>負荷とVRChat Build</h2>
+<section id="performance">
+<h2>負荷とVRChat Build</h2>
 <p>表面EmissionがOFFのMaterialではローカルShader Keywordにより追加Textureサンプリングを除外します。ONではEmission Textureを1回、MaskもONならさらに1回読みます。専用AudioLinkがONの場合だけAudioLink Textureと反応パターンを追加で読みます。</p>
 <p>VRChatで反映されない場合は、Materialの <code>表面Emissionを使用</code> がONであること、診断で <code>_MB_SURFACE_EMISSION</code> が同期されていること、使用MaterialがBuild対象Sceneから参照されていることを確認してください。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
-<a href="12_material_translate.html">← Material変換</a>
-<a href="14_performance_tips.html">動作が重い場合のTips →</a>
+<a href="10_body.html">← ミラーボール本体のファセット</a>
+<a href="12_audiolink.html">AudioLink連動 →</a>
 </nav>
 </div>
 </main>

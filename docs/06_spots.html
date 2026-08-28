@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>06 形状・Cookie | MirrorBallLight</title>
+<title>光点の形・量・点滅 | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -15,8 +15,8 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="05_audiolink.html">← AudioLink</a>
-<a href="07_presets.html">プリセット →</a>
+<a href="05_motion.html">← 回転・反射・色</a>
+<a href="07_cookie.html">Cookie投影 →</a>
 </nav>
 </header>
 <div class="shell">
@@ -24,55 +24,160 @@
 <button class="toggle" aria-expanded="false">ページ一覧を開く</button>
 <div class="panel">
 <a class="home" href="index.html">目次</a>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
 </li>
-<li><a href="02_quickstart.html"><span>サンプル</span></a>
+<li><a href="02_sample.html">サンプルで確かめる</a>
 </li>
-<li><a href="03_controller.html"><span>Controller</span></a>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
 </li>
-<li><a href="04_effects.html"><span>反射・光点</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
 </li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+<li><a href="05_motion.html">回転・反射・色</a>
 </li>
-<li><a aria-current="page" href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<li><a aria-current="page" href="06_spots.html">光点の形と量</a>
 <ul class="inpage">
+<li><a href="#spots">光点・タイル</a></li>
+<li><a href="#blink">ランダム点灯・消灯と表面処理</a></li>
 <li><a href="#single">単一の光点形状</a></li>
 <li><a href="#atlas">複数形状アトラス</a></li>
-<li><a href="#import-settings">Texture Import Settings</a></li>
-<li><a href="#import-steps">自分で用意したTextureのImport設定</a></li>
-<li><a href="#cookie">8. 高度な投影Cookie</a></li>
-<li><a href="#preview">Sceneビュー投影プレビュー</a></li>
+<li><a href="#import-settings">自分で用意したTextureのImport設定</a></li>
+<li><a href="#procedural">プロシージャル形状</a></li>
+<li><a href="#chromatic">プリズム色分散</a></li>
 </ul>
 </li>
-<li><a href="07_presets.html"><span>プリセット</span></a>
+<li><a href="07_cookie.html">Cookie投影</a>
 </li>
-<li><a href="08_materials.html"><span>Material</span></a>
+<li><a href="08_surface.html">壁・床のMaterial</a>
 </li>
-<li><a href="09_integrations.html"><span>連携</span></a>
+<li><a href="09_glass.html">ガラスのMaterial</a>
 </li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+<li><a href="10_body.html">ミラーボール本体</a>
 </li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+<li><a href="11_emission.html">表面Emission・Mask</a>
 </li>
-<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
 </li>
-<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
 </li>
-<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+<li><a href="14_udon.html">Udonから操作する</a>
 </li>
-<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+<li><a href="15_show.html">演出をUdonで組む</a>
 </li>
-</ol>
-</div>
-</nav>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
-<div class="eyebrow">06 / SHAPES & COOKIE</div>
-<h1>光点形状・テクスチャアトラス・投影Cookie</h1>
-<p class="lead">Project内に保存されたTextureを使い、VRChatビルドへ確実に含めます。</p>
-
+<div class="eyebrow">見え方を決める</div>
+<h1>光点の形・量・点滅</h1>
+<p class="lead">光点1つの形と大きさ、同時に光る割合、複数形状のアトラスです。</p>
+<section id="spots">
+<h2>光点・タイル</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>横方向の光点数</td>
+<td>48 / 8–128</td>
+<td>球面分割の横密度。増やすほど小さな光点が増えます。</td>
+</tr>
+<tr>
+<td>縦方向の光点数</td>
+<td>24 / 4–64</td>
+<td>縦密度。横の約半分から調整すると自然です。</td>
+</tr>
+<tr>
+<td>光点の大きさ</td>
+<td>0.32 / 0.05–0.95</td>
+<td>各セル内の発光範囲です。</td>
+</tr>
+<tr>
+<td>光点のぼかし</td>
+<td>0.05</td>
+<td>輪郭の柔らかさ。小さいほど硬い形になります。</td>
+</tr>
+<tr>
+<td>光点の横縦比</td>
+<td>1.1</td>
+<td>1で等倍、1より大きいと横長です。</td>
+</tr>
+<tr>
+<td>光点の形状</td>
+<td>四角</td>
+<td>四角／丸／ひし形／十字／テクスチャ／六角形／星／リング／ハートから選択します。</td>
+</tr>
+</table>
+<p>六角形、星、リング、ハートはTexture不要です。テクスチャとアトラスは<a href="06_spots.html">形状・Cookieページ</a>、表面の機能は<a href="08_surface.html">ワールドShader拡張</a>で説明します。</p>
+</section>
+<section id="blink">
+<h2>ランダム点灯・消灯と表面処理</h2>
+<table>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+<tr>
+<td>ランダム点滅を使用</td>
+<td>ON</td>
+<td>光点セルごとに点灯／消灯を切り替えます。</td>
+</tr>
+<tr>
+<td>同時に点灯する割合</td>
+<td>0.55</td>
+<td>平均して点灯する光点の割合です。0.2で疎、0.8で密です。</td>
+</tr>
+<tr>
+<td>点灯状態の切替速度</td>
+<td>1.2</td>
+<td>ランダム状態を更新する速度です。</td>
+</tr>
+<tr>
+<td>点灯・消灯のフェード</td>
+<td>0.12</td>
+<td>切替境界を滑らかにします。小さいとパキッと切り替わります。</td>
+</tr>
+<tr>
+<td>光点の明滅量</td>
+<td>0.1</td>
+<td>連続的な輝度揺らぎ量です。ランダム点滅とは別に加算されます。</td>
+</tr>
+<tr>
+<td>光点の明滅速度</td>
+<td>1.5</td>
+<td>連続明滅の速さです。</td>
+</tr>
+<tr>
+<td>面の向きで明るさを変える</td>
+<td>OFF</td>
+<td>面法線と投影方向で強度を変えます。凹凸面では自然ですが計算が増えます。</td>
+</tr>
+</table>
+</section>
 <section id="single">
 <h2>単一の光点形状</h2>
 <table>
@@ -160,7 +265,7 @@
 <div class="tip">形状の周囲に1～2px程度の余白を入れると隣セルの色が混ざりにくくなります。</div>
 </section>
 <section id="import-settings">
-<h2>Texture Import Settings</h2>
+<h2>自分で用意したTextureのImport設定</h2>
 <table>
 <tr>
 <th>項目</th>
@@ -192,9 +297,7 @@
 </tr>
 </table>
 <div class="danger">実行中に生成したTexture、Project外の画像、未保存の一時TextureはVRChatへアップロードされません。必ずAssets配下のTexture Assetを参照してください。</div>
-</section>
-<section id="import-steps">
-<h2>自分で用意したTextureのImport設定</h2>
+<h3>Unityでの手順</h3>
 <p>推奨値は上の表のとおりです。ここでは、そのうち<strong>診断が見ている3か所</strong>と、Unityでの直し方だけを手順にします。この3つが既定のままだと、形が滲む、境目に縁が出る、といった見え方になります。</p>
 <ol class="steps">
 <li>ProjectウィンドウでそのTextureを選びます。</li>
@@ -207,87 +310,24 @@
 <div class="warning"><strong>診断がImport設定を見るのは、形状アトラスに指定したTextureだけです。</strong> 単体の光点形状Textureと投影Cookieは対象外なので、警告は出ません。上の3つは自分で確かめてください。</div>
 <div class="note"><strong>同梱サンプルを指定した直後に、診断がWrap Modeを警告することがあります。</strong> 「安全に自動修正」を押すか、手でClampへ変えてください。<strong>見た目の差はテクスチャの外周だけ</strong>なので、気づかないまま使っていることがあります。</div>
 </section>
-
-<section id="cookie">
-<h2>8. 高度な投影Cookie</h2>
+<section id="procedural">
+<h2>プロシージャル形状</h2>
 <table>
-<tr>
-<th>表示名</th>
-<th>初期値</th>
-<th>効果</th>
-</tr>
-<tr>
-<td>投影Cookieを使用</td>
-<td>OFF</td>
-<td>Cookie Keywordを有効にします。</td>
-</tr>
-<tr>
-<td>投影方式</td>
-<td>2D Cookie</td>
-<td>OFF／2D／Cubemap。用途に一致するTextureを指定します。</td>
-</tr>
-<tr>
-<td>2D投影Cookie</td>
-<td>なし</td>
-<td>Spot Light方向を基準に平面投影します。</td>
-</tr>
-<tr>
-<td>Cubemap投影Cookie</td>
-<td>なし</td>
-<td>ミラーボール中心から全方向へ球状投影します。</td>
-</tr>
-<tr>
-<td>Cookieマスクの強さ</td>
-<td>1</td>
-<td>0で無効、1でCookieマスクを完全適用します。</td>
-</tr>
-<tr>
-<td>Cookie色の混合量</td>
-<td>0</td>
-<td>0は明度マスクだけ、1はCookieのRGB色も強く反映します。</td>
-</tr>
-<tr>
-<td>Cookieタイリング</td>
-<td>(1,1)</td>
-<td>2D Cookieの繰り返し倍率です。</td>
-</tr>
-<tr>
-<td>Cookieオフセット</td>
-<td>(0,0)</td>
-<td>2D CookieのUV位置を移動します。</td>
-</tr>
-<tr>
-<td>Cookie回転速度</td>
-<td>0</td>
-<td>Cookie自体を時間回転させます。負数で逆方向です。</td>
-</tr>
+<tr><th>形状</th><th>特徴</th></tr>
+<tr><td>六角形</td><td>壁・床へ幾何学的な反射を配置</td></tr>
+<tr><td>星</td><td>ステージ向けの鋭い光点</td></tr>
+<tr><td>リング</td><td>中心が抜けた柔らかな光輪</td></tr>
+<tr><td>ハート</td><td>イベント向けの装飾形状</td></tr>
 </table>
-<div class="note">2Dは照射方向が明確なステージ、Cubemapは部屋全体へ模様を配る用途に向いています。</div>
-<p><a href="assets/CookieMasks/README_サンプルCookie.html">サンプルCookie・マスク一覧</a>から、2D／Cubemap用のPNGを利用できます。</p>
+<p>4形状はTexture不要です。複数種類を同時配置したい場合は<a href="assets/ShapeAtlas/SampleShapeAtlas_4x2.png">サンプル形状アトラス</a>を使用してください。</p>
 </section>
-<section id="preview">
-<h2>Sceneビュー投影プレビュー</h2>
-<table>
-<tr>
-<td>投影プレビューを表示</td>
-<td>Scene Viewにガイドを表示します。ゲーム実行やビルドには描画されません。</td>
-</tr>
-<tr>
-<td>プレビュー光線数</td>
-<td>16 / 4–64。多いほど輪郭を把握しやすい一方、Scene表示が増えます。</td>
-</tr>
-<tr>
-<td>プレビュー半径</td>
-<td>5 / 0.5–30。ガイドの表示距離です。</td>
-</tr>
-</table>
-<p>
-<a href="07_presets.html">次へ：ライブプリセット →</a>
-</p>
+<section id="chromatic">
+<h2>プリズム色分散</h2>
+<p>光点の輪郭勾配を使ってRGBを分離します。0.03～0.08程度はガラスや金属のアクセント、0.15以上はライブ演出向けです。画面空間微分を使うため、遠距離では自動的に細い表現へ収束します。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
-<a href="05_audiolink.html">← AudioLink連動</a>
-<a href="07_presets.html">ライブプリセット →</a>
+<a href="05_motion.html">← 回転・反射光・色</a>
+<a href="07_cookie.html">2D・Cubemap Cookieの投影 →</a>
 </nav>
 </div>
 </main>

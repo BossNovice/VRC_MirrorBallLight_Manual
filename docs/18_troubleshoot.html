@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>うまく動かないとき | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="17_translate.html">← 既存Materialの変換</a>
+<a href="19_heavy.html">重い →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
+</li>
+<li><a href="02_sample.html">サンプルで確かめる</a>
+</li>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
+</li>
+<li><a href="05_motion.html">回転・反射・色</a>
+</li>
+<li><a href="06_spots.html">光点の形と量</a>
+</li>
+<li><a href="07_cookie.html">Cookie投影</a>
+</li>
+<li><a href="08_surface.html">壁・床のMaterial</a>
+</li>
+<li><a href="09_glass.html">ガラスのMaterial</a>
+</li>
+<li><a href="10_body.html">ミラーボール本体</a>
+</li>
+<li><a href="11_emission.html">表面Emission・Mask</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
+</li>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a aria-current="page" href="18_troubleshoot.html">うまく動かない</a>
+<ul class="inpage">
+<li><a href="#notvisible">光点が表示されない</a></li>
+<li><a href="#vrchat">Unityでは見えるがVRChatでは形状が反映されない</a></li>
+<li><a href="#black">ミラーボール本体が黒い</a></li>
+<li><a href="#pattern-frozen">アニメーションでMaterialを切り替えても効かない</a></li>
+<li><a href="#udon">UdonSharp Program Assetのエラー</a></li>
+<li><a href="#dependency">連携版ShaderでImport時にエラーが出る</a></li>
+<li><a href="#import-time">Importに時間がかかる</a></li>
+</ul>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
+<main id="content">
+<div class="page">
+<div class="eyebrow">困ったとき</div>
+<h1>うまく動かないとき</h1>
+<p class="lead">症状から原因へたどります。Import時のエラーもここにまとめています。</p>
+<section id="notvisible">
+<h2>光点が表示されない</h2>
+<ol>
+<li>Controllerの電源状態と「反射光の明るさ」を確認</li>
+<li>ミラーボール本体参照が正しいか確認</li>
+<li>対象Rendererが対応ShaderのMaterialを使用しているか確認</li>
+<li>対象Material配列へ登録、または自動検出</li>
+<li>距離フェード終了より対象面が遠くないか確認</li>
+<li>点灯割合が0、光点サイズが極端に小さくないか確認</li>
+<li>Cookieや形状Textureが黒一色になっていないか確認</li>
+<li>設定反映・保存を実行</li>
+</ol>
+</section>
+<section id="vrchat">
+<h2>Unityでは見えるがVRChatでは形状が反映されない</h2>
+<ol>
+<li>TextureがAssets配下の保存済みAssetか</li>
+<li>Material AssetがTextureを参照しているか</li>
+<li>Controllerの対象Materialにアップロードされる実Materialが登録されているか</li>
+<li>「現在の設定をマテリアルへ反映・保存」を押したか</li>
+<li>Atlasの横×縦と使用数が正しいか</li>
+<li>Play Mode中だけ変更していないか</li>
+<li>アップロード後にVRChatキャッシュではなく新しいBuildを確認しているか</li>
+</ol>
+<div class="danger">Runtime生成Textureはアップロード対象になりません。これはUnity Editorで見えてもVRChatで白形状へ戻る代表的な原因です。</div>
+</section>
+<section id="black">
+<h2>ミラーボール本体が黒い</h2>
+<ol>
+<li>ShaderがMirrorBallFacetBody系か</li>
+<li>鏡片の基本色が黒、Alpha 0になっていないか</li>
+<li>「暗所での最低表示明るさ」を0.08以上にする</li>
+<li>目地の太さを0.035付近へ戻す</li>
+<li>Cubemap未設定でも最低輝度が見えるか確認</li>
+<li>Controllerの電源ON、本体ファセット明るさ倍率1以上</li>
+<li>連携版ならLTCGI／LightVolumesの導入とMaterial整合を確認</li>
+</ol>
+</section>
+<section id="pattern-frozen">
+<h2>アニメーションでMaterialを切り替えても効かない</h2>
+<p>一部のShader Keywordは廃止され、実行時のプロパティ切り替えへ移っています。<b>アニメーションクリップからKeywordを直接操作していた場合は効かなくなります。</b></p>
+<p>移行先のプロパティと手順は <a href="18_troubleshoot.html#pattern-frozen">Material・Shader設定の「廃止したShader Keyword」</a> を参照してください。</p>
+<h3>廃止したShader Keywordと移行先</h3>
+<p>Importにかかる時間を短縮するため、Shader Keywordの本数がImport時間を大きく左右するため、軽い機能のKeywordを実行時の切り替えへ移しています。</p>
+<div class="note"><b>Materialの設定と描画結果は変わりません。</b> Inspectorの操作方法も同じです。移行が必要なのは、下表のKeywordを<b>アニメーションクリップやスクリプトから直接操作していた場合だけ</b>です。</div>
+<table>
+<tr><th>廃止したKeyword</th><th>移行先のプロパティ</th><th>Inspectorでの項目</th></tr>
+<tr><td><code>_MB_DEPTH_FADE</code></td><td><code>_UseDepthFade</code></td><td>深度フェードを使用</td></tr>
+<tr><td><code>_MB_MATERIAL_AUDIO_MASK</code></td><td><code>_UseMaterialAudioMask</code></td><td>個別AudioLinkマスクを使用</td></tr>
+<tr><td><code>_MB_SURFACE_EMISSION_AUDIOLINK</code></td><td><code>_UseSurfaceEmissionAudioLink</code></td><td>表面EmissionをAudioLink連動</td></tr>
+<tr><td><code>_MB_ATLAS_SEED_FADE</code></td><td>なし（Controllerの設定が決めます）</td><td>—</td></tr>
+<tr><td><code>_MB_FACET_SEED_FADE</code></td><td>なし（同上）</td><td>—</td></tr>
+</table>
+<h3>アニメーションからの移行手順</h3>
+<ol>
+<li>該当のアニメーションクリップを開き、Materialの Keyword を切り替えているカーブを探します。</li>
+<li>そのカーブを削除し、代わりに上表の移行先プロパティを 0（OFF）または 1（ON）で操作するカーブへ置き換えます。</li>
+<li>シードの自動フェード2種はControllerの設定が決めるため、Material側での切り替え対象ではありません。Controllerの項目を操作してください。</li>
+</ol>
+<div class="tip">Materialに残っている廃止Keywordは、<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> の「安全に自動修正」で削除できます。Keywordと設定値が食い違っている場合は、どちらの状態で動作するかも表示します。自動修正が演出設定そのものを書き換えることはありません。</div><h3>いまも残っているKeyword</h3>
+<p>ランダム点滅、表面向き、距離減衰は数値分岐へ統合されており、旧Keywordを診断機能で除去します。KeywordはAudioLink、Material個別Texture、透明Depth Fade、VRCLightVolumesなどTexture参照や描画構造が変わる機能へ限定しています。</p>
+<p>更新後に「Tools &gt; MirrorBall Light &gt; 診断・最適化」の安全な自動修正を一度実行してください。</p>
+</section>
+<section id="udon">
+<h3>消灯しても真っ黒にはなりません</h3>
+<p>本体は<strong>完全な金属</strong>として描かれます。拡散反射を持たないため、<strong>映り込みだけで見えています。</strong> 電源をOFFにしても映り込みと環境光は残り、消えるのはスポットライト由来のきらめきだけです。</p>
+<p>消灯時の明るさは Controller の <code>消灯時の本体の明るさ</code>（<code>本体ファセットの明るさ倍率</code> のすぐ下）で変えられます。</p>
+<table>
+<tr><th>値</th><th>消灯時の見え方</th></tr>
+<tr><td><code>1</code>（初期値）</td><td>点灯時と同じ量の映り込みを残します</td></tr>
+<tr><td><code>0.3</code></td><td>うっすら見える程度</td></tr>
+<tr><td><code>0</code></td><td>映り込みなし</td></tr>
+</table>
+<div class="note"><code>0</code> にしても真っ黒にはなりません。<code>暗所での最低表示明るさ</code>（初期値8%）の分は残ります。<strong>点灯時の見え方には影響しません。</strong></div>
+<h2>UdonSharp Program Assetのエラー</h2>
+<div class="tip">Program Assetは自動で作られます。<strong>壊れている場合は <code>Tools &gt; MirrorBall Light &gt; UdonSharp Program Assetを修復</code> で作り直せます。</strong> ただし<strong>先にConsoleの赤いエラーを消してください。</strong> スクリプトがコンパイルできていないと作り直しにも失敗します。詳しくは<a href="18_troubleshoot.html#udon">導入</a>にあります。</div>
+<table>
+<tr>
+<th>症状</th>
+<th>対処</th>
+</tr>
+<tr>
+<td>Program SourceがNone</td>
+<td>Import完了を待ち、Controller Scriptと付属Program Assetが存在するか確認します。</td>
+</tr>
+<tr>
+<td>同名クラスエラー</td>
+<td>Project内の重複した<code>MirrorBallLightController.cs</code>を探し、バックアップをProject外へ移します。</td>
+</tr>
+<tr>
+<td>Program Asset is null</td>
+<td>先に全C#エラーを解消し、Unity再起動後も残る場合は付属Program Assetを再Importします。</td>
+</tr>
+<tr>
+<td>別PackageのUdonエラー</td>
+<td>MirrorBallLightより先にそのPackageのコンパイルエラーを解消します。UdonSharpは全体エラーがあると変換を保留します。</td>
+</tr>
+<tr>
+<td><code>Method is not exposed to Udon</code></td>
+<td>古い版をImportした場合に発生します。最新版へ更新してください。</td>
+</tr>
+<tr>
+<td><code>Failed to create material drawer Enum</code></td>
+<td>古い版のMaterial Inspectorで発生します。最新版へ更新してください。光点形状の選択が日本語のポップアップになります。</td>
+</tr>
+</table>
+<h3>Program Assetの作られ方と修復</h3>
+<p>Controllerが動くには、UdonSharpのProgram Assetがスクリプトと1対1で結び付いている必要があります。<strong>これは自動で作られます。手作業は要りません。</strong> Unityの起動時と、スクリプトを読み直したときに確認が走ります。</p>
+<p>作られるのは次の2つです。</p>
+<ul>
+<li><code>MirrorBallLightController</code> 用</li>
+<li>ライブプリセット用</li>
+</ul>
+<h3>壊れたときだけ、手で作り直します</h3>
+<p>Importの途中でUnityを閉じた、Program Assetを消した、といった場合は、次のメニューで作り直せます。</p>
+<ol class="steps">
+<li>Unityのメニューから <code>Tools &gt; MirrorBall Light &gt; UdonSharp Program Assetを修復</code> を選びます。</li>
+<li>作り直しが必要だった場合だけ、UdonSharpのコンパイルが1回走ります。<strong>修復が不要なら、作り直しもコンパイルも行いません。</strong> メニューから手で実行したときは、修復が不要だったことがConsoleへ表示されます。</li>
+<li>Consoleに赤いエラーが残っていないかを確かめます。</li>
+</ol>
+<div class="warning">スクリプトがコンパイルできていないと、このメニューは作り直しに失敗します。<strong>先にConsoleの赤いエラーを消してください。</strong> 連携Packageを入れずに連携版Shaderを含めた場合など、原因が別のところにあることがあります。</div>
+</section>
+<section id="dependency">
+<h2>連携版ShaderでImport時にエラーが出る</h2>
+<p>連携版Shaderは <code>Packages/red.sim.lightvolumes/Shaders/LightVolumes.cginc</code> と <code>Packages/at.pimaker.ltcgi/Shaders/LTCGI_structs.cginc</code> を直接includeします。<b>MirrorBallLightより先にVRCLightVolumesとLTCGIを導入してください。</b>後から導入するとImport時にShaderのコンパイルエラーが出ます。</p>
+<p><code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> が最初の行で依存Packageの有無とバージョンを表示します。未導入の場合は原因と対処も表示します。</p>
+<p>連携機能を使わない場合は、素の版Shader（MirrorBallSurfaceAuto／MirrorBallSurfaceAutoTransparent／MirrorBallFacetBody）のMaterialを使用してください。この2つのPackageは不要です。</p>
+</section>
+<section id="import-time">
+<h2>Importに時間がかかる</h2>
+<p>Importにかかる時間の大半はShaderのコンパイルです。新規プロジェクトへunitypackageを初回Importしたときの実測値は次のとおりです。</p>
+<table>
+<tr><th>操作</th><th>実測</th></tr>
+<tr><td>unitypackageの初回Import</td><td><b>約128秒</b></td></tr>
+<tr><td>2回目以降のUnity起動</td><td>約14秒</td></tr>
+</table>
+<p>128秒のうち約102秒はShaderのコンパイルで、VRCLightVolumes／LTCGI連携版の3本が大部分を占めます。<b>時間は環境によって変わります。</b></p>
+<div class="tip">Importは1回で終わります。2回目以降のUnity起動は10数秒です。Libraryフォルダを削除すると再度かかるため、消さない運用にすると待ち時間が減ります。</div>
+<div class="note">UdonSharp Program Assetが正常な場合、Editorのドメインリロードで余分なUdonSharpコンパイルは走らなくなりました。スクリプトの変更やPlay Modeの出入りでの待ち時間が減ります。</div>
+</section>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="17_translate.html">← 既存の壁・ガラスMaterialを変換</a>
+<a href="19_heavy.html">動作が重い場合 →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>

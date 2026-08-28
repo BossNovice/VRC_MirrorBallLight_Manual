@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ControllerのInspector | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="03_apply.html">← 自分の壁へ適用する</a>
+<a href="05_motion.html">回転・反射・色 →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
+</li>
+<li><a href="02_sample.html">サンプルで確かめる</a>
+</li>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a aria-current="page" href="04_controller.html">Controllerの使い方</a>
+<ul class="inpage">
+<li><a href="#inspector">ControllerのInspectorの使い方</a></li>
+<li><a href="#basic">1. 基本設定・電源・対象Material</a></li>
+<li><a href="#buttons">共通ボタン</a></li>
+<li><a href="#controller">Controller連動とMaterial直編集</a></li>
+</ul>
+</li>
+<li><a href="05_motion.html">回転・反射・色</a>
+</li>
+<li><a href="06_spots.html">光点の形と量</a>
+</li>
+<li><a href="07_cookie.html">Cookie投影</a>
+</li>
+<li><a href="08_surface.html">壁・床のMaterial</a>
+</li>
+<li><a href="09_glass.html">ガラスのMaterial</a>
+</li>
+<li><a href="10_body.html">ミラーボール本体</a>
+</li>
+<li><a href="11_emission.html">表面Emission・Mask</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
+</li>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
+<main id="content">
+<div class="page">
+<div class="eyebrow">見え方を決める</div>
+<h1>ControllerのInspector</h1>
+<p class="lead">10個の折りたたみの構成と、設定を保存するボタンの使い方です。</p>
+<section id="inspector">
+<h2>ControllerのInspectorの使い方</h2>
+<p>設定項目は10個の折りたたみに分かれています。<strong>最初は「1. 基本設定・電源・対象Material」だけが開いています。</strong> 導入だけならここしか触りません。</p>
+<ol class="steps">
+<li>Hierarchyで<strong>Controllerが付いたGameObject</strong>を選びます。設定済みサンプルなら <code>MirrorBallLight_ConfiguredSample</code> です。</li>
+<li>Inspectorの上にある<strong>「すべて開く」「すべて閉じる」</strong>で、10個の折りたたみをまとめて操作できます。必要な番号だけ開くほうが探しやすくなります。</li>
+<li>設定を変えます。</li>
+<li>Inspectorの<strong>一番下にある「現在の設定をマテリアルへ反映・保存」</strong>を押します。<strong>Edit Modeでの変更は、これを押してはじめてMaterialへ保存されます。</strong></li>
+</ol>
+<div class="tip"><strong>Play Modeでは、ボタンを押さなくてもMaterialへ反映されます。</strong> Play開始時と、ライブプリセットの適用中・クロスフェード中は、Controllerがそのときの設定をMaterialへ書きます。<strong>これは実行のための反映で、Edit Modeでの編集結果を保存する操作とは別物です。</strong> 編集した設定を残すには、Play Modeを抜けてからこのボタンを押してください。</div>
+<div class="warning"><strong>折りたたみの開閉は、Unityを開いている間だけ覚えています。</strong> Unityを起動し直すと、また「1. 基本設定」だけが開いた状態に戻ります。設定が消えたわけではありません。</div>
+<h3>10個の折りたたみ</h3>
+<table>
+<thead><tr><th>番号</th><th>中身</th><th>説明のあるページ</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>基本設定・電源・対象Material</td><td>このページ</td></tr>
+<tr><td>2</td><td>ライブプリセット</td><td><a href="13_presets.html">プリセット</a></td></tr>
+<tr><td>3</td><td>アバターへの実光反映（PC向け）</td><td>このページ</td></tr>
+<tr><td>4</td><td>ミラーボール本体ファセット</td><td>このページ</td></tr>
+<tr><td>5</td><td>回転・反射・カラー</td><td><a href="05_motion.html">反射・光点</a></td></tr>
+<tr><td>6</td><td>AudioLink連動</td><td><a href="12_audiolink.html">AudioLink</a></td></tr>
+<tr><td>7</td><td>光点・形状・ランダム点灯</td><td><a href="06_spots.html">形状・Cookie</a></td></tr>
+<tr><td>8</td><td>高度な投影・Sceneプレビュー</td><td><a href="06_spots.html">形状・Cookie</a></td></tr>
+<tr><td>9</td><td>VRCLightVolumes・LTCGI連携</td><td><a href="16_integrations.html">連携</a></td></tr>
+<tr><td>10</td><td>最適化・診断</td><td>このページ／<a href="18_troubleshoot.html">最適化・対処</a></td></tr>
+</tbody>
+</table>
+<h3>Inspectorの下に出る警告</h3>
+<p>必須の設定が空のとき、保存ボタンの下に出ます。<strong>赤はこのままでは動きません。</strong></p>
+<table>
+<thead><tr><th>表示</th><th>意味</th><th>対処</th></tr></thead>
+<tbody>
+<tr><td>ミラーボール本体が未設定です</td><td>赤（エラー）</td><td>1番の「ミラーボール本体」へ回転の基準にするTransformを入れます</td></tr>
+<tr><td>反射を表示するマテリアルが未設定です</td><td>黄（警告）</td><td>1番の「対象マテリアルをシーンから自動検出」を押します</td></tr>
+</tbody>
+</table>
+<h3>変えたのに見た目が変わらないとき</h3>
+<ol>
+<li><strong>「現在の設定をマテリアルへ反映・保存」を押したか</strong>を確かめます。いちばん多い原因です。</li>
+<li>壁を増やした後なら、<strong>先に「対象マテリアルをシーンから自動検出」</strong>を押します。一覧に無いMaterialへは書かれません。</li>
+<li>Play Mode中に変えた値は、<strong>Play Modeを抜けると元に戻ります。</strong> ただしMaterialやTexture Import設定のような<strong>アセットそのものへの変更は残ります。</strong> Play中に押した「現在の設定をマテリアルへ反映・保存」の結果は残り、Controllerの設定値だけが戻る、という食い違いが起きます。<strong>設定はPlay Modeを抜けてから変えてください。</strong></li>
+<li>それでも変わらなければ、10番の「診断・最適化ウィンドウを開く」で原因を探します。</li>
+</ol>
+</section>
+<section id="basic">
+<h2>1. 基本設定・電源・対象Material</h2>
+<table>
+<thead>
+<tr>
+<th>表示名</th>
+<th>初期値／選択</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>動作範囲</td>
+<td>グローバル</td>
+<td>ローカルは自分だけ、グローバルは電源状態を全員へManual Syncします。</td>
+</tr>
+<tr>
+<td>電源状態</td>
+<td>ON</td>
+<td>反射、本体連動、実光を点灯／消灯します。</td>
+</tr>
+<tr>
+<td>このオブジェクトをクリックして切替</td>
+<td>ON</td>
+<td>Controller GameObjectへのInteractで電源を切り替えます。Colliderが必要です。</td>
+</tr>
+<tr>
+<td>消灯中は回転を停止</td>
+<td>ON</td>
+<td>OFF中の回転位相進行を停止し、再点灯時に続きから回します。</td>
+</tr>
+<tr>
+<td>電源フェード時間（秒）</td>
+<td>0.5 / 0–5</td>
+<td>点灯と消灯を滑らかに補間します。0は即時です。</td>
+</tr>
+<tr>
+<td>ミラーボール本体</td>
+<td>必須</td>
+<td>位置・回転の基準Transformです。光点投影と表示回転の中心になります。</td>
+</tr>
+<tr>
+<td>照射スポットライト（任意）</td>
+<td>任意</td>
+<td>投影方向と位置の基準です。未指定時はボール位置と下向きを使用します。</td>
+</tr>
+<tr>
+<td>反射を表示するマテリアル</td>
+<td>配列</td>
+<td>Controllerが値を書き込むSurface Material一覧です。</td>
+</tr>
+</tbody>
+</table>
+<h3>対象マテリアルをシーンから自動検出</h3>
+<p>シーン内の対応Shaderを使うMaterialを、非アクティブObjectも含めて重複なしで検出し、一覧を置き換えます。新しい壁やガラスを追加した後に実行します。</p>
+</section>
+<section id="buttons">
+<h2>共通ボタン</h2>
+<table>
+<tr>
+<td>すべて開く／すべて閉じる</td>
+<td>10セクションの折り畳み状態を一括変更します。</td>
+</tr>
+<tr>
+<td>現在の設定をマテリアルへ反映・保存</td>
+<td>Controllerの現在値、Shader Keyword、Texture参照を対象Materialへ反映し、Assetとして保存します。アップロード前に実行してください。</td>
+</tr>
+</table>
+<p>
+<a href="05_motion.html">次へ：反射・光点パラメーター →</a>
+</p>
+</section>
+<section id="controller">
+<h2>Controller連動とMaterial直編集</h2>
+<ul>
+<li>Controllerの対象Materialへ登録したSurfaceは、色・明るさ・共通AudioLink・光点・Cookie・距離・Texture参照・共通Keywordを更新されます。</li>
+<li>Base Texture、Normal Map、基本色、金属感、滑らかさ、Material個別AudioLinkマスクと個別発光パターンはMaterial側で設定します。</li>
+<li>本体は「Controllerの色・電源・AudioLink設定と連動」がONの時だけ演出値が同期します。</li>
+<li>Edit Mode変更をAssetへ残すには「現在の設定をマテリアルへ反映・保存」を押します。</li>
+</ul>
+<p>
+<a href="16_integrations.html">次へ：LTCGI・VRCLightVolumes →</a>
+</p>
+</section>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="03_apply.html">← 自分の壁・床へ適用する</a>
+<a href="05_motion.html">回転・反射光・色 →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>

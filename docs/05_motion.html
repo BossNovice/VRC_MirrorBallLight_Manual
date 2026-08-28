@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>04 反射・光点 | MirrorBallLight</title>
+<title>回転・反射光・色 | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -15,8 +15,8 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="03_controller.html">← Controller</a>
-<a href="05_audiolink.html">AudioLink →</a>
+<a href="04_controller.html">← Controllerの使い方</a>
+<a href="06_spots.html">光点の形と量 →</a>
 </nav>
 </header>
 <div class="shell">
@@ -24,59 +24,75 @@
 <button class="toggle" aria-expanded="false">ページ一覧を開く</button>
 <div class="panel">
 <a class="home" href="index.html">目次</a>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
 </li>
-<li><a href="02_quickstart.html"><span>サンプル</span></a>
+<li><a href="02_sample.html">サンプルで確かめる</a>
 </li>
-<li><a href="03_controller.html"><span>Controller</span></a>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
 </li>
-<li><a aria-current="page" href="04_effects.html"><span>反射・光点</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
+</li>
+<li><a aria-current="page" href="05_motion.html">回転・反射・色</a>
 <ul class="inpage">
 <li><a href="#rotation">回転アニメーション</a></li>
 <li><a href="#reflection">反射光と表示面ごとの調整</a></li>
 <li><a href="#distance">距離フェード</a></li>
 <li><a href="#color">カラフル・ランダム色</a></li>
-<li><a href="#spots">光点・タイル</a></li>
-<li><a href="#blink">ランダム点灯・消灯と表面処理</a></li>
 <li><a href="#recipes">見た目の設定例</a></li>
 </ul>
 </li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+<li><a href="06_spots.html">光点の形と量</a>
 </li>
-<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<li><a href="07_cookie.html">Cookie投影</a>
 </li>
-<li><a href="07_presets.html"><span>プリセット</span></a>
+<li><a href="08_surface.html">壁・床のMaterial</a>
 </li>
-<li><a href="08_materials.html"><span>Material</span></a>
+<li><a href="09_glass.html">ガラスのMaterial</a>
 </li>
-<li><a href="09_integrations.html"><span>連携</span></a>
+<li><a href="10_body.html">ミラーボール本体</a>
 </li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+<li><a href="11_emission.html">表面Emission・Mask</a>
 </li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
 </li>
-<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
 </li>
-<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+<li><a href="14_udon.html">Udonから操作する</a>
 </li>
-<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+<li><a href="15_show.html">演出をUdonで組む</a>
 </li>
-<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
 </li>
-</ol>
-</div>
-</nav>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
-<div class="eyebrow">04 / EFFECTS</div>
-<h1>回転・反射・カラー・光点</h1>
-<p class="lead">Inspectorの5番と7番。通常面と透過面を分けながら、見た目を設計します。</p>
-
+<div class="eyebrow">見え方を決める</div>
+<h1>回転・反射光・色</h1>
+<p class="lead">ミラーボールの回り方と、反射光の強さ・色・距離による減衰です。</p>
 <section id="rotation">
 <h2>回転アニメーション</h2>
-<div class="tip">ここの項目はすべてControllerのInspectorにあります。<strong>どこを開いて、どの順で押すかは<a href="03_controller.html#inspector">Controllerの使い方</a>にまとめてあります。</strong> 値を変えたら、Inspectorの一番下の「現在の設定をマテリアルへ反映・保存」を押してください。<strong>Edit Modeでの変更は、押してはじめてMaterialへ保存されます。</strong></div>
+<div class="tip">ここの項目はすべてControllerのInspectorにあります。<strong>どこを開いて、どの順で押すかは<a href="04_controller.html#inspector">Controllerの使い方</a>にまとめてあります。</strong> 値を変えたら、Inspectorの一番下の「現在の設定をマテリアルへ反映・保存」を押してください。<strong>Edit Modeでの変更は、押してはじめてMaterialへ保存されます。</strong></div>
 <table>
 <tr>
 <th>表示名</th>
@@ -226,92 +242,6 @@
 </tr>
 </table>
 </section>
-<section id="spots">
-<h2>光点・タイル</h2>
-<table>
-<tr>
-<th>表示名</th>
-<th>初期値</th>
-<th>効果</th>
-</tr>
-<tr>
-<td>横方向の光点数</td>
-<td>48 / 8–128</td>
-<td>球面分割の横密度。増やすほど小さな光点が増えます。</td>
-</tr>
-<tr>
-<td>縦方向の光点数</td>
-<td>24 / 4–64</td>
-<td>縦密度。横の約半分から調整すると自然です。</td>
-</tr>
-<tr>
-<td>光点の大きさ</td>
-<td>0.32 / 0.05–0.95</td>
-<td>各セル内の発光範囲です。</td>
-</tr>
-<tr>
-<td>光点のぼかし</td>
-<td>0.05</td>
-<td>輪郭の柔らかさ。小さいほど硬い形になります。</td>
-</tr>
-<tr>
-<td>光点の横縦比</td>
-<td>1.1</td>
-<td>1で等倍、1より大きいと横長です。</td>
-</tr>
-<tr>
-<td>光点の形状</td>
-<td>四角</td>
-<td>四角／丸／ひし形／十字／テクスチャ／六角形／星／リング／ハートから選択します。</td>
-</tr>
-</table>
-<p>六角形、星、リング、ハートはTexture不要です。テクスチャとアトラスは<a href="06_shapes_cookie.html">形状・Cookieページ</a>、表面の機能は<a href="11_r24_world_shader.html">ワールドShader拡張</a>で説明します。</p>
-</section>
-<section id="blink">
-<h2>ランダム点灯・消灯と表面処理</h2>
-<table>
-<tr>
-<th>表示名</th>
-<th>初期値</th>
-<th>効果</th>
-</tr>
-<tr>
-<td>ランダム点滅を使用</td>
-<td>ON</td>
-<td>光点セルごとに点灯／消灯を切り替えます。</td>
-</tr>
-<tr>
-<td>同時に点灯する割合</td>
-<td>0.55</td>
-<td>平均して点灯する光点の割合です。0.2で疎、0.8で密です。</td>
-</tr>
-<tr>
-<td>点灯状態の切替速度</td>
-<td>1.2</td>
-<td>ランダム状態を更新する速度です。</td>
-</tr>
-<tr>
-<td>点灯・消灯のフェード</td>
-<td>0.12</td>
-<td>切替境界を滑らかにします。小さいとパキッと切り替わります。</td>
-</tr>
-<tr>
-<td>光点の明滅量</td>
-<td>0.1</td>
-<td>連続的な輝度揺らぎ量です。ランダム点滅とは別に加算されます。</td>
-</tr>
-<tr>
-<td>光点の明滅速度</td>
-<td>1.5</td>
-<td>連続明滅の速さです。</td>
-</tr>
-<tr>
-<td>面の向きで明るさを変える</td>
-<td>OFF</td>
-<td>面法線と投影方向で強度を変えます。凹凸面では自然ですが計算が増えます。</td>
-</tr>
-</table>
-</section>
 <section id="recipes">
 <h2>見た目の設定例</h2>
 <table>
@@ -337,12 +267,12 @@
 </tr>
 </table>
 <p>
-<a href="05_audiolink.html">次へ：AudioLink →</a>
+<a href="12_audiolink.html">次へ：AudioLink →</a>
 </p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
-<a href="03_controller.html">← Controller設定</a>
-<a href="05_audiolink.html">AudioLink連動 →</a>
+<a href="04_controller.html">← ControllerのInspector</a>
+<a href="06_spots.html">光点の形・量・点滅 →</a>
 </nav>
 </div>
 </main>

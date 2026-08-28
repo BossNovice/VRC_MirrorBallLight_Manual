@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>自分の壁・床へ適用する | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="02_sample.html">← サンプルで確かめる</a>
+<a href="04_controller.html">Controllerの使い方 →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
+</li>
+<li><a href="02_sample.html">サンプルで確かめる</a>
+</li>
+<li><a aria-current="page" href="03_apply.html">自分の壁へ適用する</a>
+<ul class="inpage">
+<li><a href="#reuse">自分の壁へ適用する</a></li>
+<li><a href="#list">Shader一覧</a></li>
+<li><a href="#materialgui">MaterialのInspectorの使い方</a></li>
+</ul>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
+</li>
+<li><a href="05_motion.html">回転・反射・色</a>
+</li>
+<li><a href="06_spots.html">光点の形と量</a>
+</li>
+<li><a href="07_cookie.html">Cookie投影</a>
+</li>
+<li><a href="08_surface.html">壁・床のMaterial</a>
+</li>
+<li><a href="09_glass.html">ガラスのMaterial</a>
+</li>
+<li><a href="10_body.html">ミラーボール本体</a>
+</li>
+<li><a href="11_emission.html">表面Emission・Mask</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
+</li>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
+<main id="content">
+<div class="page">
+<div class="eyebrow">はじめて置く</div>
+<h1>自分の壁・床へ適用する</h1>
+<p class="lead">使うShaderを選び、Materialを割り当てて、Controllerへ登録するまでです。</p>
+<section id="reuse">
+<h2>自分の壁へ適用する</h2>
+<ol class="steps">
+<li>対象壁のMaterialを複製します。</li>
+<li>通常の壁なら<code>MirrorBallLight/MirrorBallSurfaceAuto</code>、ガラスなら<code>MirrorBallLight/MirrorBallSurfaceAutoTransparent</code>へ変更します。</li>
+<li>元のBase Texture、Color、Normal Mapなどを移します。</li>
+<li>Controllerの「対象マテリアルをシーンから自動検出」を押します。</li>
+<li>「現在の設定をマテリアルへ反映・保存」を押します。</li>
+</ol>
+<div class="warning">付属Materialを直接編集すると、サンプルと統合Prefabの見た目にも共有されます。ワールド固有の調整ではMaterialを複製してください。</div>
+<p>
+<a href="04_controller.html">次へ：Controller全項目 →</a>
+</p>
+</section>
+<section id="list">
+<h2>Shader一覧</h2>
+<table>
+<tr>
+<th>用途</th>
+<th>Shader名</th>
+</tr>
+<tr>
+<td>通常面</td>
+<td>
+<code>MirrorBallLight/MirrorBallSurfaceAuto</code>
+</td>
+</tr>
+<tr>
+<td>透明面</td>
+<td>
+<code>MirrorBallLight/MirrorBallSurfaceAutoTransparent</code>
+</td>
+</tr>
+<tr>
+<td>通常版本体</td>
+<td>
+<code>MirrorBallLight/MirrorBallFacetBody</code>
+</td>
+</tr>
+<tr>
+<td>連携通常面</td>
+<td>
+<code>MirrorBallLight/Integrations/MirrorBallSurfaceAuto (VRCLightVolumes + LTCGI)</code>
+</td>
+</tr>
+<tr>
+<td>連携透明面</td>
+<td>
+<code>MirrorBallLight/Integrations/MirrorBallSurfaceAutoTransparent (VRCLightVolumes + LTCGI)</code>
+</td>
+</tr>
+<tr>
+<td>連携本体</td>
+<td>
+<code>MirrorBallLight/Integrations/MirrorBallFacetBody (VRCLightVolumes + LTCGI)</code>
+</td>
+</tr>
+</table>
+</section>
+<section id="materialgui">
+<h2>MaterialのInspectorの使い方</h2>
+<p>MirrorBallLightのSurface Shaderを割り当てたMaterialは、<strong>項目が11個の折りたたみに分かれて表示されます。</strong> Unity標準のMaterial表示とは並びが違います。</p>
+<h3>Shaderを割り当てる</h3>
+<ol class="steps">
+<li>ProjectウィンドウでMaterialを選びます。<strong>1つのMaterialを複数のRendererで共有していると、直した見た目はその全部に反映されます。</strong> 片方だけ変えたいなら、先に複製して割り当て直してください。<strong>付属Materialをそのまま編集するのも避けてください。</strong> サンプルと統合Prefabの見た目も一緒に変わります。<code>Ctrl+D</code> で複製してから使います。</li>
+<li>Inspector上部の <strong>Shader</strong> のドロップダウンを開きます。</li>
+<li>通常の壁・床なら <code>MirrorBallLight/MirrorBallSurfaceAuto</code>、ガラスなど透過するものなら <code>MirrorBallLight/MirrorBallSurfaceAutoTransparent</code> を選びます。</li>
+<li>元のTexture・色・Normal Mapを、新しい項目へ入れ直します。既存Materialからまとめて移したい場合は<a href="17_translate.html">Material変換</a>を使います。</li>
+</ol>
+<h3>11個の折りたたみ</h3>
+<p>上にある<strong>「すべて開く」「すべて閉じる」</strong>でまとめて操作できます。</p>
+<table>
+<thead><tr><th>番号</th><th>中身</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>表面の基本設定（Texture・色・Normal Map・金属感・滑らかさ）</td></tr>
+<tr><td>2</td><td>表面Emission・AudioLink</td></tr>
+<tr><td>3</td><td>ミラーボール反射光</td></tr>
+<tr><td>4</td><td>反射光のAudioLink</td></tr>
+<tr><td>5</td><td>光点・形状・ランダム点灯</td></tr>
+<tr><td>6</td><td>Material個別マスク・発光パターン</td></tr>
+<tr><td>7</td><td>投影Cookie</td></tr>
+<tr><td>8</td><td>環境・材質への適応</td></tr>
+<tr><td>9</td><td>透明描画</td></tr>
+<tr><td>10</td><td>VRCLightVolumes・LTCGI</td></tr>
+<tr><td>11</td><td>詳細・描画設定</td></tr>
+</tbody>
+</table>
+<div class="warning"><strong>Controllerが書き込む項目を手で変えても、次にControllerが反映したときに上書きされます。</strong> どちらが正かは「Controller連動とMaterial直編集」を参照してください。Materialごとに決めたい設定（2番・6番など）は上書きされません。</div>
+</section>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="02_sample.html">← 設定済みサンプルで最短確認</a>
+<a href="04_controller.html">ControllerのInspector →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>

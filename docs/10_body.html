@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ミラーボール本体のファセット | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="09_glass.html">← ガラスのMaterial</a>
+<a href="11_emission.html">表面Emission・Mask →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
+</li>
+<li><a href="02_sample.html">サンプルで確かめる</a>
+</li>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
+</li>
+<li><a href="05_motion.html">回転・反射・色</a>
+</li>
+<li><a href="06_spots.html">光点の形と量</a>
+</li>
+<li><a href="07_cookie.html">Cookie投影</a>
+</li>
+<li><a href="08_surface.html">壁・床のMaterial</a>
+</li>
+<li><a href="09_glass.html">ガラスのMaterial</a>
+</li>
+<li><a aria-current="page" href="10_body.html">ミラーボール本体</a>
+<ul class="inpage">
+<li><a href="#facet">4. ミラーボール本体ファセット</a></li>
+<li><a href="#facet-2">MirrorBallFacetBody</a></li>
+<li><a href="#fallback">フォールバック表示</a></li>
+</ul>
+</li>
+<li><a href="11_emission.html">表面Emission・Mask</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
+</li>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
+<main id="content">
+<div class="page">
+<div class="eyebrow">見え方を決める</div>
+<h1>ミラーボール本体のファセット</h1>
+<p class="lead">本体球の鏡片の見え方と、暗い場所での表示の担保です。</p>
+<section id="facet">
+<h2>4. ミラーボール本体ファセット</h2>
+<table>
+<thead>
+<tr>
+<th>表示名</th>
+<th>初期値</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本体ファセット用マテリアル（任意）</td>
+<td>任意</td>
+<td>通常版本体Material。Controller連動対象です。</td>
+</tr>
+<tr>
+<td>連携版本体ファセット用マテリアル（任意）</td>
+<td>任意</td>
+<td>LTCGI・VRCLightVolumes版本体Material。</td>
+</tr>
+<tr>
+<td>Controllerの色・電源・AudioLink設定と連動</td>
+<td>ON</td>
+<td>本体の色・発光・AudioLink状態をControllerへ合わせます。</td>
+</tr>
+<tr>
+<td>本体ファセットの明るさ倍率</td>
+<td>1 / 0–4</td>
+<td>本体発光だけを倍率調整します。</td>
+</tr>
+<tr>
+<td>本体ファセットのパターンシード</td>
+<td>0</td>
+<td>鏡片の傾き・色むら・明滅パターンを変更します。</td>
+</tr>
+<tr>
+<td>本体シードを自動フェード</td>
+<td>OFF</td>
+<td>ONにすると下の周期ごとに新しいシードへ滑らかにクロスフェードします。光点Atlas側のシードフェードとは独立した周期で動作します。<br><b></b></td>
+</tr>
+<tr>
+<td>本体シード変化の周期（秒）</td>
+<td>20 / 1–300</td>
+<td>次のシードへ完全に切り替わるまでの秒数です。サーバー時刻基準のため全員が同じタイミングで切り替わります。</td>
+</tr>
+<tr>
+<td>本体表示モード</td>
+<td>通常版</td>
+<td>通常版本体と連携版本体のActiveを排他的に切り替えます。</td>
+</tr>
+<tr>
+<td>通常版本体オブジェクト</td>
+<td>Prefab設定済み</td>
+<td>通常版選択時だけActiveになります。</td>
+</tr>
+<tr>
+<td>LTCGI・VRCLightVolumes版本体</td>
+<td>Prefab設定済み</td>
+<td>連携版選択時だけActiveになります。</td>
+</tr>
+</tbody>
+</table>
+<p>「ミラーボールRendererから本体Materialを取得」はRendererから対応Material参照を補完します。</p>
+</section>
+<section id="facet-2">
+<h2>MirrorBallFacetBody</h2>
+<table>
+<thead>
+<tr>
+<th>分類</th>
+<th>項目</th>
+<th>効果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基本</td>
+<td>鏡片の基本色／金属感／滑らかさ</td>
+<td>本体の基礎PBR表現です。暗所では基本色を完全な黒にしないでください。</td>
+</tr>
+<tr>
+<td>Facet Layout</td>
+<td>横方向の鏡片数／縦方向の鏡片数</td>
+<td>鏡片の密度です。初期値48×24。</td>
+</tr>
+<tr>
+<td>Facet Layout</td>
+<td>鏡片の形状</td>
+<td>Square等の鏡片輪郭を選びます。</td>
+</tr>
+<tr>
+<td>Facet Layout</td>
+<td>目地の太さ／目地境界のぼかし／目地の色</td>
+<td>鏡片の境界を作ります。太すぎると球全体が暗くなります。</td>
+</tr>
+<tr>
+<td>Facet Normal</td>
+<td>鏡片面の平面化</td>
+<td>球の連続法線を鏡片ごとの平面へ近づけます。初期0.88。</td>
+</tr>
+<tr>
+<td>Facet Normal</td>
+<td>鏡片ごとの傾き</td>
+<td>法線をランダムにずらし反射方向を散らします。</td>
+</tr>
+<tr>
+<td>Facet Normal</td>
+<td>鏡片ごとの色むら</td>
+<td>均一さを崩します。</td>
+</tr>
+<tr>
+<td>暗所対策</td>
+<td>暗所での最低表示明るさ</td>
+<td>環境光が弱い場所でも真っ黒になるのを防ぎます。初期0.08。</td>
+</tr>
+<tr>
+<td>反射</td>
+<td>反射Cubemap（任意）／反射・スパークル色／Cubemap反射の強さ</td>
+<td>任意Cubemapの反射と、反射・きらめきのHDR色を調整します。</td>
+</tr>
+<tr><td>反射</td><td>Reflection Probeをフォールバックに使用</td><td>指定Cubemapが未設定または黒い場合にワールドのReflection Probeへ切り替えます。</td></tr>
+<tr><td>反射</td><td>反射がない場合の色／明るさ</td><td>Reflection Probeも利用できない場合の最低表示を指定します。</td></tr>
+<tr>
+<td>スパークル</td>
+<td>スパークルの強さ／スパークルの鋭さ／スパークルの明滅量／スパークルの明滅速度</td>
+<td>視線と鏡片法線が合う箇所のきらめきの強度、範囲、時間変化を調整します。</td>
+</tr>
+<tr>
+<td>安全</td>
+<td>発光の上限</td>
+<td>本体Emissionの最大値です。初期8。</td>
+</tr>
+<tr>
+<td>AudioLink</td>
+<td>AudioLinkを使用／反応する帯域（0低音～3高音）／音によるスパークル増加／音声反応のしきい値／AudioLinkテストモード／テスト音量</td>
+<td>本体スパークルを指定帯域へ反応させます。テストモードは公開前にOFFにします。</td>
+</tr>
+</tbody>
+</table>
+<div class="tip">本体が黒い場合は、基本色、暗所での最低表示明るさ、目地の太さ、Cubemap、Controllerの電源・本体明るさ倍率の順で確認します。</div>
+</section>
+<section id="fallback">
+<h2>フォールバック表示</h2>
+<ul>
+<li>受光面：フォールバック発光色と発光量で、主反射が弱い場合の最低表示を指定します。</li>
+<li>本体：指定Cubemapが未設定または黒い場合、Reflection Probeを参照します。</li>
+<li>Reflection Probeもない場合：本体Materialの「反射がない場合の色／明るさ」を使います。</li>
+<li>AudioLinkがない場合：従来どおり音声値0として通常演出を継続します。</li>
+<li>形状TextureやCookieが未設定の場合：Shader既定の白Textureから基本形状を表示します。</li>
+</ul>
+<div class="tip">通常運用では受光面のフォールバック発光量を0のままにし、設定切り分け時だけ0.1～0.3へ上げる方法を推奨します。</div>
+</section>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="09_glass.html">← ガラス・透明／半透明面</a>
+<a href="11_emission.html">壁・ガラス表面のEmissionとMask →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>

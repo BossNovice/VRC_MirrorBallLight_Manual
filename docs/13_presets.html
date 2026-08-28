@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>07 ライブプリセット | MirrorBallLight</title>
+<title>ライブプリセットとクロスフェード | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -15,8 +15,8 @@
 <div id="results" class="results" role="listbox"></div>
 </div>
 <nav class="pager" aria-label="前後のページ">
-<a href="06_shapes_cookie.html">← 形状・Cookie</a>
-<a href="08_materials.html">Material →</a>
+<a href="12_audiolink.html">← AudioLink連動</a>
+<a href="14_udon.html">Udonから操作する →</a>
 </nav>
 </header>
 <div class="shell">
@@ -24,55 +24,72 @@
 <button class="toggle" aria-expanded="false">ページ一覧を開く</button>
 <div class="panel">
 <a class="home" href="index.html">目次</a>
-<h2>ページ</h2>
-<ol>
-<li><a href="01_installation.html"><span>導入</span></a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
 </li>
-<li><a href="02_quickstart.html"><span>サンプル</span></a>
+<li><a href="02_sample.html">サンプルで確かめる</a>
 </li>
-<li><a href="03_controller.html"><span>Controller</span></a>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
 </li>
-<li><a href="04_effects.html"><span>反射・光点</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
 </li>
-<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+<li><a href="05_motion.html">回転・反射・色</a>
 </li>
-<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<li><a href="06_spots.html">光点の形と量</a>
 </li>
-<li><a aria-current="page" href="07_presets.html"><span>プリセット</span></a>
+<li><a href="07_cookie.html">Cookie投影</a>
+</li>
+<li><a href="08_surface.html">壁・床のMaterial</a>
+</li>
+<li><a href="09_glass.html">ガラスのMaterial</a>
+</li>
+<li><a href="10_body.html">ミラーボール本体</a>
+</li>
+<li><a href="11_emission.html">表面Emission・Mask</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a aria-current="page" href="13_presets.html">ライブプリセット</a>
 <ul class="inpage">
 <li><a href="#controller">2. ライブプリセット</a></li>
 <li><a href="#create">プリセットを作る</a></li>
 <li><a href="#preset">Presetに保存される項目</a></li>
 <li><a href="#events">実行中の切替イベント</a></li>
 <li><a href="#crossfade">クロスフェードの注意</a></li>
-<li><a href="#api">他のUdonから操作する（外部制御API）</a></li>
 </ul>
 </li>
-<li><a href="08_materials.html"><span>Material</span></a>
+<li><a href="14_udon.html">Udonから操作する</a>
 </li>
-<li><a href="09_integrations.html"><span>連携</span></a>
+<li><a href="15_show.html">演出をUdonで組む</a>
 </li>
-<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
 </li>
-<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+<li><a href="17_translate.html">既存Materialの変換</a>
 </li>
-<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
 </li>
-<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+<li><a href="19_heavy.html">重い</a>
 </li>
-<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+<li><a href="20_release.html">公開前チェック</a>
 </li>
-<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
-</li>
-</ol>
-</div>
-</nav>
+</ul></div>
+</div></nav>
 <main id="content">
 <div class="page">
-<div class="eyebrow">07 / LIVE PRESETS</div>
+<div class="eyebrow">演出する</div>
 <h1>ライブプリセットとクロスフェード</h1>
-<p class="lead">必要数だけPresetを追加し、UIやUdon Custom Eventから切り替えます。</p>
-
+<p class="lead">演出をまとめて切り替えます。作り方と、実行中に切り替えるイベントです。</p>
 <section id="controller">
 <h2>2. ライブプリセット</h2>
 <table>
@@ -281,69 +298,9 @@
 <li>グローバルではサーバー時刻を基準にするため、参加者間の進行が揃います。</li>
 </ul>
 </section>
-<section id="api">
-
-<h2>他のUdonから操作する（外部制御API）</h2>
-<div class="tip">同期範囲の設計、状態の読み取り、複数台の同時操作といった組み立て方は<a href="15_advanced_usage.html">拡張的な使い方</a>にまとめてあります。</div>
-<p><strong>他のギミックからミラーボールを操作できます。</strong> DJブースのボタン、ライブ演出のタイムライン、独自のUIなどから呼ぶ想定です。</p>
-<p><code>UdonBehaviour.SendCustomEvent</code> はイベント名を<strong>文字列</strong>で呼びます。ここに載せた名前は<strong>変えません。</strong> 変えると、それを呼んでいるワールドが静かに壊れるためです。</p>
-
-<h3>そのまま呼べるもの（引数なし）</h3>
-<table>
-<thead><tr><th>イベント名</th><th>内容</th></tr></thead>
-<tbody>
-<tr><td><code>TurnOn</code> / <code>TurnOff</code> / <code>TogglePower</code></td><td>電源</td></tr>
-<tr><td><code>NextPreset</code> / <code>PreviousPreset</code></td><td>プリセットを送る・戻す</td></tr>
-<tr><td><code>ReloadCurrentPreset</code></td><td>今のプリセットを入れ直す</td></tr>
-<tr><td><code>ApplySelectedPreset</code></td><td><code>presetSelectionIndex</code> の番号へ切り替える</td></tr>
-<tr><td><code>ApplySelectedPresetImmediately</code></td><td>同上。クロスフェードなし</td></tr>
-<tr><td><code>UseStandardLightingVariant</code> / <code>UseIntegratedLightingVariant</code></td><td>連携版の切替</td></tr>
-<tr><td><code>ApplyLightingVariant</code></td><td>現在の設定で連携版を反映</td></tr>
-<tr><td><code>UseLocalPresetScope</code> / <code>UseGlobalPresetScope</code></td><td>プリセットの同期範囲</td></tr>
-<tr><td><code>UsePowerLocalScope</code> / <code>UsePowerGlobalScope</code></td><td>電源の同期範囲</td></tr>
-<tr><td><code>ApplyToMaterials</code> / <code>ApplyStaticSettings</code></td><td>設定をマテリアルへ反映</td></tr>
-</tbody>
-</table>
-
-<h3>番号を指定してプリセットを選ぶ</h3>
-<p><strong><code>SelectPreset</code> は引数を取るため <code>SendCustomEvent</code> では呼べません。</strong> 番号を指定するときは次のようにします。</p>
-<pre><code>mirrorBall.SetProgramVariable("apiPresetIndex", 2);
-mirrorBall.SendCustomEvent("RequestSelectPreset");
-
-int result = (int)mirrorBall.GetProgramVariable("apiLastResultCode");
-// 0 なら成功</code></pre>
-
-<h3>結果を確かめる</h3>
-<table>
-<thead><tr><th>変数名</th><th>内容</th></tr></thead>
-<tbody>
-<tr><td><code>apiLastResultCode</code></td><td>直前の操作の結果。<strong>0 が成功</strong></td></tr>
-<tr><td><code>apiStateRevision</code></td><td>状態が変わるたびに1つ増える目印</td></tr>
-</tbody>
-</table>
-<table>
-<thead><tr><th>値</th><th>意味</th></tr></thead>
-<tbody>
-<tr><td>0</td><td>成功した</td></tr>
-<tr><td>1</td><td>プリセットが無効（「ライブプリセットを使用」がOFF、または一覧が空）</td></tr>
-<tr><td>2</td><td>指定した番号のプリセットが未設定</td></tr>
-<tr><td>3</td><td>切替中のため<strong>予約した</strong>（「切替中の要求を1件だけ予約」が有効）</td></tr>
-<tr><td>4</td><td>切替中のため<strong>無視した</strong>（同上が無効。<strong>これが既定です</strong>）</td></tr>
-</tbody>
-</table>
-<p><strong>3 と 4 は別物です。</strong> 3 は切替が終わってから適用されますが、4 は捨てられます。</p>
-<p><code>apiStateRevision</code> は、<strong>副作用が見えにくい操作でも効いたかどうかを確かめる</strong>ための目印です。たとえば連携版の切替はオブジェクトの有効・無効を変えるだけなので、外からは分かりません。この値が増えていれば処理は走っています。</p>
-
-<h3>従来の書き方も使えます</h3>
-<p><code>presetSelectionIndex</code> を直接書いてから <code>ApplySelectedPreset</code> を送る方法も、<strong>これまでどおり動きます。</strong> 既存のワールドはそのままで構いません。新しく書くときは <code>apiPresetIndex</code> と <code>RequestSelectPreset</code> をお使いください。</p>
-
-</section>
-<p>
-<a href="08_materials.html">次へ：Material・Shader →</a>
-</p>
 <nav class="pagenav" aria-label="前後のページ">
-<a href="06_shapes_cookie.html">← 光点形状・Cookie</a>
-<a href="08_materials.html">Material・Shader →</a>
+<a href="12_audiolink.html">← AudioLink連動</a>
+<a href="14_udon.html">他のUdonから操作する →</a>
 </nav>
 </div>
 </main>
