@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>移動しました | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+
+</head>
+<body>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+</header>
+<div class="shell" style="grid-template-columns:minmax(0,1fr)">
+<main id="content">
+<div class="page">
+<div class="eyebrow">移動のお知らせ</div>
+<h1>このページは移動しました</h1>
+<p class="lead">マニュアルを「やりたいこと」別に組み直したため、<code>07_presets.html</code> の内容は次のページへ移りました。</p>
+<p><strong>内容は複数のページへ分かれました。</strong>節ごとの移動先はリンクのアンカーで判別します。</p>
+<ul>
+<li><a href="13_presets.html">ライブプリセットとクロスフェード</a>（5節）</li>
+<li><a href="14_udon.html">他のUdonから操作する</a>（1節）</li>
+</ul>
+<p><a href="index.html">目次へ</a></p>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<script>
+// アンカー付きで開かれたときは、その節の移動先へ送ります。
+(function () {
+  var map = {"api": "14_udon.html#api", "controller": "13_presets.html#controller", "create": "13_presets.html#create", "crossfade": "13_presets.html#crossfade", "events": "13_presets.html#events", "preset": "13_presets.html#preset"};
+  var hash = location.hash.replace(/^#/, "");
+  if (hash && map[hash]) { location.replace(map[hash]); }
+})();
+</script>
+</body>
+</html>

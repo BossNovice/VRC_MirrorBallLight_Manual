@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>移動しました | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+
+</head>
+<body>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+</header>
+<div class="shell" style="grid-template-columns:minmax(0,1fr)">
+<main id="content">
+<div class="page">
+<div class="eyebrow">移動のお知らせ</div>
+<h1>このページは移動しました</h1>
+<p class="lead">マニュアルを「やりたいこと」別に組み直したため、<code>11_r24_world_shader.html</code> の内容は次のページへ移りました。</p>
+<p><strong>内容は複数のページへ分かれました。</strong>節ごとの移動先はリンクのアンカーで判別します。</p>
+<ul>
+<li><a href="08_surface.html">壁・床のMaterial</a>（3節）</li>
+<li><a href="06_spots.html">光点の形・量・点滅</a>（2節）</li>
+<li><a href="07_cookie.html">2D・Cubemap Cookieの投影</a>（1節）</li>
+<li><a href="09_glass.html">ガラス・透明／半透明面</a>（1節）</li>
+<li><a href="10_body.html">ミラーボール本体のファセット</a>（1節）</li>
+<li><a href="18_troubleshoot.html">うまく動かないとき</a>（1節）</li>
+</ul>
+<p><a href="index.html">目次へ</a></p>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<script>
+// アンカー付きで開かれたときは、その節の移動先へ送ります。
+(function () {
+  var map = {"chromatic": "06_spots.html#chromatic", "coordinates": "08_surface.html#coordinates", "fallback": "10_body.html#fallback", "procedural": "06_spots.html#procedural", "s1": "08_surface.html#s1", "s9": "07_cookie.html#s9", "surface-response": "08_surface.html#surface-response", "transparency": "09_glass.html#transparency", "variants": "18_troubleshoot.html#pattern-frozen"};
+  var hash = location.hash.replace(/^#/, "");
+  if (hash && map[hash]) { location.replace(map[hash]); }
+})();
+</script>
+</body>
+</html>
