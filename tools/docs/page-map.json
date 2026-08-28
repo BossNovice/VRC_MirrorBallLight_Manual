@@ -1,0 +1,208 @@
+{
+  "_comment": [
+    "HTMLマニュアルの割り方です。2026-08-29に15ページを20ページへ組み直したときの構成で、",
+    "**なぜこの束ね方なのかを残すための正本**です。docs/*.html はここから生成します。",
+    "",
+    "parts の src / id は、組み直す前のページと節IDを指します。mode が section なら1つの節として、",
+    "h3 なら直前の節の中へ h3 として入ります（重複していた節を1つへまとめた箇所です）。",
+    "title を書いた場合は見出しを差し替えます。番号だけを指していて意味を失った見出し",
+    "（「1. マスク・模様の座標方式」など）は、ここで機能名へ改題しています。",
+    "",
+    "組み直す前のページは `git show <再構成前のコミット>:docs/<name>` から取り出せます。",
+    "手順は同じフォルダの README.md にあります。"
+  ],
+  "source_commit": "b53b688e4b591aa578382b14d4e55060265677bc",
+  "pages": [
+    { "file": "01_install.html", "short": "導入する", "group": "はじめて置く",
+      "h1": "UnityPackageの導入", "lead": "必要環境とImport手順、導入できたかの確かめ方です。",
+      "parts": [
+        { "src": "01_installation.html", "id": "requirements" },
+        { "src": "01_installation.html", "id": "import" },
+        { "src": "01_installation.html", "id": "folders" },
+        { "src": "01_installation.html", "id": "upgrade" },
+        { "src": "01_installation.html", "id": "success" } ] },
+
+    { "file": "02_sample.html", "short": "サンプルで確かめる", "group": "はじめて置く",
+      "h1": "設定済みサンプルで最短確認", "lead": "壁・ミラーボール・Spot Light・Controllerを関連付け済みのPrefabで、動くところまでを確かめます。",
+      "parts": [
+        { "src": "02_quickstart.html", "id": "place" },
+        { "src": "02_quickstart.html", "id": "objects" },
+        { "src": "02_quickstart.html", "id": "prefab" },
+        { "src": "02_quickstart.html", "id": "verify" } ] },
+
+    { "file": "03_apply.html", "short": "自分の壁へ適用する", "group": "はじめて置く",
+      "h1": "自分の壁・床へ適用する", "lead": "使うShaderを選び、Materialを割り当てて、Controllerへ登録するまでです。",
+      "parts": [
+        { "src": "02_quickstart.html", "id": "reuse" },
+        { "src": "08_materials.html", "id": "list" },
+        { "src": "08_materials.html", "id": "materialgui" } ] },
+
+    { "file": "04_controller.html", "short": "Controllerの使い方", "group": "見え方を決める",
+      "h1": "ControllerのInspector", "lead": "10個の折りたたみの構成と、設定を保存するボタンの使い方です。",
+      "parts": [
+        { "src": "03_controller.html", "id": "inspector" },
+        { "src": "03_controller.html", "id": "basic" },
+        { "src": "03_controller.html", "id": "buttons" },
+        { "src": "08_materials.html", "id": "controller" } ] },
+
+    { "file": "05_motion.html", "short": "回転・反射・色", "group": "見え方を決める",
+      "h1": "回転・反射光・色", "lead": "ミラーボールの回り方と、反射光の強さ・色・距離による減衰です。",
+      "parts": [
+        { "src": "04_effects.html", "id": "rotation" },
+        { "src": "04_effects.html", "id": "reflection" },
+        { "src": "04_effects.html", "id": "distance" },
+        { "src": "04_effects.html", "id": "color" },
+        { "src": "04_effects.html", "id": "recipes" } ] },
+
+    { "file": "06_spots.html", "short": "光点の形と量", "group": "見え方を決める",
+      "h1": "光点の形・量・点滅", "lead": "光点1つの形と大きさ、同時に光る割合、複数形状のアトラスです。",
+      "parts": [
+        { "src": "04_effects.html", "id": "spots" },
+        { "src": "04_effects.html", "id": "blink" },
+        { "src": "06_shapes_cookie.html", "id": "single" },
+        { "src": "06_shapes_cookie.html", "id": "atlas" },
+        { "src": "06_shapes_cookie.html", "id": "import-settings", "title": "自分で用意したTextureのImport設定" },
+        { "src": "06_shapes_cookie.html", "id": "import-steps", "title": "Unityでの手順", "mode": "h3" },
+        { "src": "11_r24_world_shader.html", "id": "procedural", "title": "プロシージャル形状" },
+        { "src": "11_r24_world_shader.html", "id": "chromatic", "title": "プリズム色分散" } ] },
+
+    { "file": "07_cookie.html", "short": "Cookie投影", "group": "見え方を決める",
+      "h1": "2D・Cubemap Cookieの投影", "lead": "光点の代わりに模様を投影します。Sceneビューでの確認方法もここです。",
+      "parts": [
+        { "src": "06_shapes_cookie.html", "id": "cookie", "title": "高度な投影Cookie" },
+        { "src": "06_shapes_cookie.html", "id": "preview" },
+        { "src": "11_r24_world_shader.html", "id": "s9", "title": "同梱のサンプルTexture・マスク" } ] },
+
+    { "file": "08_surface.html", "short": "壁・床のMaterial", "group": "見え方を決める",
+      "h1": "壁・床のMaterial", "lead": "光点を受ける不透明面の設定です。座標方式と材質の応答もここにまとめています。",
+      "parts": [
+        { "src": "11_r24_world_shader.html", "id": "s1", "title": "既存Materialとの互換性" },
+        { "src": "08_materials.html", "id": "surface" },
+        { "src": "11_r24_world_shader.html", "id": "coordinates", "title": "マスク・模様の座標方式" },
+        { "src": "11_r24_world_shader.html", "id": "surface-response", "title": "環境光・材質・Fresnel" } ] },
+
+    { "file": "09_glass.html", "short": "ガラスのMaterial", "group": "見え方を決める",
+      "h1": "ガラス・透明／半透明面", "lead": "透過するオブジェクトの設定です。描画方式と深度フェードが要点になります。",
+      "parts": [
+        { "src": "08_materials.html", "id": "transparent" },
+        { "src": "11_r24_world_shader.html", "id": "transparency", "title": "透過描画方式と深度フェード" } ] },
+
+    { "file": "10_body.html", "short": "ミラーボール本体", "group": "見え方を決める",
+      "h1": "ミラーボール本体のファセット", "lead": "本体球の鏡片の見え方と、暗い場所での表示の担保です。",
+      "parts": [
+        { "src": "03_controller.html", "id": "facet" },
+        { "src": "08_materials.html", "id": "facet" },
+        { "src": "11_r24_world_shader.html", "id": "fallback", "title": "フォールバック表示" } ] },
+
+    { "file": "11_emission.html", "short": "表面Emission・Mask", "group": "見え方を決める",
+      "h1": "壁・ガラス表面のEmissionとMask", "lead": "反射光とは別に、面そのものを光らせます。光点を出さないエリアの指定もここです。",
+      "parts": [
+        { "src": "08_materials.html", "id": "surface-emission" },
+        { "src": "13_surface_emission_mask.html", "id": "difference" },
+        { "src": "13_surface_emission_mask.html", "id": "steps" },
+        { "src": "13_surface_emission_mask.html", "id": "audiolink" },
+        { "src": "13_surface_emission_mask.html", "id": "parameters" },
+        { "src": "13_surface_emission_mask.html", "id": "wall", "title": "通常の壁・床の推奨開始値", "mode": "h3" },
+        { "src": "13_surface_emission_mask.html", "id": "glass", "title": "ガラス・半透明面の推奨開始値", "mode": "h3" },
+        { "src": "13_surface_emission_mask.html", "id": "translate" },
+        { "src": "13_surface_emission_mask.html", "id": "performance" } ] },
+
+    { "file": "12_audiolink.html", "short": "AudioLink連動", "group": "音に反応させる",
+      "h1": "AudioLink連動", "lead": "音に合わせて明るさ・サイズ・色を動かします。Materialごとに反応を変えることもできます。",
+      "parts": [
+        { "src": "05_audiolink.html", "id": "setup" },
+        { "src": "05_audiolink.html", "id": "bands" },
+        { "src": "05_audiolink.html", "id": "response" },
+        { "src": "05_audiolink.html", "id": "history" },
+        { "src": "05_audiolink.html", "id": "material-mask" },
+        { "src": "08_materials.html", "id": "individual-pattern" },
+        { "src": "05_audiolink.html", "id": "test" },
+        { "src": "05_audiolink.html", "id": "avatar" } ] },
+
+    { "file": "13_presets.html", "short": "ライブプリセット", "group": "演出する",
+      "h1": "ライブプリセットとクロスフェード", "lead": "演出をまとめて切り替えます。作り方と、実行中に切り替えるイベントです。",
+      "parts": [
+        { "src": "07_presets.html", "id": "controller" },
+        { "src": "07_presets.html", "id": "create" },
+        { "src": "07_presets.html", "id": "preset" },
+        { "src": "07_presets.html", "id": "events" },
+        { "src": "07_presets.html", "id": "crossfade" } ] },
+
+    { "file": "14_udon.html", "short": "Udonから操作する", "group": "演出する",
+      "h1": "他のUdonから操作する", "lead": "ワールドのギミックからミラーボールを動かします。同期範囲と所有権がここの要点です。",
+      "parts": [
+        { "src": "15_advanced_usage.html", "id": "prereq", "title": "はじめに" },
+        { "src": "07_presets.html", "id": "api" },
+        { "src": "15_advanced_usage.html", "id": "base" },
+        { "src": "15_advanced_usage.html", "id": "recipe-power" },
+        { "src": "15_advanced_usage.html", "id": "scope" },
+        { "src": "15_advanced_usage.html", "id": "ownership" },
+        { "src": "15_advanced_usage.html", "id": "recipe-local" } ] },
+
+    { "file": "15_show.html", "short": "演出をUdonで組む", "group": "演出する",
+      "h1": "演出をUdonで組む", "lead": "曲ごとの切り替え、結果の読み取り、複数台の同時操作、実行中の画質切替です。",
+      "parts": [
+        { "src": "15_advanced_usage.html", "id": "recipe-dj" },
+        { "src": "15_advanced_usage.html", "id": "readback" },
+        { "src": "15_advanced_usage.html", "id": "recipe-multi" },
+        { "src": "15_advanced_usage.html", "id": "recipe-variant" },
+        { "src": "15_advanced_usage.html", "id": "pitfalls" } ] },
+
+    { "file": "16_integrations.html", "short": "LTCGI・LightVolumes", "group": "連携する",
+      "h1": "LTCGI・VRCLightVolumes連携", "lead": "連携版Shaderの使い方と、アバターへ実際の光を当てる方法です。",
+      "parts": [
+        { "src": "09_integrations.html", "id": "mode" },
+        { "src": "09_integrations.html", "id": "verified" },
+        { "src": "09_integrations.html", "id": "lv" },
+        { "src": "09_integrations.html", "id": "ltcgi" },
+        { "src": "09_integrations.html", "id": "avatar" },
+        { "src": "03_controller.html", "id": "avatar", "title": "Controller側の設定", "mode": "h3" },
+        { "src": "03_controller.html", "id": "integration", "title": "Controllerの「すべてON／すべてOFF」" },
+        { "src": "09_integrations.html", "id": "sample" } ] },
+
+    { "file": "17_translate.html", "short": "既存Materialの変換", "group": "連携する",
+      "h1": "既存の壁・ガラスMaterialを変換", "lead": "PoiyomiのTranslate／Translate Copyに近い操作で、既存設定を移します。",
+      "parts": [
+        { "src": "08_materials.html", "id": "s9", "title": "このページでできること" },
+        { "src": "12_material_translate.html", "id": "s1" },
+        { "src": "12_material_translate.html", "id": "s2" },
+        { "src": "12_material_translate.html", "id": "s3" },
+        { "src": "12_material_translate.html", "id": "s4" },
+        { "src": "12_material_translate.html", "id": "s5" },
+        { "src": "12_material_translate.html", "id": "s6" } ] },
+
+    { "file": "18_troubleshoot.html", "short": "うまく動かない", "group": "困ったとき",
+      "h1": "うまく動かないとき", "lead": "症状から原因へたどります。Import時のエラーもここにまとめています。",
+      "parts": [
+        { "src": "10_optimization_troubleshooting.html", "id": "notvisible" },
+        { "src": "10_optimization_troubleshooting.html", "id": "vrchat" },
+        { "src": "10_optimization_troubleshooting.html", "id": "black" },
+        { "src": "10_optimization_troubleshooting.html", "id": "pattern-frozen" },
+        { "src": "08_materials.html", "id": "keyword-migration", "title": "廃止したShader Keywordと移行先", "mode": "h3" },
+        { "src": "11_r24_world_shader.html", "id": "variants", "title": "いまも残っているKeyword", "mode": "h3" },
+        { "src": "10_optimization_troubleshooting.html", "id": "udon", "title": "UdonSharp Program Assetのエラー" },
+        { "src": "01_installation.html", "id": "programasset", "title": "Program Assetの作られ方と修復", "mode": "h3" },
+        { "src": "10_optimization_troubleshooting.html", "id": "dependency" },
+        { "src": "10_optimization_troubleshooting.html", "id": "import-time" } ] },
+
+    { "file": "19_heavy.html", "short": "重い", "group": "困ったとき",
+      "h1": "動作が重い場合", "lead": "原因がCPUかGPUかを確かめてから手を打ちます。確かめずに設定を変えても、たいてい何も変わりません。",
+      "parts": [
+        { "src": "14_performance_tips.html", "id": "first" },
+        { "src": "14_performance_tips.html", "id": "gpu" },
+        { "src": "14_performance_tips.html", "id": "cpu" },
+        { "src": "14_performance_tips.html", "id": "many" },
+        { "src": "10_optimization_troubleshooting.html", "id": "budget" },
+        { "src": "10_optimization_troubleshooting.html", "id": "skip-hidden", "title": "自動で効く軽量化" },
+        { "src": "10_optimization_troubleshooting.html", "id": "skip-hidden-transparent", "title": "半透明版での効き方", "mode": "h3" },
+        { "src": "14_performance_tips.html", "id": "notes" } ] },
+
+    { "file": "20_release.html", "short": "公開前チェック", "group": "困ったとき",
+      "h1": "診断と公開前チェック", "lead": "診断ウィンドウの使い方と、VRChatへ公開する前に見る項目です。",
+      "parts": [
+        { "src": "10_optimization_troubleshooting.html", "id": "diagwindow" },
+        { "src": "03_controller.html", "id": "optimization", "title": "Controllerの10. 最適化・診断" },
+        { "src": "14_performance_tips.html", "id": "diagnose" },
+        { "src": "10_optimization_troubleshooting.html", "id": "release" } ] }
+  ]
+}

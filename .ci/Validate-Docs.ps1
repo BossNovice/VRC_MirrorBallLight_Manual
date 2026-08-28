@@ -453,6 +453,47 @@ if ((Test-Path -LiteralPath $readmePath) -and (Test-Path -LiteralPath $compatibi
     }
 }
 
+# --- 旧ページ名からの案内が生きているか（2026-08-29で追加） ------------------
+# ページを「やりたいこと」別へ組み直したとき、ファイル名が全部変わりました。
+# **zipで配る形なのでサーバ側のリダイレクトを置けません。** 旧ファイル名の
+# 案内ページを docs/ に残していますが、放っておくと飛び先だけが古くなります。
+# 飛び先はJavaScriptの中にも書いてあり、上のリンク検査では見ていません。
+$legacyMapPath = Join-Path $repository "tools/docs/legacy-map.json"
+if (Test-Path -LiteralPath $legacyMapPath)
+{
+    $legacy = Get-Content -LiteralPath $legacyMapPath -Raw | ConvertFrom-Json
+    $oldPages = @{}
+    foreach ($entry in $legacy.PSObject.Properties)
+    {
+        $oldPage = ($entry.Name -split "#")[0]
+        $oldPages[$oldPage] = $true
+
+        $parts = $entry.Value -split "#"
+        $targetPath = Join-Path $docs $parts[0]
+        if (!(Test-Path -LiteralPath $targetPath))
+        {
+            $problems.Add("旧ページからの案内先がありません: $($entry.Name) → $($entry.Value)")
+            continue
+        }
+        if ($parts.Count -gt 1)
+        {
+            $targetText = Get-Content -LiteralPath $targetPath -Raw
+            if ($targetText -notmatch [regex]::Escape("id=""$($parts[1])"""))
+            {
+                $problems.Add("旧ページからの案内先に飛び先がありません: $($entry.Name) → $($entry.Value)")
+            }
+        }
+    }
+    foreach ($oldPage in $oldPages.Keys)
+    {
+        if (!(Test-Path -LiteralPath (Join-Path $docs $oldPage)))
+        {
+            $problems.Add("旧ページ名の案内が置かれていません: $oldPage。" +
+                "tools/docs/make_legacy_stubs.py で作り直してください。")
+        }
+    }
+}
+
 # --- 検索の索引が docs/ と一致しているか -------------------------------------
 # 索引は生成物です。docs/ を変えたのに作り直さないと、**検索結果だけが古いまま**に
 # なります。ページを開いても見た目には分からないので、ここで検出します。

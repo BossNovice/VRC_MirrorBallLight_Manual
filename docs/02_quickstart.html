@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>移動しました | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+
+</head>
+<body>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+</header>
+<div class="shell" style="grid-template-columns:minmax(0,1fr)">
+<main id="content">
+<div class="page">
+<div class="eyebrow">移動のお知らせ</div>
+<h1>このページは移動しました</h1>
+<p class="lead">マニュアルを「やりたいこと」別に組み直したため、<code>02_quickstart.html</code> の内容は次のページへ移りました。</p>
+<p><strong>内容は複数のページへ分かれました。</strong>節ごとの移動先はリンクのアンカーで判別します。</p>
+<ul>
+<li><a href="02_sample.html">設定済みサンプルで最短確認</a>（4節）</li>
+<li><a href="03_apply.html">自分の壁・床へ適用する</a>（1節）</li>
+</ul>
+<p><a href="index.html">目次へ</a></p>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<script>
+// アンカー付きで開かれたときは、その節の移動先へ送ります。
+(function () {
+  var map = {"objects": "02_sample.html#objects", "place": "02_sample.html#place", "prefab": "02_sample.html#prefab", "reuse": "03_apply.html#reuse", "verify": "02_sample.html#verify"};
+  var hash = location.hash.replace(/^#/, "");
+  if (hash && map[hash]) { location.replace(map[hash]); }
+})();
+</script>
+</body>
+</html>

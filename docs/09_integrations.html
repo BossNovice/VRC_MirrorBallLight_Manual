@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>移動しました | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+<meta http-equiv="refresh" content="0; url=16_integrations.html">
+</head>
+<body>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+</header>
+<div class="shell" style="grid-template-columns:minmax(0,1fr)">
+<main id="content">
+<div class="page">
+<div class="eyebrow">移動のお知らせ</div>
+<h1>このページは移動しました</h1>
+<p class="lead">マニュアルを「やりたいこと」別に組み直したため、<code>09_integrations.html</code> の内容は次のページへ移りました。</p>
+<p><a href="16_integrations.html">LTCGI・VRCLightVolumes連携 へ移動します</a>（自動で移動しない場合はこのリンクから）</p>
+<p><a href="index.html">目次へ</a></p>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<script>
+// アンカー付きで開かれたときは、その節の移動先へ送ります。
+(function () {
+  var map = {"avatar": "16_integrations.html#avatar", "ltcgi": "16_integrations.html#ltcgi", "lv": "16_integrations.html#lv", "mode": "16_integrations.html#mode", "sample": "16_integrations.html#sample", "verified": "16_integrations.html#verified"};
+  var hash = location.hash.replace(/^#/, "");
+  if (hash && map[hash]) { location.replace(map[hash]); }
+})();
+</script>
+</body>
+</html>
