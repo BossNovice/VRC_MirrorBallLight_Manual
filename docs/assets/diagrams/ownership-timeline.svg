@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" role="img" aria-label="ボタンを押してから他の人へ届くまでの流れ">
+<style>
+ .bg{fill:#0d1117}
+ .box{fill:#161b22;stroke:#30363d;rx:8}
+ .me{stroke:#1f6feb}
+ .net{stroke:#d29922}
+ .them{stroke:#3fb950}
+ .t{fill:#e6edf3;font:14px "Segoe UI","Noto Sans JP",sans-serif}
+ .h{fill:#79c0ff;font:bold 14px "Segoe UI","Noto Sans JP",sans-serif}
+ .m{fill:#9da7b3;font:12.5px "Segoe UI","Noto Sans JP",sans-serif}
+ .ttl{fill:#e6edf3;font:bold 17px "Segoe UI","Noto Sans JP",sans-serif}
+ .lane{fill:#9da7b3;font:bold 13px "Segoe UI","Noto Sans JP",sans-serif}
+</style>
+<rect class="bg" width="900" height="430"/>
+<text class="ttl" x="24" y="32">押した人の中で起きること／他の人へ届くまで</text>
+<defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+ <path d="M0,0 L9,4.5 L0,9 z" fill="#58a6ff"/></marker></defs>
+
+<text class="lane" x="24" y="72">押した人</text>
+<line x1="24" y1="82" x2="876" y2="82" stroke="#30363d"/>
+
+<rect class="box me" x="24" y="96" width="176" height="72"/>
+<text class="h" x="38" y="122">ボタンを押す</text>
+<text class="m" x="38" y="146">Interact／UI Button</text>
+
+<rect class="box me" x="228" y="96" width="196" height="72"/>
+<text class="h" x="242" y="122">公開イベントを呼ぶ</text>
+<text class="m" x="242" y="146">SendCustomEvent</text>
+
+<rect class="box me" x="452" y="96" width="196" height="72"/>
+<text class="h" x="466" y="122">所有権を確かめる</text>
+<text class="m" x="466" y="146">同期する範囲のときだけ</text>
+
+<rect class="box me" x="676" y="96" width="200" height="72"/>
+<text class="h" x="690" y="122">値を書いて配信要求</text>
+<text class="m" x="690" y="146">ここまでは自分の中の話</text>
+
+<line x1="200" y1="132" x2="224" y2="132" stroke="#58a6ff" marker-end="url(#a)"/>
+<line x1="424" y1="132" x2="448" y2="132" stroke="#58a6ff" marker-end="url(#a)"/>
+<line x1="648" y1="132" x2="672" y2="132" stroke="#58a6ff" marker-end="url(#a)"/>
+
+<text class="lane" x="24" y="212">ネットワーク</text>
+<line x1="24" y1="222" x2="876" y2="222" stroke="#30363d"/>
+<rect class="box net" x="24" y="236" width="852" height="58"/>
+<text class="t" x="40" y="262">ここは時間がかかります。<tspan fill="#d29922" font-weight="bold">押した直後に他の人へ届いているとは限りません。</tspan></text>
+<text class="m" x="40" y="284">何秒待てば届く、という決まった時間はありません。時間で待つ設計にすると、回線の状況次第で外れます。</text>
+
+<text class="lane" x="24" y="330">他の人</text>
+<line x1="24" y1="340" x2="876" y2="340" stroke="#30363d"/>
+<rect class="box them" x="24" y="352" width="852" height="58"/>
+<text class="t" x="40" y="378">受け取って反映されます。届いたかどうかは <tspan fill="#3fb950" font-weight="bold">apiStateRevision</tspan> が増えたかで見ます。</text>
+<text class="m" x="40" y="400">所有者でないまま同期変数へ直接書くと、この矢印が出ません。押した本人にだけ正しく見えます。</text>
+</svg>

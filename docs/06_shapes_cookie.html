@@ -7,37 +7,72 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header>
-<div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="05_audiolink.html">← AudioLink</a>
+<a href="07_presets.html">プリセット →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+</li>
+<li><a aria-current="page" href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+<ul class="inpage">
+<li><a href="#single">単一の光点形状</a></li>
+<li><a href="#atlas">複数形状アトラス</a></li>
+<li><a href="#import-settings">Texture Import Settings</a></li>
+<li><a href="#import-steps">自分で用意したTextureのImport設定</a></li>
+<li><a href="#cookie">8. 高度な投影Cookie</a></li>
+<li><a href="#preview">Sceneビュー投影プレビュー</a></li>
+</ul>
+</li>
+<li><a href="07_presets.html"><span>プリセット</span></a>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</li>
+<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</li>
+<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</li>
+<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+</li>
+<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">06 / SHAPES & COOKIE</div>
 <h1>光点形状・テクスチャアトラス・投影Cookie</h1>
 <p class="lead">Project内に保存されたTextureを使い、VRChatビルドへ確実に含めます。</p>
-<nav class="nav">
-<a href="index.html">目次</a>
-<a href="01_installation.html">導入</a>
-<a href="02_quickstart.html">サンプル</a>
-<a href="03_controller.html">Controller</a>
-<a href="04_effects.html">反射・光点</a>
-<a href="05_audiolink.html">AudioLink</a>
-<a aria-current="page" href="06_shapes_cookie.html">形状・Cookie</a>
-<a href="07_presets.html">プリセット</a>
-<a href="08_materials.html">Material</a>
-<a href="09_integrations.html">連携</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処</a>
-</nav>
-</div>
-</header>
-<main class="wrap">
-<div class="layout">
-<aside class="toc">
-<strong>ページ内</strong>
-<a href="#single">単一形状</a>
-<a href="#atlas">アトラス</a>
-<a href="#import">Texture設定</a>
-<a href="#cookie">Cookie</a>
-<a href="#preview">プレビュー</a>
-</aside>
-<article class="content">
+
 <section id="single">
 <h2>単一の光点形状</h2>
 <table>
@@ -117,14 +152,14 @@
 <td>次のシードへ完全に切り替わるまでの秒数です。サーバー時刻基準のため全員が同じタイミングで切り替わります。</td>
 </tr>
 </table>
-<div class="note">シード値自体を補間すると配置がチラつくため、内部では旧シードと新シードそれぞれのアトラス表示をサンプリングしてブレンドしています。R26.1では静止状態でも設定済みのマテリアル更新頻度でフェードが継続し、透明背景AtlasもMask値を正しく補間します。設定後は「現在の設定をマテリアルへ反映・保存」を押してください。OFF時は追加のTextureサンプリングをスキップします。</div>
-<div class="warning"><b>R27.6.2以前には、このフェードでパターンが途中からまったく変化しなくなる不具合がありました。</b>周期を1〜2秒など短く設定すると顕著ですが、周期に関わらず発生します。R26以降のすべての版が該当します。R27.6.3で修正しました。この修正により、同じ設定でもパターンの出現順序は従来版と一致しなくなります。形状の種類・パラメーターの意味・Materialの設定は変わりません。</div>
+<div class="note">シード値自体を補間すると配置がチラつくため、内部では旧シードと新シードそれぞれのアトラス表示をサンプリングしてブレンドしています。静止状態でも設定済みのマテリアル更新頻度でフェードが継続し、透明背景AtlasもMask値を正しく補間します。設定後は「現在の設定をマテリアルへ反映・保存」を押してください。OFF時は追加のTextureサンプリングをスキップします。</div>
+<div class="warning"><b></b>同じ設定でも、版によってパターンの出現順序が一致しない場合があります。形状の種類・パラメーターの意味・Materialの設定は変わりません。</div>
 <h3>付属サンプル</h3>
 <p>
 <a href="assets/ShapeAtlas/SampleShapeAtlas_4x2.png">SampleShapeAtlas_4x2.png</a>をUnityプロジェクトのAssets配下へ保存して設定し、横4・縦2・使用数8にします。</p>
 <div class="tip">形状の周囲に1～2px程度の余白を入れると隣セルの色が混ざりにくくなります。</div>
 </section>
-<section id="import">
+<section id="import-settings">
 <h2>Texture Import Settings</h2>
 <table>
 <tr>
@@ -158,6 +193,19 @@
 </table>
 <div class="danger">実行中に生成したTexture、Project外の画像、未保存の一時TextureはVRChatへアップロードされません。必ずAssets配下のTexture Assetを参照してください。</div>
 </section>
+<section id="import-steps">
+<h2>自分で用意したTextureのImport設定</h2>
+<p>推奨値は上の表のとおりです。ここでは、そのうち<strong>診断が見ている3か所</strong>と、Unityでの直し方だけを手順にします。この3つが既定のままだと、形が滲む、境目に縁が出る、といった見え方になります。</p>
+<ol class="steps">
+<li>ProjectウィンドウでそのTextureを選びます。</li>
+<li>Inspectorで <strong>Wrap Mode</strong> を <code>Clamp</code> にします。<code>Repeat</code> のままだと、端の形が反対側へ回り込みます。</li>
+<li><strong>Generate Mip Maps</strong> のチェックを外します。付いていると、小さく映ったときに境界付近の色が混ざり、形が崩れます。</li>
+<li><strong>Alpha Is Transparency</strong> にチェックを入れます。透明な部分との境目に、にじんだ縁が出るのを抑えます。</li>
+<li><code>Apply</code> を押します。</li>
+</ol>
+<div class="tip"><strong>手で直さなくても構いません。</strong> <code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> の「安全に自動修正」が、この3か所をまとめて直します。自動修正が触るのはMaterialとTexture Import設定だけです。</div>
+</section>
+
 <section id="cookie">
 <h2>8. 高度な投影Cookie</h2>
 <table>
@@ -235,13 +283,16 @@
 <a href="07_presets.html">次へ：ライブプリセット →</a>
 </p>
 </section>
-</article>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="05_audiolink.html">← AudioLink連動</a>
+<a href="07_presets.html">ライブプリセット →</a>
+</nav>
 </div>
 </main>
-<footer>
-<div class="wrap">
-<a href="05_audiolink.html">← AudioLink</a>　<a href="07_presets.html">次：プリセット →</a>
 </div>
-</footer>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
 </body>
 </html>

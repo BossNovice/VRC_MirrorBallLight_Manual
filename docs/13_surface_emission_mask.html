@@ -7,26 +7,81 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header><div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="12_material_translate.html">← Material変換</a>
+<a href="14_performance_tips.html">重い場合のTips →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+</li>
+<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+</li>
+<li><a href="07_presets.html"><span>プリセット</span></a>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</li>
+<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</li>
+<li><a aria-current="page" href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+<ul class="inpage">
+<li><a href="#difference">反射光点との違い</a></li>
+<li><a href="#steps">設定手順</a></li>
+<li><a href="#audiolink">表面Emission専用AudioLink</a></li>
+<li><a href="#parameters">項目一覧</a></li>
+<li><a href="#wall">通常の壁・床の推奨開始値</a></li>
+<li><a href="#glass">ガラス・半透明面の推奨開始値</a></li>
+<li><a href="#translate">既存MaterialからのTranslate</a></li>
+<li><a href="#performance">負荷とVRChat Build</a></li>
+</ul>
+</li>
+<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+</li>
+<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">13 / SURFACE EMISSION &amp; MASK</div>
 <h1>壁・床・ガラス本体を発光させる</h1>
 <p class="lead">ミラーボールの回転光点とは独立したEmission、AudioLink帯域・反応パターン、Maskを各Materialへ設定します。</p>
-<nav class="nav">
-<a href="index.html">目次</a><a href="02_quickstart.html">サンプル</a><a href="04_effects.html">反射・光点</a>
-<a href="08_materials.html">Material</a><a href="10_optimization_troubleshooting.html">最適化・対処</a>
-<a href="12_material_translate.html">Material変換</a><a aria-current="page" href="13_surface_emission_mask.html">表面Emission</a>
-</nav>
-</div></header>
-<main class="wrap"><div class="layout">
-<aside class="toc"><strong>ページ内</strong><a href="#difference">機能の違い</a><a href="#steps">設定手順</a><a href="#audiolink">AudioLink</a><a href="#parameters">全項目</a><a href="#wall">壁の例</a><a href="#glass">ガラスの例</a><a href="#translate">Translate</a><a href="#performance">負荷</a></aside>
-<article class="content">
+
 <section id="difference">
 <h2>反射光点との違い</h2>
 <table><tr><th>機能</th><th>発光するもの</th><th>制御元</th></tr>
 <tr><td>ミラーボール反射光</td><td>回転・点滅する光点</td><td>Controllerとライブプリセット</td></tr>
-<tr><td>R23 個別発光パターン</td><td>反射光点の色・形をMaterialごとに変化</td><td>Material固有</td></tr>
-<tr><td>R25 表面Emission</td><td>壁紙、看板、床、ガラス自体の模様</td><td>Material固有</td></tr></table>
-<p>R25表面EmissionはControllerの電源をOFFにしても表示されます。常設看板や発光ガラスなど、素材自身の発光に使用してください。</p>
+<tr><td>個別発光パターン</td><td>反射光点の色・形をMaterialごとに変化</td><td>Material固有</td></tr>
+<tr><td>表面Emission</td><td>壁紙、看板、床、ガラス自体の模様</td><td>Material固有</td></tr></table>
+<p>表面EmissionはControllerの電源をOFFにしても表示されます。常設看板や発光ガラスなど、素材自身の発光に使用してください。</p>
 </section>
 <section id="steps">
 <h2>設定手順</h2>
@@ -51,7 +106,7 @@
 <div class="note">反射光点の「AudioLinkを使用」がOFFでも、この専用ToggleがONなら表面Emissionだけを音へ反応させられます。共通のAudioLinkテストモード／テスト音量も利用できます。</div>
 </section>
 <section id="parameters">
-<h2>R25項目一覧</h2>
+<h2>項目一覧</h2>
 <table><tr><th>Unity表示</th><th>初期値</th><th>効果</th></tr>
 <tr><td>表面Emissionを使用</td><td>OFF</td><td>表面発光と追加Texture読込を有効化します。</td></tr>
 <tr><td>表面Emissionテクスチャ</td><td>白</td><td>RGBを発光色として読み取ります。Tiling／Offsetを使用できます。</td></tr>
@@ -82,13 +137,23 @@
 <p>透明Shaderでは表面Emissionも深度フェードへ追従します。交差部だけ発光が弱い場合は「深度フェードを使用」をOFFにして原因を切り分けてください。描画順の問題がある場合はRender QueueとZWriteも確認します。</p>
 </section>
 <section id="translate"><h2>既存MaterialからのTranslate</h2>
-<p>Standardなど一般的なShaderのEmission Map、Emission Color、Emission強度、Emission Mask候補をR25項目へ引き継ぎます。元MaterialでEmission KeywordがON、または明示的な有効設定がある場合に表面EmissionをONにします。</p>
-<div class="warning">Poiyomi／lilToonなどの複数Emissionレイヤー、スクロールや点滅、Packed Mask、独自Blendは1組のR25表面Emissionへ完全変換できない可能性があります。Translate Copyを使い、元Materialを残して比較してください。</div>
+<p>Standardなど一般的なShaderのEmission Map、Emission Color、Emission強度、Emission Mask候補を表面Emission項目へ引き継ぎます。元MaterialでEmission KeywordがON、または明示的な有効設定がある場合に表面EmissionをONにします。</p>
+<div class="warning">Poiyomi／lilToonなどの複数Emissionレイヤー、スクロールや点滅、Packed Mask、独自Blendは1組の表面Emissionへ完全変換できない可能性があります。Translate Copyを使い、元Materialを残して比較してください。</div>
 </section>
 <section id="performance"><h2>負荷とVRChat Build</h2>
 <p>表面EmissionがOFFのMaterialではローカルShader Keywordにより追加Textureサンプリングを除外します。ONではEmission Textureを1回、MaskもONならさらに1回読みます。専用AudioLinkがONの場合だけAudioLink Textureと反応パターンを追加で読みます。</p>
 <p>VRChatで反映されない場合は、Materialの <code>表面Emissionを使用</code> がONであること、診断で <code>_MB_SURFACE_EMISSION</code> が同期されていること、使用MaterialがBuild対象Sceneから参照されていることを確認してください。</p>
 </section>
-</article></div></main>
-<footer><div class="wrap"><a href="12_material_translate.html">← Material変換</a>　<a href="index.html">目次へ</a>　<a href="14_performance_tips.html">重い場合のTips →</a></div></footer>
-</body></html>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="12_material_translate.html">← Material変換</a>
+<a href="14_performance_tips.html">動作が重い場合のTips →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>

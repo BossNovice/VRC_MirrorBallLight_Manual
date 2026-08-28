@@ -7,17 +7,71 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header><div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="13_surface_emission_mask.html">← 表面Emission</a>
+<a href="15_advanced_usage.html">拡張的な使い方 →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+</li>
+<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+</li>
+<li><a href="07_presets.html"><span>プリセット</span></a>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</li>
+<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</li>
+<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</li>
+<li><a aria-current="page" href="14_performance_tips.html"><span>重い場合のTips</span></a>
+<ul class="inpage">
+<li><a href="#first">最初に：CPUとGPUのどちらが原因かを確かめる</a></li>
+<li><a href="#gpu">GPUが原因のとき</a></li>
+<li><a href="#cpu">CPUが原因のとき</a></li>
+<li><a href="#many">オブジェクトが多いとき</a></li>
+<li><a href="#diagnose">設定の矛盾を先に潰す</a></li>
+<li><a href="#notes">知っておくと判断が早くなること</a></li>
+</ul>
+</li>
+<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">14 / PERFORMANCE TIPS</div>
 <h1>動作が重い場合のTips</h1>
 <p class="lead">まず原因がCPUかGPUかを確かめてから手を打ちます。原因を確かめずに設定を変えても、たいてい何も変わりません。</p>
-<nav class="nav">
-<a href="index.html">目次</a><a href="03_controller.html">Controller</a><a href="04_effects.html">反射・光点</a>
-<a href="08_materials.html">Material</a><a href="09_integrations.html">連携</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処</a><a aria-current="page" href="14_performance_tips.html">重い場合のTips</a>
-</nav>
-</div></header>
-<main><div class="wrap"><article>
 
 <section id="first"><h2>最初に：CPUとGPUのどちらが原因かを確かめる</h2>
 <p><strong>これを飛ばさないでください。</strong> CPUが原因のときにGPU向けの手を打っても、フレームレートは1つも改善しません。逆も同じです。</p>
@@ -26,6 +80,10 @@
 <li>Play Modeに入り、重いと感じる場所で静止します</li>
 <li><code>CPU Usage</code> と <code>GPU Usage</code> の両方を見ます</li>
 </ol>
+<figure>
+<img src="assets/diagrams/cpu-gpu-first.svg" alt="Profilerでcpu usageとgpu usageの中央値を比べ、CPUが大きければ更新頻度とスクリプト側、GPUが大きければオーバードロー・解像度・距離フェードを見る。設定を変えても数字が動かないときは原因が別にある。">
+<figcaption>原因を確かめずに設定を変えても、たいてい何も変わりません。まずこの分かれ道を決めてください。</figcaption>
+</figure>
 <div class="warning"><strong>グラフを目で比べないでください。</strong> 1フレームごとの揺れが大きく、設定変更による差はその中に埋もれます。判断するなら、数百フレーム分の<strong>中央値</strong>を数字で比べてください。平均は使わないでください。スパイク1回で動いてしまいます。</div>
 <table>
 <tr><th>状態</th><th>原因</th><th>読むところ</th></tr>
@@ -39,7 +97,7 @@
 <section id="gpu"><h2>GPUが原因のとき</h2>
 
 <h3>1. 距離フェードを有効にして、終了距離を詰める（効果が大きい）</h3>
-<p><strong>R29から、距離フェードは軽量化のスイッチになりました。</strong> 終了距離より遠い面では、光点の形・色・点滅の計算そのものを行いません。</p>
+<p><strong>距離フェードは軽量化のスイッチです。</strong> 終了距離より遠い面では、光点の形・色・点滅の計算そのものを行いません。</p>
 <table>
 <tr><th>設定</th><th>結果</th></tr>
 <tr><td><code>距離フェードを使用</code> ON、終了距離が短い</td><td>遠い面の計算がまるごと省かれます</td></tr>
@@ -49,7 +107,7 @@
 <div class="warning">この省略は<strong>不透明版のShaderで大きく、半透明版では小さい</strong>です。半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、形の計算を省けません。</div>
 
 <h3>2. 電源をOFFにしているときの負荷も下がっています</h3>
-<p>R29から、電源OFFの間も同じ仕組みで計算を省きます。演出を使わない時間が長いワールドでは、電源を切っておく価値があります。</p>
+<p>電源OFFの間も同じ仕組みで計算を省きます。演出を使わない時間が長いワールドでは、電源を切っておく価値があります。</p>
 
 <h3>3. 半透明版の重なりを減らす</h3>
 <p>半透明は<strong>重なった枚数だけ描画されます</strong>（オーバードロー）。同じ画素を何枚も塗ると、そのぶん素直に重くなります。</p>
@@ -137,7 +195,16 @@
 <h3>Import時間と実行時の重さは別のものです</h3>
 <p>導入時のImportが長いことと、ワールドが実行時に重いことは無関係です。Importについては<a href="10_optimization_troubleshooting.html">最適化・対処</a>を参照してください。</p>
 </section>
-
-</article></div></main>
-<footer><div class="wrap"><a href="13_surface_emission_mask.html">← 表面Emission</a>　<a href="index.html">目次へ</a></div></footer>
-</body></html>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="13_surface_emission_mask.html">← 表面Emission・Mask</a>
+<a href="15_advanced_usage.html">拡張的な使い方 →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>

@@ -7,39 +7,73 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header>
-<div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="04_effects.html">← 反射・光点</a>
+<a href="06_shapes_cookie.html">形状・Cookie →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a aria-current="page" href="05_audiolink.html"><span>AudioLink</span></a>
+<ul class="inpage">
+<li><a href="#setup">準備</a></li>
+<li><a href="#bands">用途別の反応帯域</a></li>
+<li><a href="#response">反応量と安定化</a></li>
+<li><a href="#material-mask">MaterialごとのAudioLink反応マスク</a></li>
+<li><a href="#history">履歴・伝播</a></li>
+<li><a href="#test">音源なしでテスト</a></li>
+<li><a href="#avatar">アバター実光のAudioLink連動</a></li>
+</ul>
+</li>
+<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+</li>
+<li><a href="07_presets.html"><span>プリセット</span></a>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</li>
+<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</li>
+<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</li>
+<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+</li>
+<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">05 / AUDIOLINK</div>
 <h1>AudioLink連動</h1>
 <p class="lead">明るさ・サイズ・色・アバター実光へ別々の帯域を割り当て、履歴による伝播を作れます。</p>
-<nav class="nav">
-<a href="index.html">目次</a>
-<a href="01_installation.html">導入</a>
-<a href="02_quickstart.html">サンプル</a>
-<a href="03_controller.html">Controller</a>
-<a href="04_effects.html">反射・光点</a>
-<a aria-current="page" href="05_audiolink.html">AudioLink</a>
-<a href="06_shapes_cookie.html">形状・Cookie</a>
-<a href="07_presets.html">プリセット</a>
-<a href="08_materials.html">Material</a>
-<a href="09_integrations.html">連携</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処</a>
-</nav>
-</div>
-</header>
-<main class="wrap">
-<div class="layout">
-<aside class="toc">
-<strong>ページ内</strong>
-<a href="#setup">準備</a>
-<a href="#bands">帯域</a>
-<a href="#response">反応量</a>
-<a href="#material-mask">Material個別マスク</a>
-<a href="#history">履歴</a>
-<a href="#test">テスト</a>
-<a href="#avatar">実光</a>
-</aside>
-<article class="content">
+
 <section id="setup">
 <h2>準備</h2>
 <ol class="steps">
@@ -110,7 +144,7 @@
 <td>AudioSource解析による実光Intensity</td>
 </tr>
 </table>
-<div class="note">コード上には旧互換フィールド「反応する帯域（0：低音～3：高音）」が保持されていますが、R23 Custom Inspectorでは表示されません。現在は用途別の3帯域を設定します。</div>
+<div class="note">コード上には旧互換フィールド「反応する帯域（0：低音～3：高音）」が保持されていますが、Custom Inspectorでは表示されません。現在は用途別の3帯域を設定します。</div>
 </section>
 <section id="response">
 <h2>反応量と安定化</h2>
@@ -149,7 +183,7 @@
 </section>
 <section id="material-mask">
 <h2>MaterialごとのAudioLink反応マスク</h2>
-<p>R23では、Controllerの共通AudioLink設定を保ったまま、壁・床・ガラスなどのMaterialごとに「どの部分を音へ反応させるか」と「どの模様で発光させるか」を分けられます。設定はControllerではなく、対象MaterialのInspectorで行います。</p>
+<p>Controllerの共通AudioLink設定を保ったまま、壁・床・ガラスなどのMaterialごとに「どの部分を音へ反応させるか」と「どの模様で発光させるか」を分けられます。設定はControllerではなく、対象MaterialのInspectorで行います。</p>
 <table>
 <tr><th>Material表示名</th><th>効果</th></tr>
 <tr><td>個別AudioLinkマスクを使用</td><td>ONにすると、このMaterialだけAudioLink反応マスクを参照します。</td></tr>
@@ -222,13 +256,16 @@
 <a href="06_shapes_cookie.html">次へ：形状・Cookie →</a>
 </p>
 </section>
-</article>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="04_effects.html">← 反射・光点</a>
+<a href="06_shapes_cookie.html">光点形状・Cookie →</a>
+</nav>
 </div>
 </main>
-<footer>
-<div class="wrap">
-<a href="04_effects.html">← 反射・光点</a>　<a href="06_shapes_cookie.html">次：形状・Cookie →</a>
 </div>
-</footer>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
 </body>
 </html>

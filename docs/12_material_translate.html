@@ -7,25 +7,74 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header>
-<div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="11_r24_world_shader.html">← ワールドShader</a>
+<a href="13_surface_emission_mask.html">表面Emission →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+</li>
+<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+</li>
+<li><a href="07_presets.html"><span>プリセット</span></a>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</li>
+<li><a aria-current="page" href="12_material_translate.html"><span>Material変換</span></a>
+<ul class="inpage">
+<li><a href="#s1">推奨手順：Translate Copy</a></li>
+<li><a href="#s2">右クリックメニュー</a></li>
+<li><a href="#s3">通常面／透明面の自動判定</a></li>
+<li><a href="#s4">引き継ぐ設定</a></li>
+<li><a href="#s5">完全変換できない設定</a></li>
+<li><a href="#s6">元へ戻す方法</a></li>
+</ul>
+</li>
+<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</li>
+<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+</li>
+<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">12 / MATERIAL TRANSLATE</div>
 <h1>既存の壁・ガラスMaterialを変換</h1>
 <p class="lead">PoiyomiのTranslate／Translate Copyに近い操作で、既存設定をMirrorBallLight Shaderへ移します。</p>
-<nav class="nav">
-<a href="index.html">目次</a>
-<a href="03_controller.html">Controller</a>
-<a href="08_materials.html">Material</a>
-<a href="09_integrations.html">連携</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処</a>
-<a href="11_r24_world_shader.html">R24拡張</a>
-<a aria-current="page" href="12_material_translate.html">Material変換</a>
-</nav>
-</div>
-</header>
-<main class="wrap">
+
 <section>
-<h2>推奨手順：Translate Copy</h2>
+<h2 id="s1">推奨手順：Translate Copy</h2>
 <ol>
 <li>Hierarchyで壁、床、天井、ガラスのGameObjectを選択します。</li>
 <li>右クリックして <code>MirrorBall Light &gt; マテリアル &gt; Translate Copy（複製して変換・推奨）</code> を選びます。</li>
@@ -37,7 +86,7 @@
 </section>
 
 <section>
-<h2>右クリックメニュー</h2>
+<h2 id="s2">右クリックメニュー</h2>
 <table>
 <tr><th>メニュー</th><th>動作</th></tr>
 <tr><td>Translate（直接変換）</td><td>元Material自体のShaderを変更します。Undo対応ですが、同じMaterialを共有する全Objectへ影響します。</td></tr>
@@ -50,7 +99,7 @@
 </section>
 
 <section>
-<h2>通常面／透明面の自動判定</h2>
+<h2 id="s3">通常面／透明面の自動判定</h2>
 <p>次の情報を順に確認し、ひとつでも透明条件に該当すればTransparent版へ変換します。</p>
 <ul>
 <li>Shader名にTransparent、Glass、Fadeが含まれる</li>
@@ -63,14 +112,14 @@
 </section>
 
 <section>
-<h2>引き継ぐ設定</h2>
+<h2 id="s4">引き継ぐ設定</h2>
 <table>
 <tr><th>元Materialの候補</th><th>MirrorBallLight側</th></tr>
 <tr><td>Base Map／Main Texture、Tiling、Offset</td><td>壁・床の基本Texture</td></tr>
 <tr><td>Base Color／Color／Tint Color</td><td>壁・床の基本色</td></tr>
 <tr><td>Bump Map／Normal Map、Normal強度</td><td>ノーマルマップと強さ</td></tr>
-<tr><td>Emission Map／Color／強度</td><td>R25 表面Emission Texture／HDR色／強さ</td></tr>
-<tr><td>Emission Mask候補</td><td>R25 表面Emission Mask。Tiling／Offsetも維持</td></tr>
+<tr><td>Emission Map／Color／強度</td><td>表面Emission Texture／HDR色／強さ</td></tr>
+<tr><td>Emission Mask候補</td><td>表面Emission Mask。Tiling／Offsetも維持</td></tr>
 <tr><td>Metallic／Metalness</td><td>金属感</td></tr>
 <tr><td>Smoothness／Glossiness／Roughness</td><td>滑らかさ。Roughnessは反転して変換</td></tr>
 <tr><td>Opacity／Alpha／Base Color Alpha</td><td>透明Shaderの透明度</td></tr>
@@ -81,7 +130,7 @@
 </section>
 
 <section>
-<h2>完全変換できない設定</h2>
+<h2 id="s5">完全変換できない設定</h2>
 <p>Poiyomi、lilToon、独自Shaderの次の機能はMirrorBallLight側に同じ機能がないため、完全には再現できない可能性があります。</p>
 <ul>
 <li>複数レイヤーTextureと独自ブレンド</li>
@@ -90,18 +139,27 @@
 <li>Stencil、特殊Depth、GrabPass、独自Render State</li>
 <li>Shader固有のマスクPackingやUVアニメーション</li>
 </ul>
-<p>変換後はSceneビューでBase Texture、Normal、透明度、R25表面Emission／Maskを確認し、Controllerの設定をMaterialへ反映してからVRChatへアップロードしてください。</p>
+<p>変換後はSceneビューでBase Texture、Normal、透明度、表面Emission／Maskを確認し、Controllerの設定をMaterialへ反映してからVRChatへアップロードしてください。</p>
 </section>
 
 <section>
-<h2>元へ戻す方法</h2>
+<h2 id="s6">元へ戻す方法</h2>
 <ul>
 <li>Translate直後ならUnityのUndoを使用します。</li>
 <li>Translate CopyではRendererへ元Materialを再割り当てします。</li>
 <li>生成Materialが不要なら、参照されていないことを確認してから<code>Generated/ConvertedMaterials</code>内を手動で整理します。</li>
 </ul>
 </section>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="11_r24_world_shader.html">← ワールドShader拡張</a>
+<a href="13_surface_emission_mask.html">表面Emission・Mask →</a>
+</nav>
+</div>
 </main>
-<footer><div class="wrap"><a href="11_r24_world_shader.html">← R24拡張</a>　<a href="index.html">目次へ</a></div></footer>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
 </body>
 </html>
