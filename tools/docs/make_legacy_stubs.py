@@ -20,7 +20,7 @@ TEMPLATE = """<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>移動しました | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
-%(refresh)s
+<noscript>%(refresh)s</noscript>
 </head>
 <body>
 <header class="topbar">
@@ -39,11 +39,15 @@ TEMPLATE = """<!doctype html>
 </div>
 <footer>MirrorBallLightController マニュアル</footer>
 <script>
-// アンカー付きで開かれたときは、その節の移動先へ送ります。
+// 移動はここだけで行います。**head の meta refresh は noscript の中です。**
+// 両方が動くと、アンカー付きで開かれたときに meta 側が先に走り、
+// 節を失ったページ先頭へ飛んでしまいます（順序は保証されません）。
 (function () {
   var map = %(anchors)s;
+  var fallback = %(fallback)s;   // 移動先が1つに決まる場合だけ入ります
   var hash = location.hash.replace(/^#/, "");
-  if (hash && map[hash]) { location.replace(map[hash]); }
+  if (hash && map[hash]) { location.replace(map[hash]); return; }
+  if (fallback) { location.replace(fallback); }
 })();
 </script>
 </body>
@@ -85,7 +89,8 @@ def main():
 
         html = TEMPLATE % dict(
             old=old_page, refresh=refresh, body=body,
-            anchors=json.dumps(anchors, ensure_ascii=False, sort_keys=True))
+            anchors=json.dumps(anchors, ensure_ascii=False, sort_keys=True),
+            fallback=json.dumps(targets[0] if len(targets) == 1 else None))
         io.open(os.path.join(args.dir, old_page), "w", encoding="utf-8", newline="").write(html)
         written += 1
 
