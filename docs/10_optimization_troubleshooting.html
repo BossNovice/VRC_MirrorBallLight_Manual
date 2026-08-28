@@ -47,9 +47,9 @@
 <li><a aria-current="page" href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
 <ul class="inpage">
 <li><a href="#budget">推奨負荷設定</a></li>
-<li><a href="#diagnostics">遠い面と電源OFFのときの描画</a></li>
-<li><a href="#diagnostics">半透明版も軽くなります</a></li>
-<li><a href="#diagnostics">診断・最適化ウィンドウの使い方</a></li>
+<li><a href="#skip-hidden">遠い面と電源OFFのときの描画</a></li>
+<li><a href="#skip-hidden-transparent">半透明版も軽くなります</a></li>
+<li><a href="#diagwindow">診断・最適化ウィンドウの使い方</a></li>
 <li><a href="#notvisible">光点が表示されない</a></li>
 <li><a href="#vrchat">Unityでは見えるがVRChatでは形状が反映されない</a></li>
 <li><a href="#black">ミラーボール本体が黒い</a></li>
@@ -79,7 +79,7 @@
 <h1>最適化・診断・トラブル対処</h1>
 <p class="lead">低コストな数値処理はランタイム分岐へ統合し、Texture参照や描画構造が変わる機能だけをShader Keywordとして維持しています。</p>
 
-<div class="tip">ここに載せているのは<strong>現在の版で起こりうること</strong>だけです。過去の版で修正済みの不具合や、その修正で何が変わったかは<a href="../manual/README.md">GitHub版マニュアル</a>の履歴にまとめてあります。古い版のまま運用している場合や、以前の記録と見え方が違う場合はそちらを確認してください。</div>
+<div class="tip">ここに載せているのは<strong>現在の版で起こりうること</strong>だけです。過去の版で修正済みの不具合や、その修正で何が変わったかは<a href="https://github.com/BossNovice/VRC_MirrorBallLight_Manual/blob/main/manual/README.md">GitHub版マニュアル</a>の履歴にまとめてあります。古い版のまま運用している場合や、以前の記録と見え方が違う場合はそちらを確認してください。</div>
 <section id="budget">
 <h2>推奨負荷設定</h2>
 <p>実際に重いときの手順は <a href="14_performance_tips.html">動作が重い場合のTips</a> にまとめています。<strong>原因がCPUかGPUかを確かめてから設定を変えてください。</strong></p>
@@ -122,7 +122,7 @@
 </table>
 <div class="warning">Shader Global共有を使うControllerは同一シーンで1個にしてください。複数あると最後に更新したControllerの値が全対応Materialへ反映されます。</div>
 </section>
-<section id="diagnostics">
+<section id="skip-hidden">
 <h2>遠い面と電源OFFのときの描画</h2>
 <p>光点がまったく映らない面では光点の計算そのものを行わなくなりました。設定は不要で、見た目も変わりません。</p>
 <p>これまでは、遠くて光点が消えている面でも形・色・点滅をひととおり計算してから最後に0を掛けて消していました。先に消えるかどうかを判定するようにしています。</p>
@@ -147,13 +147,17 @@
 <p><code>距離フェードを使用</code> がOFFだと、どの面も「消える」と判定されないため効果がありません。広いワールドで軽さを優先する場合はONにしてください。</p>
 <p>半透明版のShaderは対象外です。半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、計算を飛ばすと見た目が変わってしまいます。</p>
 
+</section>
+<section id="skip-hidden-transparent">
 <h2>半透明版も軽くなります</h2>
 <p>半透明版のShaderでも色の計算を「光点が映らない画素では行わない」ようにしました。設定は不要で、見た目も変わりません。</p>
 <p>効く条件は不透明版と同じです（<code>距離フェードを使用</code> がONで <code>フェード終了距離</code> より遠い面、または電源がOFFのとき）。</p>
 <p><strong>軽くなる度合いは不透明版より小さいです。</strong> 半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、形の計算は飛ばせません。飛ばせるのは色の計算だけです。</p>
 <p>あわせて、<code>プリズム色分散</code> を有効にしたときにフェード境界の1〜2ピクセルで色が不安定になり得る箇所を直しました。実際に症状が出た報告はありません。この項目の初期値は0（無効）で、無効なら影響はありません。</p>
 
-<h2 id="diagwindow">診断・最適化ウィンドウの使い方</h2>
+</section>
+<section id="diagwindow">
+<h2>診断・最適化ウィンドウの使い方</h2>
 <p>参照、Material、Shaderキーワード、Material個別のAudioLink設定、ライブプリセット、Texture Import設定、Global共有の競合をまとめて確認します。</p>
 <h3>開く</h3>
 <p>どちらからでも同じウィンドウが開きます。</p>

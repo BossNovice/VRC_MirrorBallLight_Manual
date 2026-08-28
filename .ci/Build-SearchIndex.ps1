@@ -78,19 +78,26 @@ foreach ($name in $pages.Keys)
     {
         $h = $headings[$i]
 
-        # 飛び先は、囲っている section の id を使います。無ければ h2 自身の id です。
-        $before = $body.Substring(0, $h.Index)
-        $opens = [regex]::Matches($before, '<section id="([^"]+)"')
-        $closes = [regex]::Matches($before, "</section>")
+        # 飛び先は **h2 自身の id を優先** します。無いときだけ、囲っている section の id です。
+        #
+        # 以前は section を先に見ていました。1つの section に h2 が2つ以上あると、
+        # **どの見出しも同じ飛び先になり**、目次から正しい位置へ移動できません。
+        # 見た目には分からないため気づけませんでした（2026-08-28のレビュー指摘）。
         $id = ""
-        if ($opens.Count -gt 0 -and ($closes.Count -eq 0 -or $opens[$opens.Count - 1].Index -gt $closes[$closes.Count - 1].Index))
+        $own = [regex]::Match($h.Value, '<h2[^>]*[ ]id="([^"]+)"')
+        if ($own.Success)
         {
-            $id = $opens[$opens.Count - 1].Groups[1].Value
+            $id = $own.Groups[1].Value
         }
         else
         {
-            $own = [regex]::Match($h.Value, '<h2[^>]*\bid="([^"]+)"')
-            if ($own.Success) { $id = $own.Groups[1].Value }
+            $before = $body.Substring(0, $h.Index)
+            $opens = [regex]::Matches($before, '<section id="([^"]+)"')
+            $closes = [regex]::Matches($before, "</section>")
+            if ($opens.Count -gt 0 -and ($closes.Count -eq 0 -or $opens[$opens.Count - 1].Index -gt $closes[$closes.Count - 1].Index))
+            {
+                $id = $opens[$opens.Count - 1].Groups[1].Value
+            }
         }
         if ([string]::IsNullOrWhiteSpace($id))
         {

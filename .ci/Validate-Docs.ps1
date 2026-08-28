@@ -93,6 +93,77 @@ foreach ($page in $pages)
     }
 }
 
+# --- id の重複（2026-08-28のレビューで追加） --------------------------------
+# 同じ id が1ページに2つあると、**アンカーは最初の1つへしか飛びません。**
+# リンクは切れていないので、リンク切れの検査では見つかりません。
+foreach ($page in $pages)
+{
+    $text = Get-Content -LiteralPath $page.FullName -Raw
+    $seen = @{}
+    foreach ($hit in [regex]::Matches($text, '[ ]id="([^"]+)"'))
+    {
+        $id = $hit.Groups[1].Value
+        if ($seen.ContainsKey($id))
+        {
+            $problems.Add("id が重複しています: $($page.Name) → $id")
+        }
+        $seen[$id] = $true
+    }
+}
+
+# --- アンカーの飛び先が実在するか（2026-08-28のレビューで追加） --------------
+# ページ内目次の href="#..." と、他ページの href="page.html#..." の両方を見ます。
+# **飛び先が無いリンクは、押しても何も起きません。** 押すまで気づけません。
+$idsByPage = @{}
+foreach ($page in $pages)
+{
+    $text = Get-Content -LiteralPath $page.FullName -Raw
+    $set = @{}
+    foreach ($hit in [regex]::Matches($text, '[ ]id="([^"]+)"')) { $set[$hit.Groups[1].Value] = $true }
+    $idsByPage[$page.Name] = $set
+}
+foreach ($page in $pages)
+{
+    $text = Get-Content -LiteralPath $page.FullName -Raw
+    foreach ($hit in [regex]::Matches($text, 'href="([^"]*)#([^"]+)"'))
+    {
+        $targetPage = $hit.Groups[1].Value
+        $anchor = $hit.Groups[2].Value
+        if ($targetPage -match '^(https?:|mailto:|//)') { continue }
+        $pageName = if ([string]::IsNullOrWhiteSpace($targetPage)) { $page.Name } else { Split-Path -Leaf $targetPage }
+        if (!$idsByPage.ContainsKey($pageName))
+        {
+            $problems.Add("アンカーの参照先ページが docs/ にありません: $($page.Name) → $targetPage#$anchor")
+            continue
+        }
+        if (!$idsByPage[$pageName].ContainsKey($anchor))
+        {
+            $problems.Add("アンカーの飛び先がありません: $($page.Name) → $targetPage#$anchor")
+        }
+    }
+}
+
+# --- zip に入らないローカルファイルへのリンク（2026-08-28のレビューで追加） --
+# 配るのは docs/ を固めた zip です。**リポジトリには在るが zip には入らない**
+# ファイルを指すと、リポジトリ上では通り、受け取った人の手元だけで切れます。
+# ここでリポジトリだけを見ていたため、../manual/README.md を見逃していました。
+$docsFull = (Resolve-Path -LiteralPath $docs).Path.TrimEnd('')
+foreach ($page in $pages)
+{
+    $text = Get-Content -LiteralPath $page.FullName -Raw
+    foreach ($hit in [regex]::Matches($text, '(?:href|src)="([^"#:]+)"'))
+    {
+        $target = $hit.Groups[1].Value
+        if ($target -match '^(https?:|mailto:|//)') { continue }
+        $resolved = [System.IO.Path]::GetFullPath((Join-Path $page.DirectoryName $target))
+        if (!$resolved.StartsWith($docsFull, [System.StringComparison]::OrdinalIgnoreCase))
+        {
+            $problems.Add("zip に入らないファイルを指しています（docs/ の外）: $($page.Name) → $target。" +
+                "公開URLにするか、docs/ の中へ置いてください。")
+        }
+    }
+}
+
 # --- Markdownの相対リンクと画像リンク（R28.1で追加） -------------------------
 # HTMLだけを見ていたため、manual/README.md のリンク切れを検出できませんでした。
 $markdowns = @()
