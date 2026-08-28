@@ -167,7 +167,7 @@ foreach ($page in $pages)
 # --- Markdownの相対リンクと画像リンク（R28.1で追加） -------------------------
 # HTMLだけを見ていたため、manual/README.md のリンク切れを検出できませんでした。
 $markdowns = @()
-foreach ($name in @("manual", "docs", ".")) {
+foreach ($name in @("manual", "docs", "archive", ".")) {
     $dir = Join-Path $repository $name
     if (!(Test-Path -LiteralPath $dir)) { continue }
     $markdowns += Get-ChildItem -LiteralPath $dir -Filter "*.md" -File
