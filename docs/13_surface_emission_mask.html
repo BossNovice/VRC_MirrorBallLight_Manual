@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>移動しました | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
-<meta http-equiv="refresh" content="0; url=11_emission.html">
+<noscript><meta http-equiv="refresh" content="0; url=11_emission.html"></noscript>
 </head>
 <body>
 <header class="topbar">
@@ -24,11 +24,15 @@
 </div>
 <footer>MirrorBallLightController マニュアル</footer>
 <script>
-// アンカー付きで開かれたときは、その節の移動先へ送ります。
+// 移動はここだけで行います。**head の meta refresh は noscript の中です。**
+// 両方が動くと、アンカー付きで開かれたときに meta 側が先に走り、
+// 節を失ったページ先頭へ飛んでしまいます（順序は保証されません）。
 (function () {
   var map = {"audiolink": "11_emission.html#audiolink", "difference": "11_emission.html#difference", "glass": "11_emission.html#parameters", "parameters": "11_emission.html#parameters", "performance": "11_emission.html#performance", "steps": "11_emission.html#steps", "translate": "11_emission.html#translate", "wall": "11_emission.html#parameters"};
+  var fallback = "11_emission.html";   // 移動先が1つに決まる場合だけ入ります
   var hash = location.hash.replace(/^#/, "");
-  if (hash && map[hash]) { location.replace(map[hash]); }
+  if (hash && map[hash]) { location.replace(map[hash]); return; }
+  if (fallback) { location.replace(fallback); }
 })();
 </script>
 </body>

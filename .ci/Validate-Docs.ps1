@@ -494,6 +494,33 @@ if (Test-Path -LiteralPath $legacyMapPath)
     }
 }
 
+# --- 旧ページ案内の遷移が1本になっているか（2026-08-29で追加） --------------
+# 移動は JavaScript だけで行い、`meta refresh` は noscript の中へ置いています。
+# **両方が生きていると、アンカー付きで開かれたときに meta 側が先に走り、
+# 節を失ったページ先頭へ飛びます。** どちらが勝つかは保証されません。
+foreach ($page in $pages)
+{
+    $text = Get-Content -LiteralPath $page.FullName -Raw
+    if ($text -notmatch "このページは移動しました") { continue }
+
+    foreach ($hit in [regex]::Matches($text, '<meta http-equiv="refresh"[^>]*>'))
+    {
+        $before = $text.Substring(0, $hit.Index)
+        $opened = ([regex]::Matches($before, "<noscript>")).Count
+        $closed = ([regex]::Matches($before, "</noscript>")).Count
+        if ($opened -le $closed)
+        {
+            $problems.Add("旧ページ案内の meta refresh が noscript の外にあります: $($page.Name)。" +
+                "JavaScript側の移動と競合し、アンカーが失われます。")
+        }
+    }
+    if ($text -notmatch "var fallback = ")
+    {
+        $problems.Add("旧ページ案内に移動先の指定がありません: $($page.Name)。" +
+            "tools/docs/make_legacy_stubs.py で作り直してください。")
+    }
+}
+
 # --- 検索の索引が docs/ と一致しているか -------------------------------------
 # 索引は生成物です。docs/ を変えたのに作り直さないと、**検索結果だけが古いまま**に
 # なります。ページを開いても見た目には分からないので、ここで検出します。
