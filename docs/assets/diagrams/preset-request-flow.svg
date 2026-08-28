@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-label="プリセット切替要求の結果コード">
+<style>
+ .bg{fill:#0d1117}
+ .box{fill:#161b22;stroke:#30363d;rx:8}
+ .q{stroke:#58a6ff}
+ .ok{stroke:#3fb950}
+ .wait{stroke:#d29922}
+ .ng{stroke:#f85149}
+ .t{fill:#e6edf3;font:14px "Segoe UI","Noto Sans JP",sans-serif}
+ .h{fill:#79c0ff;font:bold 14px "Segoe UI","Noto Sans JP",sans-serif}
+ .m{fill:#9da7b3;font:12.5px "Segoe UI","Noto Sans JP",sans-serif}
+ .ttl{fill:#e6edf3;font:bold 17px "Segoe UI","Noto Sans JP",sans-serif}
+ .code{font:bold 15px "Segoe UI",sans-serif}
+</style>
+<rect class="bg" width="900" height="500"/>
+<text class="ttl" x="24" y="32">切替を要求したとき、何が返るか</text>
+<defs><marker id="b" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+ <path d="M0,0 L9,4.5 L0,9 z" fill="#58a6ff"/></marker></defs>
+
+<rect class="box q" x="24" y="56" width="300" height="60"/>
+<text class="h" x="38" y="82">切替を要求する</text>
+<text class="m" x="38" y="104">RequestSelectPreset など</text>
+<line x1="174" y1="116" x2="174" y2="140" stroke="#58a6ff" marker-end="url(#b)"/>
+
+<rect class="box q" x="24" y="144" width="300" height="56"/>
+<text class="t" x="38" y="178">ライブプリセットは有効か</text>
+<line x1="324" y1="172" x2="470" y2="172" stroke="#58a6ff" marker-end="url(#b)"/>
+<rect class="box ng" x="476" y="144" width="400" height="56"/>
+<text class="code" x="492" y="170" fill="#f85149">1</text>
+<text class="t" x="516" y="170">無効です。待っても直りません</text>
+<text class="m" x="516" y="190">「ライブプリセットを使用」がOFF、または一覧が空です</text>
+<line x1="174" y1="200" x2="174" y2="224" stroke="#58a6ff" marker-end="url(#b)"/>
+
+<rect class="box q" x="24" y="228" width="300" height="56"/>
+<text class="t" x="38" y="262">いま切替の途中か</text>
+<line x1="324" y1="256" x2="470" y2="256" stroke="#58a6ff" marker-end="url(#b)"/>
+<rect class="box wait" x="476" y="216" width="400" height="80"/>
+<text class="code" x="492" y="242" fill="#d29922">3</text>
+<text class="t" x="516" y="242">1件だけ予約しました</text>
+<text class="code" x="492" y="266" fill="#d29922">4</text>
+<text class="t" x="516" y="266">いまは受け付けません</text>
+<text class="m" x="492" y="288">どちらも失敗ではなく「いまは無理」です。少し待てば通ります</text>
+<line x1="174" y1="284" x2="174" y2="308" stroke="#58a6ff" marker-end="url(#b)"/>
+
+<rect class="box q" x="24" y="312" width="300" height="56"/>
+<text class="t" x="38" y="346">その番号は設定済みか</text>
+<line x1="324" y1="340" x2="470" y2="340" stroke="#58a6ff" marker-end="url(#b)"/>
+<rect class="box ng" x="476" y="312" width="400" height="56"/>
+<text class="code" x="492" y="338" fill="#f85149">2</text>
+<text class="t" x="516" y="338">その番号は未設定です。待っても直りません</text>
+<line x1="174" y1="368" x2="174" y2="392" stroke="#58a6ff" marker-end="url(#b)"/>
+
+<rect class="box ok" x="24" y="396" width="300" height="60"/>
+<text class="code" x="38" y="424" fill="#3fb950">0</text>
+<text class="h" x="62" y="424">成功しました</text>
+<text class="m" x="38" y="446">apiStateRevision が1つ増えます</text>
+
+<text class="m" x="360" y="424">左の分岐は上から順に見ます。</text>
+<text class="m" x="360" y="446">3と4の分かれ目は「切替中の要求を1件だけ予約」の設定です。</text>
+</svg>

@@ -245,12 +245,8 @@
 <li>「プリセット差分更新の最小値」を上げすぎると段階的に見えます。</li>
 <li>グローバルではサーバー時刻を基準にするため、参加者間の進行が揃います。</li>
 </ul>
-<p>
-<a href="08_materials.html">次へ：Material・Shader →</a>
-</p>
 </section>
-</article>
-</div>
+<section id="api">
 
 <h2>他のUdonから操作する（外部制御API）</h2>
 <div class="tip">同期範囲の設計、状態の読み取り、複数台の同時操作といった組み立て方は<a href="15_advanced_usage.html">拡張的な使い方</a>にまとめてあります。</div>
@@ -306,6 +302,12 @@ int result = (int)mirrorBall.GetProgramVariable("apiLastResultCode");
 <h3>従来の書き方も使えます</h3>
 <p><code>presetSelectionIndex</code> を直接書いてから <code>ApplySelectedPreset</code> を送る方法も、<strong>これまでどおり動きます。</strong> 既存のワールドはそのままで構いません。新しく書くときは <code>apiPresetIndex</code> と <code>RequestSelectPreset</code> をお使いください。</p>
 
+</section>
+<p>
+<a href="08_materials.html">次へ：Material・Shader →</a>
+</p>
+</article>
+</div>
 </main>
 <footer>
 <div class="wrap">

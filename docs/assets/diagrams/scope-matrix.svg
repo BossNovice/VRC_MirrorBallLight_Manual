@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" role="img" aria-label="プリセットと電源の動作範囲の組み合わせ4通り">
+<style>
+ .bg{fill:#0d1117}
+ .cell{fill:#161b22;stroke:#30363d;stroke-width:1;rx:8}
+ .t{fill:#e6edf3;font:15px "Segoe UI","Noto Sans JP",sans-serif}
+ .h{fill:#79c0ff;font:bold 15px "Segoe UI","Noto Sans JP",sans-serif}
+ .m{fill:#9da7b3;font:13px "Segoe UI","Noto Sans JP",sans-serif}
+ .ttl{fill:#e6edf3;font:bold 17px "Segoe UI","Noto Sans JP",sans-serif}
+ .ax{fill:#58a6ff;font:bold 14px "Segoe UI","Noto Sans JP",sans-serif}
+</style>
+<rect class="bg" width="900" height="470"/>
+<text class="ttl" x="24" y="34">動作範囲の組み合わせ（プリセットと電源は別々に決められます）</text>
+
+<text class="ax" x="300" y="78">電源＝グローバル（全員で共有）</text>
+<text class="ax" x="620" y="78">電源＝ローカル（その人だけ）</text>
+<text class="ax" x="24" y="170" transform="rotate(-90 24 170)">プリセット＝グローバル</text>
+<text class="ax" x="24" y="360" transform="rotate(-90 24 360)">プリセット＝ローカル</text>
+
+<rect class="cell" x="60" y="95" width="390" height="150" rx="8"/>
+<text class="h" x="80" y="125">ライブ会場</text>
+<text class="t" x="80" y="152">DJが操作し、全員が同じ演出を同時に見ます。</text>
+<text class="t" x="80" y="176">照明のON／OFFも全員に伝わります。</text>
+<text class="m" x="80" y="212">プリセットの動作範囲＝1／動作範囲＝1</text>
+<text class="m" x="80" y="232">（どちらも初期値です）</text>
+
+<rect class="cell" x="470" y="95" width="390" height="150" rx="8"/>
+<text class="h" x="490" y="125">演出は揃えつつ、消す自由を残す</text>
+<text class="t" x="490" y="152">見た目は全員そろいますが、まぶしさが</text>
+<text class="t" x="490" y="176">苦手な人は自分の画面だけ消せます。</text>
+<text class="m" x="490" y="212">プリセットの動作範囲＝1／動作範囲＝0</text>
+
+<rect class="cell" x="60" y="265" width="390" height="150" rx="8"/>
+<text class="h" x="80" y="295">点いているかだけ共有する</text>
+<text class="t" x="80" y="322">照明のON／OFFは全員に伝わりますが、</text>
+<text class="t" x="80" y="346">どの演出を見るかは各自に任せます。</text>
+<text class="m" x="80" y="382">プリセットの動作範囲＝0／動作範囲＝1</text>
+
+<rect class="cell" x="470" y="265" width="390" height="150" rx="8"/>
+<text class="h" x="490" y="295">個人宅ワールド</text>
+<text class="t" x="490" y="322">各自が好きな演出を選び、好きなときに</text>
+<text class="t" x="490" y="346">点けたり消したりします。同期しません。</text>
+<text class="m" x="490" y="382">プリセットの動作範囲＝0／動作範囲＝0</text>
+
+<text class="m" x="60" y="450">数値はControllerの「1. 基本設定・電源・対象Material」と「2. ライブプリセット」にあります。0＝ローカル専用、1＝同期です。</text>
+</svg>

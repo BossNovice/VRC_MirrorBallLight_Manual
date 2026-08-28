@@ -26,6 +26,10 @@
 <li>Play Modeに入り、重いと感じる場所で静止します</li>
 <li><code>CPU Usage</code> と <code>GPU Usage</code> の両方を見ます</li>
 </ol>
+<figure>
+<img src="assets/diagrams/cpu-gpu-first.svg" alt="Profilerでcpu usageとgpu usageの中央値を比べ、CPUが大きければ更新頻度とスクリプト側、GPUが大きければオーバードロー・解像度・距離フェードを見る。設定を変えても数字が動かないときは原因が別にある。">
+<figcaption>原因を確かめずに設定を変えても、たいてい何も変わりません。まずこの分かれ道を決めてください。</figcaption>
+</figure>
 <div class="warning"><strong>グラフを目で比べないでください。</strong> 1フレームごとの揺れが大きく、設定変更による差はその中に埋もれます。判断するなら、数百フレーム分の<strong>中央値</strong>を数字で比べてください。平均は使わないでください。スパイク1回で動いてしまいます。</div>
 <table>
 <tr><th>状態</th><th>原因</th><th>読むところ</th></tr>
