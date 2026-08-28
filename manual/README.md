@@ -261,12 +261,47 @@ UnityPackage／ZIPには、マニュアルリポジトリのサンプルと同�
 
 受光面では `フォールバック発光量` を0より大きくすると、Cookieや反射色の設定不足で主発光が弱い場合にも基本形状を表示できます。ミラーボール本体Shaderでは `Reflection Probeをフォールバックに使用` が初期ONで、指定Cubemapが黒または未設定の場合にProbeを参照します。Reflection Probeも利用できない場合は `反射がない場合の色／明るさ` が使われます。
 
+## 主な機能
+
+| 分類 | できること |
+| --- | --- |
+| 回転と電源 | 任意軸のQuaternion回転、途中参加者へ揃える時刻同期、ローカル／グローバルの電源 |
+| 光点 | ランダム点灯、カラフル、Texture形状、複数形状アトラスのセル別ランダム配置と配置シードのクロスフェード、六角形・星・リング・ハート |
+| 面ごとの調整 | 通常面と透明／半透明面の個別調整、透明描画方式、深度フェード、Normal Map、UV／平面／トライプラナー／球面の投影 |
+| 音との連動 | GPU AudioLinkと用途別の帯域、履歴の伝播、MaterialごとのAudioLink反応マスクと発光パターン |
+| 表面Emission | 壁・床・ガラス本体の独立したEmission Texture／HDR色／強度、白黒Maskと反転・適用強度 |
+| ミラーボール本体 | 四角・三角の鏡片を手続き的に描くファセットShader、Reflection ProbeとCubemap、環境光・材質応答・Fresnel・色収差 |
+| 照明連携 | VRCLightVolumes・LTCGI連携版のShader（確認済みの組み合わせは「動作確認済みの組み合わせ」を参照） |
+| 演出 | ライブプリセットとクロスフェード、2D／Cubemap Cookie投影、Sceneビューの投影ガイド |
+| 制作を助けるもの | 日本語のCustom Inspector、対象Materialの自動検出、連携機能の一括切替、日本語の診断と安全な自動修正、Material Translate／Translate Copy、Import設定済みのサンプル |
+| 負荷対策 | Shader Keywordの削減、GPUでの投影回転、プリセットの差分更新、VRCShader Global共有、Reflection Probeと固定色のFallback |
+
+各項目の設定方法は、このページの後半と[HTML版マニュアル](../docs/index.html)にあります。
+
+## Shader一覧
+
+| 用途 | Shader名 |
+| --- | --- |
+| 通常面 | `MirrorBallLight/MirrorBallSurfaceAuto` |
+| 透明面 | `MirrorBallLight/MirrorBallSurfaceAutoTransparent` |
+| 通常版本体 | `MirrorBallLight/MirrorBallFacetBody` |
+| 連携通常面 | `MirrorBallLight/Integrations/MirrorBallSurfaceAuto (VRCLightVolumes + LTCGI)` |
+| 連携透明面 | `MirrorBallLight/Integrations/MirrorBallSurfaceAutoTransparent (VRCLightVolumes + LTCGI)` |
+| 連携本体 | `MirrorBallLight/Integrations/MirrorBallFacetBody (VRCLightVolumes + LTCGI)` |
+
+**本体用Materialは、壁用の `反射を表示するマテリアル` へ追加しないでください。**
+Controllerの「4. ミラーボール本体ファセット」へ割り当てます。
+
 ## 必須環境
 
 - VRChat Creator Companionで作成したWorldプロジェクト
 - VRCSDK Worlds
 - UdonSharp
+- Unity 2022.3系のVRChat指定バージョン
 - Built-in Render Pipeline（PC向けシェーダー）
+
+VRCLightVolumes・LTCGI連携版のShaderを使う場合だけ、**先に両パッケージを導入してください。**
+組み合わせは揃える必要があります。確認済みの組み合わせは上の「動作確認済みの組み合わせ」にあります。
 
 ## 導入
 
@@ -879,5 +914,9 @@ Shaderの負荷は塗る画素の数に比例します。巨大な面を画面�
 ## 注意
 
 - Target Materialsを書き換える方式です。同じMaterialを別の部屋でも使う場合は複製してください。
-- Quest/AndroidではSurface Shaderを使用できないため、PC向けです。
+- **Avatarプロジェクトには対応していません。** Quest/AndroidではSurface Shaderを使用できないため、PC向けです。
 - ライトは実際の反射光を生成せず、壁MaterialのEmissionとして表現します。
+- **連携版Shaderは、対応する外部パッケージが無い状態ではコンパイルできません。** ガードは入れていません。
+  未導入の環境で必ずエラーになるのは設計どおりです。連携版を使う場合は先に両パッケージを導入してください。
+- **ライセンスは現時点で明示していません。** 第三者への再配布や改変版の公開の条件は、
+  リポジトリ所有者へ確認してください。
