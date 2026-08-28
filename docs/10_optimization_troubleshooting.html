@@ -49,7 +49,7 @@
 <li><a href="#budget">推奨負荷設定</a></li>
 <li><a href="#diagnostics">遠い面と電源OFFのときの描画</a></li>
 <li><a href="#diagnostics">半透明版も軽くなります</a></li>
-<li><a href="#diagnostics">診断・最適化ウィンドウ</a></li>
+<li><a href="#diagnostics">診断・最適化ウィンドウの使い方</a></li>
 <li><a href="#notvisible">光点が表示されない</a></li>
 <li><a href="#vrchat">Unityでは見えるがVRChatでは形状が反映されない</a></li>
 <li><a href="#black">ミラーボール本体が黒い</a></li>
@@ -153,8 +153,30 @@
 <p><strong>軽くなる度合いは不透明版より小さいです。</strong> 半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、形の計算は飛ばせません。飛ばせるのは色の計算だけです。</p>
 <p>あわせて、<code>プリズム色分散</code> を有効にしたときにフェード境界の1〜2ピクセルで色が不安定になり得る箇所を直しました。実際に症状が出た報告はありません。この項目の初期値は0（無効）で、無効なら影響はありません。</p>
 
-<h2>診断・最適化ウィンドウ</h2>
-<p>Controllerの10番から開き、参照、Material、Shader、Program Asset、Keyword、Global共有の競合を確認します。自動修正前にSceneとMaterialを保存し、修正後はConsoleと見た目を再確認します。</p>
+<h2 id="diagwindow">診断・最適化ウィンドウの使い方</h2>
+<p>参照、Material、Shaderキーワード、Material個別のAudioLink設定、ライブプリセット、Texture Import設定、Global共有の競合をまとめて確認します。</p>
+<h3>開く</h3>
+<p>どちらからでも同じウィンドウが開きます。</p>
+<ul>
+<li>Unityのメニューから <code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code></li>
+<li>ControllerのInspectorの「10. 最適化・診断」にある<strong>「診断・最適化ウィンドウを開く」</strong></li>
+</ul>
+<h3>使う順番</h3>
+<ol class="steps">
+<li><strong>先にSceneとMaterialを保存します。</strong> 自動修正はMaterialを書き換えます。戻せるようにしてから実行してください。</li>
+<li><strong>「再診断」</strong>を押します。開いたままシーンを触った後は、押し直さないと表示が古いままです。</li>
+<li>上部の<strong>「エラー: n　警告: n」</strong>を見ます。<strong>エラーが1件でもあると、この状態ではBuildが止まります。</strong></li>
+<li>直せるものは<strong>「安全に自動修正」</strong>で直します。触るのは<strong>MaterialとTexture Import設定だけ</strong>です。Hierarchyの参照や電源などの設定値は書き換えません。</li>
+<li>修正後にConsoleと実際の見た目を確かめます。<strong>自動修正で直らなかった項目は、一覧に残ります。</strong></li>
+</ol>
+<h3>誰かに見てもらうとき</h3>
+<p>一覧の内容はそのままテキストにできます。</p>
+<ol class="steps">
+<li><strong>「レポートに Hierarchy のパスを含める（自分用）」のチェックを外します。</strong> パスにはワールドの構造が出るためです。</li>
+<li><strong>「レポートをコピー」</strong>を押します。クリップボードへ入り、Consoleにも記録が残ります。</li>
+<li>そのまま貼り付けて渡します。</li>
+</ol>
+<div class="tip">自分用に残す場合はチェックを入れたままにします。<strong>どのオブジェクトのことかがパスで分かるようになります。</strong></div>
 </section>
 <section id="notvisible">
 <h2>光点が表示されない</h2>
@@ -207,6 +229,7 @@
 </table>
 <div class="note"><code>0</code> にしても真っ黒にはなりません。<code>暗所での最低表示明るさ</code>（初期値8%）の分は残ります。<strong>点灯時の見え方には影響しません。</strong></div>
 <h2>UdonSharp Program Assetエラー</h2>
+<div class="tip">Program Assetは自動で作られます。<strong>壊れている場合は <code>Tools &gt; MirrorBall Light &gt; UdonSharp Program Assetを修復</code> で作り直せます。</strong> ただし<strong>先にConsoleの赤いエラーを消してください。</strong> スクリプトがコンパイルできていないと作り直しにも失敗します。詳しくは<a href="01_installation.html#programasset">導入</a>にあります。</div>
 <table>
 <tr>
 <th>症状</th>
@@ -265,6 +288,7 @@
 <h2>VRChat公開前チェックリスト</h2>
 <ul>
 <li>Consoleの赤エラー0件</li>
+<li>「診断・最適化」のエラー0件（<strong>1件でもあるとBuildが止まります</strong>）</li>
 <li>AudioLinkテストモードOFF</li>
 <li>使用モードと本体／Surface Materialが一致</li>
 <li>TextureとCubemapがAssets配下</li>

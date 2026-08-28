@@ -43,6 +43,7 @@
 <li><a aria-current="page" href="08_materials.html"><span>Material</span></a>
 <ul class="inpage">
 <li><a href="#list">Shader一覧</a></li>
+<li><a href="#materialgui">MaterialのInspectorの使い方</a></li>
 <li><a href="#surface">通常の壁・床</a></li>
 <li><a href="#transparent">ガラス・透明／半透明オブジェクト</a></li>
 <li><a href="#individual-pattern">Material個別AudioLink・発光パターン</a></li>
@@ -120,6 +121,37 @@
 </td>
 </tr>
 </table>
+</section>
+
+<section id="materialgui">
+<h2>MaterialのInspectorの使い方</h2>
+<p>MirrorBallLightのSurface Shaderを割り当てたMaterialは、<strong>項目が11個の折りたたみに分かれて表示されます。</strong> Unity標準のMaterial表示とは並びが違います。</p>
+<h3>Shaderを割り当てる</h3>
+<ol class="steps">
+<li>ProjectウィンドウでMaterialを選びます。<strong>1つのMaterialを複数のRendererで共有していると、直した見た目はその全部に反映されます。</strong> 片方だけ変えたいなら、先に複製して割り当て直してください。<strong>付属Materialをそのまま編集するのも避けてください。</strong> サンプルと統合Prefabの見た目も一緒に変わります。<code>Ctrl+D</code> で複製してから使います。</li>
+<li>Inspector上部の <strong>Shader</strong> のドロップダウンを開きます。</li>
+<li>通常の壁・床なら <code>MirrorBallLight/MirrorBallSurfaceAuto</code>、ガラスなど透過するものなら <code>MirrorBallLight/MirrorBallSurfaceAutoTransparent</code> を選びます。</li>
+<li>元のTexture・色・Normal Mapを、新しい項目へ入れ直します。既存Materialからまとめて移したい場合は<a href="12_material_translate.html">Material変換</a>を使います。</li>
+</ol>
+<h3>11個の折りたたみ</h3>
+<p>上にある<strong>「すべて開く」「すべて閉じる」</strong>でまとめて操作できます。</p>
+<table>
+<thead><tr><th>番号</th><th>中身</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>表面の基本設定（Texture・色・Normal Map・金属感・滑らかさ）</td></tr>
+<tr><td>2</td><td>表面Emission・AudioLink</td></tr>
+<tr><td>3</td><td>ミラーボール反射光</td></tr>
+<tr><td>4</td><td>反射光のAudioLink</td></tr>
+<tr><td>5</td><td>光点・形状・ランダム点灯</td></tr>
+<tr><td>6</td><td>Material個別マスク・発光パターン</td></tr>
+<tr><td>7</td><td>投影Cookie</td></tr>
+<tr><td>8</td><td>環境・材質への適応</td></tr>
+<tr><td>9</td><td>透明描画</td></tr>
+<tr><td>10</td><td>VRCLightVolumes・LTCGI</td></tr>
+<tr><td>11</td><td>詳細・描画設定</td></tr>
+</tbody>
+</table>
+<div class="warning"><strong>Controllerが書き込む項目を手で変えても、次にControllerが反映したときに上書きされます。</strong> どちらが正かは「Controller連動とMaterial直編集」を参照してください。Materialごとに決めたい設定（2番・6番など）は上書きされません。</div>
 </section>
 <section id="surface">
 <h2>通常の壁・床</h2>

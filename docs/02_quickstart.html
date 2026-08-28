@@ -32,6 +32,7 @@
 <ul class="inpage">
 <li><a href="#place">配置する</a></li>
 <li><a href="#objects">Prefab内の設定</a></li>
+<li><a href="#prefab">Prefabのまま使うときの注意</a></li>
 <li><a href="#verify">正しく動かない場合の確認順</a></li>
 <li><a href="#reuse">自分の壁へ適用する</a></li>
 </ul>
@@ -124,6 +125,21 @@
 </tbody>
 </table>
 </section>
+<section id="prefab">
+<h2>Prefabのまま使うときの注意</h2>
+<p>Hierarchyへ置いたサンプルは<strong>Prefabのインスタンス</strong>です。Inspectorで値を変えると、その項目名が<strong>太字</strong>になり、左に青い線が付きます。これは「元のPrefabとは違う値になっています」という印です。</p>
+<table>
+<thead><tr><th>やりたいこと</th><th>操作</th><th>効き方</th></tr></thead>
+<tbody>
+<tr><td>このシーンのこの1台だけ変えたい</td><td>そのまま値を変える</td><td>置いたインスタンスだけが変わります。<strong>ふだんはこれで十分です</strong></td></tr>
+<tr><td>変更を元のPrefabへ戻したい</td><td>項目を右クリック → <code>Revert</code></td><td>元のPrefabの値へ戻ります</td></tr>
+<tr><td>同じPrefabを置いた全部へ広げたい</td><td>項目を右クリック → <code>Apply</code></td><td><strong>付属のPrefabそのものが書き換わります</strong></td></tr>
+</tbody>
+</table>
+<div class="warning"><strong><code>Apply</code> は付属のPrefabを書き換えます。</strong> ワールド固有の調整を <code>Apply</code> すると、他のシーンで置いたものや、次に置くものにも付いて回ります。<strong>迷ったら <code>Apply</code> は押さないでください。</strong> インスタンス側の変更だけで足ります。</div>
+<div class="tip">自分のワールド用に作り込むなら、Hierarchyのインスタンスを右クリックして <code>Prefab &gt; Unpack</code> するか、別名のPrefabとして保存してください。<strong>付属のPrefabを直接育てると、次の版を入れたときに手作業が要ります。</strong></div>
+</section>
+
 <section id="verify">
 <h2>正しく動かない場合の確認順</h2>
 <ol>

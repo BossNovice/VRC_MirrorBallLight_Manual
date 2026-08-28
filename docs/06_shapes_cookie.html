@@ -41,6 +41,7 @@
 <li><a href="#single">単一の光点形状</a></li>
 <li><a href="#atlas">複数形状アトラス</a></li>
 <li><a href="#import">Texture Import Settings</a></li>
+<li><a href="#import">自分で用意したTextureのImport設定</a></li>
 <li><a href="#cookie">8. 高度な投影Cookie</a></li>
 <li><a href="#preview">Sceneビュー投影プレビュー</a></li>
 </ul>
@@ -192,6 +193,19 @@
 </table>
 <div class="danger">実行中に生成したTexture、Project外の画像、未保存の一時TextureはVRChatへアップロードされません。必ずAssets配下のTexture Assetを参照してください。</div>
 </section>
+<section id="import">
+<h2>自分で用意したTextureのImport設定</h2>
+<p>推奨値は上の表のとおりです。ここでは、そのうち<strong>診断が見ている3か所</strong>と、Unityでの直し方だけを手順にします。この3つが既定のままだと、形が滲む、境目に縁が出る、といった見え方になります。</p>
+<ol class="steps">
+<li>ProjectウィンドウでそのTextureを選びます。</li>
+<li>Inspectorで <strong>Wrap Mode</strong> を <code>Clamp</code> にします。<code>Repeat</code> のままだと、端の形が反対側へ回り込みます。</li>
+<li><strong>Generate Mip Maps</strong> のチェックを外します。付いていると、小さく映ったときに境界付近の色が混ざり、形が崩れます。</li>
+<li><strong>Alpha Is Transparency</strong> にチェックを入れます。透明な部分との境目に、にじんだ縁が出るのを抑えます。</li>
+<li><code>Apply</code> を押します。</li>
+</ol>
+<div class="tip"><strong>手で直さなくても構いません。</strong> <code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> の「安全に自動修正」が、この3か所をまとめて直します。自動修正が触るのはMaterialとTexture Import設定だけです。</div>
+</section>
+
 <section id="cookie">
 <h2>8. 高度な投影Cookie</h2>
 <table>

@@ -32,6 +32,7 @@
 <li><a href="#import">Import手順</a></li>
 <li><a href="#folders">Import後の主なフォルダ</a></li>
 <li><a href="#upgrade">既存プロジェクトへ導入する場合</a></li>
+<li><a href="#programasset">UdonSharp Program Assetについて</a></li>
 <li><a href="#success">導入成功の判定</a></li>
 </ul>
 </li>
@@ -155,6 +156,24 @@
 <strong>重複クラスを作らない：</strong>
 <code>MirrorBallLightController.cs</code>を別フォルダへコピーすると同名クラスのコンパイルエラーになります。バックアップはUnityプロジェクト外へ置いてください。</div>
 </section>
+<section id="programasset">
+<h2>UdonSharp Program Assetについて</h2>
+<p>Controllerが動くには、UdonSharpのProgram Assetがスクリプトと1対1で結び付いている必要があります。<strong>これは自動で作られます。手作業は要りません。</strong> Unityの起動時と、スクリプトを読み直したときに確認が走ります。</p>
+<p>作られるのは次の2つです。</p>
+<ul>
+<li><code>MirrorBallLightController</code> 用</li>
+<li>ライブプリセット用</li>
+</ul>
+<h3>壊れたときだけ、手で作り直します</h3>
+<p>Importの途中でUnityを閉じた、Program Assetを消した、といった場合は、次のメニューで作り直せます。</p>
+<ol class="steps">
+<li>Unityのメニューから <code>Tools &gt; MirrorBall Light &gt; UdonSharp Program Assetを修復</code> を選びます。</li>
+<li>作り直しが必要だった場合だけ、UdonSharpのコンパイルが1回走ります。<strong>正常なら何も起きません。</strong></li>
+<li>Consoleに赤いエラーが残っていないかを確かめます。</li>
+</ol>
+<div class="warning">スクリプトがコンパイルできていないと、このメニューは作り直しに失敗します。<strong>先にConsoleの赤いエラーを消してください。</strong> 連携Packageを入れずに連携版Shaderを含めた場合など、原因が別のところにあることがあります。</div>
+</section>
+
 <section id="success">
 <h2>導入成功の判定</h2>
 <ul>
