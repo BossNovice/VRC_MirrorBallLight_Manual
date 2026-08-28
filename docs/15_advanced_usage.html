@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>15 拡張的な使い方 | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">15 / ADVANCED USAGE</div>
+<h1>拡張的な使い方</h1>
+<p class="lead">Inspectorで設定して置くだけ、から先の話です。ワールド側のUdonから動かす、同期範囲を設計する、複数台をまとめて操る、といった使い方をまとめます。</p>
+<nav class="nav">
+<a href="index.html">目次</a><a href="03_controller.html">Controller</a><a href="07_presets.html">プリセット</a>
+<a href="09_integrations.html">連携</a><a href="10_optimization_troubleshooting.html">最適化・対処</a>
+<a href="14_performance_tips.html">重い場合のTips</a><a aria-current="page" href="15_advanced_usage.html">拡張的な使い方</a>
+</nav>
+</div></header>
+<main><div class="wrap"><article>
+
+<section id="prereq"><h2>このページの前提</h2>
+<p>イベント名と結果コードの一覧は<a href="07_presets.html">プリセット</a>の「他のUdonから操作する（外部制御API）」にあります。<strong>先にそちらを読んでください。</strong> このページはその一覧を使って何を組み立てられるか、という話です。</p>
+<div class="warning"><strong>イベント名は変えないでください。</strong> <code>SendCustomEvent</code> は名前を文字列で呼びます。名前を変えると、それを呼んでいるワールドがエラーも出さずに静かに壊れます。</div>
+</section>
+
+<section id="scope"><h2>同期範囲を設計する</h2>
+<p>プリセットと電源は、<strong>それぞれ別に</strong>「全員で共有する（グローバル）」か「その人だけ（ローカル）」かを選べます。2つは独立しているので、組み合わせは4通りあります。</p>
+<table>
+<thead><tr><th>プリセット</th><th>電源</th><th>向いている場面</th></tr></thead>
+<tbody>
+<tr><td>グローバル</td><td>グローバル</td><td>ライブ会場。DJが操作し、全員が同じ演出を見る</td></tr>
+<tr><td>グローバル</td><td>ローカル</td><td>演出は揃えたいが、まぶしさが苦手な人には消させたい</td></tr>
+<tr><td>ローカル</td><td>ローカル</td><td>個人宅ワールド。各自が好きな見た目にする</td></tr>
+<tr><td>ローカル</td><td>グローバル</td><td>「照明が点いているか」だけ共有し、見た目は各自に任せる</td></tr>
+</tbody>
+</table>
+<h3>切り替えは専用の入口から呼ぶ</h3>
+<div class="tip">このページで「イベント名」「<code>api</code> で始まる変数」として挙げているものは、<strong>外から呼ばれる前提の入口です。</strong> それ以外のフィールドの動きは実装の都合で変わることがあります。</div>
+<p><code>presetScope</code> と <code>powerScope</code> はどちらも public なフィールドなので直接書き換えられますが、<strong>専用の入口から呼んでください。</strong></p>
+<table>
+<thead><tr><th>呼ぶもの</th><th>直接書き換えとの違い</th></tr></thead>
+<tbody>
+<tr><td><code>UseLocalPresetScope</code> / <code>UseGlobalPresetScope</code></td><td>切替中の予約がその場で破棄されます。直接書き換えると次のUpdateまで残ります</td></tr>
+<tr><td><code>UsePowerLocalScope</code> / <code>UsePowerGlobalScope</code></td><td>見た目にその場で反映されます。直接書き換えると次のUpdateまで遅れます</td></tr>
+</tbody>
+</table>
+<div class="warning"><strong>電源の状態は範囲ごとに別々に持っています。</strong> ローカル専用と同期とで、点いている・消えているを別に覚えています。切り替えると、その範囲が覚えていた状態が有効になるため、2つが食い違っていれば<strong>切り替えた瞬間に点いたり消えたりします。</strong> 意図しない変化を避けるなら、切り替える前に <code>IsPowerCurrentlyEnabled()</code> で今の状態を読んでください。</div>
+<h3>回転角の引き継ぎ</h3>
+<p>電源の範囲をグローバルからローカルへ移すときは、そのときの回転角をローカル側が引き継ぎます。<strong>切り替えても回転が飛びません。</strong></p>
+<p>逆向き（ローカルからグローバル）では引き継ぎません。全員で共有している時間軸へ戻るので、そちらに合わせます。ここで引き継いでしまうと、自分の都合で他の人の見え方を動かすことになります。</p>
+</section>
+
+<section id="ownership"><h2>所有権はいつ動くか</h2>
+<p>同期する設定を書き換えるときは、書く前に所有権を取ります。<strong>所有者でないまま同期変数へ書くと、押した本人の手元だけ変わり、他の人には届きません。</strong> しかも本人には正しく見えるので気づけません。その人が後で所有者になると、ズレた値が全員へ配られます。</p>
+<p>所有権を取るのは、<strong>プリセットか電源のどちらかがグローバルのときだけ</strong>です。両方ローカルなら何もしません。同期する必要がないところで所有権を取ると、無用な奪い合いになるためです。</p>
+<div class="tip"><strong>Controllerの公開イベントを使うかぎり</strong>、ワールド側で <code>Networking.SetOwner</code> を自分で呼ぶ必要はありません。必要なときだけ内部で取ります。<strong>ワールド全体で所有権を意識しなくてよい、という意味ではありません。</strong> 他のギミックの所有権は、これまでどおりそちらで扱ってください。</div>
+<p>所有権の移動はネットワーク越しの要求です。<strong>呼んだ直後に他の人の画面へ届いているとは限りません。</strong> 変化したかどうかは <code>apiStateRevision</code> で見てください。時間で待つと、回線の状況次第で外れます。</p>
+</section>
+
+<section id="readback"><h2>結果を読み取って分岐する</h2>
+<p>操作しっぱなしにせず、結果を見て次を決められます。</p>
+<table>
+<thead><tr><th>読む変数</th><th>使い道</th></tr></thead>
+<tbody>
+<tr><td><code>apiLastResultCode</code></td><td>直前の操作の結果。<code>0</code> が成功。失敗理由で分岐する</td></tr>
+<tr><td><code>apiStateRevision</code></td><td>状態が変わるたびに1つ増える。<strong>前回の値と比べれば「変化したか」だけを検出できる</strong></td></tr>
+<tr><td><code>IsPowerCurrentlyEnabled()</code></td><td>今有効な範囲で点いているか。範囲を切り替える前の確認に使う</td></tr>
+</tbody>
+</table>
+<h3>UIの表示を追従させる</h3>
+<p><code>apiStateRevision</code> を覚えておき、増えたときだけUIを描き直します。毎フレーム全部を読み直すより軽く済みます。</p>
+<pre><code>// Update の中で
+int rev = (int)mirrorBall.GetProgramVariable("apiStateRevision");
+if (rev != lastRevision)
+{
+    lastRevision = rev;
+    RefreshMyUI();   // ここだけが状態変化のたびに走る
+}</code></pre>
+<h3>失敗したときに黙って諦めない</h3>
+<p><code>apiLastResultCode</code> が <code>3</code> や <code>4</code> のときは、切替中だったという意味です。<strong>失敗ではなく「今は無理」です。</strong> ボタンを無効表示にする、少し待って押し直させる、といった扱いが合います。<code>1</code> や <code>2</code> は設定側の問題なので、待っても直りません。</p>
+</section>
+
+<section id="timeline"><h2>ライブ演出のタイムラインへ組み込む</h2>
+<h3>送り方の使い分け</h3>
+<table>
+<thead><tr><th>やりたいこと</th><th>呼ぶもの</th></tr></thead>
+<tbody>
+<tr><td>曲の展開に合わせて順に送る</td><td><code>NextPreset</code> / <code>PreviousPreset</code></td></tr>
+<tr><td>曲ごとに決まった演出を出す</td><td><code>apiPresetIndex</code> を書いてから <code>RequestSelectPreset</code></td></tr>
+<tr><td>ドロップの瞬間に切り替える</td><td><code>ApplySelectedPresetImmediately</code>（クロスフェードなし）</td></tr>
+<tr><td>設定を触った後で反映し直す</td><td><code>ReloadCurrentPreset</code></td></tr>
+</tbody>
+</table>
+<div class="tip"><strong>クロスフェードは曲の繋ぎ、即時切替は打点に使います。</strong> 決めの瞬間にクロスフェードを挟むと、拍から遅れて到達するため合いません。</div>
+<h3>連続で叩かない</h3>
+<p>クロスフェード中にさらに切替を投げると、結果コード <code>3</code>（1件だけ予約した）または <code>4</code>（切替中で受け付けない）が返ります。<strong>タイムラインから機械的に投げる場合ほど、ここが詰まります。</strong> 切替の間隔をクロスフェード時間より長く取ってください。</p>
+</section>
+
+<section id="variant"><h2>実行時に連携版を切り替える</h2>
+<p><code>UseStandardLightingVariant</code> と <code>UseIntegratedLightingVariant</code> で、通常版と連携版（LightVolumes / LTCGI）を実行中に入れ替えられます。</p>
+<p>この切替は<strong>本体オブジェクトの表示・非表示を伴います。</strong> 通常版の本体と連携版の本体を切り替えて出しています。Materialだけを差し替えているのではありません。</p>
+<div class="warning">連携版に切り替えるには、その連携Packageが導入済みである必要があります。導入されていないプロジェクトでは連携版のShaderがそもそも入っていません。導入の判定は<a href="09_integrations.html">連携</a>を参照してください。</div>
+<h3>使いどころ</h3>
+<ul>
+<li>負荷の高い場面（人数が多い、他の演出が重なる）で通常版へ落とす</li>
+<li>ワールド内の設定メニューで、来場者に画質を選ばせる</li>
+</ul>
+</section>
+
+<section id="multi"><h2>複数台をまとめて操る</h2>
+<p>1つのUIから複数のミラーボールを同時に動かせます。<strong>Controllerごとに同じイベントを送ってください。</strong></p>
+<pre><code>// 配列で持っておき、まとめて送る
+foreach (var ball in mirrorBalls)
+{
+    ball.SetProgramVariable("apiPresetIndex", 2);
+    ball.SendCustomEvent("RequestSelectPreset");
+}</code></pre>
+<div class="warning"><strong>台数を増やすと重くなります。</strong> 見えていない場所のミラーボールまで動かし続けていないか確かめてください。距離フェードや更新頻度の設計は<a href="14_performance_tips.html">重い場合のTips</a>の「オブジェクトが多いとき」にまとめてあります。</div>
+<h3>台ごとに違う演出を出す</h3>
+<p>同じイベントを送る代わりに、台ごとに <code>apiPresetIndex</code> を変えて送れば、別々の演出を同時に出せます。左右で色を変える、奥の1台だけ遅く回す、といった使い方ができます。</p>
+</section>
+
+<section id="pitfalls"><h2>やってはいけないこと</h2>
+<table>
+<thead><tr><th>やってはいけない</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td>同期変数を <code>SetProgramVariable</code> で直接書く</td><td>所有権を取らずに書くことになります。本人にだけ正しく見え、後で全員へズレが配られます。公開イベントの中でやっている整合の処理も飛ばします</td></tr>
+<tr><td>公開イベントの名前を変える</td><td>呼んでいる側が静かに壊れます。エラーも出ません</td></tr>
+<tr><td>毎フレーム <code>ApplyToMaterials</code> を呼ぶ</td><td>設定を変えたときだけで足りるものです。毎フレーム呼ぶとCPU側の負荷になります</td></tr>
+<tr><td>結果コードを見ずに投げ続ける</td><td>切替中の要求は捨てられます。見た目上「たまに効かない」になります</td></tr>
+</tbody>
+</table>
+</section>
+
+</article></div></main>
+<footer><div class="wrap"><a href="14_performance_tips.html">← 重い場合のTips</a>　<a href="index.html">目次へ</a></div></footer>
+</body></html>

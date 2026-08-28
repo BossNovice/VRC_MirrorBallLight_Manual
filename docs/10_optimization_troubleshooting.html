@@ -11,7 +11,7 @@
 <div class="wrap">
 <div class="eyebrow">10 / OPTIMIZATION & TROUBLESHOOTING</div>
 <h1>最適化・診断・トラブル対処</h1>
-<p class="lead">R24では低コストな数値処理をランタイム分岐へ統合し、Texture参照や描画構造が変わる機能だけをShader Keywordとして維持します。</p>
+<p class="lead">低コストな数値処理はランタイム分岐へ統合し、Texture参照や描画構造が変わる機能だけをShader Keywordとして維持しています。</p>
 <p class="lead">負荷を抑える推奨値と、Unityでは見えるがVRChatでは見えない場合の確認順です。</p>
 <nav class="nav">
 <a href="index.html">目次</a>
@@ -41,6 +41,7 @@
 <a href="#release">公開前確認</a>
 </aside>
 <article class="content">
+<div class="tip">ここに載せているのは<strong>現在の版で起こりうること</strong>だけです。過去の版で修正済みの不具合や、その修正で何が変わったかは<a href="../manual/README.md">GitHub版マニュアル</a>の履歴にまとめてあります。古い版のまま運用している場合や、以前の記録と見え方が違う場合はそちらを確認してください。</div>
 <section id="budget">
 <h2>推奨負荷設定</h2>
 <p>実際に重いときの手順は <a href="14_performance_tips.html">動作が重い場合のTips</a> にまとめています。<strong>原因がCPUかGPUかを確かめてから設定を変えてください。</strong></p>
@@ -84,8 +85,8 @@
 <div class="warning">Shader Global共有を使うControllerは同一シーンで1個にしてください。複数あると最後に更新したControllerの値が全対応Materialへ反映されます。</div>
 </section>
 <section id="diagnostics">
-<h2>遠い面と電源OFFのときの描画（R29）</h2>
-<p>R29から、光点がまったく映らない面では光点の計算そのものを行わなくなりました。設定は不要で、見た目も変わりません。</p>
+<h2>遠い面と電源OFFのときの描画</h2>
+<p>光点がまったく映らない面では光点の計算そのものを行わなくなりました。設定は不要で、見た目も変わりません。</p>
 <p>これまでは、遠くて光点が消えている面でも形・色・点滅をひととおり計算してから最後に0を掛けて消していました。先に消えるかどうかを判定するようにしています。</p>
 <table>
 <tr>
@@ -108,9 +109,9 @@
 <p><code>距離フェードを使用</code> がOFFだと、どの面も「消える」と判定されないため効果がありません。広いワールドで軽さを優先する場合はONにしてください。</p>
 <p>半透明版のShaderは対象外です。半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、計算を飛ばすと見た目が変わってしまいます。</p>
 
-<h2>半透明版も少し軽くなりました（R29.1）</h2>
-<p>R29.1から、半透明版のShaderでも色の計算を「光点が映らない画素では行わない」ようにしました。設定は不要で、見た目も変わりません。</p>
-<p>効く条件はR29と同じです（<code>距離フェードを使用</code> がONで <code>フェード終了距離</code> より遠い面、または電源がOFFのとき）。</p>
+<h2>半透明版も軽くなります</h2>
+<p>半透明版のShaderでも色の計算を「光点が映らない画素では行わない」ようにしました。設定は不要で、見た目も変わりません。</p>
+<p>効く条件は不透明版と同じです（<code>距離フェードを使用</code> がONで <code>フェード終了距離</code> より遠い面、または電源がOFFのとき）。</p>
 <p><strong>軽くなる度合いは不透明版より小さいです。</strong> 半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、形の計算は飛ばせません。飛ばせるのは色の計算だけです。</p>
 <p>あわせて、<code>プリズム色分散</code> を有効にしたときにフェード境界の1〜2ピクセルで色が不安定になり得る箇所を直しました。実際に症状が出た報告はありません。この項目の初期値は0（無効）で、無効なら影響はありません。</p>
 
@@ -118,82 +119,6 @@
 <p>Controllerの10番から開き、参照、Material、Shader、Program Asset、Keyword、Global共有の競合を確認します。自動修正前にSceneとMaterialを保存し、修正後はConsoleと見た目を再確認します。</p>
 </section>
 <section id="notvisible">
-<h2>Playモードで「Field for System.Int32 does not exist」が出る</h2>
-<p><strong>R29.2で直しました。</strong> R28.1からR29.1までを使っている場合に出ます。</p>
-<p>Playモード中にControllerのInspectorを開くと、再描画のたびにこのエラーがConsoleへ出ていました。<strong>Editorのログに出るだけで、ワールドの動作やアップロードには影響しません。</strong> 設定値が失われることもありません。</p>
-<p>Error Pause を有効にしていると作業が止まるため、気になる場合はR29.2以降へ更新してください。更新すれば出なくなります。</p>
-
-<h2>プリセットを切り替えると光点が高速で回転する</h2>
-<p><strong>R29.3で直しました。</strong> R29.2までが該当します。</p>
-<p><code>Cookie回転速度</code> が異なるプリセットへ切り替えたとき、切替中だけ光点が高速で回転していました。同じ原因で <code>色相送りの速さ</code>・<code>ランダム点滅の速さ</code>・<code>きらめきの速さ</code> も高速化していました。</p>
-<p><strong>ワールドに長く居るほどひどくなります。</strong> 実測では、10分後の切替で設定値の約500倍、1時間後で約3000倍の速さで回っていました。</p>
-<p><strong>R29.3では直りきっていませんでした。</strong> ワールドへ入る前にVRChatを長時間起動していた場合、切替のたびにわずかな飛びが残る可能性がありました。R29.3.1で直しています。</p>
-<p>R29.3.1以降へ更新すれば、起動時間に関わらず飛びません。設定を変える必要はありません。速度を変えていない限り、見た目は今までと同じです。</p>
-
-<h2>プリセットの項目名が英語で表示される</h2>
-<p><strong>R29.3で直しました。</strong> R29.2までが該当します。</p>
-<p>プリセットのInspectorだけ項目名が英語で表示され、Controllerと食い違っていました。R29.3以降は56項目すべてが日本語で表示されます。設定値には影響しません。<strong>表示だけの変更です。</strong></p>
-
-<h2>プリセットで六角形・星・リング・ハートが選べない</h2>
-<p><strong>R29.3で直しました。</strong> R29.2までが該当します。</p>
-<p><strong>表示だけの問題ではありませんでした。</strong> プリセットの「光点の形状」は、Controllerの9種類に対し5種類しか選べませんでした。</p>
-<pre><code>選べなかったもの: 六角形 / 星 / リング / ハート</code></pre>
-<p>あわせて、数字を入れる欄になっていた次の3項目をドロップダウンに変えました。Controllerと同じ選択肢が並びます。</p>
-<table>
-<thead><tr><th>項目</th><th>選択肢</th></tr></thead>
-<tbody>
-<tr><td>光点の形状</td><td>四角 / 丸 / ひし形 / 十字 / テクスチャ / 六角形 / 星 / リング / ハート</td></tr>
-<tr><td>AudioLink履歴モード</td><td>全体を同時反応 / 上下へ伝播 / 回転方向へ伝播 / 光点ごとにランダム</td></tr>
-<tr><td>投影方式</td><td>OFF / 2D Cookie / Cubemap Cookie</td></tr>
-</tbody>
-</table>
-<p><strong>既存のプリセットの値は変わりません。</strong> これまで選べていた0〜4の意味もそのままです。</p>
-
-<h2>消灯するとミラーボール本体が黒くなる</h2>
-<p><strong>R29.4で直しました。</strong> R29.3.2までが該当します。</p>
-<p>本体は完全な金属で、拡散反射を持たず<strong>映り込みだけで見えます。</strong> 消灯時は映り込みごと消えていたため、下地の黒がそのまま出ていました。</p>
-<p>R29.4以降は、<strong>映り込みと環境光は電源に関わらず残ります。</strong> 消しているのはスポットライト由来のきらめきだけです。点灯時の見た目は変わりません。</p>
-<p>あわせて Controller に <strong><code>消灯時の本体の明るさ</code></strong> を追加しました。<code>本体ファセットの明るさ倍率</code> のすぐ下にあります。</p>
-<table>
-<thead><tr><th>値</th><th>消灯時の見え方</th></tr></thead>
-<tbody>
-<tr><td><strong>1</strong>（既定）</td><td>点灯時と同じ量の映り込みを残します</td></tr>
-<tr><td>0.3</td><td>うっすら見える程度</td></tr>
-<tr><td>0</td><td>映り込みなし</td></tr>
-</tbody>
-</table>
-<p><strong>0 にしても真っ黒にはなりません。</strong> <code>暗所での最低表示明るさ</code>（既定8%）の分は残ります。<strong>点灯時には影響しません。</strong></p>
-
-<h2>ボタンを押した人だけ見え方が変わる</h2>
-<p><strong>R29.4で直しました。</strong> R29.3.2までが該当します。</p>
-<p>ワールドのボタンから「プリセットを即時適用」や「今のプリセットを入れ直す」を呼んでいる場合、<strong>押した人が所有権を持っていないと、その人の手元だけ状態が変わっていました。</strong></p>
-<p>変わるのはプリセット番号・回転角・回転の基準時刻です。<strong>押した本人には正しく見えるため気づきにくく</strong>、その人が後で所有者になると、ズレた値が全員へ配られます。</p>
-<p><code>プリセットの動作範囲</code> が <code>グローバル</code>（<strong>既定</strong>）のときに起こります。</p>
-<p>R29.4以降は、書き込む前に所有権を取り直します。設定を変える必要はありません。</p>
-
-<h2>長時間まわしていると回転がカクつく</h2>
-<p><strong>R29.4で直しました。</strong> R29.3.2までが該当します。</p>
-<p>ワールドを長く開けたままにしていると、ミラーボールの回転が段付きになります。回転角が際限なく積み上がり、数値の精度が足りなくなるためです。</p>
-<table>
-<thead><tr><th>回転速度</th><th>経過</th><th>回転の刻み</th></tr></thead>
-<tbody>
-<tr><td>10度/秒</td><td>1週間</td><td>0.5度</td></tr>
-<tr><td>10度/秒</td><td>1か月</td><td>2度</td></tr>
-<tr><td>30度/秒</td><td>1日</td><td>0.25度</td></tr>
-<tr><td>30度/秒</td><td>1週間</td><td>2度</td></tr>
-</tbody>
-</table>
-<p>インスタンスが数日続くワールドでは実際に起こります。<strong>R29.4以降は、どれだけ長く開けたままでも滑らかに回ります。</strong> 設定を変える必要はありません。</p>
-
-<h2>配布ZIPの README_FIRST.txt に書かれたパッケージ名が違う</h2>
-<p><strong>R29.3.2で直しました。</strong> R29.3.1が該当します。</p>
-<p>導入手順のパッケージ名が1つ前の版のままになっていました。配布していたファイル名とは食い違っていました。<strong>誤りは表記だけで、動作には影響しません。</strong></p>
-<p>R29.3.1 のリリースノートには正誤表を載せています。配布物は差し替えていません。記載したSHA256との突き合わせができなくなるためです。</p>
-
-<h2>プリセットとControllerで項目名の表記が違う</h2>
-<p><strong>R29.3で直しました。</strong> R29.2までが該当します。</p>
-<p><code>AudioLink基本遅延</code> が、Controllerでは「AudioLink基本遅延（履歴サンプル）」、プリセットでは「AudioLink基本遅延」と表記が割れていました。Controller側に合わせました。<strong>値や挙動は変わりません。表記だけです。</strong></p>
-
 <h2>光点が表示されない</h2>
 <ol>
 <li>Controllerの電源状態と「反射光の明るさ」を確認</li>
@@ -232,6 +157,17 @@
 </ol>
 </section>
 <section id="udon">
+
+<h3>消灯しても真っ黒にはなりません</h3>
+<p>本体は<strong>完全な金属</strong>として描かれます。拡散反射を持たないため、<strong>映り込みだけで見えています。</strong> 電源をOFFにしても映り込みと環境光は残り、消えるのはスポットライト由来のきらめきだけです。</p>
+<p>消灯時の明るさは Controller の <code>消灯時の本体の明るさ</code>（<code>本体ファセットの明るさ倍率</code> のすぐ下）で変えられます。</p>
+<table>
+<tr><th>値</th><th>消灯時の見え方</th></tr>
+<tr><td><code>1</code>（初期値）</td><td>点灯時と同じ量の映り込みを残します</td></tr>
+<tr><td><code>0.3</code></td><td>うっすら見える程度</td></tr>
+<tr><td><code>0</code></td><td>映り込みなし</td></tr>
+</table>
+<div class="note"><code>0</code> にしても真っ黒にはなりません。<code>暗所での最低表示明るさ</code>（初期値8%）の分は残ります。<strong>点灯時の見え方には影響しません。</strong></div>
 <h2>UdonSharp Program Assetエラー</h2>
 <table>
 <tr>
@@ -256,11 +192,11 @@
 </tr>
 <tr>
 <td><code>Method is not exposed to Udon</code></td>
-<td>R27.1〜R27.3をImportすると発生します。R27.4以降へ更新してください。該当版はそのままでは使用できません。</td>
+<td>古い版をImportした場合に発生します。最新版へ更新してください。</td>
 </tr>
 <tr>
 <td><code>Failed to create material drawer Enum</code></td>
-<td>R27.3以前のMaterial Inspectorで発生します。R27.4以降へ更新してください。光点形状の選択が日本語のポップアップになります。</td>
+<td>古い版のMaterial Inspectorで発生します。最新版へ更新してください。光点形状の選択が日本語のポップアップになります。</td>
 </tr>
 </table>
 </section>
@@ -268,34 +204,23 @@
 <h2>Importに時間がかかる</h2>
 <p>Importにかかる時間の大半はShaderのコンパイルです。新規プロジェクトへunitypackageを初回Importしたときの実測値は次のとおりです。</p>
 <table>
-<tr><th></th><th>R27.5まで</th><th>R27.6以降</th></tr>
-<tr><td>unitypackageの初回Import</td><td>810秒</td><td><b>128秒</b></td></tr>
-<tr><td>2回目以降のUnity起動</td><td>12秒</td><td>14秒</td></tr>
+<tr><th>操作</th><th>実測</th></tr>
+<tr><td>unitypackageの初回Import</td><td><b>約128秒</b></td></tr>
+<tr><td>2回目以降のUnity起動</td><td>約14秒</td></tr>
 </table>
-<p>R27.6以降も128秒のうち約102秒はShaderのコンパイルで、VRCLightVolumes／LTCGI連携版の3本が大部分を占めます。<b>時間は環境によって変わります。</b></p>
+<p>128秒のうち約102秒はShaderのコンパイルで、VRCLightVolumes／LTCGI連携版の3本が大部分を占めます。<b>時間は環境によって変わります。</b></p>
 <div class="tip">Importは1回で終わります。2回目以降のUnity起動は10数秒です。Libraryフォルダを削除すると再度かかるため、消さない運用にすると待ち時間が減ります。</div>
-<div class="note">R27.6.2以降、UdonSharp Program Assetが正常な場合はEditorのドメインリロードで余分なUdonSharpコンパイルが走らなくなりました。スクリプトの変更やPlay Modeの出入りでの待ち時間が減ります。</div>
+<div class="note">UdonSharp Program Assetが正常な場合、Editorのドメインリロードで余分なUdonSharpコンパイルは走らなくなりました。スクリプトの変更やPlay Modeの出入りでの待ち時間が減ります。</div>
 </section>
 <section id="pattern-frozen">
-<h2>シードの自動フェードでパターンが変化しない</h2>
-<p>R27.6.2以前には、シードの自動フェードでパターンが途中からまったく変化しなくなる不具合がありました。周期を1〜2秒など短く設定すると顕著ですが、周期に関わらず発生します。<b>R26以降のすべての版が該当します。</b></p>
-<p><b>R27.6.3で修正しました。</b>更新すると解消します。この修正により、同じ設定でもパターンの出現順序は従来版と一致しなくなります。形状の種類・パラメーターの意味・Materialの設定は変わりません。</p>
-<p>更新後も変化しない場合は、次を確認してください。</p>
-<ul>
-<li>Controllerの「シードを時間で自動変化」がONになっているか</li>
-<li>光点形状のアトラスを使用する設定になっているか（アトラス側のフェードはアトラス使用時のみ動作します）</li>
-<li>Play Mode中か。Edit Modeでは時間経過による変化は動作しません</li>
-</ul>
-</section>
-<section id="animation-keyword">
 <h2>アニメーションでMaterialを切り替えても効かない</h2>
-<p>R27.6で一部のShader Keywordを廃止し、実行時のプロパティ切り替えへ移しました。<b>アニメーションクリップからKeywordを直接操作していた場合は効かなくなります。</b></p>
-<p>移行先のプロパティと手順は <a href="08_materials.html#keyword-migration">Material・Shader設定の「R27.6で廃止したShader Keyword」</a> を参照してください。</p>
+<p>一部のShader Keywordは廃止され、実行時のプロパティ切り替えへ移っています。<b>アニメーションクリップからKeywordを直接操作していた場合は効かなくなります。</b></p>
+<p>移行先のプロパティと手順は <a href="08_materials.html#keyword-migration">Material・Shader設定の「廃止したShader Keyword」</a> を参照してください。</p>
 </section>
 <section id="dependency">
 <h2>連携版ShaderでImport時にエラーが出る</h2>
 <p>連携版Shaderは <code>Packages/red.sim.lightvolumes/Shaders/LightVolumes.cginc</code> と <code>Packages/at.pimaker.ltcgi/Shaders/LTCGI_structs.cginc</code> を直接includeします。<b>MirrorBallLightより先にVRCLightVolumesとLTCGIを導入してください。</b>後から導入するとImport時にShaderのコンパイルエラーが出ます。</p>
-<p>R27.6.2以降、<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> が最初の行で依存Packageの有無とバージョンを表示します。未導入の場合は原因と対処も表示します。</p>
+<p><code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> が最初の行で依存Packageの有無とバージョンを表示します。未導入の場合は原因と対処も表示します。</p>
 <p>連携機能を使わない場合は、素の版Shader（MirrorBallSurfaceAuto／MirrorBallSurfaceAutoTransparent／MirrorBallFacetBody）のMaterialを使用してください。この2つのPackageは不要です。</p>
 </section>
 <section id="release">

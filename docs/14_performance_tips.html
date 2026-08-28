@@ -14,7 +14,7 @@
 <nav class="nav">
 <a href="index.html">目次</a><a href="03_controller.html">Controller</a><a href="04_effects.html">反射・光点</a>
 <a href="08_materials.html">Material</a><a href="09_integrations.html">連携</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処</a><a aria-current="page" href="14_performance_tips.html">重い場合のTips</a>
+<a href="10_optimization_troubleshooting.html">最適化・対処</a><a aria-current="page" href="14_performance_tips.html">重い場合のTips</a><a href="15_advanced_usage.html">拡張的な使い方</a>
 </nav>
 </div></header>
 <main><div class="wrap"><article>
@@ -39,7 +39,7 @@
 <section id="gpu"><h2>GPUが原因のとき</h2>
 
 <h3>1. 距離フェードを有効にして、終了距離を詰める（効果が大きい）</h3>
-<p><strong>R29から、距離フェードは軽量化のスイッチになりました。</strong> 終了距離より遠い面では、光点の形・色・点滅の計算そのものを行いません。</p>
+<p><strong>距離フェードは軽量化のスイッチです。</strong> 終了距離より遠い面では、光点の形・色・点滅の計算そのものを行いません。</p>
 <table>
 <tr><th>設定</th><th>結果</th></tr>
 <tr><td><code>距離フェードを使用</code> ON、終了距離が短い</td><td>遠い面の計算がまるごと省かれます</td></tr>
@@ -49,7 +49,7 @@
 <div class="warning">この省略は<strong>不透明版のShaderで大きく、半透明版では小さい</strong>です。半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、形の計算を省けません。</div>
 
 <h3>2. 電源をOFFにしているときの負荷も下がっています</h3>
-<p>R29から、電源OFFの間も同じ仕組みで計算を省きます。演出を使わない時間が長いワールドでは、電源を切っておく価値があります。</p>
+<p>電源OFFの間も同じ仕組みで計算を省きます。演出を使わない時間が長いワールドでは、電源を切っておく価値があります。</p>
 
 <h3>3. 半透明版の重なりを減らす</h3>
 <p>半透明は<strong>重なった枚数だけ描画されます</strong>（オーバードロー）。同じ画素を何枚も塗ると、そのぶん素直に重くなります。</p>
@@ -139,5 +139,5 @@
 </section>
 
 </article></div></main>
-<footer><div class="wrap"><a href="13_surface_emission_mask.html">← 表面Emission</a>　<a href="index.html">目次へ</a></div></footer>
+<footer><div class="wrap"><a href="13_surface_emission_mask.html">← 表面Emission</a>　<a href="index.html">目次へ</a>　<a href="15_advanced_usage.html">拡張的な使い方 →</a></div></footer>
 </body></html>

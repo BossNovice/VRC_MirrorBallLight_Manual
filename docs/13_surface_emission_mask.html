@@ -24,9 +24,9 @@
 <h2>反射光点との違い</h2>
 <table><tr><th>機能</th><th>発光するもの</th><th>制御元</th></tr>
 <tr><td>ミラーボール反射光</td><td>回転・点滅する光点</td><td>Controllerとライブプリセット</td></tr>
-<tr><td>R23 個別発光パターン</td><td>反射光点の色・形をMaterialごとに変化</td><td>Material固有</td></tr>
-<tr><td>R25 表面Emission</td><td>壁紙、看板、床、ガラス自体の模様</td><td>Material固有</td></tr></table>
-<p>R25表面EmissionはControllerの電源をOFFにしても表示されます。常設看板や発光ガラスなど、素材自身の発光に使用してください。</p>
+<tr><td>個別発光パターン</td><td>反射光点の色・形をMaterialごとに変化</td><td>Material固有</td></tr>
+<tr><td>表面Emission</td><td>壁紙、看板、床、ガラス自体の模様</td><td>Material固有</td></tr></table>
+<p>表面EmissionはControllerの電源をOFFにしても表示されます。常設看板や発光ガラスなど、素材自身の発光に使用してください。</p>
 </section>
 <section id="steps">
 <h2>設定手順</h2>
@@ -51,7 +51,7 @@
 <div class="note">反射光点の「AudioLinkを使用」がOFFでも、この専用ToggleがONなら表面Emissionだけを音へ反応させられます。共通のAudioLinkテストモード／テスト音量も利用できます。</div>
 </section>
 <section id="parameters">
-<h2>R25項目一覧</h2>
+<h2>項目一覧</h2>
 <table><tr><th>Unity表示</th><th>初期値</th><th>効果</th></tr>
 <tr><td>表面Emissionを使用</td><td>OFF</td><td>表面発光と追加Texture読込を有効化します。</td></tr>
 <tr><td>表面Emissionテクスチャ</td><td>白</td><td>RGBを発光色として読み取ります。Tiling／Offsetを使用できます。</td></tr>
@@ -82,8 +82,8 @@
 <p>透明Shaderでは表面Emissionも深度フェードへ追従します。交差部だけ発光が弱い場合は「深度フェードを使用」をOFFにして原因を切り分けてください。描画順の問題がある場合はRender QueueとZWriteも確認します。</p>
 </section>
 <section id="translate"><h2>既存MaterialからのTranslate</h2>
-<p>Standardなど一般的なShaderのEmission Map、Emission Color、Emission強度、Emission Mask候補をR25項目へ引き継ぎます。元MaterialでEmission KeywordがON、または明示的な有効設定がある場合に表面EmissionをONにします。</p>
-<div class="warning">Poiyomi／lilToonなどの複数Emissionレイヤー、スクロールや点滅、Packed Mask、独自Blendは1組のR25表面Emissionへ完全変換できない可能性があります。Translate Copyを使い、元Materialを残して比較してください。</div>
+<p>Standardなど一般的なShaderのEmission Map、Emission Color、Emission強度、Emission Mask候補を表面Emission項目へ引き継ぎます。元MaterialでEmission KeywordがON、または明示的な有効設定がある場合に表面EmissionをONにします。</p>
+<div class="warning">Poiyomi／lilToonなどの複数Emissionレイヤー、スクロールや点滅、Packed Mask、独自Blendは1組の表面Emissionへ完全変換できない可能性があります。Translate Copyを使い、元Materialを残して比較してください。</div>
 </section>
 <section id="performance"><h2>負荷とVRChat Build</h2>
 <p>表面EmissionがOFFのMaterialではローカルShader Keywordにより追加Textureサンプリングを除外します。ONではEmission Textureを1回、MaskもONならさらに1回読みます。専用AudioLinkがONの場合だけAudioLink Textureと反応パターンを追加で読みます。</p>

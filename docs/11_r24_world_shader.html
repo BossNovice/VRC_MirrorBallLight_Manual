@@ -3,29 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>11 R24ワールドShader拡張 | MirrorBallLight</title>
+<title>11 ワールドShader拡張 | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
 <header>
 <div class="wrap">
-<div class="eyebrow">R24 WORLD SHADER</div>
+<div class="eyebrow">WORLD SHADER</div>
 <h1>ワールド用Shader拡張</h1>
-<p class="lead">建築物、透明面、金属、複雑なUVへ反射光を安定して配置するR24機能をまとめます。</p>
+<p class="lead">建築物、透明面、金属、複雑なUVへ反射光を安定して配置する機能をまとめます。</p>
 <nav class="nav">
 <a href="index.html">目次</a>
 <a href="04_effects.html">反射・光点</a>
 <a href="06_shapes_cookie.html">形状・Cookie</a>
 <a href="08_materials.html">Material</a>
 <a href="10_optimization_troubleshooting.html">最適化・対処</a>
-<a aria-current="page" href="11_r24_world_shader.html">R24拡張</a>
+<a aria-current="page" href="11_r24_world_shader.html">ワールドShader</a>
 </nav>
 </div>
 </header>
 <main class="wrap">
 <section>
 <h2>既存Materialとの互換性</h2>
-<p>R24の追加演出は初期値OFFまたは従来相当値です。UV、プリマルチプライ、環境反応0、材質反応0、Fresnel 0、色分散0、フォールバック発光0が既定値です。</p>
+<p>これらの演出は初期値OFFまたは従来相当値です。UV、プリマルチプライ、環境反応0、材質反応0、Fresnel 0、色分散0、フォールバック発光0が既定値です。</p>
 <div class="tip">更新直後は見た目を維持したまま、必要な機能だけ少しずつ有効化してください。</div>
 </section>
 
@@ -95,7 +95,7 @@
 
 <section id="variants">
 <h2>18. Shader Keyword整理</h2>
-<p>R24ではランダム点滅、表面向き、距離減衰を数値分岐へ統合し、旧Keywordを診断機能で除去します。KeywordはAudioLink、Material個別Texture、透明Depth Fade、VRCLightVolumesなどTexture参照や描画構造が変わる機能へ限定しています。</p>
+<p>ランダム点滅、表面向き、距離減衰は数値分岐へ統合されており、旧Keywordを診断機能で除去します。KeywordはAudioLink、Material個別Texture、透明Depth Fade、VRCLightVolumesなどTexture参照や描画構造が変わる機能へ限定しています。</p>
 <p>更新後に「Tools &gt; MirrorBall Light &gt; 診断・最適化」の安全な自動修正を一度実行してください。</p>
 </section>
 
@@ -113,7 +113,7 @@
 
 <section>
 <h2>サンプルTexture・マスク</h2>
-<p>R24の追加プロシージャル形状はTexture不要です。座標投影とフォールバック確認には、既存の<a href="assets/CookieMasks/README_サンプルCookie.html">2D／Cubemap Cookie・マスク</a>と<a href="assets/ShapeAtlas/SampleShapeAtlas_4x2.png">形状アトラス</a>を使用できます。</p>
+<p>追加のプロシージャル形状はTexture不要です。座標投影とフォールバック確認には、既存の<a href="assets/CookieMasks/README_サンプルCookie.html">2D／Cubemap Cookie・マスク</a>と<a href="assets/ShapeAtlas/SampleShapeAtlas_4x2.png">形状アトラス</a>を使用できます。</p>
 <p>同じサンプルはUnityPackage／ZIPの<code>Assets/MirrorBallLight/Samples/</code>にも収録され、Cubemap CrossはCube、2D／Atlasは2D TextureとしてImport設定済みです。</p>
 </section>
 </main>
