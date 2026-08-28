@@ -7,36 +7,72 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header>
-<div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="01_installation.html">導入 →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" aria-current="page" href="index.html">目次</a>
+<ul class="inpage">
+<li><a href="#s1">このマニュアルの使い方</a></li>
+<li><a href="#s2">内容別ページ</a></li>
+<li><a href="#s3">収録物</a></li>
+</ul>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+</li>
+<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+</li>
+<li><a href="07_presets.html"><span>プリセット</span></a>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</li>
+<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</li>
+<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</li>
+<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+</li>
+<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">VRChat WORLD SYSTEM</div>
 <h1>MirrorBallLightController 完全マニュアル</h1>
 <p class="lead">UnityPackage版の導入から、設定済みサンプル、壁・ガラス表面Emission／AudioLink／Mask、LTCGI・VRCLightVolumes、ライブプリセット、負荷対策までを日本語で説明します。</p>
-<span class="version">対象バージョン R29.4.1 / Unity 2022.3.22f1</span>
+<p><span class="version">対象バージョン R29.4.1 / Unity 2022.3.22f1</span></p>
 <p><a href="../manual/README.md">GitHub版マニュアル</a></p>
-<nav class="nav">
-<a aria-current="page" href="index.html">目次</a>
-<a href="01_installation.html">導入</a>
-<a href="02_quickstart.html">サンプル</a>
-<a href="03_controller.html">Controller</a>
-<a href="04_effects.html">反射・光点</a>
-<a href="05_audiolink.html">AudioLink</a>
-<a href="06_shapes_cookie.html">形状・Cookie</a>
-<a href="07_presets.html">プリセット</a>
-<a href="08_materials.html">Material</a>
-<a href="09_integrations.html">連携</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処</a>
-<a href="11_r24_world_shader.html">ワールドShader</a>
-<a href="12_material_translate.html">Material変換</a>
-<a href="13_surface_emission_mask.html">表面Emission</a>
-<a href="14_performance_tips.html">重い場合のTips</a>
-<a href="15_advanced_usage.html">拡張的な使い方</a>
-</nav>
-</div>
-</header>
-<main class="wrap">
+
 <section>
-<h2>このマニュアルの使い方</h2>
+<h2 id="s1">このマニュアルの使い方</h2>
 <div class="flow">
 <span>初めて導入 <b>→</b>
 </span>
@@ -49,7 +85,7 @@
 <p>既に動作している場合は、目的のページへ直接進んでください。Inspectorの折り畳み番号とページ内見出しを一致させています。</p>
 </section>
 <section>
-<h2>内容別ページ</h2>
+<h2 id="s2">内容別ページ</h2>
 <div class="card-grid">
 <a class="card" href="01_installation.html">
 <strong>01 導入</strong>
@@ -114,7 +150,7 @@
 </div>
 </section>
 <section>
-<h2>収録物</h2>
+<h2 id="s3">収録物</h2>
 <table>
 <thead>
 <tr>
@@ -156,10 +192,16 @@
 <div class="note">
 <strong>表記について：</strong>「初期値」は新規Controller／Materialのコード上の値です。設定済みPrefabでは参照があらかじめ割り当てられています。</div>
 </section>
-</main>
-<footer>
-<div class="wrap">MirrorBallLightController HTML Manual — <a href="01_installation.html">導入を開始</a>
+<nav class="pagenav" aria-label="前後のページ">
+<span></span>
+<a href="01_installation.html">導入 →</a>
+</nav>
 </div>
-</footer>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
 </body>
 </html>

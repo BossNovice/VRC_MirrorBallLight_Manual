@@ -382,6 +382,16 @@ if ((Test-Path -LiteralPath $readmePath) -and (Test-Path -LiteralPath $compatibi
     }
 }
 
+# --- 検索の索引が docs/ と一致しているか -------------------------------------
+# 索引は生成物です。docs/ を変えたのに作り直さないと、**検索結果だけが古いまま**に
+# なります。ページを開いても見た目には分からないので、ここで検出します。
+$searchCheck = & pwsh -NoProfile -File (Join-Path $repository ".ci/Build-SearchIndex.ps1") `
+    -RepositoryPath $repository -Verify 2>&1
+if ($LASTEXITCODE -ne 0)
+{
+    foreach ($line in $searchCheck) { $problems.Add(($line | Out-String).Trim()) }
+}
+
 # --- docs_html.zip が docs/ と一致しているか（2026-08-23で追加） --------------
 # GitHub Pages を有効にしていないため、docs/index.html へのリンクを開いても
 # HTMLのソースが表示されるだけで読めません。zipで配布し、リンクもzipを指します。

@@ -7,24 +7,77 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header>
-<div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="10_optimization_troubleshooting.html">← 最適化・対処</a>
+<a href="12_material_translate.html">Material変換 →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+</li>
+<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+</li>
+<li><a href="07_presets.html"><span>プリセット</span></a>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a aria-current="page" href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+<ul class="inpage">
+<li><a href="#s1">既存Materialとの互換性</a></li>
+<li><a href="#coordinates">1. マスク・模様の座標方式</a></li>
+<li><a href="#transparency">4・5. 透過描画方式と深度フェード</a></li>
+<li><a href="#surface-response">6・7・8. 環境光・材質・Fresnel</a></li>
+<li><a href="#chromatic">9. プリズム色分散</a></li>
+<li><a href="#procedural">12. プロシージャル形状</a></li>
+<li><a href="#variants">18. Shader Keyword整理</a></li>
+<li><a href="#fallback">20. フォールバック表示</a></li>
+<li><a href="#s9">サンプルTexture・マスク</a></li>
+</ul>
+</li>
+<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</li>
+<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</li>
+<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+</li>
+<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">WORLD SHADER</div>
 <h1>ワールド用Shader拡張</h1>
 <p class="lead">建築物、透明面、金属、複雑なUVへ反射光を安定して配置する機能をまとめます。</p>
-<nav class="nav">
-<a href="index.html">目次</a>
-<a href="04_effects.html">反射・光点</a>
-<a href="06_shapes_cookie.html">形状・Cookie</a>
-<a href="08_materials.html">Material</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処</a>
-<a aria-current="page" href="11_r24_world_shader.html">ワールドShader</a>
-</nav>
-</div>
-</header>
-<main class="wrap">
+
 <section>
-<h2>既存Materialとの互換性</h2>
+<h2 id="s1">既存Materialとの互換性</h2>
 <p>これらの演出は初期値OFFまたは従来相当値です。UV、プリマルチプライ、環境反応0、材質反応0、Fresnel 0、色分散0、フォールバック発光0が既定値です。</p>
 <div class="tip">更新直後は見た目を維持したまま、必要な機能だけ少しずつ有効化してください。</div>
 </section>
@@ -112,11 +165,20 @@
 </section>
 
 <section>
-<h2>サンプルTexture・マスク</h2>
+<h2 id="s9">サンプルTexture・マスク</h2>
 <p>追加のプロシージャル形状はTexture不要です。座標投影とフォールバック確認には、既存の<a href="assets/CookieMasks/README_サンプルCookie.html">2D／Cubemap Cookie・マスク</a>と<a href="assets/ShapeAtlas/SampleShapeAtlas_4x2.png">形状アトラス</a>を使用できます。</p>
 <p>同じサンプルはUnityPackage／ZIPの<code>Assets/MirrorBallLight/Samples/</code>にも収録され、Cubemap CrossはCube、2D／Atlasは2D TextureとしてImport設定済みです。</p>
 </section>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="10_optimization_troubleshooting.html">← 最適化・トラブル対処</a>
+<a href="12_material_translate.html">Material変換 →</a>
+</nav>
+</div>
 </main>
-<footer><div class="wrap"><a href="10_optimization_troubleshooting.html">← 最適化・対処</a>　<a href="index.html">目次へ</a></div></footer>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
 </body>
 </html>

@@ -7,32 +7,75 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header><div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="14_performance_tips.html">← 重い場合のTips</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+</li>
+<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+</li>
+<li><a href="07_presets.html"><span>プリセット</span></a>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</li>
+<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</li>
+<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</li>
+<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+</li>
+<li><a aria-current="page" href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+<ul class="inpage">
+<li><a href="#prereq">このページの前提</a></li>
+<li><a href="#base">共通の下ごしらえ</a></li>
+<li><a href="#recipe-power">ボタンで電源を切り替える</a></li>
+<li><a href="#scope">同期範囲を設計する</a></li>
+<li><a href="#recipe-local">自分だけ消せるようにする</a></li>
+<li><a href="#ownership">所有権はいつ動くか</a></li>
+<li><a href="#recipe-dj">曲ごとに演出を出す</a></li>
+<li><a href="#readback">結果を読み取って分岐する</a></li>
+<li><a href="#recipe-multi">複数台をまとめて操る</a></li>
+<li><a href="#recipe-variant">実行中に画質を落とす</a></li>
+<li><a href="#pitfalls">やってはいけないこと</a></li>
+</ul>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">15 / ADVANCED USAGE</div>
 <h1>拡張的な使い方</h1>
 <p class="lead">Inspectorで設定して置くだけ、から先の話です。ワールド側のUdonから動かす、同期範囲を設計する、複数台をまとめて操る、といった使い方を、実際の設定手順つきでまとめます。</p>
-<nav class="nav">
-<a href="index.html">目次</a><a href="03_controller.html">Controller</a><a href="07_presets.html">プリセット</a>
-<a href="09_integrations.html">連携</a><a href="10_optimization_troubleshooting.html">最適化・対処</a>
-<a href="14_performance_tips.html">重い場合のTips</a><a aria-current="page" href="15_advanced_usage.html">拡張的な使い方</a>
-</nav>
-</div></header>
-<main class="wrap">
-<div class="layout">
-<aside class="toc">
-<a href="#prereq">このページの前提</a>
-<a href="#base">共通の下ごしらえ</a>
-<a href="#recipe-power">ボタンで電源を切り替える</a>
-<a href="#scope">同期範囲を設計する</a>
-<a href="#recipe-local">自分だけ消せるようにする</a>
-<a href="#ownership">所有権はいつ動くか</a>
-<a href="#recipe-dj">曲ごとに演出を出す</a>
-<a href="#readback">結果を読み取って分岐する</a>
-<a href="#recipe-multi">複数台をまとめて操る</a>
-<a href="#recipe-variant">実行中に画質を落とす</a>
-<a href="#pitfalls">やってはいけないこと</a>
-</aside>
-<article class="content">
 
 <section id="prereq"><h2>このページの前提</h2>
 <p>イベント名と結果コードの一覧は<a href="07_presets.html#api">プリセット</a>の「他のUdonから操作する（外部制御API）」にあります。<strong>先にそちらを読んでください。</strong> このページはその一覧を使って何を組み立てられるか、という話です。</p>
@@ -354,9 +397,16 @@ public void UseHighQuality()
 </tbody>
 </table>
 </section>
-
-</article>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="14_performance_tips.html">← 動作が重い場合のTips</a>
+<a href="index.html">目次へ戻る →</a>
+</nav>
 </div>
 </main>
-<footer><div class="wrap"><a href="14_performance_tips.html">← 重い場合のTips</a>　<a href="index.html">目次へ</a></div></footer>
-</body></html>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>

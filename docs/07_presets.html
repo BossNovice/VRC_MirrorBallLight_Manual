@@ -7,37 +7,72 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header>
-<div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="06_shapes_cookie.html">← 形状・Cookie</a>
+<a href="08_materials.html">Material →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+</li>
+<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+</li>
+<li><a aria-current="page" href="07_presets.html"><span>プリセット</span></a>
+<ul class="inpage">
+<li><a href="#controller">2. ライブプリセット</a></li>
+<li><a href="#create">プリセットを作る</a></li>
+<li><a href="#preset">Presetに保存される項目</a></li>
+<li><a href="#events">実行中の切替イベント</a></li>
+<li><a href="#crossfade">クロスフェードの注意</a></li>
+<li><a href="#api">他のUdonから操作する（外部制御API）</a></li>
+</ul>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</li>
+<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</li>
+<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</li>
+<li><a href="14_performance_tips.html"><span>重い場合のTips</span></a>
+</li>
+<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">07 / LIVE PRESETS</div>
 <h1>ライブプリセットとクロスフェード</h1>
 <p class="lead">必要数だけPresetを追加し、UIやUdon Custom Eventから切り替えます。</p>
-<nav class="nav">
-<a href="index.html">目次</a>
-<a href="01_installation.html">導入</a>
-<a href="02_quickstart.html">サンプル</a>
-<a href="03_controller.html">Controller</a>
-<a href="04_effects.html">反射・光点</a>
-<a href="05_audiolink.html">AudioLink</a>
-<a href="06_shapes_cookie.html">形状・Cookie</a>
-<a aria-current="page" href="07_presets.html">プリセット</a>
-<a href="08_materials.html">Material</a>
-<a href="09_integrations.html">連携</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処</a>
-</nav>
-</div>
-</header>
-<main class="wrap">
-<div class="layout">
-<aside class="toc">
-<strong>ページ内</strong>
-<a href="#controller">Controller項目</a>
-<a href="#create">作成</a>
-<a href="#preset">Preset項目</a>
-<a href="#events">切替イベント</a>
-<a href="#crossfade">クロスフェード</a>
-</aside>
-<article class="content">
+
 <section id="controller">
 <h2>2. ライブプリセット</h2>
 <table>
@@ -306,13 +341,16 @@ int result = (int)mirrorBall.GetProgramVariable("apiLastResultCode");
 <p>
 <a href="08_materials.html">次へ：Material・Shader →</a>
 </p>
-</article>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="06_shapes_cookie.html">← 光点形状・Cookie</a>
+<a href="08_materials.html">Material・Shader →</a>
+</nav>
 </div>
 </main>
-<footer>
-<div class="wrap">
-<a href="06_shapes_cookie.html">← 形状・Cookie</a>　<a href="08_materials.html">次：Material →</a>
 </div>
-</footer>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
 </body>
 </html>

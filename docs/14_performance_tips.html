@@ -7,17 +7,71 @@
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
-<header><div class="wrap">
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="13_surface_emission_mask.html">← 表面Emission</a>
+<a href="15_advanced_usage.html">拡張的な使い方 →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>ページ</h2>
+<ol>
+<li><a href="01_installation.html"><span>導入</span></a>
+</li>
+<li><a href="02_quickstart.html"><span>サンプル</span></a>
+</li>
+<li><a href="03_controller.html"><span>Controller</span></a>
+</li>
+<li><a href="04_effects.html"><span>反射・光点</span></a>
+</li>
+<li><a href="05_audiolink.html"><span>AudioLink</span></a>
+</li>
+<li><a href="06_shapes_cookie.html"><span>形状・Cookie</span></a>
+</li>
+<li><a href="07_presets.html"><span>プリセット</span></a>
+</li>
+<li><a href="08_materials.html"><span>Material</span></a>
+</li>
+<li><a href="09_integrations.html"><span>連携</span></a>
+</li>
+<li><a href="10_optimization_troubleshooting.html"><span>最適化・対処</span></a>
+</li>
+<li><a href="11_r24_world_shader.html"><span>ワールドShader</span></a>
+</li>
+<li><a href="12_material_translate.html"><span>Material変換</span></a>
+</li>
+<li><a href="13_surface_emission_mask.html"><span>表面Emission</span></a>
+</li>
+<li><a aria-current="page" href="14_performance_tips.html"><span>重い場合のTips</span></a>
+<ul class="inpage">
+<li><a href="#first">最初に：CPUとGPUのどちらが原因かを確かめる</a></li>
+<li><a href="#gpu">GPUが原因のとき</a></li>
+<li><a href="#cpu">CPUが原因のとき</a></li>
+<li><a href="#many">オブジェクトが多いとき</a></li>
+<li><a href="#diagnose">設定の矛盾を先に潰す</a></li>
+<li><a href="#notes">知っておくと判断が早くなること</a></li>
+</ul>
+</li>
+<li><a href="15_advanced_usage.html"><span>拡張的な使い方</span></a>
+</li>
+</ol>
+</div>
+</nav>
+<main id="content">
+<div class="page">
 <div class="eyebrow">14 / PERFORMANCE TIPS</div>
 <h1>動作が重い場合のTips</h1>
 <p class="lead">まず原因がCPUかGPUかを確かめてから手を打ちます。原因を確かめずに設定を変えても、たいてい何も変わりません。</p>
-<nav class="nav">
-<a href="index.html">目次</a><a href="03_controller.html">Controller</a><a href="04_effects.html">反射・光点</a>
-<a href="08_materials.html">Material</a><a href="09_integrations.html">連携</a>
-<a href="10_optimization_troubleshooting.html">最適化・対処</a><a aria-current="page" href="14_performance_tips.html">重い場合のTips</a><a href="15_advanced_usage.html">拡張的な使い方</a>
-</nav>
-</div></header>
-<main><div class="wrap"><article>
 
 <section id="first"><h2>最初に：CPUとGPUのどちらが原因かを確かめる</h2>
 <p><strong>これを飛ばさないでください。</strong> CPUが原因のときにGPU向けの手を打っても、フレームレートは1つも改善しません。逆も同じです。</p>
@@ -141,7 +195,16 @@
 <h3>Import時間と実行時の重さは別のものです</h3>
 <p>導入時のImportが長いことと、ワールドが実行時に重いことは無関係です。Importについては<a href="10_optimization_troubleshooting.html">最適化・対処</a>を参照してください。</p>
 </section>
-
-</article></div></main>
-<footer><div class="wrap"><a href="13_surface_emission_mask.html">← 表面Emission</a>　<a href="index.html">目次へ</a>　<a href="15_advanced_usage.html">拡張的な使い方 →</a></div></footer>
-</body></html>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="13_surface_emission_mask.html">← 表面Emission・Mask</a>
+<a href="15_advanced_usage.html">拡張的な使い方 →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>
