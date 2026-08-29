@@ -131,7 +131,11 @@
 <td>四角／丸／ひし形／十字／テクスチャ／六角形／星／リング／ハートから選択します。</td>
 </tr>
 </table>
-<p>六角形、星、リング、ハートはTexture不要です。テクスチャとアトラスは<a href="06_spots.html">形状・Cookieページ</a>、表面の機能は<a href="08_surface.html">ワールドShader拡張</a>で説明します。</p>
+<figure>
+<img src="assets/diagrams/spot-cell.svg" alt="球面を横48・縦24のセルに分け、セル1つの中の発光範囲を光点の大きさ・ぼかし・横縦比で決める仕組み。下段は9種類の光点形状で、四角・丸・ひし形・十字・テクスチャ・六角形・星・リング・ハート。テクスチャだけが画像を必要とする。">
+<figcaption>Textureが要るのは「テクスチャ」を選んだときだけです。六角形・星・リング・ハートはShaderの中で作られます。</figcaption>
+</figure>
+<p>六角形、星、リング、ハートはTexture不要です。テクスチャとアトラスはこのページの<a href="#single">単一の光点形状</a>と<a href="#atlas">複数形状アトラス</a>、表面の機能は<a href="08_surface.html">ワールドShader拡張</a>で説明します。</p>
 </section>
 <section id="blink">
 <h2>ランダム点灯・消灯と表面処理</h2>

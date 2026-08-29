@@ -103,7 +103,7 @@
 <tr><td>表面Emissionマスクを使用</td><td>白＝発光、黒＝非発光の専用Maskを有効化します。</td></tr>
 <tr><td>Maskの強さ／反転</td><td>Mask適用量と白黒反転を調整します。</td></tr>
 </table>
-<p><a href="11_emission.html">専用帯域・反応パターン、ガラスでの注意、Translate範囲を含む詳細ページへ</a></p>
+<p>専用帯域と反応パターンは<a href="#audiolink">表面Emission専用AudioLink</a>、Translateで引き継げる範囲は<a href="#translate">既存MaterialからのTranslate</a>にあります。</p>
 </section>
 <section id="difference">
 <h2>反射光点との違い</h2>
@@ -130,7 +130,7 @@
 <li><strong>表面EmissionをAudioLink連動</strong>をONにします。</li>
 <li><strong>表面Emissionの反応帯域</strong>を0（低音）～3（高音）から選びます。</li>
 <li><strong>無音時の表面Emission明るさ</strong>を0.1～0.3、<strong>音による表面Emission増加</strong>を1～3から調整します。</li>
-<li>場所ごとに反応を変える場合は<strong>表面Emission AudioLinkパターン</strong>へ白黒Textureを設定します。付属の<a href="assets/CookieMasks/2D_Grayscale_WaveBands_2048x1024.png">波形パターン</a>を試せます。</li>
+<li>場所ごとに反応を変える場合は<strong>表面Emission AudioLinkパターン</strong>へ白黒Textureを設定します。同梱の <code>Samples/CookieMasks/2D_Grayscale_WaveBands_2048x1024.png</code> を試せます（<a href="assets/CookieMasks/README_サンプルCookie.html">見本</a>）。</li>
 <li>必要に応じて適用量、反転、スクロール速度を設定します。</li>
 </ol>
 <div class="note">反射光点の「AudioLinkを使用」がOFFでも、この専用ToggleがONなら表面Emissionだけを音へ反応させられます。共通のAudioLinkテストモード／テスト音量も利用できます。</div>
@@ -159,7 +159,7 @@
 <h3>通常の壁・床の推奨開始値</h3>
 <ul><li>表面Emissionカラー: HDR白または目的色</li><li>表面Emissionの強さ: 0.5～2</li><li>Mask強さ: 1</li></ul>
 <p>壁全体を強く発光させるとミラーボール光点との明暗差が減ります。背景発光は控えめにし、光点のReflection Intensityを上にする設定から始めます。</p>
-<p>Mask例: <a href="assets/CookieMasks/2D_Grayscale_WaveBands_2048x1024.png">グレースケール波形Mask</a></p>
+<p>Mask例: <code>Samples/CookieMasks/2D_Grayscale_WaveBands_2048x1024.png</code>（グレースケール波形Mask。<a href="assets/CookieMasks/README_サンプルCookie.html">見本</a>）</p>
 <h3>ガラス・半透明面の推奨開始値</h3>
 <ul><li>透明度: 0.05～0.3</li><li>表面Emissionの強さ: 0.2～1.5</li><li>透過描画方式: まずプリマルチプライ</li></ul>
 <p>透明Shaderでは表面Emissionも深度フェードへ追従します。交差部だけ発光が弱い場合は「深度フェードを使用」をOFFにして原因を切り分けてください。描画順の問題がある場合はRender QueueとZWriteも確認します。</p>

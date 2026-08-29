@@ -111,6 +111,47 @@ foreach ($page in $pages)
     }
 }
 
+# --- 番号付き見出しの抜け（2026-08-29で追加） --------------------------------
+# 手順を「1.」「2.」と振った小見出しで、統合や削除のときに番号が飛ぶことがあります。
+# **番号が飛んでいても表示は崩れないので、読んだ人が数え直すまで気づけません。**
+#
+# 半角の「数字＋ピリオド」で始まる <h3> だけを数えます。同じ <h2> の下に2つ以上
+# あるときだけ、1から始まって抜けが無いことを見ます。番号を振っていない <h3> が
+# 間に挟まっていても構いません。
+foreach ($page in $pages)
+{
+    $text = Get-Content -LiteralPath $page.FullName -Raw
+    $main = [regex]::Match($text, '(?s)<main.*?</main>')
+    if (!$main.Success) { continue }
+
+    $heading = ""
+    $numbers = New-Object 'System.Collections.Generic.List[int]'
+    $check = {
+        if ($numbers.Count -lt 2) { return }
+        $expected = 1..$numbers.Count
+        if (($numbers -join ",") -ne ($expected -join ","))
+        {
+            $problems.Add("番号付き見出しが 1 から連続していません: " +
+                "$($page.Name)「$heading」→ $($numbers -join ', ')")
+        }
+    }
+
+    foreach ($hit in [regex]::Matches($main.Value, '(?s)<h([23])[^>]*>(.*?)</h\1>'))
+    {
+        $plain = [regex]::Replace($hit.Groups[2].Value, '<[^>]*>', '').Trim()
+        if ($hit.Groups[1].Value -eq "2")
+        {
+            & $check
+            $heading = $plain
+            $numbers.Clear()
+            continue
+        }
+        $numbered = [regex]::Match($plain, '^(\d+)\.')
+        if ($numbered.Success) { $numbers.Add([int]$numbered.Groups[1].Value) }
+    }
+    & $check
+}
+
 # --- アンカーの飛び先が実在するか（2026-08-28のレビューで追加） --------------
 # ページ内目次の href="#..." と、他ページの href="page.html#..." の両方を見ます。
 # **飛び先が無いリンクは、押しても何も起きません。** 押すまで気づけません。
@@ -140,6 +181,29 @@ foreach ($page in $pages)
         {
             $problems.Add("アンカーの飛び先がありません: $($page.Name) → $targetPage#$anchor")
         }
+    }
+}
+
+# --- 本文から自分のページへのリンク（2026-08-29で追加） ----------------------
+# 15ページを20ページへ組み直したとき、別ページを指していたリンクの何本かが
+# **統合先＝いま開いているページ自身**になりました。押しても何も起きないので、
+# リンク切れの検査には引っかかりません。文言も「詳細ページへ」のまま残ります。
+#
+# アンカー付き（#見出し）は同じページ内の移動なので見逃します。左のページ一覧は
+# 現在地を示すために自分自身を指すので、<main> の中だけを見ます。
+foreach ($page in $pages)
+{
+    $text = Get-Content -LiteralPath $page.FullName -Raw
+    $main = [regex]::Match($text, '(?s)<main.*?</main>')
+    if (!$main.Success) { continue }
+    $body = [regex]::Replace($main.Value, '(?s)<nav.*?</nav>', '')
+
+    foreach ($hit in [regex]::Matches($body, '(?s)<a href="([^"#]+)">(.*?)</a>'))
+    {
+        if ($hit.Groups[1].Value -ne $page.Name) { continue }
+        $label = [regex]::Replace($hit.Groups[2].Value, '<[^>]*>', '').Trim()
+        $problems.Add("本文のリンクが同じページを指しています（押しても動きません）: " +
+            "$($page.Name) →「$label」")
     }
 }
 
