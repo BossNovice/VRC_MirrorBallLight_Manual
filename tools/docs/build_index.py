@@ -29,6 +29,7 @@ CARD_LEAD = {
     "12_audiolink.html": "音に合わせて明るさ・サイズ・色を動かす",
     "13_presets.html": "演出をまとめて切り替える。作り方と切替イベント",
     "14_udon.html": "ワールドのギミックから動かす。同期範囲と所有権",
+    "21_uibridge.html": "ワールドのボタンで電源とプリセットを切り替える",
     "15_show.html": "曲ごとの切り替え、結果の読み取り、複数台の同時操作",
     "16_integrations.html": "連携版Shaderと、アバターへ実際の光を当てる",
     "17_translate.html": "既存の壁・ガラスMaterialを変換する",

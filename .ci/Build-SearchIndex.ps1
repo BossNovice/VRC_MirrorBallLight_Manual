@@ -29,30 +29,21 @@ if ([string]::IsNullOrWhiteSpace($RepositoryPath))
 $docs = Join-Path $RepositoryPath "docs"
 $indexPath = Join-Path $docs "assets/search-index.js"
 
-# 左の一覧と同じ並び・同じ短い名前を使います。ここを変えるときは
-# docs 側の並びも一緒に変えてください。
-$pages = [ordered]@{
-    "index.html"           = "目次"
-    "01_install.html"      = "導入する"
-    "02_sample.html"       = "サンプルで確かめる"
-    "03_apply.html"        = "自分の壁へ適用する"
-    "04_controller.html"   = "Controllerの使い方"
-    "05_motion.html"       = "回転・反射・色"
-    "06_spots.html"        = "光点の形と量"
-    "07_cookie.html"       = "Cookie投影"
-    "08_surface.html"      = "壁・床のMaterial"
-    "09_glass.html"        = "ガラスのMaterial"
-    "10_body.html"         = "ミラーボール本体"
-    "11_emission.html"     = "表面Emission・Mask"
-    "12_audiolink.html"    = "AudioLink連動"
-    "13_presets.html"      = "ライブプリセット"
-    "14_udon.html"         = "Udonから操作する"
-    "15_show.html"         = "演出をUdonで組む"
-    "16_integrations.html" = "LTCGI・LightVolumes"
-    "17_translate.html"    = "既存Materialの変換"
-    "18_troubleshoot.html" = "うまく動かない"
-    "19_heavy.html"        = "重い"
-    "20_release.html"      = "公開前チェック"
+# 並びと短い名前は tools/docs/page-map.json が正です。
+#
+# **ここに同じ表を書き写していました。** ページを1枚足したときに直す場所が2つになり、
+# 片方を忘れると、そのページだけ検索に出ません（実際に 21_uibridge.html で起きました）。
+# 出どころを1つにします。
+$pageMapPath = Join-Path $RepositoryPath "tools/docs/page-map.json"
+if (!(Test-Path -LiteralPath $pageMapPath))
+{
+    throw "ページの並びが読めません: $pageMapPath"
+}
+$pageMap = Get-Content -LiteralPath $pageMapPath -Raw | ConvertFrom-Json
+$pages = [ordered]@{ "index.html" = "目次" }
+foreach ($entry in $pageMap.pages)
+{
+    $pages[$entry.file] = $entry.short
 }
 
 function Remove-Markup([string]$html)

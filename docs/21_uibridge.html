@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UIボタンから操作する | MirrorBallLight</title>
+<link rel="stylesheet" href="manual.css">
+</head>
+<body>
+<a class="skip" href="#content">本文へ</a>
+<header class="topbar">
+<div class="brand"><a href="index.html">MirrorBallLight マニュアル</a></div>
+<div class="searchbox">
+<input id="q" type="search" placeholder="マニュアル内を検索（/ で移動）" autocomplete="off" aria-label="マニュアル内を検索">
+<div id="results" class="results" role="listbox"></div>
+</div>
+<nav class="pager" aria-label="前後のページ">
+<a href="14_udon.html">← Udonから操作する</a>
+<a href="15_show.html">演出をUdonで組む →</a>
+</nav>
+</header>
+<div class="shell">
+<nav class="sidebar" aria-label="ページ一覧">
+<button class="toggle" aria-expanded="false">ページ一覧を開く</button>
+<div class="panel">
+<a class="home" href="index.html">目次</a>
+<h2>やりたいこと</h2>
+<div class="grp"><div class="grp-name">はじめて置く</div><ul>
+<li><a href="01_install.html">導入する</a>
+</li>
+<li><a href="02_sample.html">サンプルで確かめる</a>
+</li>
+<li><a href="03_apply.html">自分の壁へ適用する</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">見え方を決める</div><ul>
+<li><a href="04_controller.html">Controllerの使い方</a>
+</li>
+<li><a href="05_motion.html">回転・反射・色</a>
+</li>
+<li><a href="06_spots.html">光点の形と量</a>
+</li>
+<li><a href="07_cookie.html">Cookie投影</a>
+</li>
+<li><a href="08_surface.html">壁・床のMaterial</a>
+</li>
+<li><a href="09_glass.html">ガラスのMaterial</a>
+</li>
+<li><a href="10_body.html">ミラーボール本体</a>
+</li>
+<li><a href="11_emission.html">表面Emission・Mask</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">音に反応させる</div><ul>
+<li><a href="12_audiolink.html">AudioLink連動</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">演出する</div><ul>
+<li><a href="13_presets.html">ライブプリセット</a>
+</li>
+<li><a href="14_udon.html">Udonから操作する</a>
+</li>
+<li><a aria-current="page" href="21_uibridge.html">ボタンで操作する</a>
+<ul class="inpage">
+<li><a href="#what">やりたいこと</a></li>
+<li><a href="#setup">置き方</a></li>
+<li><a href="#operations">選べる操作</a></li>
+<li><a href="#scope">誰に見えるか</a></li>
+<li><a href="#result">効いたかどうかを見る</a></li>
+<li><a href="#notes">気をつけること</a></li>
+</ul>
+</li>
+<li><a href="15_show.html">演出をUdonで組む</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">連携する</div><ul>
+<li><a href="16_integrations.html">LTCGI・LightVolumes</a>
+</li>
+<li><a href="17_translate.html">既存Materialの変換</a>
+</li>
+</ul></div>
+<div class="grp"><div class="grp-name">困ったとき</div><ul>
+<li><a href="18_troubleshoot.html">うまく動かない</a>
+</li>
+<li><a href="19_heavy.html">重い</a>
+</li>
+<li><a href="20_release.html">公開前チェック</a>
+</li>
+</ul></div>
+</div></nav>
+<main id="content">
+<div class="page">
+<div class="eyebrow">演出する</div>
+<h1>UIボタンから操作する</h1>
+<p class="lead">ワールドのボタンから、電源とプリセットを切り替えます。</p>
+<div class="warning"><strong>この部品はR29.5から入ります。</strong>いま配っているR29.4.2にはありません。R29.4.2でボタンから操作したい場合は、<a href="14_udon.html#api">他のUdonから操作する</a>のとおり、Controllerの入口をイベント名で直接呼んでください。</div>
+<section id="what">
+<h2>やりたいこと</h2>
+<p>ワールドに置いたUIボタンを押して、ミラーボールの<strong>電源</strong>と<strong>プリセット</strong>を切り替えます。スクリプトは書きません。</p>
+<p>ボタン側の設定に <code>MirrorBallLightUIBridge</code> という部品を1つ挟みます。Inspectorで「どの操作をするか」を選ぶだけで、あとはボタンを押せば動きます。</p>
+<div class="note">
+<p><strong>この部品が無くても、実は動きます。</strong> Controllerには <code>TogglePower</code> や <code>NextPreset</code> といった入口があり、ボタンの On Click から名前を打てば呼べます。</p>
+<p>ただし2つ困ることがあります。<strong>名前を打ち間違えても、押すまで分かりません。</strong> それと、<strong>番号を指定してプリセットを切り替える操作は、ボタン1つでは順番を守れません。</strong> 先に番号を渡してから呼ぶ必要があり、これまでは補助スクリプトを書くしかありませんでした。</p>
+<p>この部品は、その2つを引き受けます。</p>
+</div>
+</section>
+<section id="setup">
+<h2>置き方</h2>
+<ol>
+<li><strong>ボタンと同じGameObjectを選びます。</strong> Hierarchyで、押させたい <code>Button</code> のGameObjectをクリックします。</li>
+<li>Inspectorの下の <code>Add Component</code> を押し、<code>MirrorBall Light UI Bridge</code> を追加します。</li>
+<li><strong>Controller</strong> の欄へ、Hierarchyから <code>MirrorBallLightController</code> が付いたGameObjectをドラッグします。設定済みサンプルなら <code>MirrorBallLight_ConfiguredSample</code> です。</li>
+<li><strong>操作</strong> のドロップダウンから、このボタンにさせたいことを選びます。番号を指定する操作を選んだときだけ、<strong>プリセット番号</strong> の欄が出ます。</li>
+<li>同じGameObjectの <code>Button</code> コンポーネントで、<code>On Click ()</code> の <code>+</code> を押します。</li>
+<li>左下の欄へ、<strong>同じGameObject</strong> をドラッグします。</li>
+<li>右上のドロップダウンから <code>UdonBehaviour</code> → <code>SendCustomEvent (string)</code> を選びます。</li>
+<li>その下の文字入力欄へ <code>Execute</code> と入れます。<strong>大文字小文字まで一致させてください。</strong></li>
+</ol>
+<div class="tip"><strong>ボタン1つにつき、この部品を1つ置きます。</strong> 「電源」「次のプリセット」「前のプリセット」の3つのボタンを作るなら、3つのボタンそれぞれに1つずつ付けて、操作だけ変えます。</div>
+</section>
+<section id="operations">
+<h2>選べる操作</h2>
+<table>
+<thead>
+<tr><th>操作</th><th>すること</th><th>番号を使うか</th></tr>
+</thead>
+<tbody>
+<tr><td>電源を切り替える</td><td>ONなら消し、OFFなら点けます</td><td>使いません</td></tr>
+<tr><td>電源をONにする</td><td>すでにONなら何も変わりません</td><td>使いません</td></tr>
+<tr><td>電源をOFFにする</td><td>すでにOFFなら何も変わりません</td><td>使いません</td></tr>
+<tr><td>次のプリセット</td><td>一覧の次へ。末尾なら先頭へ戻ります</td><td>使いません</td></tr>
+<tr><td>前のプリセット</td><td>一覧の前へ。先頭なら末尾へ回ります</td><td>使いません</td></tr>
+<tr><td>番号を指定して適用</td><td>指定した番号へ切り替えます。クロスフェードします</td><td><strong>使います</strong></td></tr>
+<tr><td>番号を指定して即時適用</td><td>指定した番号へすぐ切り替えます。クロスフェードしません</td><td><strong>使います</strong></td></tr>
+</tbody>
+</table>
+<p><strong>プリセット番号は、Controllerの「プリセット一覧」の並び順です。先頭が0です。</strong></p>
+</section>
+<section id="scope">
+<h2>誰に見えるか</h2>
+<p><strong>この部品は、見える範囲を決めません。</strong> 決めているのはController側の「動作範囲」と「プリセットの動作範囲」です。</p>
+<p>ボタンから操作しても、Interactで触ったときや他のUdonから呼んだときと同じ扱いになります。所有権の取得もController側で行われます。<strong>この部品が同期変数へ直接書くことはありません。</strong></p>
+<p>範囲と所有権の考え方は<a href="14_udon.html#scope">他のUdonから操作する</a>にあります。</p>
+</section>
+<section id="result">
+<h2>効いたかどうかを見る</h2>
+<p>押した結果は、この部品の <code>lastResultCode</code> に入ります。<strong>0が成功です。</strong></p>
+<table>
+<thead>
+<tr><th>番号</th><th>意味</th><th>見るところ</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>成功しました</td><td>―</td></tr>
+<tr><td>1</td><td>プリセットが使えません</td><td>Controllerの「ライブプリセットを使用」がOFF、または一覧が空です</td></tr>
+<tr><td>2</td><td>その番号のプリセットが未設定です</td><td>一覧のその行が空欄です</td></tr>
+<tr><td>3</td><td>切替中だったので予約しました</td><td>後で適用されます</td></tr>
+<tr><td>4</td><td>切替中だったので無視しました</td><td>Controllerの「切替中の要求を1件だけ予約」がOFFのときの既定です</td></tr>
+<tr><td>5</td><td><strong>Controllerが未設定です</strong></td><td>この部品のInspectorに赤い警告が出ています</td></tr>
+<tr><td>6</td><td>操作の番号が範囲外です</td><td>通常は起きません。手で値を書き換えた場合です</td></tr>
+</tbody>
+</table>
+<p>5と6はこの部品が出す番号で、Controller側にはありません。<strong>設定のミスと、Controllerが返した結果を混ぜないためです。</strong></p>
+</section>
+<section id="notes">
+<h2>気をつけること</h2>
+<h3>番号は範囲を超えてもエラーになりません</h3>
+<p>一覧が3件のときに10番を指定すると、<strong>エラーにならず、末尾の3番目が適用されて「成功」が返ります。</strong> Controller側が番号を丸めるためで、他のUdonから呼んだときも同じです。番号を変えたのに同じプリセットが出るときは、一覧の件数を確かめてください。</p>
+<h3>押しても何も起きないとき</h3>
+<ol>
+<li><strong>イベント名が <code>Execute</code> になっているか。</strong> いちばん多い原因です。前後の空白や大文字小文字も一致させてください。</li>
+<li><strong>Controllerの欄が空でないか。</strong> 空のときはInspectorに赤い警告が出て、押すとConsoleにも警告が出ます。</li>
+<li>On Click の左下がボタン自身のGameObjectになっているか。別のオブジェクトを入れていると、そちらのUdonBehaviourを探しに行きます。</li>
+<li>プリセットの操作なら、Controllerの「ライブプリセットを使用」がONか。</li>
+</ol>
+<h3>この部品は同期しません</h3>
+<p>部品自体はネットワーク同期を持ちません。<strong>押した結果が全員に届くかどうかは、Controller側の動作範囲だけで決まります。</strong></p>
+</section>
+<nav class="pagenav" aria-label="前後のページ">
+<a href="14_udon.html">← 他のUdonから操作する</a>
+<a href="15_show.html">演出をUdonで組む →</a>
+</nav>
+</div>
+</main>
+</div>
+<footer>MirrorBallLightController マニュアル</footer>
+<a class="totop" href="#content">↑ 上へ</a>
+<script src="assets/search-index.js"></script>
+<script src="assets/manual.js"></script>
+</body>
+</html>
