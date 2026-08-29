@@ -132,6 +132,10 @@
 <li>Play Mode中に変えた値は、<strong>Play Modeを抜けると元に戻ります。</strong> ただしMaterialやTexture Import設定のような<strong>アセットそのものへの変更は残ります。</strong> Play中に押した「現在の設定をマテリアルへ反映・保存」の結果は残り、Controllerの設定値だけが戻る、という食い違いが起きます。<strong>設定はPlay Modeを抜けてから変えてください。</strong></li>
 <li>それでも変わらなければ、10番の「診断・最適化ウィンドウを開く」で原因を探します。</li>
 </ol>
+<figure>
+<img src="assets/diagrams/controller-save.svg" alt="Edit ModeとPlay Modeの違い。Edit Modeでは値を変えてもMaterialには書かれず、反映・保存を押してはじめて保存される。Play Modeではボタンを押さなくても書かれるが、Playを抜けるとControllerの値だけ元へ戻り、Materialへ書かれた分は残るため食い違いが起きる。">
+<figcaption>Play Modeでの書き込みは「動かすための反映」で、Edit Modeの編集結果を残す操作とは別ものです。設定はPlay Modeを抜けてから変えてください。</figcaption>
+</figure>
 </section>
 <section id="basic">
 <h2>1. 基本設定・電源・対象Material</h2>

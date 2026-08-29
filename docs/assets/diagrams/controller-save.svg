@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 336" role="img" aria-label="Edit ModeとPlay Modeで、Controllerの設定がMaterialへ書かれる仕組みの違い">
+<style>
+ .bg{fill:#0d1117}
+ .lane{fill:#161b22;stroke:#30363d;stroke-width:1}
+ .box{fill:#11161d;stroke:#3d4753;stroke-width:1}
+ .warn{fill:#2a1f12;stroke:#7a5a22;stroke-width:1}
+ .btn{fill:#12261a;stroke:#2e6b45;stroke-width:1}
+ .t{fill:#e6edf3;font:14px "Segoe UI","Noto Sans JP",sans-serif}
+ .h{fill:#79c0ff;font:bold 16px "Segoe UI","Noto Sans JP",sans-serif}
+ .m{fill:#9da7b3;font:13px "Segoe UI","Noto Sans JP",sans-serif}
+ .warnt{fill:#ffd16f;font:bold 14px "Segoe UI","Noto Sans JP",sans-serif}
+ .ttl{fill:#e6edf3;font:bold 17px "Segoe UI","Noto Sans JP",sans-serif}
+ .ar{stroke:#4a5566;stroke-width:2;fill:none;marker-end:url(#a)}
+ .arg{stroke:#3fb950;stroke-width:2;fill:none;marker-end:url(#g)}
+ .arr{stroke:#d29922;stroke-width:2;fill:none;stroke-dasharray:5 4;marker-end:url(#y)}
+</style>
+<defs>
+ <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4a5566"/></marker>
+ <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#3fb950"/></marker>
+ <marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#d29922"/></marker>
+</defs>
+<rect class="bg" width="900" height="336"/>
+<text class="ttl" x="24" y="34">Controllerの値が、いつMaterialへ書かれるか</text>
+
+<rect class="lane" x="24" y="52" width="418" height="270" rx="8"/>
+<text class="h" x="44" y="80">Edit Mode（Playしていないとき）</text>
+<rect class="box" x="44" y="96" width="378" height="46" rx="6"/>
+<text class="t" x="62" y="124">Inspectorで値を変える</text>
+<path class="ar" d="M233 142 L233 166"/>
+<rect class="warn" x="44" y="168" width="378" height="52" rx="6"/>
+<text class="warnt" x="62" y="192">まだMaterialには書かれていません</text>
+<text class="m" x="62" y="212">見た目が変わらないのは、たいていここです。</text>
+<path class="ar" d="M233 220 L233 244"/>
+<rect class="btn" x="44" y="246" width="378" height="58" rx="6"/>
+<text class="t" x="62" y="272">「現在の設定をマテリアルへ反映・保存」</text>
+<text class="m" x="62" y="292">押すとMaterialへ書かれ、Assetとして保存されます。</text>
+
+<rect class="lane" x="458" y="52" width="418" height="270" rx="8"/>
+<text class="h" x="478" y="80">Play Mode（実行中）</text>
+<rect class="box" x="478" y="96" width="378" height="46" rx="6"/>
+<text class="t" x="496" y="124">Play開始・プリセット適用・クロスフェード</text>
+<path class="arg" d="M667 142 L667 166"/>
+<rect class="btn" x="478" y="168" width="378" height="52" rx="6"/>
+<text class="t" x="496" y="192">ボタンを押さなくてもMaterialへ書かれます</text>
+<text class="m" x="496" y="212">動かすための反映で、保存操作とは別のものです。</text>
+<path class="arr" d="M667 220 L667 244"/>
+<rect class="warn" x="478" y="246" width="378" height="58" rx="6"/>
+<text class="warnt" x="496" y="272">Playを抜けると、Controllerの値だけ戻ります</text>
+<text class="m" x="496" y="292">Materialへ書かれた分は残るので、食い違いが起きます。</text>
+
+</svg>

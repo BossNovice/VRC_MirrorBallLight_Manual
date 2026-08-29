@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-label="球面を横48・縦24のセルに分け、1セルの中の発光範囲を光点の大きさ・ぼかし・横縦比で決める仕組みと、9種類の光点形状">
+<style>
+ .bg{fill:#0d1117}
+ .cell{fill:#161b22;stroke:#30363d;stroke-width:1}
+ .tile{fill:#11161d;stroke:#3d4753;stroke-width:1}
+ .t{fill:#e6edf3;font:14px "Segoe UI","Noto Sans JP",sans-serif}
+ .h{fill:#79c0ff;font:bold 16px "Segoe UI","Noto Sans JP",sans-serif}
+ .m{fill:#9da7b3;font:13px "Segoe UI","Noto Sans JP",sans-serif}
+ .s{fill:#9da7b3;font:12px "Segoe UI","Noto Sans JP",sans-serif}
+ .ttl{fill:#e6edf3;font:bold 17px "Segoe UI","Noto Sans JP",sans-serif}
+ .grid{stroke:#39424f;stroke-width:1;fill:none}
+ .lit{fill:#ffd97a}
+ .dim{stroke:#58a6ff;stroke-width:1.5;fill:none}
+ .ar{stroke:#4a5566;stroke-width:2;fill:none;marker-end:url(#a)}
+ .shape{fill:#ffd97a}
+</style>
+<defs>
+ <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4a5566"/></marker>
+ <radialGradient id="soft"><stop offset="55%" stop-color="#ffd97a"/><stop offset="100%" stop-color="#ffd97a" stop-opacity="0"/></radialGradient>
+ <g id="sq"><rect x="-15" y="-15" width="30" height="30" class="shape"/></g>
+ <g id="ci"><circle r="17" class="shape"/></g>
+ <g id="di"><polygon points="0,-17 17,0 0,17 -17,0" class="shape"/></g>
+ <g id="cr"><rect x="-17" y="-5" width="34" height="10" class="shape"/><rect x="-5" y="-17" width="10" height="34" class="shape"/></g>
+ <g id="tx"><rect x="-16" y="-16" width="16" height="16" class="shape"/><rect x="0" y="0" width="16" height="16" class="shape"/><rect x="-16" y="0" width="16" height="16" fill="#3d4753"/><rect x="0" y="-16" width="16" height="16" fill="#3d4753"/></g>
+ <g id="hx"><polygon points="17,0 8.5,14.7 -8.5,14.7 -17,0 -8.5,-14.7 8.5,-14.7" class="shape"/></g>
+ <g id="st"><polygon points="0,-17 4.1,-5.7 16.2,-5.3 6.7,2.2 10,13.8 0,7 -10,13.8 -6.7,2.2 -16.2,-5.3 -4.1,-5.7" class="shape"/></g>
+ <g id="rg"><circle r="13" fill="none" stroke="#ffd97a" stroke-width="7"/></g>
+ <g id="ht"><path d="M0,14 C-16,2 -16,-10 -8,-13 C-3,-15 0,-11 0,-8 C0,-11 3,-15 8,-13 C16,-10 16,2 0,14 Z" class="shape"/></g>
+</defs>
+<rect class="bg" width="900" height="520"/>
+<text class="ttl" x="24" y="34">光点は「球面を格子に分け、各セルの中を光らせる」もの</text>
+
+<rect class="cell" x="24" y="52" width="380" height="240" rx="8"/>
+<text class="h" x="44" y="80">横48 × 縦24 のセルに分ける</text>
+<circle cx="150" cy="190" r="72" fill="#11161d" stroke="#3d4753"/>
+<ellipse class="grid" cx="150" cy="190" rx="72" ry="24"/>
+<ellipse class="grid" cx="150" cy="190" rx="72" ry="50"/>
+<ellipse class="grid" cx="150" cy="190" rx="24" ry="72"/>
+<ellipse class="grid" cx="150" cy="190" rx="50" ry="72"/>
+<line class="grid" x1="150" y1="118" x2="150" y2="262"/>
+<line class="grid" x1="78" y1="190" x2="222" y2="190"/>
+<text class="m" x="246" y="150">増やすほど、小さな</text>
+<text class="m" x="246" y="172">光点がたくさん出ます。</text>
+<text class="m" x="246" y="206">縦は横の半分から</text>
+<text class="m" x="246" y="228">調整すると自然です。</text>
+<rect x="232" y="240" width="52" height="30" rx="4" class="tile"/>
+<text class="s" x="258" y="260" text-anchor="middle">1セル</text>
+<path class="ar" d="M290 255 L404 255"/>
+
+<rect class="cell" x="420" y="52" width="456" height="240" rx="8"/>
+<text class="h" x="440" y="80">セル1つの中を、3つの値で決める</text>
+<rect x="452" y="100" width="176" height="160" rx="4" class="tile"/>
+<ellipse cx="540" cy="180" rx="52" ry="47" fill="url(#soft)"/>
+<line class="dim" x1="488" y1="180" x2="592" y2="180" stroke-dasharray="4 3"/>
+<text class="s" x="540" y="122" text-anchor="middle" fill="#58a6ff">光点の大きさ 0.32</text>
+<text class="s" x="540" y="278" text-anchor="middle">セルの枠</text>
+<text class="t" x="652" y="130">光点の大きさ</text>
+<text class="m" x="652" y="150">セルの何割を光らせるか</text>
+<text class="t" x="652" y="184">光点のぼかし</text>
+<text class="m" x="652" y="204">輪郭の柔らかさ。小さいと硬い形</text>
+<text class="t" x="652" y="238">光点の横縦比</text>
+<text class="m" x="652" y="258">1で等倍、大きいと横長</text>
+
+<rect class="cell" x="24" y="308" width="852" height="180" rx="8"/>
+<text class="h" x="44" y="336">光点の形は9種類。テクスチャが要るのは1つだけです</text>
+<g transform="translate(0,0)">
+ <rect class="tile" x="44" y="352" width="86" height="86" rx="6"/><use href="#sq" transform="translate(87,388)"/><text class="s" x="87" y="462" text-anchor="middle">四角</text>
+ <rect class="tile" x="136" y="352" width="86" height="86" rx="6"/><use href="#ci" transform="translate(179,388)"/><text class="s" x="179" y="462" text-anchor="middle">丸</text>
+ <rect class="tile" x="228" y="352" width="86" height="86" rx="6"/><use href="#di" transform="translate(271,388)"/><text class="s" x="271" y="462" text-anchor="middle">ひし形</text>
+ <rect class="tile" x="320" y="352" width="86" height="86" rx="6"/><use href="#cr" transform="translate(363,388)"/><text class="s" x="363" y="462" text-anchor="middle">十字</text>
+ <rect class="tile" x="412" y="352" width="86" height="86" rx="6" stroke="#7a5a22"/><use href="#tx" transform="translate(455,388)"/><text class="s" x="455" y="462" text-anchor="middle" fill="#ffd16f">テクスチャ</text>
+ <rect class="tile" x="504" y="352" width="86" height="86" rx="6"/><use href="#hx" transform="translate(547,388)"/><text class="s" x="547" y="462" text-anchor="middle">六角形</text>
+ <rect class="tile" x="596" y="352" width="86" height="86" rx="6"/><use href="#st" transform="translate(639,388)"/><text class="s" x="639" y="462" text-anchor="middle">星</text>
+ <rect class="tile" x="688" y="352" width="86" height="86" rx="6"/><use href="#rg" transform="translate(731,388)"/><text class="s" x="731" y="462" text-anchor="middle">リング</text>
+ <rect class="tile" x="780" y="352" width="86" height="86" rx="6"/><use href="#ht" transform="translate(823,388)"/><text class="s" x="823" y="462" text-anchor="middle">ハート</text>
+</g>
+<text class="m" x="24" y="510">「複数形状アトラスを使用」をONにすると、この単一形状より優先され、セルごとに別々のタイルが割り当てられます。</text>
+</svg>

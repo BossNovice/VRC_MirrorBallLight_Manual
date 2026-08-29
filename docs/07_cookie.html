@@ -142,6 +142,10 @@
 <td>Cookie自体を時間回転させます。負数で逆方向です。</td>
 </tr>
 </table>
+<figure>
+<img src="assets/diagrams/cookie-projection.svg" alt="2D Cookieは照射スポットライトの向きを基準に平面として投影し、模様は照らした面に出る。Cubemap Cookieはミラーボール中心から全方向へ球状に投影し、模様は部屋のぐるり全部に出る。2DではTiling・Offsetが効くが、Cubemapでは方向で6面が決まるため効かない。Cookie回転速度は両方に効く。">
+<figcaption>Tiling・Offsetは2D Cookieだけの設定です。マスクの強さ・色の混合量・回転速度は、どちらの方式でも同じように効きます。</figcaption>
+</figure>
 <div class="note">2Dは照射方向が明確なステージ、Cubemapは部屋全体へ模様を配る用途に向いています。</div>
 <p><a href="assets/CookieMasks/README_サンプルCookie.html">サンプルCookie・マスク一覧</a>から、2D／Cubemap用のPNGを利用できます。</p>
 </section>

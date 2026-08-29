@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" role="img" aria-label="2D Cookieはスポットライトの向きを基準に平面投影し、Cubemap Cookieはミラーボール中心から全方向へ球状投影する違い">
+<style>
+ .bg{fill:#0d1117}
+ .cell{fill:#161b22;stroke:#30363d;stroke-width:1}
+ .room{fill:#0b0f15;stroke:#3d4753;stroke-width:1}
+ .t{fill:#e6edf3;font:14px "Segoe UI","Noto Sans JP",sans-serif}
+ .h{fill:#79c0ff;font:bold 16px "Segoe UI","Noto Sans JP",sans-serif}
+ .m{fill:#9da7b3;font:13px "Segoe UI","Noto Sans JP",sans-serif}
+ .s{fill:#9da7b3;font:12px "Segoe UI","Noto Sans JP",sans-serif}
+ .ttl{fill:#e6edf3;font:bold 17px "Segoe UI","Noto Sans JP",sans-serif}
+ .ray{stroke:#ffd97a;stroke-width:1.5;opacity:.55}
+ .ball{fill:#2b3542;stroke:#6e7d90;stroke-width:1}
+</style>
+<defs>
+ <linearGradient id="cone" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#ffd97a" stop-opacity=".55"/>
+  <stop offset="100%" stop-color="#ffd97a" stop-opacity=".08"/>
+ </linearGradient>
+ <pattern id="pat" width="24" height="24" patternUnits="userSpaceOnUse">
+  <rect width="24" height="24" fill="#ffd97a" opacity=".10"/>
+  <circle cx="12" cy="12" r="6" fill="#ffd97a" opacity=".55"/>
+ </pattern>
+</defs>
+<rect class="bg" width="900" height="480"/>
+<text class="ttl" x="24" y="34">投影方式は2つ。どこから模様を配るかが違います</text>
+
+<rect class="cell" x="24" y="52" width="418" height="308" rx="8"/>
+<text class="h" x="44" y="80">2D Cookie</text>
+<text class="m" x="44" y="102">照射スポットライトの向きを基準に、平面として投影します。</text>
+<rect class="room" x="60" y="120" width="346" height="200" rx="4"/>
+<rect x="188" y="132" width="90" height="18" rx="4" fill="#2b3542" stroke="#6e7d90"/>
+<text class="s" x="233" y="146" text-anchor="middle" fill="#c9d4e0">Spot Light</text>
+<path d="M198 150 L120 300 L346 300 L268 150 Z" fill="url(#cone)"/>
+<rect x="120" y="288" width="226" height="24" fill="url(#pat)"/>
+<text class="s" x="233" y="336" text-anchor="middle">模様は照らした面に出ます</text>
+<text class="t" x="44" y="380">Tiling・Offsetが効きます</text>
+<text class="m" x="44" y="402">繰り返し回数と位置を決められます。</text>
+<text class="m" x="44" y="424">向きがはっきりしたステージ演出に向いています。</text>
+
+<rect class="cell" x="458" y="52" width="418" height="308" rx="8"/>
+<text class="h" x="478" y="80">Cubemap Cookie</text>
+<text class="m" x="478" y="102">ミラーボールの中心から、全方向へ球状に投影します。</text>
+<rect class="room" x="494" y="120" width="346" height="200" rx="4"/>
+<g class="ray">
+ <line x1="667" y1="220" x2="667" y2="130"/><line x1="667" y1="220" x2="667" y2="310"/>
+ <line x1="667" y1="220" x2="504" y2="220"/><line x1="667" y1="220" x2="830" y2="220"/>
+ <line x1="667" y1="220" x2="524" y2="140"/><line x1="667" y1="220" x2="810" y2="140"/>
+ <line x1="667" y1="220" x2="524" y2="300"/><line x1="667" y1="220" x2="810" y2="300"/>
+ <line x1="667" y1="220" x2="600" y2="128"/><line x1="667" y1="220" x2="734" y2="128"/>
+ <line x1="667" y1="220" x2="600" y2="312"/><line x1="667" y1="220" x2="734" y2="312"/>
+</g>
+<circle class="ball" cx="667" cy="220" r="20"/>
+<rect x="496" y="122" width="342" height="14" fill="url(#pat)"/>
+<rect x="496" y="304" width="342" height="14" fill="url(#pat)"/>
+<rect x="496" y="122" width="14" height="196" fill="url(#pat)"/>
+<rect x="824" y="122" width="14" height="196" fill="url(#pat)"/>
+<text class="s" x="667" y="336" text-anchor="middle">模様は部屋のぐるり全部に出ます</text>
+<text class="t" x="478" y="380">Tiling・Offsetは効きません</text>
+<text class="m" x="478" y="402">6面が方向で決まるため、位置をずらす概念がありません。</text>
+<text class="m" x="478" y="424">部屋全体へ模様を配る用途に向いています。</text>
+
+<line x1="24" y1="444" x2="876" y2="444" stroke="#30363d"/>
+<text class="m" x="24" y="470">どちらを選んでも、Cookieマスクの強さ・Cookie色の混合量・Cookie回転速度は同じように効きます。回転は投影の向きそのものを回すためです。</text>
+</svg>
