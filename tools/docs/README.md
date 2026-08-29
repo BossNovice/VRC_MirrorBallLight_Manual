@@ -21,6 +21,7 @@ HTMLマニュアルのページ構成を作り直すための一式です。**�
 | `build_docs.py` | `page-map.json` のとおりに `docs/*.html` を組み立てる |
 | `fix_links.py` | 旧ページ名を指すリンクを新しいページへ張り替える |
 | `build_index.py` | `docs/index.html` の左の一覧と「内容別ページ」を作り直す |
+| `rebuild_nav.py` | **左の一覧と前後リンクだけ**を作り直す。本文には触らない |
 | `make_legacy_stubs.py` | 旧ファイル名で、移動先を案内する小さなページを置く |
 | `legacy-map.json` | 旧ページ#旧節ID → 新ページ#新節ID の対応表（`build_docs.py` が書く） |
 
@@ -47,6 +48,7 @@ python tools/docs/build_docs.py --old-docs _olddocs                # 問題な�
 python tools/docs/build_index.py                                   # 先に index.html を作る
 python tools/docs/fix_links.py --dir docs                          # そのうえでリンクを張り替える
 python tools/docs/make_legacy_stubs.py
+python tools/docs/rebuild_nav.py --check                            # 一覧に差が出ないことを確かめる
 pwsh ./.ci/Build-SearchIndex.ps1
 pwsh ./.ci/Build-ManualZip.ps1
 pwsh ./.ci/Validate-Docs.ps1
@@ -55,6 +57,32 @@ pwsh ./.ci/Validate-Docs.ps1
 **いきなり `docs/` へ書かないでください。** `--out` で別の場所へ出して差を見てから流す、
 という順にしてあります。2026-08-29の作業では、`rm docs/0[1-9]_*.html` が新旧どちらの
 ファイル名にも当たり、**作ったばかりのページを消しました。**
+
+## ページを1枚だけ足すとき
+
+`build_docs.py` は使いません。**あれはページの中身ごと組み直すので、あとから手で書いた
+ページを消します。** 足すときに要るのは、実際には次の3つです。
+
+1. `page-map.json` へ、置きたい位置に項目を足す（`parts` は空、`handwritten: true`）
+2. `docs/` へページ本体を書く。左の一覧の場所として
+   `<nav class="sidebar" aria-label="ページ一覧"></nav>` を空のまま置いておく
+3. `python tools/docs/rebuild_nav.py` を実行する
+
+`rebuild_nav.py` が触るのは、全ページの `<nav class="sidebar">`・`<nav class="pager">`・
+`<nav class="pagenav">` だけです。本文は読みません。`--check` を付けると、書き換えずに
+差が出るページ名だけ出ます。
+
+そのあとは `index.html` の「内容別ページ」のカードを手で足し、
+`Build-SearchIndex.ps1` と `Build-ManualZip.ps1` を回してください。
+**検索の索引はページの並びを `page-map.json` から読みます。**
+
+### 番号が並び順と合っていないページがあります
+
+`21_uibridge.html` は、一覧では 14 と 15 の間にあります。**ファイル名の番号だけが飛んでいます。**
+
+15〜20を繰り下げれば番号は揃いますが、旧ページ名の案内15本、`legacy-map.json` の飛び先、
+Discordや動画の説明欄に貼られたリンクがまとめて狂います。**並び順は `page-map.json` が
+持っているので、番号は増やすだけにしています。**
 
 ## 旧ページ名の案内について
 
