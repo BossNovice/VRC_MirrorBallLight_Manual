@@ -8,6 +8,9 @@
 
 | MirrorBallLight | Unity | VRCLightVolumes | LTCGI | コンパイル確認 | 実機目視（PC） |
 | --- | --- | --- | --- | --- | --- |
+| R29.6 | 2022.3.22f1 | 2.x相当 | 1.7.2 | 済 | 未実施（注10） |
+| R29.6 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注1） | 未実施（注10） |
+| R29.6 | 2022.3.22f1 | 未導入 | 未導入 | 済（注2） | 未実施（注10） |
 | R29.5 | 2022.3.22f1 | 2.x相当 | 1.7.2 | 済 | 対象外（注9） |
 | R29.5 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注1） | 対象外（注9） |
 | R29.5 | 2022.3.22f1 | 未導入 | 未導入 | 済（注2） | 対象外（注9） |
@@ -29,6 +32,21 @@
   紐付けず別行に記録しています。上の3行の実機欄は重複記録を避けるため対象外です。
   実機目視は代表的なシーンの確認であり、全機能を網羅しません。
 
+- **注10**: R29.6はUnity Edit ModeでUI Button／UI Bridge生成、Controller・操作参照、
+  backing UdonBehaviour、On Click配線、再設定時のListener非重複まで確認しています。
+  ClientSimの既存Bridge実行検査25件も通過していますが、生成したButtonをVRChatクライアントで
+  実際に押す確認は未実施です。
+
+**未実施**: R29.6で自動作成したUI ButtonのVRChat PC実機操作
+- 追跡ID: R29.6-UNEXEC-01
+- 理由種別: ENV_UNAVAILABLE
+- 理由詳細: バッチモードのUnity検証環境では、VRChatクライアント上で利用者がButtonを押す操作を実施できません。Unity Edit Modeで生成物と永続Listener、ClientSimでBridge実行処理は別々に確認済みです。
+- 期限: 2026-09-06
+- 担当: 利用者とリリース担当
+- 次アクション: R29.6をテスト用WorldへImportし、自動作成した電源ButtonとプリセットButtonをVRChat PCクライアントで各2回操作して同期範囲とConsoleを確認する
+- 更新日: 2026-08-30
+- 延長回数: 0
+
 - **注1**: VRCLightVolumes 3.0.0-dev.15 の同梱スクリプト
   `Packages/red.sim.lightvolumes/Extra/Audio Link/LightVolumeAudioLink.cs` について、
   UdonSharpが「U#アセンブリに属していない」というエラーを1件出します。**これは
@@ -37,6 +55,23 @@
 
 > 過去の版の変更履歴と、古い版からの移行手順は [archive/RELEASE_NOTES.md](../archive/RELEASE_NOTES.md) にあります。
 > **このページは現行版だけを扱います。**
+
+## UI Bridge付きButtonの自動作成
+
+R29.6では、Controller Inspectorの<strong>「2. ライブプリセット」</strong>にある
+<strong>「UI Bridge付きButtonを自動作成…」</strong>から、ワールド用Buttonを設定できます。
+
+1. Controllerを選び、「2. ライブプリセット」を開きます。
+2. 「UI Bridge付きButtonを自動作成…」を押します。
+3. 新規ButtonならCanvas／Panel、既存Buttonなら対象Buttonを指定します。
+4. 電源またはプリセットの操作を選び、作成・配線ボタンを押します。
+
+Button、`MirrorBallLightUIBridge`、Controller参照、On Clickの
+`UdonBehaviour.SendCustomEvent("Execute")` がまとめて設定されます。同じButtonへ再設定しても
+同じListenerは重複しません。既存Buttonの画像・色・RectTransformは維持されます。
+
+新規Buttonの日本語が表示されない場合は、作成画面の「表示フォント」へ日本語対応Fontを指定してください。
+より詳しい手順と手動設定は、HTML版の「UIボタンから操作する」にあります。
 
 ## 壁・ガラス表面Emission／Mask
 

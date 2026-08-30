@@ -63,7 +63,7 @@
 <li><a aria-current="page" href="21_uibridge.html">ボタンで操作する</a>
 <ul class="inpage">
 <li><a href="#what">やりたいこと</a></li>
-<li><a href="#setup">置き方</a></li>
+<li><a href="#setup">自動作成する（R29.6推奨）</a></li>
 <li><a href="#operations">選べる操作</a></li>
 <li><a href="#scope">誰に見えるか</a></li>
 <li><a href="#result">効いたかどうかを見る</a></li>
@@ -92,12 +92,12 @@
 <div class="page">
 <div class="eyebrow">演出する</div>
 <h1>UIボタンから操作する</h1>
-<p class="lead">ワールドのボタンから、電源とプリセットを切り替えます。</p>
-<div class="warning"><strong>この部品はR29.5から入ります。</strong>いま配っているR29.4.2にはありません。R29.4.2でボタンから操作したい場合は、<a href="14_udon.html#api">他のUdonから操作する</a>のとおり、Controllerの入口をイベント名で直接呼んでください。</div>
+<p class="lead">ControllerのInspectorからUIボタンを自動作成し、電源とプリセットを切り替えます。</p>
+<div class="tip"><strong>R29.6ではButton・UI Bridge・Controller参照・On Click配線をまとめて自動設定できます。</strong>既存Buttonへ追加する方法と、新しいButtonを作る方法の両方があります。</div>
 <section id="what">
 <h2>やりたいこと</h2>
 <p>ワールドに置いたUIボタンを押して、ミラーボールの<strong>電源</strong>と<strong>プリセット</strong>を切り替えます。スクリプトは書きません。</p>
-<p>ボタン側の設定に <code>MirrorBallLightUIBridge</code> という部品を1つ挟みます。Inspectorで「どの操作をするか」を選ぶだけで、あとはボタンを押せば動きます。</p>
+<p>ボタン側の設定に <code>MirrorBallLightUIBridge</code> という部品を1つ挟みます。R29.6ではControllerのInspectorから作成画面を開き、「どの操作をするか」を選ぶだけで、必要な部品と配線が揃います。</p>
 <div class="note">
 <p><strong>この部品が無くても、実は動きます。</strong> Controllerには <code>TogglePower</code> や <code>NextPreset</code> といった入口があり、ボタンの On Click から名前を打てば呼べます。</p>
 <p>ただし2つ困ることがあります。<strong>名前を打ち間違えても、押すまで分かりません。</strong> それと、<strong>番号を指定してプリセットを切り替える操作は、ボタン1つでは順番を守れません。</strong> 先に番号を渡してから呼ぶ必要があり、これまでは補助スクリプトを書くしかありませんでした。</p>
@@ -105,18 +105,29 @@
 </div>
 </section>
 <section id="setup">
-<h2>置き方</h2>
+<h2>自動作成する（R29.6推奨）</h2>
 <ol>
-<li><strong>ボタンと同じGameObjectを選びます。</strong> Hierarchyで、押させたい <code>Button</code> のGameObjectをクリックします。</li>
-<li>Inspectorの下の <code>Add Component</code> を押し、<code>MirrorBall Light UI Bridge</code> を追加します。</li>
-<li><strong>Controller</strong> の欄へ、Hierarchyから <code>MirrorBallLightController</code> が付いたGameObjectをドラッグします。設定済みサンプルなら <code>MirrorBallLight_ConfiguredSample</code> です。</li>
-<li><strong>操作</strong> のドロップダウンから、このボタンにさせたいことを選びます。番号を指定する操作を選んだときだけ、<strong>プリセット番号</strong> の欄が出ます。</li>
-<li>同じGameObjectの <code>Button</code> コンポーネントで、<code>On Click ()</code> の <code>+</code> を押します。</li>
-<li>左下の欄へ、<strong>同じGameObject</strong> をドラッグします。</li>
-<li>右上のドロップダウンから <code>UdonBehaviour</code> → <code>SendCustomEvent (string)</code> を選びます。</li>
-<li>その下の文字入力欄へ <code>Execute</code> と入れます。<strong>大文字小文字まで一致させてください。</strong></li>
+<li>Hierarchyで <code>MirrorBallLightController</code> の付いたGameObjectを選びます。</li>
+<li>Inspectorの<strong>「2. ライブプリセット」</strong>を開き、<strong>「UI Bridge付きButtonを自動作成…」</strong>を押します。</li>
+<li><strong>作成方法</strong>を選びます。
+<ul>
+<li><strong>新しいButtonを作成：</strong>CanvasまたはPanelなどのRectTransformを「配置先UI」へ指定します。</li>
+<li><strong>既存Buttonへ追加・更新：</strong>すでに見た目を作ってあるButtonを「対象Button」へ指定します。</li>
+</ul></li>
+<li><strong>操作</strong>を選びます。番号指定の操作では、先頭を0とした<strong>プリセット番号</strong>も指定します。</li>
+<li>新規作成ではGameObject名と表示文字を確認します。日本語が出ないフォントの場合は、日本語対応Fontを「表示フォント」へ指定します。</li>
+<li><strong>「Buttonを作成して配線」</strong>または<strong>「既存Buttonへ追加・配線」</strong>を押します。</li>
+<li>作成されたButtonの <code>On Click ()</code> に、同じGameObjectのUdonBehaviourと <code>SendCustomEvent (string) / Execute</code> が1件入っていることを確認します。</li>
 </ol>
-<div class="tip"><strong>ボタン1つにつき、この部品を1つ置きます。</strong> 「電源」「次のプリセット」「前のプリセット」の3つのボタンを作るなら、3つのボタンそれぞれに1つずつ付けて、操作だけ変えます。</div>
+<div class="note"><strong>既存Buttonへ追加しても、画像・色・RectTransformは変えません。</strong>「表示文字も変更」をONにした場合だけ、子にあるUnity UI Textの文字と任意のFontを変更します。TextMeshProの文字は変更しません。</div>
+<div class="tip"><strong>同じButtonへ自動設定をやり直してもOn Clickは重複しません。</strong>Controller・操作・プリセット番号だけを更新します。作成直後ならUnityのUndoでも戻せます。</div>
+<h3>手動で設定する場合</h3>
+<ol>
+<li>Buttonと同じGameObjectへ <code>MirrorBall Light UI Bridge</code> を追加し、Controller・操作・必要ならプリセット番号を設定します。</li>
+<li>Buttonの <code>On Click ()</code> で <code>+</code> を押し、同じGameObjectを指定します。</li>
+<li><code>UdonBehaviour</code> → <code>SendCustomEvent (string)</code> を選び、文字入力欄へ <code>Execute</code> と入れます。大文字小文字まで一致させます。</li>
+</ol>
+<div class="tip"><strong>ボタン1つにつき、この部品を1つ置きます。</strong>「電源」「次」「前」の3つを作るなら、それぞれのButtonへ1つずつ設定します。</div>
 </section>
 <section id="operations">
 <h2>選べる操作</h2>
@@ -167,7 +178,8 @@
 <p>一覧が3件のときに10番を指定すると、<strong>エラーにならず、末尾の3番目が適用されて「成功」が返ります。</strong> Controller側が番号を丸めるためで、他のUdonから呼んだときも同じです。番号を変えたのに同じプリセットが出るときは、一覧の件数を確かめてください。</p>
 <h3>押しても何も起きないとき</h3>
 <ol>
-<li><strong>イベント名が <code>Execute</code> になっているか。</strong> いちばん多い原因です。前後の空白や大文字小文字も一致させてください。</li>
+<li><strong>自動作成をもう一度実行します。</strong>同じButtonならOn Clickを重複させず、Controller・操作・配線を更新します。</li>
+<li>手動設定の場合は、イベント名が <code>Execute</code> になっているかを確認します。前後の空白や大文字小文字も一致させてください。</li>
 <li><strong>Controllerの欄が空でないか。</strong> 空のときはInspectorに赤い警告が出て、押すとConsoleにも警告が出ます。</li>
 <li>On Click の左下がボタン自身のGameObjectになっているか。別のオブジェクトを入れていると、そちらのUdonBehaviourを探しに行きます。</li>
 <li>プリセットの操作なら、Controllerの「ライブプリセットを使用」がONか。</li>
