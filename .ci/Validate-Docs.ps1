@@ -18,7 +18,8 @@
     検査対象外です。これらは書き換えてはいけません。
 #>
 param(
-    [string]$RepositoryPath = (Join-Path $PSScriptRoot "..")
+    [string]$RepositoryPath = (Join-Path $PSScriptRoot ".."),
+    [string]$CoreRepositoryPath = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -605,6 +606,19 @@ $zipCheck = & pwsh -NoProfile -File (Join-Path $repository ".ci/Build-ManualZip.
 if ($LASTEXITCODE -ne 0)
 {
     foreach ($line in $zipCheck) { $problems.Add(($line | Out-String).Trim()) }
+}
+
+# --- Controller/Preset/UI BridgeのInspector説明網羅 --------------------------
+# 本体リポジトリが隣にあるローカル検証では、公開ラベルと10個の折り畳み名を
+# 実ソースから抽出します。マニュアル単独のCIでは本体を読めないためSKIPします。
+$coverageArguments = @("-RepositoryPath", $repository, "-Strict")
+if (![string]::IsNullOrWhiteSpace($CoreRepositoryPath)) {
+    $coverageArguments += @("-CoreRepositoryPath", $CoreRepositoryPath)
+}
+$coverageCheck = & pwsh -NoProfile -File (Join-Path $repository ".ci/Validate-InspectorCoverage.ps1") @coverageArguments 2>&1
+foreach ($line in $coverageCheck) { Write-Output $line }
+if ($LASTEXITCODE -ne 0) {
+    $problems.Add("Inspectorの表示項目に説明漏れがあります。上のINSPECTOR_COVERAGE_RESULTを確認してください。")
 }
 
 Write-Output "HTML $($pages.Count) ページ、Markdown $($markdowns.Count) ファイルを検査しました。"
