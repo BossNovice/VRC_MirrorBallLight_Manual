@@ -8,6 +8,9 @@
 
 | MirrorBallLight | Unity | VRCLightVolumes | LTCGI | コンパイル確認 | 実機目視（PC） |
 | --- | --- | --- | --- | --- | --- |
+| R30 | 2022.3.22f1 | 2.1.3 | 1.7.2 | 済 | 未実施（注11） |
+| R30 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注1） | 未実施（注11） |
+| R30 | 2022.3.22f1 | 未導入 | 未導入 | 済（注2） | 未実施（注11） |
 | R29.6 | 2022.3.22f1 | 2.x相当 | 1.7.2 | 済 | 未実施（注10） |
 | R29.6 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注1） | 未実施（注10） |
 | R29.6 | 2022.3.22f1 | 未導入 | 未導入 | 済（注2） | 未実施（注10） |
@@ -36,6 +39,20 @@
   backing UdonBehaviour、On Click配線、再設定時のListener非重複まで確認しています。
   ClientSimの既存Bridge実行検査25件も通過していますが、生成したButtonをVRChatクライアントで
   実際に押す確認は未実施です。
+
+- **注11**: R30は両連携構成でShader 6本、UdonSharp、ビルド時バリアントを検証し、
+  Unityスタンドアロンの描画検査50シナリオ／39差分組を通過しています。新しい合成・反射・
+  Additive設定をVRChat PCクライアントで目視する確認は未実施です。
+
+**未実施**: R30の合成・反射・Additive設定のVRChat PC実機目視
+- 追跡ID: R30-UNEXEC-01
+- 理由種別: ENV_UNAVAILABLE
+- 理由詳細: 自動検証ではUnityスタンドアロン描画まで確認できますが、VRChatクライアント上のAvatar Shaderや実ワールドのVolume／LTCGI構成を再現できません。
+- 期限: 2026-09-06
+- 担当: 利用者とリリース担当
+- 次アクション: テストWorldで推奨ハイブリッド、VRCLightVolumesのみ、LTCGIのみ、Additiveのみを順に切り替え、壁・ガラス・本体の明るさとConsoleを確認する
+- 更新日: 2026-08-30
+- 延長回数: 0
 
 **未実施**: R29.6で自動作成したUI ButtonのVRChat PC実機操作
 - 追跡ID: R29.6-UNEXEC-01
@@ -773,6 +790,24 @@ ShaderがAudioLinkのグローバルGPUテクスチャを直接読み取るた�
 5. Controllerの `対象マテリアルをシーンから自動検出` を押します。
 
 VRCLightVolumesは環境光とPoint/Spot/Area Light Volumeを反映し、LTCGIはリアルタイムArea Lightの拡散光と鏡面反射を追加します。ミラーボール光点は従来どおり独立したEmissionとして加算されます。透明版にも同じ連携を実装しています。
+
+### R30の合成・反射・Additive設定
+
+連携版Materialの `10. VRCLightVolumes・LTCGI` には、次の設定があります。
+
+| 項目 | 選択肢 | 動作 |
+| --- | --- | --- |
+| 照明連携の合成方式 | 従来の完全加算 | VRCLightVolumes拡散とLTCGI拡散・反射をすべて加算します。旧版互換です |
+|  | VRCLightVolumesのみ | VRCLightVolumesだけを使用します |
+|  | LTCGIのみ | LTCGIだけを使用します |
+|  | ハイブリッド（推奨） | VRCLightVolumes拡散とLTCGI反射を合成し、拡散光の二重加算を避けます |
+| VRCLightVolumes反射方式 | なし／主方向のみ／RGB方向別 | Volumeの鏡面反射を無効、軽量、高品質から選びます。ハイブリッドでは使用しません |
+| VRCLightVolumes受光方式 | 通常Volume／Additiveのみ | Additiveのみでは動的な加算VolumeとPoint Light Volumeだけを受けます |
+
+既存Materialの初期値は従来互換です。新規設定ではControllerの `9. VRCLightVolumes・LTCGI連携` で
+`推奨ハイブリッド` を選び、`選択したプリセットを一括適用` を押す方法を推奨します。
+LTCGIの光をVRCLightVolumesへ書き込むAdapterと従来の完全加算を併用すると、拡散光が
+二重に明るくなる可能性があります。`Tools > MirrorBall Light > 診断・最適化` の警告を確認してください。
 
 連携版はShader Model 5.0を使用するPC向けです。Quest/Android向けには別の軽量Materialを用意してください。照明を重ねすぎると負荷が増えるため、Volumeの重複数とLTCGI Area Light数は必要最小限にしてください。
 
