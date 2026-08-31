@@ -6,12 +6,57 @@ param(
 
 $ErrorActionPreference = "Stop"
 $repository = (Resolve-Path -LiteralPath $RepositoryPath).Path
-if ([string]::IsNullOrWhiteSpace($CoreRepositoryPath)) {
-    $candidate = Join-Path (Split-Path -Parent $repository) "VRC_MirrorBallLight_publish"
-    if (Test-Path -LiteralPath $candidate) { $CoreRepositoryPath = $candidate }
+# --- 本体リポジトリを探す ---------------------------------------------------
+#
+# **名前を1つしか知らないと、置き場所を変えただけで検査が飛びます。**
+# 2026-08-31に実際に起きました。本体の clone が VRC_MirrorBallLight_publish から
+# VRC_MirrorBallLight へ移り、この検査は SKIP のまま exit 0 していました。
+# 呼び出し元の Validate-Docs.ps1 は全体を「OK」と表示するので、**135項目の説明網羅を
+# 誰も見ていない状態が緑に見えていました。**
+#
+# 名前だけで決めず、Controllerのソースがあることまで確かめます。同名の別物を
+# つかむと、あとの正規表現が何も拾わず「網羅0件でPASS」になります。
+$coreMarker = "Assets/MirrorBallLight/Scripts/MirrorBallLightController.cs"
+$searched = New-Object 'System.Collections.Generic.List[string]'
+function Test-CoreRepository([string]$path)
+{
+    if ([string]::IsNullOrWhiteSpace($path)) { return $false }
+    if (!(Test-Path -LiteralPath $path)) { return $false }
+    return (Test-Path -LiteralPath (Join-Path $path $coreMarker))
 }
-if ([string]::IsNullOrWhiteSpace($CoreRepositoryPath) -or !(Test-Path -LiteralPath $CoreRepositoryPath)) {
-    Write-Output "INSPECTOR_COVERAGE_RESULT: SKIP 本体リポジトリが無いため説明網羅を検査できません"
+
+if (![string]::IsNullOrWhiteSpace($CoreRepositoryPath))
+{
+    # 明示的に渡された場合は、黙って落とさず理由を出します。
+    $searched.Add($CoreRepositoryPath)
+    if (!(Test-CoreRepository $CoreRepositoryPath))
+    {
+        # **明示的に渡されたのに中身が違うのは、環境の都合ではなく指定ミスです。**
+        # ここをSKIPにすると、パスを間違えたまま緑になります。落とします。
+        Write-Output ("INSPECTOR_COVERAGE_RESULT: FAIL 指定された本体リポジトリに " +
+            "$coreMarker がありません: $CoreRepositoryPath")
+        exit 1
+    }
+}
+else
+{
+    $parent = Split-Path -Parent $repository
+    foreach ($name in @("VRC_MirrorBallLight_publish", "VRC_MirrorBallLight"))
+    {
+        $candidate = Join-Path $parent $name
+        $searched.Add($candidate)
+        if (Test-CoreRepository $candidate) { $CoreRepositoryPath = $candidate; break }
+    }
+}
+
+if ([string]::IsNullOrWhiteSpace($CoreRepositoryPath))
+{
+    # **マニュアル単独のCIでは、ここを通るのが正常です。** 本体はPrivateで読めません。
+    # ただし「検査していない」ことは、結果を読む人に分かる形で残します。
+    Write-Output "INSPECTOR_COVERAGE_RESULT: SKIP 本体リポジトリが見つかりません"
+    foreach ($path in $searched) { Write-Output "  探した場所: $path" }
+    Write-Output "  **この実行では説明網羅を検査していません。** 手元で確かめるときは"
+    Write-Output "  -CoreRepositoryPath で本体リポジトリのパスを渡してください。"
     exit 0
 }
 
