@@ -620,6 +620,9 @@ foreach ($line in $coverageCheck) { Write-Output $line }
 if ($LASTEXITCODE -ne 0) {
     $problems.Add("Inspectorの表示項目に説明漏れがあります。上のINSPECTOR_COVERAGE_RESULTを確認してください。")
 }
+# **SKIPを「OK」で終わらせません。** 本体を読めないCIではSKIPが正常ですが、
+# 最後の1行しか見ない人には、検査した実行と区別が付きません。
+$coverageSkipped = @($coverageCheck | Where-Object { "$_" -match "INSPECTOR_COVERAGE_RESULT: SKIP" }).Count -gt 0
 
 Write-Output "HTML $($pages.Count) ページ、Markdown $($markdowns.Count) ファイルを検査しました。"
 if ($problems.Count -gt 0)
@@ -627,4 +630,11 @@ if ($problems.Count -gt 0)
     foreach ($problem in $problems) { Write-Output "NG: $problem" }
     throw "$($problems.Count) 件の問題が見つかりました。"
 }
-Write-Output "OK: バージョン表記とリンクに問題は見つかりませんでした。"
+if ($coverageSkipped)
+{
+    Write-Output "OK: バージョン表記とリンクに問題は見つかりませんでした（**Inspector説明網羅は未検査**）。"
+}
+else
+{
+    Write-Output "OK: バージョン表記とリンクに問題は見つかりませんでした。"
+}
