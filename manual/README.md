@@ -801,7 +801,7 @@ ShaderがAudioLinkのグローバルGPUテクスチャを直接読み取るた�
 
 VRCLightVolumesは環境光とPoint/Spot/Area Light Volumeを反映し、LTCGIはリアルタイムArea Lightの拡散光と鏡面反射を追加します。ミラーボール光点は従来どおり独立したEmissionとして加算されます。透明版にも同じ連携を実装しています。
 
-### R30の合成・反射・Additive設定
+### 照明の重なり方を選ぶ
 
 連携版Materialの `10. VRCLightVolumes・LTCGI` には、次の設定があります。
 

@@ -63,7 +63,7 @@
 <li><a aria-current="page" href="21_uibridge.html">ボタンで操作する</a>
 <ul class="inpage">
 <li><a href="#what">やりたいこと</a></li>
-<li><a href="#setup">自動作成する（R29.6推奨）</a></li>
+<li><a href="#setup">自動作成する（推奨）</a></li>
 <li><a href="#operations">選べる操作</a></li>
 <li><a href="#scope">誰に見えるか</a></li>
 <li><a href="#result">効いたかどうかを見る</a></li>
@@ -93,11 +93,11 @@
 <div class="eyebrow">演出する</div>
 <h1>UIボタンから操作する</h1>
 <p class="lead">ControllerのInspectorからUIボタンを自動作成し、電源とプリセットを切り替えます。</p>
-<div class="tip"><strong>R29.6ではButton・UI Bridge・Controller参照・On Click配線をまとめて自動設定できます。</strong>既存Buttonへ追加する方法と、新しいButtonを作る方法の両方があります。</div>
+<div class="tip"><strong>Button・UI Bridge・Controller参照・On Click配線は、まとめて自動設定できます。</strong>既存Buttonへ追加する方法と、新しいButtonを作る方法の両方があります。</div>
 <section id="what">
 <h2>やりたいこと</h2>
 <p>ワールドに置いたUIボタンを押して、ミラーボールの<strong>電源</strong>と<strong>プリセット</strong>を切り替えます。スクリプトは書きません。</p>
-<p>ボタン側の設定に <code>MirrorBallLightUIBridge</code> という部品を1つ挟みます。R29.6ではControllerのInspectorから作成画面を開き、「どの操作をするか」を選ぶだけで、必要な部品と配線が揃います。</p>
+<p>ボタン側の設定に <code>MirrorBallLightUIBridge</code> という部品を1つ挟みます。ControllerのInspectorから作成画面を開き、「どの操作をするか」を選ぶだけで、必要な部品と配線が揃います。</p>
 <div class="note">
 <p><strong>この部品が無くても、実は動きます。</strong> Controllerには <code>TogglePower</code> や <code>NextPreset</code> といった入口があり、ボタンの On Click から名前を打てば呼べます。</p>
 <p>ただし2つ困ることがあります。<strong>名前を打ち間違えても、押すまで分かりません。</strong> それと、<strong>番号を指定してプリセットを切り替える操作は、ボタン1つでは順番を守れません。</strong> 先に番号を渡してから呼ぶ必要があり、これまでは補助スクリプトを書くしかありませんでした。</p>
@@ -105,7 +105,7 @@
 </div>
 </section>
 <section id="setup">
-<h2>自動作成する（R29.6推奨）</h2>
+<h2>自動作成する（推奨）</h2>
 <ol>
 <li>Hierarchyで <code>MirrorBallLightController</code> の付いたGameObjectを選びます。</li>
 <li>Inspectorの<strong>「2. ライブプリセット」</strong>を開き、<strong>「UI Bridge付きButtonを自動作成…」</strong>を押します。</li>
