@@ -183,7 +183,9 @@
 <li><strong>Controllerの欄が空でないか。</strong> 空のときはInspectorに赤い警告が出て、押すとConsoleにも警告が出ます。</li>
 <li>On Click の左下がボタン自身のGameObjectになっているか。別のオブジェクトを入れていると、そちらのUdonBehaviourを探しに行きます。</li>
 <li>プリセットの操作なら、Controllerの「ライブプリセットを使用」がONか。</li>
+<li><strong>ここまでで直らないときは、Canvas側が押せない設定です。</strong><code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> を実行してください。R30.5から、World Spaceでない・コライダーが無い・Graphic Raycasterが無いなどを名指しで表示します。詳しくは <a href="18_troubleshoot.html#button-dead">ボタンを押しても何も起きない</a> を参照してください。</li>
 </ol>
+<div class="note"><b>World Spaceでないボタンと、コライダーの無いCanvasは、Unity Editorの再生では押せてしまいます。</b> VRChatでだけ効きません。</div>
 <h3>この部品は同期しません</h3>
 <p>部品自体はネットワーク同期を持ちません。<strong>押した結果が全員に届くかどうかは、Controller側の動作範囲だけで決まります。</strong></p>
 </section>
