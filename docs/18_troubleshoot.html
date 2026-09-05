@@ -79,6 +79,7 @@
 <li><a href="#black">ミラーボール本体が黒い</a></li>
 <li><a href="#rotation-stopped">回転が止まる</a></li>
 <li><a href="#button-dead">ボタンを押しても何も起きない</a></li>
+<li><a href="#global-name-clash">光点や回転が、たまに一瞬だけ乱れる</a></li>
 <li><a href="#pattern-frozen">アニメーションでMaterialを切り替えても効かない</a></li>
 <li><a href="#udon">UdonSharp Program Assetのエラー</a></li>
 <li><a href="#dependency">連携版ShaderでImport時にエラーが出る</a></li>
@@ -166,6 +167,18 @@
 </table>
 <div class="note"><b>World Spaceでないボタンと、コライダーの無いCanvasは、Unity Editorの再生では押せてしまいます。</b> VRChatでだけ効きません。実機に入るまで気づけないため、診断で先に見つけてください。</div>
 <p>ボタンの作り方は <a href="21_uibridge.html">ボタンで操作する</a> を参照してください。</p>
+</section>
+<section id="global-name-clash">
+<h2>光点や回転が、たまに一瞬だけ乱れる</h2>
+<p>ワールドの中に<b>同じ名前のShader Globalを書く別のギミック</b>があると、書いた順で値が入れ替わり、光点や回転がたまに乱れます。MirrorBallLightは1秒ごとにすべてのGlobalを書き直すため<b>すぐ元に戻りますが、戻るまでの間は絵が乱れます。</b></p>
+<p><b>症状が「たまに一瞬」で終わるため、原因に到達できません。</b> R30.18から、診断で名前の衝突そのものを見つけます。<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> を実行してください。</p>
+<table>
+<tr><th>コード</th><th>内容</th></tr>
+<tr><td><code>MBL-W031</code></td><td>MirrorBallLight以外が <code>_UdonMB_</code> で始まるShader Globalを書いている</td></tr>
+</table>
+<div class="note"><b>実行中には検出できません。</b> Shader GlobalはUdonから書けるだけで読めないため、「上書きされた」ことをワールドの中で知る道がありません。<b>設計時にしか見つけられない</b>ので、診断で先に確かめてください。</div>
+<div class="note"><b>0件でも「衝突していない」とは言い切れません。</b> 名前を文字列の連結で組み立てている場合と、ソースの無いDLLやプリコンパイル済みパッケージの中は見えません。</div>
+<p>見つかった場合は、<b>相手側の名前を変える</b>か、MirrorBallLightの<b>Shader Global共有を切って</b>Material個別更新にしてください。</p>
 </section>
 <section id="pattern-frozen">
 <h2>アニメーションでMaterialを切り替えても効かない</h2>
