@@ -79,6 +79,7 @@
 <li><a href="#first">最初に：CPUとGPUのどちらが原因かを確かめる</a></li>
 <li><a href="#gpu">GPUが原因のとき</a></li>
 <li><a href="#cpu">CPUが原因のとき</a></li>
+<li><a href="#material-write-cost">Shader Global共有を切っていると重い</a></li>
 <li><a href="#many">オブジェクトが多いとき</a></li>
 <li><a href="#budget">推奨負荷設定</a></li>
 <li><a href="#skip-hidden">自動で効く軽量化</a></li>
@@ -169,6 +170,13 @@
 
 <h3>4. プリセットの差分更新</h3>
 <p>ライブプリセットは <code>プリセット差分更新の最小値</code> 未満の微小な補間更新を省きます。初期値は0.001です。</p>
+</section>
+<section id="material-write-cost">
+<h2>Shader Global共有を切っていると重い</h2>
+<p>Controllerの<b>「Udon Global共有」がOFF</b>のとき、または<b>複数台置いて2台目以降をMaterial個別更新にしている</b>とき、Controllerは対象Material1枚ごとに毎更新（既定30回/秒）で値を書き込みます。<b>Material枚数に比例して重くなります。</b></p>
+<p>R30.19から<b>同じ値を書き直さなくなりました。</b>実測で<b>92%削減</b>（Material 4枚・10フレームで、試行144のうち実書き12）です。設定は要りません。</p>
+<div class="note"><b>Global共有を使っている構成（既定）は、もともとこの経路を通りません。</b>R30.19で変わるのは、共有を切っている場合だけです。</div>
+<p>診断ウィンドウは、<b>更新頻度 × 対象Material枚数</b>が大きいときに <code>MBL-I001</code> を出します。まだ重い場合は、更新頻度を下げるか、Global共有をONにしてください。</p>
 </section>
 <section id="many">
 <h2>オブジェクトが多いとき</h2>
