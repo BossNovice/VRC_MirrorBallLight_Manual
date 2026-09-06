@@ -1,23 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 336" role="img" aria-label="Edit ModeとPlay Modeで、Controllerの設定がMaterialへ書かれる仕組みの違い">
 <style>
- .bg{fill:#0d1117}
- .lane{fill:#161b22;stroke:#30363d;stroke-width:1}
- .box{fill:#11161d;stroke:#3d4753;stroke-width:1}
- .warn{fill:#2a1f12;stroke:#7a5a22;stroke-width:1}
+ .bg{fill:#08070b}
+ .lane{fill:#0d0b12;stroke:#1b1823;stroke-width:1}
+ .box{fill:#12101a;stroke:#241f30;stroke-width:1}
+ .warn{fill:#1d1410;stroke:#7a4a2a;stroke-width:1}
  .btn{fill:#12261a;stroke:#2e6b45;stroke-width:1}
- .t{fill:#e6edf3;font:14px "Segoe UI","Noto Sans JP",sans-serif}
- .h{fill:#79c0ff;font:bold 16px "Segoe UI","Noto Sans JP",sans-serif}
- .m{fill:#9da7b3;font:13px "Segoe UI","Noto Sans JP",sans-serif}
- .warnt{fill:#ffd16f;font:bold 14px "Segoe UI","Noto Sans JP",sans-serif}
- .ttl{fill:#e6edf3;font:bold 17px "Segoe UI","Noto Sans JP",sans-serif}
+ .t{fill:#ece9f2;font:14px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .h{fill:#ffcf5c;font:bold 16px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .m{fill:#8a8399;font:13px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .warnt{fill:#ffd16f;font:bold 14px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .ttl{fill:#ece9f2;font:bold 17px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
  .ar{stroke:#4a5566;stroke-width:2;fill:none;marker-end:url(#a)}
- .arg{stroke:#3fb950;stroke-width:2;fill:none;marker-end:url(#g)}
- .arr{stroke:#d29922;stroke-width:2;fill:none;stroke-dasharray:5 4;marker-end:url(#y)}
+ .arg{stroke:#7ee0a6;stroke-width:2;fill:none;marker-end:url(#g)}
+ .arr{stroke:#ff9d6b;stroke-width:2;fill:none;stroke-dasharray:5 4;marker-end:url(#y)}
 </style>
 <defs>
  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4a5566"/></marker>
- <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#3fb950"/></marker>
- <marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#d29922"/></marker>
+ <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#7ee0a6"/></marker>
+ <marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ff9d6b"/></marker>
 </defs>
 <rect class="bg" width="900" height="336"/>
 <text class="ttl" x="24" y="34">Controllerの値が、いつMaterialへ書かれるか</text>

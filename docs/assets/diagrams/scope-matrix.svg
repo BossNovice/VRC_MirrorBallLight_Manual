@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" role="img" aria-label="プリセットと電源の動作範囲の組み合わせ4通り">
 <style>
- .bg{fill:#0d1117}
- .cell{fill:#161b22;stroke:#30363d;stroke-width:1;rx:8}
- .t{fill:#e6edf3;font:15px "Segoe UI","Noto Sans JP",sans-serif}
- .h{fill:#79c0ff;font:bold 15px "Segoe UI","Noto Sans JP",sans-serif}
- .m{fill:#9da7b3;font:13px "Segoe UI","Noto Sans JP",sans-serif}
- .ttl{fill:#e6edf3;font:bold 17px "Segoe UI","Noto Sans JP",sans-serif}
- .ax{fill:#58a6ff;font:bold 14px "Segoe UI","Noto Sans JP",sans-serif}
+ .bg{fill:#08070b}
+ .cell{fill:#0d0b12;stroke:#1b1823;stroke-width:1;rx:8}
+ .t{fill:#ece9f2;font:15px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .h{fill:#ffcf5c;font:bold 15px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .m{fill:#8a8399;font:13px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .ttl{fill:#ece9f2;font:bold 17px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .ax{fill:#ffcf5c;font:bold 14px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
 </style>
 <rect class="bg" width="900" height="470"/>
 <text class="ttl" x="24" y="34">動作範囲の組み合わせ（プリセットと電源は別々に決められます）</text>

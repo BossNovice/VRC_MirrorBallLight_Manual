@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-label="自分の壁へ適用する5つの手順">
 <style>
- .bg{fill:#0d1117}
- .cell{fill:#161b22;stroke:#30363d;stroke-width:1}
- .sub{fill:#11161d;stroke:#3d4753;stroke-width:1}
- .warn{fill:#2a1f12;stroke:#7a5a22;stroke-width:1}
- .t{fill:#e6edf3;font:15px "Segoe UI","Noto Sans JP",sans-serif}
- .h{fill:#79c0ff;font:bold 16px "Segoe UI","Noto Sans JP",sans-serif}
- .m{fill:#9da7b3;font:13px "Segoe UI","Noto Sans JP",sans-serif}
- .code{fill:#7ee787;font:13px "Consolas","Noto Sans Mono",monospace}
- .ttl{fill:#e6edf3;font:bold 17px "Segoe UI","Noto Sans JP",sans-serif}
- .num{fill:#0d1117;font:bold 15px "Segoe UI",sans-serif}
- .dot{fill:#58a6ff}
+ .bg{fill:#08070b}
+ .cell{fill:#0d0b12;stroke:#1b1823;stroke-width:1}
+ .sub{fill:#12101a;stroke:#241f30;stroke-width:1}
+ .warn{fill:#1d1410;stroke:#7a4a2a;stroke-width:1}
+ .t{fill:#ece9f2;font:15px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .h{fill:#ffcf5c;font:bold 16px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .m{fill:#8a8399;font:13px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .code{fill:#7ee0a6;font:13px "Consolas","Noto Sans Mono",monospace}
+ .ttl{fill:#ece9f2;font:bold 17px "Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif}
+ .num{fill:#08070b;font:bold 15px "Segoe UI",sans-serif}
+ .dot{fill:#ffcf5c}
  .ar{stroke:#4a5566;stroke-width:2;fill:none;marker-end:url(#a)}
 </style>
 <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4a5566"/></marker></defs>
