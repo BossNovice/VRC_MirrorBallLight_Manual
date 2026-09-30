@@ -90,10 +90,17 @@
 <div class="page">
 <div class="eyebrow">見え方を決める</div>
 <h1>ControllerのInspector</h1>
-<p class="lead">10個の折りたたみの構成と、設定を保存するボタンの使い方です。</p>
+<p class="lead">Easy／Proの表示モード、10個の折りたたみの構成と、設定を保存するボタンの使い方です。</p>
 <section id="inspector">
 <h2>ControllerのInspectorの使い方</h2>
-<p>設定項目は10個の折りたたみに分かれています。<strong>最初は「1. 基本設定・電源・対象Material」だけが開いています。</strong> 導入だけならここしか触りません。</p>
+<p>初期表示の<strong>Pro</strong>では設定項目が10個の折りたたみに分かれています。<strong>最初は「1. 基本設定・電源・対象Material」だけが開いています。</strong> Easyでは導入と基本の見た目をまとめて設定できます。</p>
+<h3>表示モード（開発版）</h3>
+<p>Inspector上部の<strong>「Pro：すべての設定」「Easy：基本設定」</strong>で表示を切り替えます。Easyには必須参照・電源・基本の見た目・AudioLinkの基本設定が並び、反映・保存ボタンはどちらでも使えます。</p>
+<p><strong>切替は設定値やMaterialを書き換えません。</strong> Easyで非表示になった設定も有効です。ライブプリセット、光点、投影、照明連携などの詳細はProで調整してください。ライブプリセットやAudioLinkテスト入力が有効な場合は、Easyにも案内が出ます。</p>
+<p>表示モードはこのPCのUnity Editorへプロジェクトごとに保存され、Unityを起動し直しても引き継ぎます。SceneやPrefabの設定には含まれません。これは下の折りたたみ状態の保存とは別です。</p>
+<h3>導入状態（設定の確認）</h3>
+<p>両モードの上部にミラーボール本体の参照、設定済みMaterialと未設定参照の件数を表示します。照明連携Materialを使用する場合は依存Packageと、有効な受光機能に必要なScene内のManager／Controllerを確認します。使用していない照明連携のSceneオブジェクトは要求しません。</p>
+<p>照明連携の状態は初回とController設定の変更後に確認します。MaterialやSceneを変更したら<strong>「導入状態を更新」</strong>を押してください。<strong>「診断・最適化を開く」</strong>から詳細な診断へ移動できます。この表示は設定の確認で、描画やVRChatでの動作確認を表すものではありません。</p>
 <ol class="steps">
 <li>Hierarchyで<strong>Controllerが付いたGameObject</strong>を選びます。設定済みサンプルなら <code>MirrorBallLight_ConfiguredSample</code> です。</li>
 <li>Inspectorの上にある<strong>「すべて開く」「すべて閉じる」</strong>で、10個の折りたたみをまとめて操作できます。必要な番号だけ開くほうが探しやすくなります。</li>
@@ -118,13 +125,13 @@
 <tr><td>10</td><td>最適化・診断</td><td>このページ／<a href="18_troubleshoot.html">最適化・対処</a></td></tr>
 </tbody>
 </table>
-<h3>Inspectorの下に出る警告</h3>
+<h3>導入状態に出る警告</h3>
 <p>必須の設定が空のとき、保存ボタンの下に出ます。<strong>赤はこのままでは動きません。</strong></p>
 <table>
 <thead><tr><th>表示</th><th>意味</th><th>対処</th></tr></thead>
 <tbody>
-<tr><td>ミラーボール本体が未設定です</td><td>赤（エラー）</td><td>1番の「ミラーボール本体」へ回転の基準にするTransformを入れます</td></tr>
-<tr><td>反射を表示するマテリアルが未設定です</td><td>黄（警告）</td><td>1番の「対象マテリアルをシーンから自動検出」を押します</td></tr>
+<tr><td>ミラーボール本体を設定してください</td><td>赤（エラー）</td><td>「ミラーボール本体」へ回転の基準にするTransformを入れます</td></tr>
+<tr><td>反射を表示するMaterialを設定し、一覧の未設定参照を確認してください</td><td>黄（警告）</td><td>「反射を表示するマテリアル」の未設定参照を確認します。必要なら自動検出を使います</td></tr>
 </tbody>
 </table>
 <h3>変えたのに見た目が変わらないとき</h3>
@@ -198,9 +205,11 @@
 <section id="buttons">
 <h2>共通ボタン</h2>
 <table>
+<tr><td>導入状態を更新</td><td>選択中のControllerの照明連携状態を読み直します。自動修正は行いません。</td></tr>
+<tr><td>診断・最適化を開く</td><td>Scene全体の詳細な診断ウィンドウを開きます。</td></tr>
 <tr>
 <td>すべて開く／すべて閉じる</td>
-<td>10セクションの折り畳み状態を一括変更します。</td>
+<td>Proの10セクションの折り畳み状態を一括変更します。</td>
 </tr>
 <tr>
 <td>現在の設定をマテリアルへ反映・保存</td>

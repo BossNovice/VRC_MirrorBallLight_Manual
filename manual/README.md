@@ -582,6 +582,14 @@ Material Inspectorの `2. 表面Emission・AudioLink` を開き、`表面Emissio
 
 Material Inspectorは用途別の日本語折り畳みへ整理しています。Controller Inspectorも初期状態では基本設定だけを開き、必要な演出項目を個別に展開する構成です。
 
+### ControllerのEasy／Pro表示（開発版）
+
+Inspector上部の `Pro：すべての設定`／`Easy：基本設定` で表示を切り替えます。初期表示はProです。Easyには必須参照・電源・基本の見た目・AudioLinkの基本設定をまとめ、`現在の設定をマテリアルへ反映・保存` は両モードで使えます。
+
+表示を切り替えてもControllerやMaterialの値は変わりません。Easyで非表示になった詳細設定も有効です。ライブプリセット・光点・投影・照明連携などはProで調整してください。表示モードはプロジェクトごとにこのPCのEditorへ保存され、SceneやPrefabへは保存しません。
+
+上部の `導入状態（設定の確認）` には本体参照とMaterialの設定件数を表示します。照明連携Materialを使用中なら依存Packageと、受光設定に必要なSceneのManager／Controllerも確認します。MaterialやSceneを変更したら `導入状態を更新` を押してください。`診断・最適化を開く` でScene全体の診断へ移動できます。この表示は描画やVRChatの動作確認を示すものではありません。
+
 Emission TextureとMaskは、それぞれ独立したTiling／Offsetを使用できます。透明Shaderではガラスの透明度と深度フェードへ追従し、壁用Shaderでは不透明な表面発光として加算されます。Controllerへ対象Materialを登録しても、この設定はMaterial固有値として維持されます。
 
 既存Materialを `Translate`／`Translate Copy` した場合、一般的なEmission Map、Emission Color、Emission強度、Emission Maskを可能な範囲で引き継ぎます。複数Emissionレイヤー、独自UVアニメーション、特殊なMask Packingは完全には再現できない可能性があります。詳細はHTML版マニュアル（zip）の「表面Emission／Mask」のページを参照してください。
