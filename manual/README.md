@@ -137,7 +137,7 @@
   Cast Shadowsを Two Sided にしてください。
 
 - **注31**: R30.19で軽くしたのは、**Shader Global共有を使わない構成**です
-  （Controllerの「Udon Global共有」がOFF、または複数台置いて2台目以降をMaterial個別
+  （Controllerの「Shader Global共有を使用」がOFF、または複数台置いて2台目以降をMaterial個別
   更新にしている場合）。**見た目は変わりません。**
 
   Material個別更新は、Material 1枚あたり毎更新12本を書いていましたが、**そのうち11本は
@@ -735,7 +735,7 @@ UnityPackage／ZIPには、マニュアルリポジトリのサンプルと同�
 
 通常面／透明面はShader名、RenderType、Render Queue、Standard系の透明設定、Base Color Alphaから自動判定します。選択GameObjectの子Rendererと複数Materialに対応し、同じSceneのControllerが見つかった場合は変換Materialを対象一覧へ追加します。
 
-引継ぎ対象はBase Texture、Base Color、Tiling、Offset、Normal Map、Normal強度、一般的なEmission Map／色／強度／Mask、Metallic、Smoothness、透明度、Cull、Render Queue、GI、GPU Instancingです。PoiyomiやlilToonなどの独自合成、MatCap、Outline、複数Emissionレイヤーや独自アニメーションは完全には変換できない可能性があります。詳細はHTML版マニュアル（zip）の「Material Translate」のページを参照してください。
+引継ぎ対象はBase Texture、Base Color、Tiling、Offset、Normal Map、Normal強度、一般的なEmission Map／色／強度／Mask、Metallic、Smoothness、透明度、Cull、裏面の法線を反転、Render Queue、GI、GPU Instancingです。PoiyomiやlilToonなどの独自合成、MatCap、Outline、複数Emissionレイヤーや独自アニメーションは完全には変換できない可能性があります。詳細はHTML版マニュアル（zip）の「Material Translate」のページを参照してください。
 
 | 機能 | Controller上の場所 | 主な用途 |
 |---|---|---|
@@ -1095,7 +1095,7 @@ Transparent版はPremultiplied Alpha合成を使用し、ガラス本体の透�
 - 反射光部分の不透明度: 光点だけをどの程度はっきり見せるか
 - 透過マスクの回転追従: 0でガラス本体の透明度を固定、1で透明度マスクも回転する光点に完全追従
 - 深度書き込み: 通常はOFF。重なり順に問題がある場合のみONを試す
-- 面の描画: Backが通常。板ポリゴンの両面へ表示する場合はOff
+- Cull Mode (描画面): Backが通常。板ポリゴンの両面へ表示する場合はOff
 
 おすすめ初期値は `透明度 = 0.15～0.35`、`反射光部分の不透明度 = 0.7～1.0`、`透過マスクの回転追従 = 1.0`、`深度書き込み = OFF` です。ガラス全体を常に残して光点だけ回転させたい場合は、回転追従を0にします。既存の高機能ガラスShaderをそのまま維持したい場合は、同じ位置へわずかに拡大した表示専用メッシュを重ね、そのMaterialだけTransparent版にしてください。透明オブジェクト同士の交差ではUnityの透明描画順による見え方の違いが発生する可能性があります。
 
@@ -1203,7 +1203,7 @@ ShaderがAudioLinkのグローバルGPUテクスチャを直接読み取るた�
 
 ## 2D・Cubemap投影Cookie
 
-`7. 高度な投影・Sceneプレビュー` で、個々の光点形状とは別に投影全体へTextureマスクを掛けられます。
+`8. 高度な投影・Sceneプレビュー` で、個々の光点形状とは別に投影全体へTextureマスクを掛けられます。
 
 - `2D Cookie`: 正距円筒形式で球面全体へ貼り付け。Tiling／Offsetに対応
 - `Cubemap Cookie`: 6方向Cubemapをそのまま球面方向へ使用。継ぎ目を抑えやすい方式
@@ -1272,7 +1272,7 @@ VRCLightVolumesは環境光とPoint/Spot/Area Light Volumeを反映し、LTCGI�
 | VRCLightVolumes受光方式 | 通常Volume／Additiveのみ | Additiveのみでは動的な加算VolumeとPoint Light Volumeだけを受けます |
 
 既存Materialの初期値は従来互換です。新規設定ではControllerの `9. VRCLightVolumes・LTCGI連携` で
-`推奨ハイブリッド` を選び、`選択したプリセットを一括適用` を押す方法を推奨します。
+`合成・受光方式の一括プリセット` の `適用する構成` で `推奨ハイブリッド` を選び、`対象Materialへ構成を適用・保存` を押す方法を推奨します。
 LTCGIの光をVRCLightVolumesへ書き込むAdapterと従来の完全加算を併用すると、拡散光が
 二重に明るくなる可能性があります。`Tools > MirrorBall Light > 診断・最適化` の警告を確認してください。
 
@@ -1350,11 +1350,11 @@ Controllerを付けたGameObjectにColliderを追加すると、`このオブジ
 
 | 条件 | 効果 |
 | --- | --- |
-| `距離フェードを使用` がONで、`フェード終了距離` より遠い面 | あり。広いワールドほど効きます |
+| `距離による減衰を使用` がONで、`距離フェード終了` より遠い面 | あり。広いワールドほど効きます |
 | 電源がOFFのとき | あり |
-| `距離フェードを使用` がOFF | ありません |
+| `距離による減衰を使用` がOFF | ありません |
 
-`距離フェードを使用` がOFFだと、どの面も「消える」と判定されないため効果がありません。広いワールドで軽さを優先する場合はONにしてください。
+`距離による減衰を使用` がOFFだと、どの面も「消える」と判定されないため効果がありません。広いワールドで軽さを優先する場合はONにしてください。
 
 半透明版のShaderは対象外です。半透明版は `透過マスクの回転追従`（初期値ON）で光点の形をそのまま透明度に使うため、計算を飛ばすと見た目が変わってしまいます。
 
@@ -1362,7 +1362,7 @@ Controllerを付けたGameObjectにColliderを追加すると、`このオブジ
 
 半透明版のShaderでも色の計算を「光点が映らない画素では行わない」ようにしました。設定は不要で、見た目も変わりません。
 
-効く条件は不透明版と同じです（`距離フェードを使用` がONで `フェード終了距離` より遠い面、または電源がOFFのとき）。
+効く条件は不透明版と同じです（`距離による減衰を使用` がONで `距離フェード終了` より遠い面、または電源がOFFのとき）。
 
 **軽くなる度合いは不透明版より小さいです。** 半透明版は `透過マスクの回転追従`（初期値ON）で光点の形をそのまま透明度に使うため、形の計算は飛ばせません。飛ばせるのは色の計算だけです。
 
@@ -1396,8 +1396,8 @@ Controllerを付けたGameObjectにColliderを追加すると、`このオブジ
 
 | 設定 | 結果 |
 | --- | --- |
-| `距離フェードを使用` ON、終了距離が短い | 遠い面の計算がまるごと省かれます |
-| `距離フェードを使用` OFF | **省略は起きません。** どの面も「消える」と判定されないためです |
+| `距離による減衰を使用` ON、終了距離が短い | 遠い面の計算がまるごと省かれます |
+| `距離による減衰を使用` OFF | **省略は起きません。** どの面も「消える」と判定されないためです |
 
 広いワールドほど効きます。この省略は**不透明版のShaderで大きく、半透明版では小さい**です。半透明版は `透過マスクの回転追従`（初期値ON）で光点の形をそのまま透明度に使うため、形の計算を省けません。
 
