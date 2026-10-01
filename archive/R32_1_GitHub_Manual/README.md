@@ -2,10 +2,6 @@
 
 [HTML版マニュアル（zip）](https://github.com/BossNovice/VRC_MirrorBallLight_Manual/raw/main/docs_html.zip)
 
-## R32.2で変更した当たり判定
-
-R32.2では当たり判定の中心だけをパネル前面へ1cm移しています。外観・設置位置・Colliderの厚みは変わりません。壁にぴったり付けて設置でき、縮小・拡大した場合も前方への移動量は1cmです。既存パネルは実行時に自動調整されます。Canvasの前面はローカル-Z方向です。
-
 ## R32.1で変更した操作パネル
 
 基本パネルを縦型に整理し、POWER見出しの下に電源アイコンボタン、PRESET見出しの下に現在のプリセット名とPREV／NEXTを配置しました。ON／OFFは文字と色で示します。操作ラベルは英語のみで、設定したプリセット名は日本語を含め原文のまま表示します。シーケンスは独立パネルのまま、6つのボタンを2段に整理しました。
@@ -1569,8 +1565,6 @@ ClientSimでの実Udon検証と、VRChat実機・複数人での検証は別で�
 4. パネルInspectorの「操作範囲」で **Local（自分だけ）／Global（全員に共有）** を選びます。基本パネルはControllerの電源とプリセット両方、シーケンスパネルはプリセット範囲だけに反映します。同じControllerのプリセット範囲は2パネルで共通です。Undo／Redoで戻せます。
 5. ライブプリセットと、使用する場合はSequenceのステップを確認して有効にします。配置だけでは演出や自動再生は始まりません。
 
-R32.2では当たり判定の中心だけをパネル前面へ1cm移しています。外観・設置位置・Colliderの厚みは変わりません。壁にぴったり付けて設置でき、縮小・拡大した場合も前方への移動量は1cmです。既存パネルは実行時に自動調整されます。Canvasの前面はローカル-Z方向です。
-
 直接Prefabを置く場合は、基本パネル `Assets/MirrorBallLight/Prefabs/MirrorBallControlPanel.prefab` にControllerを指定して「Controllerへの参照を配線する」を押します。シーケンスパネル `MirrorBallSequencePanel.prefab` はControllerと演出シーケンスを指定し「参照を配線して共有表示を有効にする」を押します。参照先はすべて同じSceneに置きます。
 
 | パネル | 操作 | 動作 |
@@ -1593,8 +1587,8 @@ CanvasはWorld Space、Defaultレイヤー、GraphicRaycaster・VRCUiShape・Box
 
 POWERの下の電源アイコンを押すとON／OFFを切り替えます。PRESETの下には現在選択されているプリセット名を表示し、PREV／NEXTやシーケンスによる切替に合わせて更新します。通常時は下部にREADY、共有範囲では所有者／閲覧状態を表示します。
 
-![電源・プリセットパネル](../docs/assets/control-panel-power-presets.png)
+![電源・プリセットパネル](assets/control-panel-power-presets.png)
 
-![シーケンスパネルの一時停止表示例](../docs/assets/control-panel-paused.png)
+![シーケンスパネルの一時停止表示例](assets/control-panel-paused.png)
 
 画像は実PrefabをUnity Editorで描画した例です。VRChat実機のスクリーンショットではありません。
