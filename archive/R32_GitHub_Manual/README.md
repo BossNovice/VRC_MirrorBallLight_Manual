@@ -1574,8 +1574,8 @@ ClientSimでの実Udon検証と、VRChat実機・複数人での検証は別で�
 
 CanvasはWorld Space、Defaultレイヤー、GraphicRaycaster・VRCUiShape・BoxCollider付きです。ボタンのNavigationはNone、SceneのEventSystemは1つを維持してください。フォントは日本語対応のNoto Sans JP Regularを同梱し、OFLと生成情報は `UI/Fonts/OFL.txt`、`SOURCE.txt` にあります。Worlds SDKのTMPを利用し、標準TMP資源が不足する場合は既存ファイルを保持して補います。
 
-![電源・プリセットパネル](../docs/assets/control-panel-power-presets.png)
+![電源・プリセットパネル](assets/control-panel-power-presets.png)
 
-![シーケンスパネルの一時停止表示例](../docs/assets/control-panel-paused.png)
+![シーケンスパネルの一時停止表示例](assets/control-panel-paused.png)
 
 画像は実PrefabをUnity Editorで描画した例です。VRChat実機のスクリーンショットではありません。
