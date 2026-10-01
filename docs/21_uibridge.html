@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UIボタンから操作する | MirrorBallLight</title>
+<title>パネル・UIボタンから操作する | MirrorBallLight</title>
 <link rel="stylesheet" href="manual.css">
 </head>
 <body>
@@ -60,7 +60,7 @@
 </li>
 <li><a href="14_udon.html">Udonから操作する</a>
 </li>
-<li><a aria-current="page" href="21_uibridge.html">ボタンで操作する</a>
+<li><a aria-current="page" href="21_uibridge.html">パネル・ボタンで操作する</a>
 <ul class="inpage">
 <li><a href="#what">やりたいこと</a></li>
 <li><a href="#setup">自動作成する（推奨）</a></li>
@@ -68,6 +68,7 @@
 <li><a href="#scope">誰に見えるか</a></li>
 <li><a href="#result">効いたかどうかを見る</a></li>
 <li><a href="#notes">気をつけること</a></li>
+<li><a href="#control-panel">設置型の操作パネル</a></li>
 </ul>
 </li>
 <li><a href="15_show.html">演出をUdonで組む</a>
@@ -91,8 +92,8 @@
 <main id="content">
 <div class="page">
 <div class="eyebrow">演出する</div>
-<h1>UIボタンから操作する</h1>
-<p class="lead">ControllerのInspectorからUIボタンを自動作成し、電源とプリセットを切り替えます。</p>
+<h1>パネル・UIボタンから操作する</h1>
+<p class="lead">設置型パネルとUIボタンで、電源・プリセット・シーケンスを操作します。</p>
 <div class="tip"><strong>Button・UI Bridge・Controller参照・On Click配線は、まとめて自動設定できます。</strong>既存Buttonへ追加する方法と、新しいButtonを作る方法の両方があります。</div>
 <section id="what">
 <h2>やりたいこと</h2>
@@ -189,6 +190,18 @@
 <h3>この部品は同期しません</h3>
 <p>部品自体はネットワーク同期を持ちません。<strong>押した結果が全員に届くかどうかは、Controller側の動作範囲だけで決まります。</strong></p>
 </section>
+<section id="control-panel"><h2>設置型の操作パネル</h2>
+<p>電源・プリセット用とシーケンス用の2種類を必要に応じて設置します。基本パネルだけならシーケンスは不要で、配置時にも追加しません。各幅1.2m、基本の高さ0.52m／シーケンス0.57m。LuraSwitch2／AudioLinkのようにPrefabを置く構成で、専用デザインを同梱しLuraSwitch2の導入は不要です。パネル表面にはバージョンやLocal/Globalの表記を出しません。</p>
+<ol><li>SceneのControllerを選び、<code>Tools &gt; MirrorBall Light &gt; 電源・プリセットパネルを配置</code>、または導入セットアップの同名ボタンを押します。Controllerへの参照だけを配線します。</li><li>必要な場合だけ「シーケンスパネルを配置」を追加します。既存Sequenceを使い、なければ使用OFFで作成します。Controller・Sequence・共有表示の配信元を配線し、複数ある場合は配信元を明示的に指定します。</li><li>各パネルの位置・角度・サイズを調整します。回転するボールの子にせず独立したSceneルートへ配置します。Prefab編集モードは終了してから配置します。</li><li>パネルInspectorの「操作範囲」で<b>Local（自分だけ）／Global（全員に共有）</b>を選びます。基本はControllerの電源とプリセット両方、シーケンスはプリセット範囲だけに反映します。同じControllerのプリセット範囲は2パネルで共通です。Undo／Redoで戻せます。</li><li>ライブプリセットと、使う場合はSequenceのステップを確認して有効にします。配置だけでは演出や自動再生は始まりません。</li></ol>
+<p>直接置く場合は基本パネル<code>Assets/MirrorBallLight/Prefabs/MirrorBallControlPanel.prefab</code>にControllerを指定して「Controllerへの参照を配線する」を押します。シーケンスパネル<code>MirrorBallSequencePanel.prefab</code>はControllerと演出シーケンスを指定し「参照を配線して共有表示を有効にする」を押します。参照先はすべて同じSceneに置いてください。</p>
+<figure><img src="assets/control-panel-power-presets.png" alt="電源とプリセットの専用パネル" style="width:100%;height:auto"><figcaption>電源・プリセット用。シーケンスなしで使えます。</figcaption></figure>
+<figure><img src="assets/control-panel-paused.png" alt="シーケンス一時停止、1 / 2、残り13.4秒の専用パネル" style="width:100%;height:auto"><figcaption>シーケンス用。実PrefabのUnity Editor描画例で、VRChat実機の画面ではありません。</figcaption></figure>
+<p>基本は電源・前後のプリセットの3ボタン、シーケンスは開始・一時停止・続きから・次ステップ・停止・先頭からの6ボタンです。所有者／閲覧状態を表示します。手動プリセット変更は再生中のSequenceを停止し、クロスフェード中は手動変更・次ステップを受け付けません。</p>
+<p><b>一時停止は切替の時間進行だけを止めます。</b> 回転・音楽反応・進行中のクロスフェードは継続し、「続きから」で残り時間から再開します。操作の詳細は<a href="13_presets.html#preset-sequence">シーケンス</a>を参照してください。</p>
+<p>共有範囲ではController所有者だけが操作できます。閲覧者のボタンは無効になり、直接イベントを送っても操作を拒否します。所有権を自動取得しません。Controllerの電源とプリセットで範囲が異なる場合は基本パネルInspectorに混在を表示し、操作範囲を選び直すと両方を揃えます。</p>
+<p>「再生状況を共有パネルへ配信」を有効にすると、開始・ステップ変更・停止・一時停止・再開時にControllerが状態を配信します。パネルはサーバー時刻から残り時間を表示し、表示更新で毎フレーム通信しません。配信元はControllerごとに1つです。途中参加者の表示は最新状態を使う設計ですが、VRChat実ネットワークでの途中参加は未実施です。所有者交代時は停止し、新しい所有者が明示的に開始します。</p>
+<p>World-space Canvas、Defaultレイヤー、GraphicRaycaster・VRCUiShape・BoxCollider、ボタンNavigation=Noneを維持してください。SceneのEventSystemは1つにします。Worlds SDKのTMPを使い、標準TMP資源が不足する場合は既存ファイルを保持して補います。日本語フォントを同梱し、OFLと出典・生成情報は<code>UI/Fonts/OFL.txt</code>、<code>SOURCE.txt</code>にあります。</p>
+<p>実UdonのClientSim操作・所有権モック・合成受信と、VRChat実機の複数人・途中参加確認は別です。実機確認は未実施のため、公開手順の追跡IDで管理します。</p></section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="14_udon.html">← 他のUdonから操作する</a>
 <a href="15_show.html">演出をUdonで組む →</a>

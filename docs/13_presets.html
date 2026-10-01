@@ -63,11 +63,13 @@
 <li><a href="#preset">Presetに保存される項目</a></li>
 <li><a href="#events">実行中の切替イベント</a></li>
 <li><a href="#crossfade">クロスフェードの注意</a></li>
+<li><a href="#preset-browser">演出を選ぶ・比較する</a></li>
+<li><a href="#preset-sequence">時間指定の演出シーケンス</a></li>
 </ul>
 </li>
 <li><a href="14_udon.html">Udonから操作する</a>
 </li>
-<li><a href="21_uibridge.html">ボタンで操作する</a>
+<li><a href="21_uibridge.html">パネル・ボタンで操作する</a>
 </li>
 <li><a href="15_show.html">演出をUdonで組む</a>
 </li>
@@ -305,6 +307,22 @@
 <a href="14_udon.html">他のUdonから操作する →</a>
 </nav>
 </div>
+<section id="preset-browser"><h2>演出を選ぶ・比較する</h2>
+<p>Controller Inspector上部の「演出プリセットを選ぶ・比較する…」から、演出ライブラリ8種類または登録済みプリセットを選びます。差分は回転・色・光点・形状／シード・AudioLink・投影・距離ごとに表示し、色は変更前後のスウォッチで確認できます。</p>
+<ol><li>変更項目を確認します。</li><li>「試す」で一時反映、「元に戻す」で復元します。</li><li>残す場合は「この演出を適用」を押します。Undo／Redoで戻せます。</li><li>「この演出だけプリセット一覧へ追加」は既存一覧の末尾に1件だけ追加します。</li></ol>
+<p>追加はライブプリセット・AudioLink・ランダム点灯を自動で有効にしません。Calm Rotationはゆっくりした回転、Sparse Glintsは小さく疎な光点、Music Responseは音への反応値を用意します。必要条件を確認してください。</p>
+<p>プレビューは閉じる・保存・Play Mode移行・スクリプト再読込で復元されます。別のInspectorで変更された値を保持して競合を警告します。Editorの比較と実音楽・VRChat実機の確認は別です。</p></section>
+<section id="preset-sequence"><h2>時間指定の演出シーケンス</h2>
+<p>Proの「2. ライブプリセット」で「時間指定の演出シーケンスを追加・選択…」を押します。使用OFF・自動再生OFF・ステップ0件で作られます。既存Prefabへ自動では追加しません。</p>
+<ol><li>Controllerのライブプリセットを用意し、使用を有効にします。</li><li>Sequenceへステップを追加して「番号: 名前」の一覧と継続時間を設定します。番号の直接入力、上下移動・複製・削除ができます。</li><li>合計継続時間と入力診断を確認します。不正な番号・未設定プリセット・件数不一致・無効な時間は該当ステップを示します。</li><li>シーケンスの使用を有効にして、開始または自動再生を選びます。設定編集はEdit Modeで行います。</li></ol>
+<p>1〜256ステップ、継続時間0.05秒〜24時間。合計は設定値の和で、クロスフェード完了待ちを含む実測再生時間ではありません。継続時間は選択開始から数えます。遷移の完了を待つため、実際の次ステップ開始が遅れる場合があります。ループOFFでは最後の演出を保持して停止します。</p>
+<table><thead><tr><th>イベント</th><th>動作</th></tr></thead><tbody>
+<tr><td><code>StartSequence</code></td><td>停止中から先頭で開始</td></tr><tr><td><code>StopSequence</code></td><td>現在の演出を保持して停止</td></tr><tr><td><code>RestartSequence</code></td><td>先頭から再生し直す</td></tr>
+<tr><td><code>PauseSequence</code></td><td>継続時間の残りを保持。回転・音楽反応・進行中のクロスフェードは継続</td></tr><tr><td><code>ResumeSequence</code></td><td>保持した残り時間で同じステップから再開</td></tr><tr><td><code>NextStep</code></td><td>次へ進む。一時停止中は一時停止を保持し、次の全継続時間を用意。クロスフェード中は拒否</td></tr></tbody></table>
+<p>SequenceのUdonBehaviourへ上表の名前をSendCustomEventで送ります。Play ModeのInspectorと<a href="21_uibridge.html#control-panel">設置型パネル</a>でも操作できます。UI Bridgeの既存操作番号は変更しません。</p>
+<p>ローカル範囲は手元で再生し、共有範囲はController所有者だけが再生します。「再生状況を共有パネルへ配信」とControllerの配信元を設定すると、状態・カーソル・残り時間をControllerへ配信します。既存Sequenceの共有表示は既定OFF、パネル配線時に有効にします。1つのControllerを別のSequenceが同時に駆動することはできません。</p>
+<p>所有権・範囲・Controller参照が変わると停止します。所有権の自動取得と所有者変更後の自動再開はありません。新しい所有者が明示的に開始します。途中参加の表示は最新の共有スナップショットを使う設計ですが、VRChat実ネットワークの確認は未実施です。</p>
+<p>空配列・範囲外／未設定のプリセット・不正な時間（NaN・Infを含む）は開始を拒否し、一時停止中も入力を検査します。lastResultCodeは0=成功、1=無効、2=Controller／プリセット無効、3=ステップ不正、4=所有権・範囲・参照変更、5=切替拒否、6=クロスフェード中、7=配信元／再生ドライバー競合です。</p></section>
 </main>
 </div>
 <footer>MirrorBallLightController マニュアル</footer>

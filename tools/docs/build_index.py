@@ -27,9 +27,9 @@ CARD_LEAD = {
     "10_body.html": "本体球の鏡片の見え方と、暗い場所での担保",
     "11_emission.html": "面そのものを光らせる。光点を出さないエリアの指定",
     "12_audiolink.html": "音に合わせて明るさ・サイズ・色を動かす",
-    "13_presets.html": "演出をまとめて切り替える。作り方と切替イベント",
+    "13_presets.html": "演出を比較・編集し、シーケンスで順番に再生する",
     "14_udon.html": "ワールドのギミックから動かす。同期範囲と所有権",
-    "21_uibridge.html": "ワールドのボタンで電源とプリセットを切り替える",
+    "21_uibridge.html": "設置型パネルで電源・プリセット・シーケンスを操作する",
     "15_show.html": "曲ごとの切り替え、結果の読み取り、複数台の同時操作",
     "16_integrations.html": "連携版Shaderと、アバターへ実際の光を当てる",
     "17_translate.html": "既存の壁・ガラスMaterialを変換する",
@@ -62,11 +62,7 @@ TEMPLATE = """<!doctype html>
 %(sidebar)s
 <main id="content">
 <div class="page">
-<div class="eyebrow">VRChat WORLD SYSTEM</div>
-<h1>MirrorBallLightController 完全マニュアル</h1>
-<p class="lead">%(lead)s</p>
-<p>%(version)s</p>
-%(gh)s
+%(intro)s
 %(body)s
 <nav class="pagenav" aria-label="前後のページ">
 <span></span>
@@ -103,6 +99,12 @@ def main():
     spec = json.load(io.open(os.path.join(HERE, "page-map.json"), encoding="utf-8"))
     pages = spec["pages"]
     cur = io.open(args.source, encoding="utf-8").read()
+
+    # Keep the approved hero SVG, metadata and links exactly as authored.
+    intro_match = re.search(r'<div class="page">\s*(.*?)\s*<section>', cur, re.S)
+    if intro_match is None:
+        raise ValueError("index.html has no authored intro; preserve the source and repair it first")
+    intro = intro_match.group(1)
 
     version = re.search(r'<span class="version">[^<]*</span>', cur).group(0)
     lead = re.search(r'<p class="lead">(.*?)</p>', cur, re.S).group(1).strip()
@@ -152,7 +154,7 @@ def main():
         "<section>", block_from_h2(cur, "s3"), "</section>",
     ])
 
-    html = TEMPLATE % dict(sidebar="\n".join(side), lead=lead, version=version, gh=gh, body=body,
+    html = TEMPLATE % dict(intro=intro, sidebar="\n".join(side), lead=lead, version=version, gh=gh, body=body,
                            first=pages[0]["file"], firstshort=pages[0]["short"], firsth1=pages[0]["h1"])
     os.makedirs(args.out, exist_ok=True)
     io.open(os.path.join(args.out, "index.html"), "w", encoding="utf-8", newline="").write(html)

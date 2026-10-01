@@ -59,7 +59,7 @@
 </li>
 <li><a href="14_udon.html">Udonから操作する</a>
 </li>
-<li><a href="21_uibridge.html">ボタンで操作する</a>
+<li><a href="21_uibridge.html">パネル・ボタンで操作する</a>
 </li>
 <li><a href="15_show.html">演出をUdonで組む</a>
 </li>
@@ -81,6 +81,7 @@
 <li><a href="#optimization">Controllerの10. 最適化・診断</a></li>
 <li><a href="#diagnose">設定の矛盾を先に潰す</a></li>
 <li><a href="#release">VRChat公開前チェックリスト</a></li>
+<li><a href="#sequencechecks">追加した操作を公開前に確かめる</a></li>
 </ul>
 </li>
 </ul></div>
@@ -187,6 +188,17 @@
 <p>
 <a href="index.html">マニュアル目次へ戻る →</a>
 </p>
+</section>
+<section id="sequencechecks"><h2>追加した操作を公開前に確かめる</h2>
+<ul>
+<li>Easy / Proを切り替えても既存の設定が維持されることを確認します。</li>
+<li>プリセットのプレビューから戻したとき、Controller・Material・Lightが元の値になることを確認します。プレビュー中に外から変えた値は保護されます。</li>
+<li>導入ウィザードの候補と既存参照を確認してから適用します。開始・停止・先頭からButtonが正しく配線され、Undoで元に戻ることも確認します。</li>
+<li>設置型パネルの向き・距離・文字・ポインター操作をDesktop／VRで確認します。一時停止中も回転と音楽反応が継続し、続きからは残り時間で再開することを確認します。</li>
+<li>シーケンスのStart・Stop・Restart・Pause・Resume・Next、残り時間の保持、フェード完了待ち、末尾での終了またはループを確認します。停止は現在の見た目を保持します。</li>
+<li>GlobalモードのシーケンスはController所有者だけが操作できます。非所有者の操作、途中参加、所有者退出と所有権移動を2人以上で確認します。共有パネルでは配信された再生位置・状態・残り時間が表示されることを確認します。所有権移動後の自動再開はありません。新しい所有者が明示的に再開します。</li>
+</ul>
+<p>自動の描画検査、実UnityのEditor検査、ClientSim、VRChat実クライアントでの目視・複数人確認はそれぞれ別の結果です。ClientSimが成功したことだけで実クライアントの確認を完了にしないでください。最新版の確認実績はGitHub版マニュアルの動作確認表を参照してください。実機の複数人・途中参加確認は追跡ID R31-UNEXEC-01で継続しています。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="19_heavy.html">← 動作が重い場合</a>
