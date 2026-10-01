@@ -1480,3 +1480,13 @@ Controller Inspector上部の「演出プリセットを選ぶ・比較する…
 追加はライブプリセット、AudioLink、ランダム点灯を自動で有効にしません。Music ResponseにはAudioLink、Sparse Glintsの点灯割合にはランダム点灯が必要です。Slow Drift／Club Pulse／Jump系の配置変化には、形状アトラスまたは本体ファセットが必要です。
 プレビューはウィンドウを閉じる、保存、Play Mode移行、スクリプト再読込で終了します。プレビュー中に別のInspectorから変更した値は自動で上書きせず、競合の警告を出します。変更したMaterialを確認してください。
 これはEditorの設定比較であり、Play Modeのクロスフェード、AudioLinkの実音楽、VRChat実機・複数人の動作確認とは別です。公開済み配布版の動作確認表は変更しません。
+
+## 導入セットアップ（開発版）
+
+Controller Inspectorの「導入セットアップを開く…」から3段階で設定できます。
+
+1. **参照の候補**: 現在の参照を読み込み、本体・Spot Light・本体Material・反射を表示するMaterialを確認します。候補検出は初期状態ではControllerの子だけが対象です。必要なら同じScene全体へ広げます。他のSceneは対象外です。検出したMaterialは既存一覧へ追加し、複数ある本体・Spot Light候補は勝手に選びません。
+2. **確認・適用**: 変更予定の参照を確認し、「確認した参照を適用」を押します。演出値や使用スイッチ、照明連携モード、Materialの中身は変更しません。Undo／Redoで戻せます。未設定・対応外Shader・別Sceneの参照があれば適用できません。
+3. **動作の確認**: 現在のControllerを既存の診断規則で検査します。演出プリセット画面、既存のUI Bridge Button生成、Scene全体の診断をここから開けます。候補を適用せず進んだ場合は、候補ではなく現在の設定を診断します。
+
+Materialの反映・保存はInspectorの既存ボタンで行います。Sceneへの照明連携ManagerやAudioLinkの追加、Packageのインストール、既存UIボタンの変更は自動では行いません。最後にPlay Modeで回転・反射・電源を確認し、音連動は実音楽、共有操作はVRChatで複数人の伝播を確認してください。
