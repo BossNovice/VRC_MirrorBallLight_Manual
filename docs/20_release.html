@@ -81,6 +81,7 @@
 <li><a href="#optimization">Controllerの10. 最適化・診断</a></li>
 <li><a href="#diagnose">設定の矛盾を先に潰す</a></li>
 <li><a href="#release">VRChat公開前チェックリスト</a></li>
+<li><a href="#sequencechecks">追加した操作を公開前に確かめる</a></li>
 </ul>
 </li>
 </ul></div>
@@ -187,6 +188,16 @@
 <p>
 <a href="index.html">マニュアル目次へ戻る →</a>
 </p>
+</section>
+<section id="sequencechecks"><h2>追加した操作を公開前に確かめる</h2>
+<ul>
+<li>Easy / Proを切り替えても既存の設定が維持されることを確認します。</li>
+<li>プリセットのプレビューから戻したとき、Controller・Material・Lightが元の値になることを確認します。プレビュー中に外から変えた値は保護されます。</li>
+<li>導入ウィザードの候補と既存参照を確認してから適用します。</li>
+<li>シーケンスのStart・Stop・Restart、保持時間、フェード完了待ち、末尾での終了またはループを確認します。停止は現在の見た目を保持します。</li>
+<li>GlobalモードのシーケンスはController所有者だけが操作できます。非所有者の操作、途中参加、所有者退出と所有権移動を2人以上で確認します。所有権移動後の自動再開やタイムラインの再生位置の同期はありません。</li>
+</ul>
+<p>自動の描画検査、実UnityのEditor検査、ClientSim、VRChat実クライアントでの目視・複数人確認はそれぞれ別の結果です。ClientSimが成功したことだけで実クライアントの確認を完了にしないでください。最新版の確認実績はGitHub版マニュアルの動作確認表を参照してください。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="19_heavy.html">← 動作が重い場合</a>

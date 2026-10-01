@@ -174,6 +174,16 @@
 <div class="danger">
 <strong>重複クラスを作らない：</strong>
 <code>MirrorBallLightController.cs</code>を別フォルダへコピーすると同名クラスのコンパイルエラーになります。バックアップはUnityプロジェクト外へ置いてください。</div>
+
+<ol>
+<li>更新前のScene・Prefab・Materialをバックアップし、Consoleの状態を記録します。</li>
+<li>新しいunitypackageを既存のフォルダへ上書きImportし、ソースとProgram Assetをすべて取り込みます。既存のGUIDを引き継ぐため、フォルダの複製や既存Program Assetの削除は不要です。</li>
+<li>UnityとUdonSharpの処理が終わってから、Consoleの赤エラーと「診断・最適化」を確認します。</li>
+<li>Controllerの参照、Live Presetsの並び、独自に調整した値を確認します。Easy / ProはInspectorの表示だけを切り替えます。</li>
+<li>新しい候補はプリセットブラウザーで比較できます。プレビューから戻り、採用するものだけ追加してください。導入ウィザードでは既存の参照を確認し、候補が複数ある箇所を選択します。</li>
+<li>シーケンスを使う場合は、Controllerとプリセット番号・保持時間を確認してから有効にします。既定は無効で、従来のワールドが自動的にシーケンスへ切り替わることはありません。</li>
+</ol>
+<p>LightVolumesのAudioLink連携を使う構成では、AudioLink導入後にEditorを再起動し、実Udonのコンパイルも確認してください。C#のコンパイル成功だけではUdonでの動作を確認できません。</p>
 </section>
 <section id="success">
 <h2>導入成功の判定</h2>
@@ -181,13 +191,14 @@
 <li>ConsoleにC#／UdonSharp／Shaderの赤いエラーがない</li>
 <li>
 <code>MirrorBallLight_ConfiguredSample.prefab</code>を選択できる</li>
-<li>Controller Inspectorが日本語の10セクションで表示される</li>
+<li>Controller Inspectorが日本語で表示され、Proへ切り替えると10セクションが表示される</li>
 <li>Play Modeで壁の光点とミラーボール回転が表示される</li>
 </ul>
 <p>
 <a href="02_sample.html">次へ：設定済みサンプルで確認 →</a>
 </p>
 </section>
+
 <nav class="pagenav" aria-label="前後のページ">
 <a href="index.html">← 目次</a>
 <a href="02_sample.html">設定済みサンプルで最短確認 →</a>
