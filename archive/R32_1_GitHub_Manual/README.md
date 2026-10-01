@@ -2,10 +2,6 @@
 
 [HTML版マニュアル（zip）](https://github.com/BossNovice/VRC_MirrorBallLight_Manual/raw/main/docs_html.zip)
 
-## R32.2で変更した当たり判定
-
-R32.2では当たり判定の中心だけをパネル前面へ1cm移しています。外観・設置位置・Colliderの厚みは変わりません。壁にぴったり付けて設置でき、縮小・拡大した場合も前方への移動量は1cmです。既存パネルは実行時に自動調整されます。Canvasの前面はローカル-Z方向です。
-
 ## R32.1で変更した操作パネル
 
 基本パネルを縦型に整理し、POWER見出しの下に電源アイコンボタン、PRESET見出しの下に現在のプリセット名とPREV／NEXTを配置しました。ON／OFFは文字と色で示します。操作ラベルは英語のみで、設定したプリセット名は日本語を含め原文のまま表示します。シーケンスは独立パネルのまま、6つのボタンを2段に整理しました。
@@ -27,9 +23,6 @@ Easy / Pro表示、プリセットの比較・プレビュー・追加、3段階
 
 | MirrorBallLight | Unity | VRCLightVolumes | LTCGI | コンパイル確認 | 実機目視（PC） |
 | --- | --- | --- | --- | --- | --- |
-| R32.2 | 2022.3.22f1 | 2.1.3 | 1.7.2 | 済（注36） | 未実施（注36） |
-| R32.2 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注36） | 未実施（注36） |
-| R32.2 | 2022.3.22f1 | 未導入 | 未導入 | 済（注36） | 未実施（注36） |
 | R32.1 | 2022.3.22f1 | 2.1.3 | 1.7.2 | 済（注35） | 未実施（注35） |
 | R32.1 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注35） | 未実施（注35） |
 | R32.1 | 2022.3.22f1 | 未導入 | 未導入 | 済（注35） | 未実施（注35） |
@@ -155,10 +148,6 @@ Easy / Pro表示、プリセットの比較・プレビュー・追加、3段階
 
 - **注35**: R32.1は省略なしの完全リリース検証64項目すべてに合格しました（失敗・未実施・スキップ0件）。Unity 2022.3.22f1で両連携構成の実Editor C#・実Udonコンパイル、製品Shader 6本、Prefab／Material／Texture参照18件を確認しています。実Editorのパネル検査63項目と、電源ON／OFF・日本語プリセット名・シーケンス一時停止／実行の実Prefab描画5場面が、各構成で成功しました。
   両連携構成の実Udon ClientSim 77項目、故障注入4ケース、変更していない基準に対する新規Playerビルドの描画比較91場面、新規Importと2回目起動を確認しました。未導入構成では実Udonと参照12件が正常で、連携版Shader 3本だけがinclude不在で想定どおり失敗しています。
-  既存のAsset GUID、Shaderソース、Controller／Preset／UI Bridge／SequenceのRuntimeソース、パネルの公開フィールドとイベントを保持しています。パネル画像は実PrefabのEditor描画です。ClientSimとPlayerの検査はVRChat実クライアントの目視・複数人同期・途中参加・Desktop／VRポインター操作の確認とは異なり、追跡ID R31-UNEXEC-01を継続しています。
-
-- **注36**: R32.2は省略なしの完全リリース検証64項目すべてに合格しました（失敗・未実施・スキップ0件）。Unity 2022.3.22f1で両連携構成の実Editor C#・実Udonコンパイル、製品Shader 6本、Prefab／Material／Texture参照18件を確認しています。両パネルのCollider中心のみを物理距離1cm前へ移し、厚み・外観・設置位置を維持しました。縮小・標準・拡大配置で壁の遮蔽を再現し、移動後のPhysics raycast、実SDKのUIフィルター、SDK Use入力から実ボタンを経由するUdon状態変更を確認しています。実Editorのパネル検査87項目と、電源ON／OFF・日本語プリセット名・シーケンス一時停止／実行の実Prefab描画5場面が、各構成で成功しました。
-  両連携構成の実Udon ClientSim 101項目、故障注入4ケース、変更していない基準に対する新規Playerビルドの描画比較91場面、新規Importと2回目起動を確認しました。未導入構成では実Udonと参照12件が正常で、連携版Shader 3本だけがinclude不在で想定どおり失敗しています。
   既存のAsset GUID、Shaderソース、Controller／Preset／UI Bridge／SequenceのRuntimeソース、パネルの公開フィールドとイベントを保持しています。パネル画像は実PrefabのEditor描画です。ClientSimとPlayerの検査はVRChat実クライアントの目視・複数人同期・途中参加・Desktop／VRポインター操作の確認とは異なり、追跡ID R31-UNEXEC-01を継続しています。
 
 **未実施**: VRChat PC実クライアントの目視・複数人同期確認（R31から継続）
@@ -1576,8 +1565,6 @@ ClientSimでの実Udon検証と、VRChat実機・複数人での検証は別で�
 4. パネルInspectorの「操作範囲」で **Local（自分だけ）／Global（全員に共有）** を選びます。基本パネルはControllerの電源とプリセット両方、シーケンスパネルはプリセット範囲だけに反映します。同じControllerのプリセット範囲は2パネルで共通です。Undo／Redoで戻せます。
 5. ライブプリセットと、使用する場合はSequenceのステップを確認して有効にします。配置だけでは演出や自動再生は始まりません。
 
-R32.2では当たり判定の中心だけをパネル前面へ1cm移しています。外観・設置位置・Colliderの厚みは変わりません。壁にぴったり付けて設置でき、縮小・拡大した場合も前方への移動量は1cmです。既存パネルは実行時に自動調整されます。Canvasの前面はローカル-Z方向です。
-
 直接Prefabを置く場合は、基本パネル `Assets/MirrorBallLight/Prefabs/MirrorBallControlPanel.prefab` にControllerを指定して「Controllerへの参照を配線する」を押します。シーケンスパネル `MirrorBallSequencePanel.prefab` はControllerと演出シーケンスを指定し「参照を配線して共有表示を有効にする」を押します。参照先はすべて同じSceneに置きます。
 
 | パネル | 操作 | 動作 |
@@ -1600,8 +1587,8 @@ CanvasはWorld Space、Defaultレイヤー、GraphicRaycaster・VRCUiShape・Box
 
 POWERの下の電源アイコンを押すとON／OFFを切り替えます。PRESETの下には現在選択されているプリセット名を表示し、PREV／NEXTやシーケンスによる切替に合わせて更新します。通常時は下部にREADY、共有範囲では所有者／閲覧状態を表示します。
 
-![電源・プリセットパネル](../docs/assets/control-panel-power-presets.png)
+![電源・プリセットパネル](assets/control-panel-power-presets.png)
 
-![シーケンスパネルの一時停止表示例](../docs/assets/control-panel-paused.png)
+![シーケンスパネルの一時停止表示例](assets/control-panel-paused.png)
 
 画像は実PrefabをUnity Editorで描画した例です。VRChat実機のスクリーンショットではありません。
