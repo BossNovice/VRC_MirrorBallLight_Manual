@@ -135,7 +135,7 @@ Easy / Pro表示、プリセットの比較・プレビュー・追加、3段階
   ClientSimはVRChat SDKのシミュレーターであり、VRChat実クライアントや複数人での同期確認とは異なります。
   LV3のAudioLink連携を含む実Udon確認ではAudioLink 3.1.2を導入しています。
 
-- **注34**: R32の実Editor C#・実Udonコンパイルを、Unity 2022.3.22f1の両連携構成で確認しています。製品Shader 6本にエラーはなく、Prefab／Material／Texture参照17件に参照切れはありません。未導入構成でも実Udonと参照11件を確認し、通常版が正常、連携版3本はinclude不在による想定内失敗です。
+- **注34**: R32の実Editor C#・実Udonコンパイルを、Unity 2022.3.22f1の両連携構成で確認しています。製品Shader 6本にエラーはなく、Prefab／Material／Texture参照18件に参照切れはありません。未導入構成でも実Udonと参照12件を確認し、通常版が正常、連携版3本はinclude不在による想定内失敗です。 最終パネル仕様で省略なしのリリース検証64項目すべて合格、両連携構成の実Editor検査63項目・パネル描画3場面、両構成の実Udon ClientSim 77項目、故障注入4ケース、変更していないPlayer描画基準91場面、新規Importと2回目起動を確認しました。パネルInspectorもLocal／Global／混在の5状態でLayout／Repaintが成功し、描画による設定変更はありません。
   シーケンス編集・比較・ウィザードの実OnGUI検査で、Layout／Repaintと設定保持も確認しています。パネル画像は実PrefabのEditor描画であり、VRChat実機の画面ではありません。
   VRChat実クライアントの複数人・途中参加・Desktop／VRポインター操作は未実施で、追跡ID R31-UNEXEC-01を継続しています。
 
