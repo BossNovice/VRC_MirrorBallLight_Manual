@@ -63,6 +63,7 @@
 <li><a href="#preset">Presetに保存される項目</a></li>
 <li><a href="#events">実行中の切替イベント</a></li>
 <li><a href="#crossfade">クロスフェードの注意</a></li>
+<li><a href="#preset-browser">演出を選ぶ・比較する（開発版）</a></li>
 </ul>
 </li>
 <li><a href="14_udon.html">Udonから操作する</a>
@@ -305,6 +306,11 @@
 <a href="14_udon.html">他のUdonから操作する →</a>
 </nav>
 </div>
+<section id="preset-browser"><h2>演出を選ぶ・比較する（開発版）</h2>
+<p>Controller Inspector上部の「演出プリセットを選ぶ・比較する…」で、演出ライブラリ8種類または登録済みプリセットを名前で選び、変更予定の値を比較できます。</p>
+<ol><li>選択して変更項目を確認します。</li><li>「試す」で一時反映、「元に戻す」で復元します。</li><li>残す場合は「この演出を適用」を押します。Undo／Redoで戻せます。</li><li>「この演出だけプリセット一覧へ追加」は既存一覧の末尾に1件だけ追加します。</li></ol>
+<p>追加はライブプリセット・AudioLink・ランダム点灯を自動で有効にしません。Calm Rotationはゆっくりした回転、Sparse Glintsは小さく疎な光点、Music Responseは音への反応値を用意します。画面に表示される必要条件を確認してください。</p>
+<p>プレビューは閉じる・保存・Play Mode移行・スクリプト再読込で復元されます。別のInspectorで変更された値は保持して競合を警告します。Editorの比較と、実音楽・VRChat実機での検証は別です。</p></section>
 </main>
 </div>
 <footer>MirrorBallLightController マニュアル</footer>
