@@ -79,6 +79,7 @@
 <li><a href="#black">ミラーボール本体が黒い</a></li>
 <li><a href="#rotation-stopped">回転が止まる</a></li>
 <li><a href="#button-dead">ボタンを押しても何も起きない</a></li>
+<li><a href="#duplicate-child-controller">プリセットを使うと光点が飛ぶ・設定が交互に変わる</a></li>
 <li><a href="#global-name-clash">光点や回転が、たまに一瞬だけ乱れる</a></li>
 <li><a href="#pattern-frozen">アニメーションでMaterialを切り替えても効かない</a></li>
 <li><a href="#udon">UdonSharp Program Assetのエラー</a></li>
@@ -167,6 +168,12 @@
 </table>
 <div class="note"><b>World Spaceでないボタンと、コライダーの無いCanvasは、Unity Editorの再生では押せてしまいます。</b> VRChatでだけ効きません。実機に入るまで気づけないため、診断で先に見つけてください。</div>
 <p>ボタンの作り方は <a href="21_uibridge.html">ボタンで操作する</a> を参照してください。</p>
+</section>
+<section id="duplicate-child-controller">
+<h2>プリセットを使うと光点が飛ぶ・設定が交互に変わる</h2>
+<p>プリセット用の子に<strong>MirrorBallLightController</strong>が付いていないか確認してください。同じミラーボールをGlobal共有で更新する親子Controllerが稼働すると、描画設定を上書きし合います。この構成では稼働中の親を優先し、子の描画・本体回転更新を抑止して警告を1回表示します。親が無効の場合は子の更新を継続します。</p>
+<p>プリセット用の子には<strong>MirrorBallLightPreset</strong>を使用します。先頭スロットがNoPresetの場合は、<a href="13_presets.html#recover-first-preset">現在値から先頭プリセットを復元</a>してください。誤って置いた子Controllerは、参照や独自の設定を確認してから取り除きます。</p>
+<p>この保護は同じミラーボールの親子Controllerに対するものです。Shader Global共有はワールドで1系統とし、異なるミラーボール、Sceneルート間、他ギミックとの競合は診断で確認してください。速い点滅、配置シードの変化、異なる光点配置のプリセット間の遷移による見え方は演出設定として残ります。</p>
 </section>
 <section id="global-name-clash">
 <h2>光点や回転が、たまに一瞬だけ乱れる</h2>

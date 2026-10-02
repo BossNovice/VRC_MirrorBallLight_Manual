@@ -58,6 +58,7 @@
 <div class="grp"><div class="grp-name">演出する</div><ul>
 <li><a aria-current="page" href="13_presets.html">ライブプリセット</a>
 <ul class="inpage">
+<li><a href="#recover-first-preset">先頭がNoPresetになっている場合</a></li>
 <li><a href="#controller">2. ライブプリセット</a></li>
 <li><a href="#create">プリセットを作る</a></li>
 <li><a href="#preset">Presetに保存される項目</a></li>
@@ -94,6 +95,11 @@
 <div class="eyebrow">演出する</div>
 <h1>ライブプリセットとクロスフェード</h1>
 <p class="lead">演出をまとめて切り替えます。作り方と、実行中に切り替えるイベントです。</p>
+<section id="recover-first-preset">
+<h2>先頭がNoPresetになっている場合</h2>
+<p>Edit ModeでControllerのPro表示から「2. ライブプリセット」を開き、<strong>「現在値から先頭プリセットを復元」</strong>を押します。その時点のController設定54項目をコピーしたPreset1を作り、未設定の先頭スロットへ割り当てます。他のスロットや操作範囲は保持され、Undo／Redoに対応します。すでに割り当てられた先頭は上書きしません。</p>
+<p>プリセット用の子には<strong>MirrorBallLightPreset</strong>を付けてください。MirrorBallLightControllerを付けると、ミラーボールを更新するControllerが増えます。</p>
+</section>
 <section id="controller">
 <h2>2. ライブプリセット</h2>
 <table>
