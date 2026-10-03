@@ -40,6 +40,7 @@
 </li>
 <li><a aria-current="page" href="06_spots.html">光点の形と量</a>
 <ul class="inpage">
+<li><a href="#antialiasing">光点アンチエイリアス（未リリース）</a></li>
 <li><a href="#spots">光点・タイル</a></li>
 <li><a href="#blink">ランダム点灯・消灯と表面処理</a></li>
 <li><a href="#single">単一の光点形状</a></li>
@@ -94,6 +95,11 @@
 <div class="eyebrow">見え方を決める</div>
 <h1>光点の形・量・点滅</h1>
 <p class="lead">光点1つの形と大きさ、同時に光る割合、複数形状のアトラスです。</p>
+<section id="antialiasing">
+<h2>光点アンチエイリアス（未リリース）</h2>
+<p>ControllerのPro「光点・ランダム点灯」で<strong>光点アンチエイリアス</strong>を0〜1で設定します。既定0は従来どおり、1は画素サイズに合わせた輪郭補正です。内蔵の四角・丸・ひし形・十字・六角形・★・リング・♥に対応します。形状Texture／Atlasは従来の処理を維持します。</p>
+<p>遠くの小さな光点が1画素より細かくなると、形状の面積に応じた平均光量へ移行してちらつきを抑えます。その距離では★や♥の輪郭、リングの穴は判別できません。既存の光点のぼかしは引き続き利用できます。</p>
+</section>
 <section id="spots">
 <h2>光点・タイル</h2>
 <table>

@@ -57,6 +57,7 @@
 <li><a href="#setup">準備</a></li>
 <li><a href="#bands">用途別の反応帯域</a></li>
 <li><a href="#response">反応量と安定化</a></li>
+<li><a href="#envelope">用途別のAttack/Release（未リリース）</a></li>
 <li><a href="#history">履歴・伝播</a></li>
 <li><a href="#material-mask">MaterialごとのAudioLink反応マスク</a></li>
 <li><a href="#individual-pattern">Material個別AudioLink・発光パターン</a></li>
@@ -201,6 +202,21 @@
 <td>小さなノイズを無視する下限です。</td>
 </tr>
 </table>
+</section>
+<section id="envelope">
+<h2>用途別のAttack/Release（未リリース）</h2>
+<p><strong>音反応のAttack/Releaseを使用</strong>をONにすると、光点の明るさ・サイズ・色に別々の立ち上がりと余韻を設定できます。初期状態はOFFで、従来の音声反応の平滑化を維持します。ON時は光点の平滑化に代わって6つの時間を使います。</p>
+<table><tr><th>表示名</th><th>初期値</th><th>効果</th></tr>
+<tr><td>明るさのAttack（秒・99%到達）</td><td>0.02秒</td><td>音が増えたときの立ち上がり。0〜0.35秒、0は即応。</td></tr>
+<tr><td>明るさのRelease（秒・99%到達）</td><td>0.25秒</td><td>音が減ったときの余韻。0〜0.35秒、0は即応。</td></tr>
+<tr><td>光点サイズのAttack（秒・99%到達）</td><td>0.03秒</td><td>音が増えたときの立ち上がり。0〜0.35秒、0は即応。</td></tr>
+<tr><td>光点サイズのRelease（秒・99%到達）</td><td>0.12秒</td><td>音が減ったときの余韻。0〜0.35秒、0は即応。</td></tr>
+<tr><td>色のAttack（秒・99%到達）</td><td>0.05秒</td><td>音が増えたときの立ち上がり。0〜0.35秒、0は即応。</td></tr>
+<tr><td>色のRelease（秒・99%到達）</td><td>0.30秒</td><td>音が減ったときの余韻。0〜0.35秒、0は即応。</td></tr>
+</table>
+<p>時間は入力の変化へ99%追従する目安です。AudioLinkの四帯域履歴を最大48サンプル／用途読み込むため、有効時はGPU負荷が増えます。基本遅延と遅延差が履歴の終端に近い場合、過去データが不足し、余韻が短くなることがあります。</p>
+<p>対象は反射光点です。表面Emission・本体・アバター用実光は従来の反応を維持します。テストモードの固定音量は時間処理を通しません。立ち上がり・余韻は実際のAudioLink入力で確認してください。</p>
+<p>新規Preset保存でAA・使用切替・6つの時間を記録します。<strong>光点AA・音反応をこのプリセットで指定</strong>がONのPresetだけが追加設定を上書きし、既存PresetはControllerの追加設定を維持します。両PresetがONのクロスフェードではAAと時間を補間し、使用切替は中央で切り替えます。</p>
 </section>
 <section id="history">
 <h2>履歴・伝播</h2>
