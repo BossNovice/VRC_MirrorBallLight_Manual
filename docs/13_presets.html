@@ -97,7 +97,7 @@
 <p class="lead">演出をまとめて切り替えます。作り方と、実行中に切り替えるイベントです。</p>
 <section id="recover-first-preset">
 <h2>先頭がNoPresetになっている場合</h2>
-<p>Edit ModeでControllerのPro表示から「2. ライブプリセット」を開き、<strong>「現在値から先頭プリセットを復元」</strong>を押します。その時点のController設定54項目をコピーしたPreset1を作り、未設定の先頭スロットへ割り当てます。他のスロットや操作範囲は保持され、Undo／Redoに対応します。すでに割り当てられた先頭は上書きしません。</p>
+<p>Edit ModeでControllerのPro表示から「2. ライブプリセット」を開き、<strong>「現在値から先頭プリセットを復元」</strong>を押します。その時点のController設定62項目をコピーしたPreset1を作り、未設定の先頭スロットへ割り当てます。他のスロットや操作範囲は保持され、Undo／Redoに対応します。すでに割り当てられた先頭は上書きしません。</p>
 <p>プリセット用の子には<strong>MirrorBallLightPreset</strong>を付けてください。MirrorBallLightControllerを付けると、ミラーボールを更新するControllerが増えます。</p>
 </section>
 <section id="controller">
@@ -151,15 +151,15 @@
 <ol class="steps">
 <li>Edit ModeでControllerの演出値を調整します。</li>
 <li>Easy／Pro共通のInspector下部の「保存名」を入力します。</li>
-<li><strong>「現在の設定を新規プリセットとして保存」</strong>を押します。現在の演出値54項目をコピーした子GameObjectとMirrorBallLightPresetが作成され、一覧の末尾へ追加されます。</li>
+<li><strong>「現在の設定を新規プリセットとして保存」</strong>を押します。現在の演出値62項目をコピーした子GameObjectとMirrorBallLightPresetが作成され、一覧の末尾へ追加されます。</li>
 <li>保存したい見た目ごとに繰り返し、Scene（Prefab編集モードではPrefab）を保存します。</li>
 <li>ライブ切替に使う場合はProの「2. ライブプリセット」で「ライブプリセットを使用」をONにします。</li>
 </ol>
 <p>ライブプリセットOFFや一覧が空でも保存できます。空の名前はCustom Presetとなり、同名は連番で区別します。既存プリセット・未設定スロット・電源・Local／Global・選択番号を維持し、追加と一覧登録を1回のUndo／Redoで戻せます。Controllerの選択も維持します。通常の新規保存はEdit Mode専用です。Play Modeの調整値は下の一時記録から保存できます。</p>
-<p>コピーするのは下表の演出設定54項目です。電源・参照・Material固有の設定などは含みません。既存プリセットを更新する場合は、Proで対象の「選択プリセット番号」を指定して「現在値を選択プリセットへ保存」を使います。「選択番号をプレビュー適用」でEdit Modeの見た目を確認できます。</p>
+<p>コピーするのは下表の演出設定62項目です。電源・参照・Material固有の設定などは含みません。既存プリセットを更新する場合は、Proで対象の「選択プリセット番号」を指定して「現在値を選択プリセットへ保存」を使います。「選択番号をプレビュー適用」でEdit Modeの見た目を確認できます。</p>
 <h3>Play Modeで調整した演出を保存</h3>
 <ol><li>Sceneを保存してからPlay Modeを開始し、Controllerの演出を調整します。</li><li>Inspector下部の「保存名」を入力し、<strong>「Play Modeの設定を一時記録」</strong>を押します。</li><li>Play Modeを終了して同じControllerを選択し、<strong>「記録したPlay Mode設定を新規プリセットとして保存」</strong>を押します。保存前に保存名を変更できます。</li><li>Sceneを保存します。既存プリセット・Controller設定・電源・操作範囲を維持して、新しいPresetを末尾へ追加します。</li></ol>
-<p>記録するのは実Udonの演出値54項目です。Texture／Cubemap参照を含み、電源・Material個別設定・AudioLink入力や再生位置は含みません。記録はControllerごとに1件で、再記録すると更新します。一時記録はPlay Modeの往復とスクリプト再読込をまたいで保持し、Unityを終了すると消えます。保存後もUndoに備えて残り、「一時記録を破棄」で削除できます。</p>
+<p>記録するのは実Udonの演出値62項目です。Texture／Cubemap参照を含み、電源・Material個別設定・AudioLink入力や再生位置は含みません。記録はControllerごとに1件で、再記録すると更新します。一時記録はPlay Modeの往復とスクリプト再読込をまたいで保持し、Unityを終了すると消えます。保存後もUndoに備えて残り、「一時記録を破棄」で削除できます。</p>
 <p>未保存Scene、実行中に作成したController、Projectに保存されていない一時Textureは記録できません。Textureを記録後に削除した場合は、元のアセットを復元してから保存してください。</p>
 <h3>プリセット管理</h3>
 <p>Controller下部の<strong>「プリセットを整理…」</strong>から、名前変更・複製・上／下への移動・一覧から削除を行います。複製は選択したPresetの値をコピーし、同名は連番で区別します。すべてUndo／Redoに対応します。</p>
