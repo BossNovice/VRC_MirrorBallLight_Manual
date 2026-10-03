@@ -202,6 +202,7 @@
 </section>
 <section id="avatar">
 <h2>アバターへの実光</h2>
+<p>疑似光点は受光面ShaderのEmissionで描くため、UnityのPixel Lightを必要としません。照射SpotLightは任意で、未指定時はミラーボールの位置と下向きを使います。投影はLightの有効状態に依存せず、参照があるときはTransform・色・強度を読みます。照射SpotLightやアバター用リアルタイムライトを実際に有効にすると、別の実ライト負荷が生じます。アバター用の実光は、壁面の個々の反射光点をAvatarへ再現する機能ではありません。</p>
 <h3>Realtime Light方式</h3>
 <p>ControllerへPoint Lightを1灯割り当てます。「安全設定」ボタンでRealtime、影なしへ設定し、Rangeを必要最小限にします。PC向けで、ワールド全体のRealtime Light数に注意します。</p>
 <h3>VRCLightVolumes方式</h3>

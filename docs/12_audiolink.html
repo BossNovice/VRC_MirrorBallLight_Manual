@@ -57,7 +57,8 @@
 <li><a href="#setup">準備</a></li>
 <li><a href="#bands">用途別の反応帯域</a></li>
 <li><a href="#response">反応量と安定化</a></li>
-<li><a href="#envelope">用途別のAttack/Release（未リリース）</a></li>
+<li><a href="#r33-audio-modes">用途別モード（R33）</a></li>
+<li><a href="#envelope">用途別のAttack/Release（R33）</a></li>
 <li><a href="#history">履歴・伝播</a></li>
 <li><a href="#material-mask">MaterialごとのAudioLink反応マスク</a></li>
 <li><a href="#individual-pattern">Material個別AudioLink・発光パターン</a></li>
@@ -204,7 +205,11 @@
 </table>
 </section>
 <section id="envelope">
-<h2>用途別のAttack/Release（未リリース）</h2>
+<h2 id="r33-audio-modes">用途別モード（R33）</h2>
+<table><tr><th>表示名</th><th>初期値</th><th>効果</th></tr><tr><td>AudioLink反応モード</td><td>従来</td><td>従来／Band Roles／Beat Flash／両方。</td></tr><tr><td>HighMid Sparkle量</td><td>1</td><td>HighMidのきらめき。0〜3。</td></tr><tr><td>High細点量</td><td>0.5</td><td>Highによる細さの量。0〜1。</td></tr><tr><td>Bass立上がりFlash量</td><td>2</td><td>Bassの立ち上がりの強調。0〜10。</td></tr></table>
+<p>従来／Band Roles／Beat Flash／両方から選びます。既定の従来モードは既存の反応です。Band RolesはBassを明るさ、LowMidをサイズ、HighMidをSparkle、Highを光点の細さへ割り当てます。新しい光点の密度を生成する処理ではありません。</p>
+<p>Beat FlashはBassの現在値と4サンプル前の値の正の差から音の立ち上がりを強調します。BPMや拍位置の推定ではありません。Sparkleの増幅は既定1、細部の増幅は0.5、Beat Flashの増幅は2です。AudioLinkがないときは追加反応を0として扱います。</p>
+<h2>用途別のAttack/Release（R33）</h2>
 <p><strong>音反応のAttack/Releaseを使用</strong>をONにすると、光点の明るさ・サイズ・色に別々の立ち上がりと余韻を設定できます。初期状態はOFFで、従来の音声反応の平滑化を維持します。ON時は光点の平滑化に代わって6つの時間を使います。</p>
 <table><tr><th>表示名</th><th>初期値</th><th>効果</th></tr>
 <tr><td>明るさのAttack（秒・99%到達）</td><td>0.02秒</td><td>音が増えたときの立ち上がり。0〜0.35秒、0は即応。</td></tr>
