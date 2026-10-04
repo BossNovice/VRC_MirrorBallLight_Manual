@@ -537,7 +537,6 @@
   MirrorBallLightの版に関係なく出るもので、MirrorBallLight起因ではありません。**MirrorBallLight由来のエラーは
   0件であることを確認しています。
 
-> 過去の版の変更履歴と、古い版からの移行手順は [archive/RELEASE_NOTES.md](../archive/RELEASE_NOTES.md) にあります。
 > **このページは現行版だけを扱います。**
 
 ## UI Bridge付きButtonの自動作成
