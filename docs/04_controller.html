@@ -92,13 +92,13 @@
 <div class="page">
 <div class="eyebrow">見え方を決める</div>
 <h1>ControllerのInspector</h1>
-<p class="lead">Easy／Proの表示モード、10個の折りたたみの構成と、設定を保存するボタンの使い方です。</p>
+<p class="lead">Basic／Advanced／Debugの表示モード、10個の折りたたみの構成と、設定を保存するボタンの使い方です。</p>
 <section id="inspector">
 <h2>ControllerのInspectorの使い方</h2>
-<p>初期表示の<strong>Pro</strong>では設定項目が10個の折りたたみに分かれています。<strong>最初は「1. 基本設定・電源・対象Material」だけが開いています。</strong> Easyでは導入と基本の見た目をまとめて設定できます。</p>
+<p>初期表示の<strong>Advanced</strong>では設定項目が10個の折りたたみに分かれています。<strong>最初は「1. 基本設定・電源・対象Material」だけが開いています。</strong> Basicでは導入と基本の見た目をまとめて設定できます。</p>
 <h3>表示モード</h3>
-<p>Inspector上部の<strong>「Pro：すべての設定」「Easy：基本設定」</strong>で表示を切り替えます。Easyには必須参照・電源・基本の見た目・AudioLinkの基本設定が並び、反映・保存ボタンはどちらでも使えます。</p>
-<p><strong>切替は設定値やMaterialを書き換えません。</strong> Easyで非表示になった設定も有効です。ライブプリセット、光点、投影、照明連携などの詳細はProで調整してください。ライブプリセットやAudioLinkテスト入力が有効な場合は、Easyにも案内が出ます。</p>
+<p>Inspector上部の<strong>「Basic：基本」「Advanced：詳細」「Debug：診断」</strong>で表示を切り替えます。Basicには必須参照・電源・基本の見た目・AudioLinkの基本設定が並び、Debugは描画の診断を表示します。反映・保存ボタンはどのモードでも使えます。</p>
+<p><strong>切替は設定値やMaterialを書き換えません。</strong> Basicで非表示になった設定も有効です。ライブプリセット、光点、投影、照明連携などの詳細はAdvancedで調整してください。ライブプリセットやAudioLinkテスト入力が有効な場合は、Basicにも案内が出ます。</p>
 <p>表示モードはこのPCのUnity Editorへプロジェクトごとに保存され、Unityを起動し直しても引き継ぎます。SceneやPrefabの設定には含まれません。これは下の折りたたみ状態の保存とは別です。</p>
 <h3>導入状態（設定の確認）</h3>
 <p>両モードの上部にミラーボール本体の参照、設定済みMaterialと未設定参照の件数を表示します。照明連携Materialを使用する場合は依存Packageと、有効な受光機能に必要なScene内のManager／Controllerを確認します。使用していない照明連携のSceneオブジェクトは要求しません。</p>
@@ -210,7 +210,7 @@
 <p>Sceneを保存してPlay Modeを開始し、「Play Modeの設定を一時記録」を押すと、終了後に「記録したPlay Mode設定を新規プリセットとして保存」から新しいPresetを作成できます。一時記録はUnity終了時に消えます。「プリセットを整理…」で名前変更・複製・並べ替え・一覧から削除を行えます。<a href="13_presets.html#create">詳しい手順と保存範囲</a>を確認してください。</p>
 <p>Materialの反映・保存、照明連携、Material変換は対象Materialだけを保存します。診断の自動修正は、実際に修正したMaterialだけを保存し、修正不要の対象Materialの未保存編集も保持します。パネル資源の生成とProgram Assetの修復も、関係するアセットだけを保存します。パッケージの保存処理ではプロジェクト内の無関係な未保存アセットをまとめて書き出しません。一時プレビューは適用・変換・診断の前に終了し、元の設定へ戻します。保存はアセットファイル単位なので、同じファイル内のサブアセットは一緒に保存されます。</p>
 <h3>現在の設定を新規プリセットとして保存</h3>
-<p>Easy／Pro共通のInspector下部で「保存名」を入力して押すと、現在の演出設定75項目を新しい子MirrorBallLightPresetへコピーし、一覧の末尾へ登録します。ライブプリセットOFFでも使えます。同名は連番で区別し、既存プリセットや電源・操作範囲・選択番号を維持します。追加は1回のUndo／Redoで戻せます。</p>
+<p>Inspector下部で「保存名」を入力して押すと、現在の演出設定75項目を新しい子MirrorBallLightPresetへコピーし、一覧の末尾へ登録します。ライブプリセットOFFでも使えます。同名は連番で区別し、既存プリセットや電源・操作範囲・選択番号を維持します。追加は1回のUndo／Redoで戻せます。</p>
 <p>保存後はScene（Prefab編集モードではPrefab）を保存してください。通常の新規保存はEdit Mode専用です。Play Modeでは一時記録を使います。電源・参照・Material個別の設定はプリセットの対象外です。<a href="13_presets.html#create">プリセット作成の詳しい手順</a>へ進みます。</p>
 <table>
 <tr><td>導入状態を更新</td><td>選択中のControllerの照明連携状態を読み直します。自動修正は行いません。</td></tr>

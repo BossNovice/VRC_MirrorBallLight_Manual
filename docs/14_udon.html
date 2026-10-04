@@ -115,8 +115,8 @@
 <tr><td><code>TurnOn</code> / <code>TurnOff</code> / <code>TogglePower</code></td><td>電源</td></tr>
 <tr><td><code>NextPreset</code> / <code>PreviousPreset</code></td><td>プリセットを送る・戻す</td></tr>
 <tr><td><code>ReloadCurrentPreset</code></td><td>今のプリセットを入れ直す</td></tr>
-<tr><td><code>ApplySelectedPreset</code></td><td><code>presetSelectionIndex</code> の番号へ切り替える</td></tr>
-<tr><td><code>ApplySelectedPresetImmediately</code></td><td>同上。クロスフェードなし</td></tr>
+<tr><td><code>RequestSelectPreset</code></td><td><code>apiPresetIndex</code> の番号へ切り替える</td></tr>
+<tr><td><code>RequestSelectPresetImmediately</code></td><td>同上。クロスフェードなし</td></tr>
 <tr><td><code>UseStandardLightingVariant</code> / <code>UseIntegratedLightingVariant</code></td><td>連携版の切替</td></tr>
 <tr><td><code>ApplyLightingVariant</code></td><td>現在の設定で連携版を反映</td></tr>
 <tr><td><code>UseLocalPresetScope</code> / <code>UseGlobalPresetScope</code></td><td>プリセットの同期範囲</td></tr>
@@ -154,8 +154,6 @@ int result = (int)mirrorBall.GetProgramVariable("apiLastResultCode");
 <p><strong>3 と 4 は別物です。</strong> 3 は切替が終わってから適用されますが、4 は捨てられます。</p>
 <p><code>apiStateRevision</code> は、<strong>副作用が見えにくい操作でも効いたかどうかを確かめる</strong>ための目印です。たとえば連携版の切替はオブジェクトの有効・無効を変えるだけなので、外からは分かりません。この値が増えていれば処理は走っています。</p>
 
-<h3>従来の書き方も使えます</h3>
-<p><code>presetSelectionIndex</code> を直接書いてから <code>ApplySelectedPreset</code> を送る方法も、<strong>これまでどおり動きます。</strong> 既存のワールドはそのままで構いません。新しく書くときは <code>apiPresetIndex</code> と <code>RequestSelectPreset</code> をお使いください。</p>
 </section>
 <section id="base">
 <h2>共通の下ごしらえ</h2>
