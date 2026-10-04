@@ -7,10 +7,12 @@
 R34では、実際の壁・床・天井へ反射を配置するLighting Engineと、描画先（通常・鏡・撮影）ごとの品質設定を追加しました。Lighting Engineは任意で、導入しなければ従来どおり受光面Shaderだけで描画します。
 
 1. 実形状へ反射を配置する場合は **Tools → MirrorBall Light → Lighting Engineを導入** でControllerと受光対象の階層を選び、検出一覧のFloor／Wall／Ceiling／Stage／Objects／Avatar分類と対象チェックを修正して適用します。ball、入射Spot、Receiver Manager、InstancedSpot MaterialのGPU Instancing、有効な非Trigger Colliderを確認します。登録外の遮蔽物もRaycast Layerへ含めてください。[自分の壁へ適用する](../docs/03_apply.html#lighting-engine)に詳細があります。
+   - R34.1から、**一覧の対象へLighting Engineを設定** はボールのメッシュへ球を当てはめ、球面上の外向きの三角形だけを反射Facetにします。同じメッシュの鎖や吊り金具、面積0の三角形は除外します。主に球でない形状は、すべての三角形をFacetにします。上限は8192個で、超える分は均等に間引きます。結果欄の例:「反射Facet 8192個を登録。ボールMeshの三角形 17156個のうち、鎖など球面から外れた三角形・面積0の三角形 508個を除外しました。上限8192個まで均等に間引いています。」最後の一文は間引いたときだけ出ます。[Facet選別](../docs/03_apply.html#engine-facets)を参照してください。
+   - R34.1から、Setupはシーンのprogramの名前が「AudioLink」のUdonBehaviourを探してEngineの `audioLinkBehaviour` へつなぎ、`requestAudioLinkReadback` を有効にします。設定済みの参照はそのままにします。R34では手でつながないとEngineが音に反応しませんでした。[AudioLinkの自動接続](../docs/03_apply.html#engine-audiolink-wiring)を参照してください。
 2. ControllerのBasic／Advanced／Debugで調整・詳細設定・Scene補助を使い分けます。Auto PerformanceはGraphics設定の読取で、GPU/FPSの測定ではありません。通常／Mirror／Face Mirror／Handheld／Screenshotの密度初期値は100／50／25／125／150%。Temporal Sparkle StabilityはRenderTextureを使わない解析的近似です。[Controller](../docs/04_controller.html#three-mode)と[回転・安定化](../docs/05_motion.html#engine-motion)を参照してください。
-3. Engineの品質はLOW32／MED64／HIGH128／ULTRA256／OFF0。PhotoCameraがActiveかつPhoto Mode有効のPCでは配置512を使えますが、撮影slotは通常・鏡へ増やさず、OFFは復活しません。AndroidはLOW／OFFです。[品質とProfiler](../docs/19_heavy.html#engine-quality)を参照してください。
-4. Audio反応はBassサイズ／Mid回転／High密度／Beat Flash。7ジャンルNORMAL／CLUB／HIPHOP／HOUSE／TECHNO／DISCO／CHILLと、7回転Constant／Accelerate／Decelerate／BeatSync／Pendulum／ReverseBeat／RandomAccentを選べます。BPM・位相は明示値です。[Audio](../docs/12_audiolink.html#engine-audio)を参照してください。
-5. Engine Inspectorの **現在の演出をAssetへ保存** と **保存した演出を読み込む** で演出値を扱います。ローカル品質・対象参照・Ray予算は保存しません。CPU更新時間とRay数・有効光点はGPU負荷やVRChat実機FPSとは別に読みます。[演出Asset](../docs/13_presets.html#engine-preset)を参照してください。
+3. Engineの品質はLOW32／MED64／HIGH128／ULTRA256／OFF0。PhotoCameraがActiveかつPhoto Mode有効のPCでは配置512を使えますが、撮影slotは通常・鏡へ増やさず、OFFは復活しません。R34.1から、撮影カメラを開いている間も通常の画面の光点の更新間隔と寿命は変わりません。AndroidはLOW／OFFです。[品質とProfiler](../docs/19_heavy.html#engine-quality)を参照してください。
+4. Audio反応はBassサイズ／Mid回転／High密度／Beat Flash。7ジャンルNORMAL／CLUB／HIPHOP／HOUSE／TECHNO／DISCO／CHILLと、7回転Constant／Accelerate／Decelerate／BeatSync／Pendulum／ReverseBeat／RandomAccentを選べます。BPM・位相は明示値です。AudioLinkはR34.1から導入ウィンドウが自動でつなぎます（上の1）。[Audio](../docs/12_audiolink.html#engine-audio)を参照してください。
+5. Engine Inspectorの **現在の演出をAssetへ保存** と **保存した演出を読み込む** で演出値を扱います。ローカル品質・対象参照・Ray予算は保存しません。CPU更新時間とRay数・有効光点はGPU負荷やVRChat実機FPSとは別に読みます。CPUの目安（R34.1）: Unity EditorのPlay Mode（Udon VM、1人）で、品質ULTRA（256光点）・24 rays・毎秒30回更新・Facet 8,192個のとき、Engineの1フレームの平均は約1.1 msでした（R34は2.6〜6 ms）。Editorでの計測で、VRChatクライアントのCPUは計測していません。[演出Asset](../docs/13_presets.html#engine-preset)を参照してください。
 
 ## R33の光点・描画品質
 
@@ -100,10 +102,11 @@ Easy / Pro表示、プリセットの比較・プレビュー・追加、3段階
 
 | MirrorBallLight | Unity | VRCLightVolumes | LTCGI | コンパイル確認 | 実機目視（PC） |
 | --- | --- | --- | --- | --- | --- |
-| R34.1 | 2022.3.22f1 | 3.0.0-dev.20 | 1.7.3 | 済（注44） | 未実施（注44） |
-| R34.1 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | Shaderのみ（注44） | 未実施（注44） |
-| R34.1 | 2022.3.22f1 | 2.1.3 | 1.7.2 | Shaderのみ（注44） | 未実施（注44） |
-| R34.1 | 2022.3.22f1 | 未導入 | 未導入 | 未実施（注44） | 未実施（注44） |
+| R34.1 | 2022.3.22f1 | 3.0.0-dev.20 | 1.7.3 | 済（注44） | 構成は未記録（注44） |
+| R34.1 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | Shaderのみ（注44） | 構成は未記録（注44） |
+| R34.1 | 2022.3.22f1 | 2.1.3 | 1.7.2 | Shaderのみ（注44） | 構成は未記録（注44） |
+| R34.1 | 2022.3.22f1 | 未導入 | 未導入 | 未実施（注44） | 構成は未記録（注44） |
+| R34.1 | 2022.3.22f1 | 実機確認時の版は未記録 | 実機確認時の版は未記録 | ― | 済（注44） |
 | R34 | 2022.3.22f1 | 2.1.3 | 1.7.2 | 済（注43） | 未実施（注43） |
 | R34 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注43） | 未実施（注43） |
 | R34 | 2022.3.22f1 | 未導入 | 未導入 | 済（UdonSharpのみ、注43） | 未実施（注43） |
@@ -276,18 +279,19 @@ Easy / Pro表示、プリセットの比較・プレビュー・追加、3段階
 - **注41**: 3Dパネル変更に必要な確認へ絞っています。Blender書き出し、Unity C#・実UdonSharp、実OnClickを使うClientSim31項目、旧パネル2つの更新・Scene保存／再読込、欠損Mesh故障注入2件、104 AssetsのmetaとGUIDを確認しました。World01の実際のLight Volumes 3.0.0-dev.20／LTCGI 1.7.3環境でもC#・Udonコンパイル、新外観と既存設定の保持、壁際の電源・PREV／NEXT判定を確認しています。コンパイル用includeを持つ専用プロジェクトの結果と、実パッケージを持つWorld01を区別しています。
   変更していないShader、プリセット演算、ネットワーク処理はR32.6の実績を参照し、全リリース検査や全連携構成の再検証は繰り返していません。VRChat PC実クライアント・複数人同期は未実施で、R31-UNEXEC-01を継続します。
 
-- **注44**: R34.1はUnity 2022.3.22f1、VRChat SDK 3.10.5で確認しました。実UdonSharpコンパイル、Editor検査、Lighting Engine・導入ウィンドウの検査（371／172項目）は 3.0.0-dev.20／1.7.3 の構成で成功しています。3.0.0-dev.15／1.7.3 と 2.1.3／1.7.2 は描画検査（91場面）でShaderの描画を確認しました。連携未導入構成は今回確認していません。World01（3.0.0-dev.20）のEditor Play ModeでLighting EngineのCPUと鎖付きボールのFacet選別を確認しています。VRChat実機目視、Photo Modeの撮影、HMD、複数人同期は未実施です。
+- **注44**: R34.1はUnity 2022.3.22f1、VRChat SDK 3.10.5で確認しました。実UdonSharpコンパイル、Editor検査、Lighting Engine・導入ウィンドウの検査（371／172項目）は 3.0.0-dev.20／1.7.3 の構成で成功しています。3.0.0-dev.15／1.7.3 と 2.1.3／1.7.2 は描画検査（91場面）でShaderの描画を確認しました。連携未導入構成は今回確認していません。World01（3.0.0-dev.20）のEditor Play ModeでLighting EngineのCPUと鎖付きボールのFacet選別を確認しています。利用者がVRChat実クライアントで複数人同期・Photo Mode・鏡を確認し、問題は見つからなかったとの報告を受けました。確認した連携パッケージの版は記録していないため、注9と同じく特定の連携版へ紐付けず別の行に記録しています。HMDは未確認です。
 - **注43**: R34はUnity 2022.3.22f1で確認しました。実UdonSharpコンパイルは 2.1.3／1.7.2、3.0.0-dev.15／1.7.3、連携未導入の3構成でエラーなしです。製品Shaderは両連携構成で描画検査（91場面、連携版3本を含む）のプレイヤービルドと描画が成功しています。連携未導入構成ではShaderの再確認をしていません。Lighting Engine・Receiver Manager・描画先ごとの品質は実UnityのEditor/GPU検査（365／167／91項目）で確認しています。ClientSimでの実Udon実行、VRChat実機目視、HMD、複数人同期は未実施で、下記R31-UNEXEC-01を継続します。
 - **注42**: R33はUnity 2022.3.22f1で、2.1.3／1.7.2と3.0.0-dev.15／1.7.3の両連携構成の実UdonSharpコンパイルと製品Shader 6本のエラー0件を確認しています。連携未導入構成も実UdonSharpの成功を確認し、通常版Shaderが正常、連携版3本はinclude不在による想定内のコンパイル失敗です。根拠はR33の `core/.ci/reports/verify-R33.json` と `unity_no_integration.log` です。一括リリース検査全件の成功、VRChat実機目視、HMD、複数人同期・途中参加・所有者交代の成功を示すものではありません。後者は下記R31-UNEXEC-01の理由・担当・期限・次アクションを継続します。
 
 **未実施**: VRChat PC実クライアントの目視・複数人同期確認（R31から継続）
 - 追跡ID: R31-UNEXEC-01
 - 理由種別: ENV_UNAVAILABLE
-- 理由詳細: 実クライアントと複数人の確認は未実施。HMDでの見え方、最新版パネルの共有表示、操作権限の両モード、途中参加、所有者交代、★・♥などの光点形状も対象とする。実Unity・ClientSim・描画検査の結果を実機確認に読み替えない。
+- 理由詳細: 複数人同期はR34.1で利用者が実クライアントで確認済み（下記の経過）。残りは未実施。HMDでの見え方、最新版パネルの共有表示、操作権限の両モード、途中参加、所有者交代、★・♥などの光点形状も対象とする。実Unity・ClientSim・描画検査の結果を実機確認に読み替えない。
 - 期限: 2026-10-15
 - 担当: @BossNovice
-- 次アクション: 最新版unitypackageを検証ワールドへImportし、PC実クライアント2人でオーナーのみ／誰でも操作可能の両設定、基本／シーケンスパネル、所有者・非所有者・途中参加・所有権移動時の操作と光点形状を確認する。
-- 更新日: 2026-10-03
+- 経過: 2026-10-04、R34.1で利用者がVRChat実クライアントで複数人同期を確認し、問題は見つからなかったとの報告を受けました（Photo Mode・鏡も目視、問題なし）。HMD、操作権限の両モード、途中参加、所有者交代、光点形状を個別に確かめた記録はありません。
+- 次アクション: HMDでの見え方と、PC実クライアント2人でのオーナーのみ／誰でも操作可能の両設定、基本／シーケンスパネル、所有者・非所有者・途中参加・所有権移動時の操作と光点形状を確認する。
+- 更新日: 2026-10-04
 - 延長回数: 0
 
 - **注32**: R30.20で、**面の描画（Cull Mode）をlilToon 2.3.2に準拠させて表面Shader4種すべてへ
