@@ -43,7 +43,7 @@
 <li><a href="#distance">距離フェード</a></li>
 <li><a href="#color">カラフル・ランダム色</a></li>
 <li><a href="#recipes">見た目の設定例</a></li>
-<li><a href="#engine-motion">Engineの7回転パターンと安定化（R34）</a></li>
+<li><a href="#engine-motion">Engineの7回転パターンと安定化</a></li>
 </ul>
 </li>
 <li><a href="06_spots.html">光点の形と量</a>
@@ -275,7 +275,7 @@
 </p>
 </section>
 <section id="engine-motion">
-<h2>Engineの7回転パターンと安定化（R34）</h2>
+<h2>Engineの7回転パターンと安定化</h2>
 <p>Engineの<strong>回転パターン</strong>（<code>motionMode</code>）は0 一定回転（Constant）、1 加速（Accelerate）、2 減速（Decelerate）、3 Beat Sync、4 振り子（Pendulum）、5 Beatごとに逆転（ReverseBeat）、6 ランダムAccent（RandomAccent）です。<code>manageBallRotation</code> でEngineの計算した回転をControllerへ渡し、Controllerがボールの回転を書き込みます。複数の回転スクリプトを同じTransformへ重ねないでください。</p>
 <p><code>baseRpm</code> は基準速度、<code>bpm</code> と <code>beatPhaseSeconds</code> は明示するテンポと位相です。AudioLinkが無くても指定BPMでBeat Syncを動かせます。加減速は <code>motionCycleSeconds</code>、振り子は <code>pendulumDegrees</code>、逆転の間隔は <code>reverseEveryBeats</code>、Kick時の増速は <code>kickSpeedBoost</code>（初期値0.1）、Dropの減速は <code>dropEaseOutSeconds</code>（初期値0.8秒）で調整します。</p>
 <p><strong>Temporal Sparkle Stability</strong>（<code>temporalSparkleStability</code>）は0〜1。<strong>過去サンプルの時間幅（秒）</strong>（<code>temporalSparkleHistorySeconds</code>、初期値0.05秒）と合わせ、現在の反射を解析的な過去サンプル近似でなだらかにします。履歴RenderTextureの保存ではありません。0の既存描画を基準として、値を上げたときのちらつき減少と移動への追従を比較します。1でも残像を実測した合格を意味しません。</p>

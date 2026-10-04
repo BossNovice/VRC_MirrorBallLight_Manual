@@ -138,22 +138,20 @@
 </section>
 <section id="rotation-stopped">
 <h2>回転が止まる</h2>
-<p><b>R30.5で、回転が止まる原因を4つ直しました。</b> R22から入っていた不具合です。まず本体をR30.5以降へ更新してください。</p>
-<div class="note"><b>直したのは次の4つです。</b> Shaderへ渡す回転の基準時刻が誤っていた（VRChatを長く起動している人ほど早く止まりました）／外から値を上書きされたときの復帰が働いていなかった／折り返していない角度を三角関数へ渡していた／表示用の本体を回さない設定で光点が止まっていた。</div>
-<h3>更新しても止まる場合に見るところ</h3>
+<h3>見るところ</h3>
 <ol>
-<li><b>プリセットの「回転速度」が0になっていませんか。</b> プリセットの回転速度は、Controllerの「回転速度」を<b>上書きします</b>。0のプリセットへ切り替えると、本体も光点もその場で止まります。開始時にもプリセットが適用されるため、選択中のプリセットが0なら入った瞬間から回りません。R30.5からは、0のプリセットがあるとInspectorとConsoleで知らせます。</li>
+<li><b>プリセットの「回転速度」が0になっていませんか。</b> プリセットの回転速度は、Controllerの「回転速度」を<b>上書きします</b>。0のプリセットへ切り替えると、本体も光点もその場で止まります。開始時にもプリセットが適用されるため、選択中のプリセットが0なら入った瞬間から回りません。0のプリセットがあるとInspectorとConsoleで知らせます。</li>
 <li><b>Controllerの「ミラーボールを回転する」がOFFになっていませんか。</b></li>
 <li><b>電源がOFFで「消灯中は回転を停止」がONになっていませんか。</b> この組み合わせは仕様どおり止まります。</li>
 <li><b>本体だけが回らない場合は「表示用ミラーボール本体も回転」を確認してください。</b> OFFのとき、本体のGameObjectは回りません。光点と面の模様はShaderが回すため、そちらだけ動いて見えます。</li>
 </ol>
 <h3>同じインスタンスに12時間以上いる場合</h3>
-<p>Shaderが使う時刻は、ワールドへ入ってからの秒数です。長く経つほど数値の刻みが粗くなり、<b>25.6時間で1フレームぶんに達します</b>。R30.5からは12時間を超えた時点でCPU側の計算へ切り替えるため、止まりません。<b>この限界はShader側では解消できません。</b></p>
-<p><b>きらめき・ランダム点滅・色相送り・Cookie回転にも同じ限界があります。</b>こちらは光点ごとに乱数が違うため、CPU側で代わりに計算する道がありません。R30.16までは内部の位相が在室時間に比例して育っており、段付きが<b>16時間ほどで</b>出はじめていました。R30.17で位相を折り返すようにしたため、<b>32時間ほどまで戻っています</b>。それより先は<b>解消できません。</b>インスタンスに入り直せば元に戻ります。</p>
+<p>Shaderが使う時刻は、ワールドへ入ってからの秒数です。長く経つほど数値の刻みが粗くなり、<b>25.6時間で1フレームぶんに達します</b>。回転は12時間を超えた時点でCPU側の計算へ切り替えるため、止まりません。<b>この限界はShader側では解消できません。</b></p>
+<p><b>きらめき・ランダム点滅・色相送り・Cookie回転にも同じ限界があります。</b>こちらは光点ごとに乱数が違うため、CPU側で代わりに計算する道がありません。内部の位相を折り返しているため、段付きが出はじめるのは<b>32時間ほど</b>からです。それより先は<b>解消できません。</b>インスタンスに入り直せば元に戻ります。</p>
 </section>
 <section id="button-dead">
 <h2>ボタンを押しても何も起きない</h2>
-<p>自動作成したボタンの設定が正しくても、<b>Canvasが押せない設定なら何も起きません</b>。<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> を実行してください。R30.5から、原因を名指しで表示します。</p>
+<p>自動作成したボタンの設定が正しくても、<b>Canvasが押せない設定なら何も起きません</b>。<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> を実行してください。原因を名指しで表示します。</p>
 <table>
 <tr><th>コード</th><th>内容</th></tr>
 <tr><td><code>MBL-W028</code></td><td>CanvasのRender ModeがWorld Spaceでない</td></tr>
@@ -178,7 +176,7 @@
 <section id="global-name-clash">
 <h2>光点や回転が、たまに一瞬だけ乱れる</h2>
 <p>ワールドの中に<b>同じ名前のShader Globalを書く別のギミック</b>があると、書いた順で値が入れ替わり、光点や回転がたまに乱れます。MirrorBallLightは1秒ごとにすべてのGlobalを書き直すため<b>すぐ元に戻りますが、戻るまでの間は絵が乱れます。</b></p>
-<p><b>症状が「たまに一瞬」で終わるため、原因に到達できません。</b> R30.18から、診断で名前の衝突そのものを見つけます。<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> を実行してください。</p>
+<p><b>症状が「たまに一瞬」で終わるため、見ているだけでは原因に到達できません。</b> 診断で名前の衝突そのものを見つけます。<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> を実行してください。</p>
 <table>
 <tr><th>コード</th><th>内容</th></tr>
 <tr><td><code>MBL-W031</code></td><td>MirrorBallLight以外が <code>_UdonMB_</code> で始まるShader Globalを書いている</td></tr>
@@ -189,29 +187,19 @@
 </section>
 <section id="pattern-frozen">
 <h2>アニメーションでMaterialを切り替えても効かない</h2>
-<p>一部のShader Keywordは廃止され、実行時のプロパティ切り替えへ移っています。<b>アニメーションクリップからKeywordを直接操作していた場合は効かなくなります。</b></p>
-<p>移行先のプロパティと手順は <a href="18_troubleshoot.html#pattern-frozen">Material・Shader設定の「廃止したShader Keyword」</a> を参照してください。</p>
-<h3>廃止したShader Keywordと移行先</h3>
-<p>Importにかかる時間を短縮するため、Shader Keywordの本数がImport時間を大きく左右するため、軽い機能のKeywordを実行時の切り替えへ移しています。</p>
-<div class="note"><b>Materialの設定と描画結果は変わりません。</b> Inspectorの操作方法も同じです。移行が必要なのは、下表のKeywordを<b>アニメーションクリップやスクリプトから直接操作していた場合だけ</b>です。</div>
+<p>Import時間を短くするため、軽い機能はShader Keywordではなく、0（OFF）または1（ON）のfloatプロパティで切り替えます。<b>アニメーションクリップやスクリプトからKeywordを操作しても効きません。</b>次のプロパティを操作するカーブを使ってください。</p>
+<h3>アニメーションで操作するプロパティ</h3>
 <table>
-<tr><th>廃止したKeyword</th><th>移行先のプロパティ</th><th>Inspectorでの項目</th></tr>
-<tr><td><code>_MB_DEPTH_FADE</code></td><td><code>_UseDepthFade</code></td><td>深度フェードを使用</td></tr>
-<tr><td><code>_MB_MATERIAL_AUDIO_MASK</code></td><td><code>_UseMaterialAudioMask</code></td><td>個別AudioLinkマスクを使用</td></tr>
-<tr><td><code>_MB_SURFACE_EMISSION_AUDIOLINK</code></td><td><code>_UseSurfaceEmissionAudioLink</code></td><td>表面EmissionをAudioLink連動</td></tr>
-<tr><td><code>_MB_ATLAS_SEED_FADE</code></td><td>なし（Controllerの設定が決めます）</td><td>—</td></tr>
-<tr><td><code>_MB_FACET_SEED_FADE</code></td><td>なし（同上）</td><td>—</td></tr>
+<tr><th>機能</th><th>プロパティ</th><th>Inspectorでの項目</th></tr>
+<tr><td>深度フェード</td><td><code>_UseDepthFade</code></td><td>深度フェードを使用</td></tr>
+<tr><td>MaterialごとのAudioLink反応マスク</td><td><code>_UseMaterialAudioMask</code></td><td>個別AudioLinkマスクを使用</td></tr>
+<tr><td>表面EmissionのAudioLink連動</td><td><code>_UseSurfaceEmissionAudioLink</code></td><td>表面EmissionをAudioLink連動</td></tr>
+<tr><td>光点形状Atlas・本体ファセットのシード自動フェード</td><td>なし（Controllerの設定が決めます）</td><td>Controllerの項目を操作します</td></tr>
 </table>
-<h3>アニメーションからの移行手順</h3>
-<ol>
-<li>該当のアニメーションクリップを開き、Materialの Keyword を切り替えているカーブを探します。</li>
-<li>そのカーブを削除し、代わりに上表の移行先プロパティを 0（OFF）または 1（ON）で操作するカーブへ置き換えます。</li>
-<li>シードの自動フェード2種はControllerの設定が決めるため、Material側での切り替え対象ではありません。Controllerの項目を操作してください。</li>
-</ol>
-<div class="tip">Materialに残っている廃止Keywordは、<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> の「安全に自動修正」で削除できます。Keywordと設定値が食い違っている場合は、どちらの状態で動作するかも表示します。自動修正が演出設定そのものを書き換えることはありません。</div>
-<h3>いまも残っているKeyword</h3>
-<p>ランダム点滅、表面向き、距離減衰は数値分岐へ統合されており、旧Keywordを診断機能で除去します。KeywordはAudioLink、Material個別Texture、透明Depth Fade、VRCLightVolumesなどTexture参照や描画構造が変わる機能へ限定しています。</p>
-<p>更新後に「Tools &gt; MirrorBall Light &gt; 診断・最適化」の安全な自動修正を一度実行してください。</p>
+<p><code>_MB_DEPTH_FADE</code>、<code>_MB_MATERIAL_AUDIO_MASK</code>、<code>_MB_SURFACE_EMISSION_AUDIOLINK</code>、<code>_MB_ATLAS_SEED_FADE</code>、<code>_MB_FACET_SEED_FADE</code> のKeywordは使いません。</p>
+<div class="tip">Materialに残っている不要なKeywordは、<code>Tools &gt; MirrorBall Light &gt; 診断・最適化</code> の「安全に自動修正」で削除できます。Keywordと設定値が食い違っている場合は、どちらの状態で動作するかも表示します。自動修正が演出設定そのものを書き換えることはありません。</div>
+<h3>Keywordで切り替える機能</h3>
+<p>ランダム点滅、表面向き、距離減衰は数値分岐で切り替えます。KeywordはAudioLink、Material個別Texture、透明Depth Fade、VRCLightVolumesなどTexture参照や描画構造が変わる機能へ限定しています。</p>
 </section>
 <section id="udon">
 <h3>消灯しても真っ黒にはなりません</h3>
@@ -289,7 +277,7 @@
 </table>
 <p>128秒のうち約102秒はShaderのコンパイルで、VRCLightVolumes／LTCGI連携版の3本が大部分を占めます。<b>時間は環境によって変わります。</b></p>
 <div class="tip">Importは1回で終わります。2回目以降のUnity起動は10数秒です。Libraryフォルダを削除すると再度かかるため、消さない運用にすると待ち時間が減ります。</div>
-<div class="note">UdonSharp Program Assetが正常な場合、Editorのドメインリロードで余分なUdonSharpコンパイルは走らなくなりました。スクリプトの変更やPlay Modeの出入りでの待ち時間が減ります。</div>
+<div class="note">UdonSharp Program Assetが正常な場合、Editorのドメインリロードで余分なUdonSharpコンパイルは走りません。</div>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="17_translate.html">← 既存の壁・ガラスMaterialを変換</a>

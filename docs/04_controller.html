@@ -40,7 +40,7 @@
 <li><a href="#basic">1. 基本設定・電源・対象Material</a></li>
 <li><a href="#buttons">共通ボタン</a></li>
 <li><a href="#controller">Controller連動とMaterial直編集</a></li>
-<li><a href="#three-mode">Basic／Advanced／Debugと用途別描画設定（R34）</a></li>
+<li><a href="#three-mode">Basic／Advanced／Debugと用途別描画設定</a></li>
 <li><a href="#setup-wizard">導入セットアップ</a></li>
 </ul>
 </li>
@@ -217,7 +217,7 @@
 <tr><td>診断・最適化を開く</td><td>Scene全体の詳細な診断ウィンドウを開きます。</td></tr>
 <tr>
 <td>すべて開く／すべて閉じる</td>
-<td>Proの10セクションの折り畳み状態を一括変更します。</td>
+<td>Advancedの10セクションの折り畳み状態を一括変更します。</td>
 </tr>
 <tr>
 <td>現在の設定をマテリアルへ反映・保存</td>
@@ -241,11 +241,11 @@
 </p>
 </section>
 <section id="three-mode">
-<h2>Basic／Advanced／Debugと用途別描画設定（R34）</h2>
+<h2>Basic／Advanced／Debugと用途別描画設定</h2>
 <p>Inspectorの上部でBasic／Advanced／Debugを選びます。Basicは対象バインド・明るさ・サイズ・密度・回転など日常の調整、Advancedは詳細な描画・品質、DebugはScene表示補助と診断に使います。モード変更は演出値やMaterialを変更する操作ではありません。DebugのGizmo表示、Reflection Ray表示、LOD距離表示、受光対象のBounds表示はEditorの補助です。Rayは球面12方向の例示で、実GPU画像やVRChat Contextの測定とは区別します。</p>
 <p><strong>ローカル品質を使用</strong>（<code>useLocalQualitySettings</code>）と<strong>ローカル品質プリセット</strong>（<code>localQualityPreset</code>）は利用者ごとの設定です。<strong>VRChat画質設定に追従</strong>（<code>followVRChatQualitySettings</code>）に加え、<strong>Auto Performance Controller</strong>（<code>useAutoPerformanceController</code>）はAA、Pixel Light Count、LOD Bias、Shadow Resolution／Distance、Realtime Reflection Probesを読み、Graphics設定が変わったときに品質を更新します。FPSやGPU使用率を測って判定する機能ではなく、他ユーザーへの品質同期も行いません。</p>
 <p><strong>VRChat Mirror・Camera品質を自動調整</strong>（<code>useVRChatRenderContext</code>）で用途別の倍率を使います。通常視点の密度倍率／Mirror光点密度倍率／Face Mirror密度倍率／Handheld Camera密度倍率／Screenshot密度倍率は、それぞれ <code>normalDensityMultiplier</code>／<code>mirrorDensityMultiplier</code>／<code>faceMirrorDensityMultiplier</code>／<code>handheldCameraDensityMultiplier</code>／<code>screenshotDensityMultiplier</code> です。初期値は100／50／25／125／150%。鏡判定を優先し、撮影中でも通常表示を一律に増やしません。</p>
-<p>Mirror／Face Mirror／Handheld／Screenshotの履歴サンプル予算は、R35から固定値（1／1／48／48）です。設定項目はありません。両眼のContext品質は同じ条件で扱います。</p>
+<p>Mirror／Face Mirror／Handheld／Screenshotの履歴サンプル予算は固定値（1／1／48／48）です。設定項目はありません。両眼のContext品質は同じ条件で扱います。</p>
 <p><strong>Camera Photo Mode</strong>（<code>useCameraPhotoMode</code>）のPhoto密度倍率／Photo HDR倍率／Photo LOD距離倍率は <code>cameraPhotoDensityMultiplier</code>／<code>cameraPhotoHDRMultiplier</code>／<code>cameraPhotoLODDistanceMultiplier</code>。初期値は1.5／1.2／1.5です。PhotoCameraがnull・非Activeなら通常品質を使い、ローカルOFFを撮影で復活させません。EngineのPHOTO512と通常Context制限は<a href="19_heavy.html#engine-quality">負荷調整</a>を参照してください。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">

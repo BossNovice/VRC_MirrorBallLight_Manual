@@ -76,7 +76,7 @@
 </li>
 <li><a aria-current="page" href="19_heavy.html">重い</a>
 <ul class="inpage">
-<li><a href="#r33-quality">ローカル品質設定と描画コンテキスト（R33）</a></li>
+<li><a href="#local-quality">ローカル品質設定と描画コンテキスト</a></li>
 <li><a href="#first">最初に：CPUとGPUのどちらが原因かを確かめる</a></li>
 <li><a href="#gpu">GPUが原因のとき</a></li>
 <li><a href="#cpu">CPUが原因のとき</a></li>
@@ -85,8 +85,8 @@
 <li><a href="#budget">推奨負荷設定</a></li>
 <li><a href="#skip-hidden">自動で効く軽量化</a></li>
 <li><a href="#notes">知っておくと判断が早くなること</a></li>
-<li><a href="#engine-quality">Engineのローカル品質とPHOTO予算（R34）</a></li>
-<li><a href="#engine-profiler">Engineの測定表示を読む（R34）</a></li>
+<li><a href="#engine-quality">Engineのローカル品質とPHOTO予算</a></li>
+<li><a href="#engine-profiler">Engineの測定表示を読む</a></li>
 </ul>
 </li>
 <li><a href="20_release.html">公開前チェック</a>
@@ -99,7 +99,7 @@
 <h1>動作が重い場合</h1>
 <p class="lead">原因がCPUかGPUかを確かめてから手を打ちます。確かめずに設定を変えても、たいてい何も変わりません。</p>
 <section id="first">
-<h2 id="r33-quality">ローカル品質設定と描画コンテキスト（R33）</h2>
+<h2 id="local-quality">ローカル品質設定と描画コンテキスト</h2>
 <table><tr><th>表示名</th><th>初期値</th><th>効果</th></tr><tr><td>ローカル品質を使用</td><td>OFF</td><td>この利用者の品質設定を有効化。</td></tr><tr><td>ローカル品質プリセット</td><td>高品質</td><td>下表の4段階。</td></tr><tr><td>VRChat画質設定に追従</td><td>OFF</td><td>クライアントの画質設定から選択品質を抑えます。VRChat設定自体は書き換えません。</td></tr><tr><td>VRChat Mirror・Camera品質を自動調整</td><td>OFF</td><td>鏡・カメラ・スクリーンショットの描画設定を有効化。</td></tr><tr><td>Mirror光点密度倍率</td><td>0.5</td><td>鏡での追加の密度倍率。0.05〜1。</td></tr></table>
 <p>Controllerでローカル品質設定を有効にすると、軽量／標準／高品質／CLUBを選べます。品質はその利用者の描画にだけ適用し、同期やPresetへ保存しません。既定では無効です。</p>
 <table><tr><th>品質</th><th>光点密度の倍率</th><th>AudioLink履歴の上限</th><th>高負荷の光点機能</th></tr><tr><td>軽量</td><td>0.5</td><td>1</td><td>OFF</td></tr><tr><td>標準</td><td>0.85</td><td>16</td><td>ON</td></tr><tr><td>高品質（選択初期値）</td><td>1</td><td>32</td><td>ON</td></tr><tr><td>CLUB</td><td>1</td><td>48</td><td>ON</td></tr></table>
@@ -139,7 +139,7 @@
 <p>広いワールドほど効きます。まず終了距離を実際に光を届かせたい範囲まで詰めてください。</p>
 <div class="warning">この省略は<strong>不透明版のShaderで大きく、半透明版では小さい</strong>です。半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、形の計算を省けません。</div>
 
-<h3>2. 電源をOFFにしているときの負荷も下がっています</h3>
+<h3>2. 電源OFFの間は計算を省く</h3>
 <p>電源OFFの間も同じ仕組みで計算を省きます。演出を使わない時間が長いワールドでは、電源を切っておく価値があります。</p>
 
 <h3>3. 半透明版の重なりを減らす</h3>
@@ -184,8 +184,8 @@
 <section id="material-write-cost">
 <h2>Shader Global共有を切っていると重い</h2>
 <p>Controllerの<b>「Shader Global共有を使用」がOFF</b>のとき、または<b>複数台置いて2台目以降をMaterial個別更新にしている</b>とき、Controllerは対象Material1枚ごとに毎更新（既定30回/秒）で値を書き込みます。<b>Material枚数に比例して重くなります。</b></p>
-<p>R30.19から<b>同じ値を書き直さなくなりました。</b>実測で<b>92%削減</b>（Material 4枚・10フレームで、試行144のうち実書き12）です。設定は要りません。</p>
-<div class="note"><b>Global共有を使っている構成（既定）は、もともとこの経路を通りません。</b>R30.19で変わるのは、共有を切っている場合だけです。</div>
+<p><b>前回と同じ値は書き直しません。</b>実測で書き込みを<b>92%削減</b>しています（Material 4枚・10フレームで、試行144のうち実書き12）。設定は要りません。</p>
+<div class="note"><b>Global共有を使っている構成（既定）は、この経路を通りません。</b></div>
 <p>診断ウィンドウは、<b>更新頻度 × 対象Material枚数</b>が大きいときに <code>MBL-I001</code> を出します。まだ重い場合は、更新頻度を下げるか、Global共有をONにしてください。</p>
 </section>
 <section id="many">
@@ -260,8 +260,7 @@
 </section>
 <section id="skip-hidden">
 <h2>自動で効く軽量化</h2>
-<p>光点がまったく映らない面では光点の計算そのものを行わなくなりました。設定は不要で、見た目も変わりません。</p>
-<p>これまでは、遠くて光点が消えている面でも形・色・点滅をひととおり計算してから最後に0を掛けて消していました。先に消えるかどうかを判定するようにしています。</p>
+<p>光点がまったく映らない面では、形・色・点滅を計算する前に判定して、光点の計算そのものを省きます。設定は不要で、見た目も変わりません。</p>
 <table>
 <tr>
 <th>条件</th>
@@ -281,12 +280,9 @@
 </tr>
 </table>
 <p><code>距離による減衰を使用</code> がOFFだと、どの面も「消える」と判定されないため効果がありません。広いワールドで軽さを優先する場合はONにしてください。</p>
-<p>半透明版のShaderは対象外です。半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、計算を飛ばすと見た目が変わってしまいます。</p>
 <h3>半透明版での効き方</h3>
-<p>半透明版のShaderでも色の計算を「光点が映らない画素では行わない」ようにしました。設定は不要で、見た目も変わりません。</p>
-<p>効く条件は不透明版と同じです（<code>距離による減衰を使用</code> がONで <code>距離フェード終了</code> より遠い面、または電源がOFFのとき）。</p>
+<p>半透明版のShaderでは、光点が映らない画素で色の計算だけを省きます。効く条件は不透明版と同じです（<code>距離による減衰を使用</code> がONで <code>距離フェード終了</code> より遠い面、または電源がOFFのとき）。</p>
 <p><strong>軽くなる度合いは不透明版より小さいです。</strong> 半透明版は <code>透過マスクの回転追従</code>（初期値ON）で光点の形をそのまま透明度に使うため、形の計算は飛ばせません。飛ばせるのは色の計算だけです。</p>
-<p>あわせて、<code>プリズム色分散</code> を有効にしたときにフェード境界の1〜2ピクセルで色が不安定になり得る箇所を直しました。実際に症状が出た報告はありません。この項目の初期値は0（無効）で、無効なら影響はありません。</p>
 </section>
 <section id="notes">
 <h2>知っておくと判断が早くなること</h2>
@@ -298,19 +294,19 @@
 <p>導入時のImportが長いことと、ワールドが実行時に重いことは無関係です。Importについては<a href="18_troubleshoot.html">最適化・対処</a>を参照してください。</p>
 </section>
 <section id="engine-quality">
-<h2>Engineのローカル品質とPHOTO予算（R34）</h2>
+<h2>Engineのローカル品質とPHOTO予算</h2>
 <table><thead><tr><th>localQualityTier</th><th>品質</th><th>通常光点の上限</th></tr></thead><tbody><tr><td>0</td><td>LOW</td><td>32</td></tr><tr><td>1</td><td>MED</td><td>64</td></tr><tr><td>2</td><td>HIGH</td><td>128</td></tr><tr><td>3</td><td>ULTRA</td><td>256</td></tr><tr><td>4</td><td>OFF</td><td>0</td></tr></tbody></table>
 <p><code>followControllerQuality</code> が有効ならControllerの実効ローカル品質を使い、無効ならEngineの <code>localQualityTier</code> を使います。利用者ごとに選び、他ユーザーへ同期しません。AndroidはLOWに制限し、<code>androidOffByDefault</code> またはローカルOFFならOFFです。</p>
 <p>Camera Photo Modeを有効にし、SDKのPhotoCameraがActiveなときはPCの配置予算を最大512へ広げます。撮影用に追加したslotは通常描画や鏡へ漏らさず、通常Contextは32／64／128／256の上限を維持します。Photoの密度1.5・HDR1.2・LOD距離1.5と最大安定化は撮影Contextに適用します。PhotoCameraがnull・非Activeなら通常予算へ戻り、OFFでは512へ増やしません。AndroidにはPHOTO512を割り当てません。</p>
-<p>R34.1から、Photo Modeは通常の画面に影響しません。撮影カメラを開いている間も、通常の画面の光点の更新間隔と寿命は変わりません。撮影用に増やした光点は、通常とは別のRay予算と寿命で上乗せして処理します。</p>
+<p>Photo Modeは通常の画面に影響しません。撮影カメラを開いている間も、通常の画面の光点の更新間隔と寿命は変わりません。撮影用に増やした光点は、通常とは別のRay予算と寿命で上乗せして処理します。</p>
 <p><code>raysPerFrame</code>（初期値24）は毎フレームの候補・遮蔽Rayの予算、<code>rayUpdatesPerSecond</code>（初期値30）は配置更新の頻度です。<code>cachedHitLifetime</code> はHitを保持する時間です。光点数の上限と、1フレームに処理するRay数は別の値です。更新が追いつかない場合は品質・対象数・更新頻度を一つずつ変えて比較します。</p>
 </section>
 <section id="engine-profiler">
-<h2>Engineの測定表示を読む（R34）</h2>
+<h2>Engineの測定表示を読む</h2>
 <p>Play ModeのEngine InspectorはRaycasts／フレーム、有効光点／配置予算、CPU更新時間を表示します。<code>lastFrameRaycasts</code>、<code>validSpotCount</code>／<code>allocatedSpotBudget</code>、<code>lastCpuMilliseconds</code> はその実行中の観測です。<code>maximumCpuMilliseconds</code> は最大のCPU更新時間です。floatタイマーの分解能も考慮し、短い値だけで速さを断定しません。</p>
-<p>これらはGPUフレーム時間・GPU使用率・FPS・GPU製品名の推定値ではありません。CPUはUnity Profiler、GPUとDraw CallはProfilerや描画統計で別に比較してください。従来Receiver方式と新Instancing方式は、同じ部屋・視点・光点品質・計測区間で比較し、数値と画像を記録します。Unity Editor／ClientSimの結果をVRChat実機の性能として扱いません。</p>
-<p>CPUの目安（R34.1）：Unity EditorのPlay Mode（Udon VM、1人）で、品質ULTRA（<code>localQualityTier</code> 3、256光点）・<code>raysPerFrame</code> 24・<code>rayUpdatesPerSecond</code> 30・Facet 8,192個の条件では、Engineの1フレームの平均は約1.1 msでした（R34は2.6〜6 ms）。これはEditorでの計測です。VRChatクライアントのCPUは計測していません。</p>
-<p>R35から、当たったColliderの受光グループはRayごとに1回の辞書検索で探します。登録した受光対象が多くても、この検索は遅くなりません。</p>
+<p>これらはGPUフレーム時間・GPU使用率・FPS・GPU製品名の推定値ではありません。CPUはUnity Profiler、GPUとDraw CallはProfilerや描画統計で別に比較してください。受光面Shaderの描画とEngineのInstancing描画は、同じ部屋・視点・光点品質・計測区間で比較し、数値と画像を記録します。Unity Editor／ClientSimの結果をVRChat実機の性能として扱いません。</p>
+<p>CPUの目安（R34.1で計測）：Unity EditorのPlay Mode（Udon VM、1人）で、品質ULTRA（<code>localQualityTier</code> 3、256光点）・<code>raysPerFrame</code> 24・<code>rayUpdatesPerSecond</code> 30・Facet 8,192個の条件では、Engineの1フレームの平均は約1.1 msでした。これはEditorでの計測です。VRChatクライアントのCPUは計測していません。</p>
+<p>当たったColliderの受光グループはRayごとに1回の辞書検索で探します。登録した受光対象が多くても、この検索は遅くなりません。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="18_troubleshoot.html">← うまく動かないとき</a>

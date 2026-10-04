@@ -129,11 +129,11 @@
 </section>
 <section id="composition">
 <h2>照明の重なり方を選ぶ</h2>
-<p>連携版Materialの「10. VRCLightVolumes・LTCGI」を開くと、3つの日本語メニューで照明の重なり方を選べます。既存Materialは従来互換のままです。</p>
+<p>連携版Materialの「10. VRCLightVolumes・LTCGI」を開くと、3つの日本語メニューで照明の重なり方を選べます。合成方式の初期値は「従来の完全加算」です。</p>
 <table>
 <thead><tr><th>項目</th><th>選択肢</th><th>動作</th></tr></thead>
 <tbody>
-<tr><td>照明連携の合成方式</td><td>従来の完全加算</td><td>VRCLightVolumesの拡散光と、LTCGIの拡散・反射をすべて加算します。旧版と同じです。</td></tr>
+<tr><td>照明連携の合成方式</td><td>従来の完全加算</td><td>VRCLightVolumesの拡散光と、LTCGIの拡散・反射をすべて加算します。初期値です。</td></tr>
 <tr><td>照明連携の合成方式</td><td>VRCLightVolumesのみ</td><td>VRCLightVolumesだけを使用します。</td></tr>
 <tr><td>照明連携の合成方式</td><td>LTCGIのみ</td><td>LTCGIだけを使用します。</td></tr>
 <tr><td>照明連携の合成方式</td><td>ハイブリッド（推奨）</td><td>VRCLightVolumesの拡散光とLTCGIの反射だけを合成し、拡散光の二重加算を避けます。</td></tr>
@@ -177,7 +177,7 @@
 </ol>
 <div class="note">「VRCLightVolumes用オブジェクト」はMaterialのToggleとは別で、アバター向けDynamic Volume等のGameObjectを電源連動させる参照です。</div>
 <h3>ワールド法線の反映</h3>
-<p>VRCLightVolumes 3.x環境では、<code>LightVolumeSH</code>へワールド法線を渡すようになり、法線方向に応じたライト・シャドウ評価が通常面・透過面・本体ファセットへ反映されます。曲面や斜面での陰影がより自然になりますが、Material設定や導入手順に変更はありません。VRCLightVolumes 2.x環境では従来の5引数APIのまま動作するため、導入側で意識する必要はありません。</p>
+<p>VRCLightVolumes 3.x環境では、<code>LightVolumeSH</code>へワールド法線を渡し、法線方向に応じたライト・シャドウ評価が通常面・透過面・本体ファセットへ反映されます。曲面や斜面での陰影が自然になります。VRCLightVolumes 2.x環境では5引数APIで動作します。版の判定は自動で、追加の設定はありません。</p>
 </section>
 <section id="ltcgi">
 <h2>LTCGI</h2>
