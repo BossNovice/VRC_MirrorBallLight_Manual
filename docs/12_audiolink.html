@@ -57,14 +57,14 @@
 <li><a href="#setup">準備</a></li>
 <li><a href="#bands">用途別の反応帯域</a></li>
 <li><a href="#response">反応量と安定化</a></li>
-<li><a href="#r33-audio-modes">用途別モード（R33）</a></li>
-<li><a href="#envelope">用途別のAttack/Release（R33）</a></li>
+<li><a href="#audio-modes">用途別モード</a></li>
+<li><a href="#envelope">用途別のAttack/Release</a></li>
 <li><a href="#history">履歴・伝播</a></li>
 <li><a href="#material-mask">MaterialごとのAudioLink反応マスク</a></li>
 <li><a href="#individual-pattern">Material個別AudioLink・発光パターン</a></li>
 <li><a href="#test">音源なしでテスト</a></li>
 <li><a href="#avatar">アバター実光のAudioLink連動</a></li>
-<li><a href="#engine-audio">Engineの帯域反応と7ジャンル（R34）</a></li>
+<li><a href="#engine-audio">Engineの帯域反応と7ジャンル</a></li>
 </ul>
 </li>
 </ul></div>
@@ -206,12 +206,12 @@
 </table>
 </section>
 <section id="envelope">
-<h2 id="r33-audio-modes">用途別モード（R33）</h2>
-<table><tr><th>表示名</th><th>初期値</th><th>効果</th></tr><tr><td>AudioLink反応モード</td><td>従来</td><td>従来／Band Roles／Beat Flash／両方。</td></tr><tr><td>HighMid Sparkle量</td><td>1</td><td>HighMidのきらめき。0〜3。</td></tr><tr><td>High細点量</td><td>0.5</td><td>Highによる細さの量。0〜1。</td></tr><tr><td>Bass立上がりFlash量</td><td>2</td><td>Bassの立ち上がりの強調。0〜10。</td></tr></table>
-<p>従来／Band Roles／Beat Flash／両方から選びます。既定の従来モードは既存の反応です。Band RolesはBassを明るさ、LowMidをサイズ、HighMidをSparkle、Highを光点の細さへ割り当てます。新しい光点の密度を生成する処理ではありません。</p>
+<h2 id="audio-modes">用途別モード</h2>
+<table><tr><th>表示名</th><th>初期値</th><th>効果</th></tr><tr><td>AudioLink反応モード</td><td>従来の帯域指定</td><td>従来の帯域指定／Band Roles／Beat Flash／Band Roles + Beat Flash。</td></tr><tr><td>HighMid Sparkle量</td><td>1</td><td>HighMidのきらめき。0〜3。</td></tr><tr><td>High細点量</td><td>0.5</td><td>Highによる細さの量。0〜1。</td></tr><tr><td>Bass立上がりFlash量</td><td>2</td><td>Bassの立ち上がりの強調。0〜10。</td></tr></table>
+<p>従来の帯域指定／Band Roles／Beat Flash／Band Roles + Beat Flashから選びます。既定の「従来の帯域指定」は、明るさ・サイズ・色ごとに選んだ帯域へ反応します。Band RolesはBassを明るさ、LowMidをサイズ、HighMidをSparkle、Highを光点の細さへ割り当てます。新しい光点の密度を生成する処理ではありません。</p>
 <p>Beat FlashはBassの現在値と4サンプル前の値の正の差から音の立ち上がりを強調します。BPMや拍位置の推定ではありません。Sparkleの増幅は既定1、細部の増幅は0.5、Beat Flashの増幅は2です。AudioLinkがないときは追加反応を0として扱います。</p>
-<h2>用途別のAttack/Release（R33）</h2>
-<p><strong>音反応のAttack/Releaseを使用</strong>をONにすると、光点の明るさ・サイズ・色に別々の立ち上がりと余韻を設定できます。初期状態はOFFで、従来の音声反応の平滑化を維持します。ON時は光点の平滑化に代わって6つの時間を使います。</p>
+<h2>用途別のAttack/Release</h2>
+<p><strong>音反応のAttack/Releaseを使用</strong>をONにすると、光点の明るさ・サイズ・色に別々の立ち上がりと余韻を設定できます。初期状態はOFFで、「音声反応の平滑化」を使います。ON時は平滑化に代わって6つの時間を使います。</p>
 <table><tr><th>表示名</th><th>初期値</th><th>効果</th></tr>
 <tr><td>明るさのAttack（秒・99%到達）</td><td>0.02秒</td><td>音が増えたときの立ち上がり。0〜0.35秒、0は即応。</td></tr>
 <tr><td>明るさのRelease（秒・99%到達）</td><td>0.25秒</td><td>音が減ったときの余韻。0〜0.35秒、0は即応。</td></tr>
@@ -221,8 +221,8 @@
 <tr><td>色のRelease（秒・99%到達）</td><td>0.30秒</td><td>音が減ったときの余韻。0〜0.35秒、0は即応。</td></tr>
 </table>
 <p>時間は入力の変化へ99%追従する目安です。AudioLinkの四帯域履歴を最大48サンプル／用途読み込むため、有効時はGPU負荷が増えます。基本遅延と遅延差が履歴の終端に近い場合、過去データが不足し、余韻が短くなることがあります。</p>
-<p>対象は反射光点です。表面Emission・本体・アバター用実光は従来の反応を維持します。テストモードの固定音量は時間処理を通しません。立ち上がり・余韻は実際のAudioLink入力で確認してください。</p>
-<p>新規Preset保存でAA・使用切替・6つの時間を記録します。<strong>光点AA・音反応をこのプリセットで指定</strong>がONのPresetだけが追加設定を上書きし、既存PresetはControllerの追加設定を維持します。両PresetがONのクロスフェードではAAと時間を補間し、使用切替は中央で切り替えます。</p>
+<p>対象は反射光点です。表面Emission・本体・アバター用実光には適用しません。テストモードの固定音量は時間処理を通しません。立ち上がり・余韻は実際のAudioLink入力で確認してください。</p>
+<p>新規Preset保存でAA・使用切替・6つの時間を記録します。<strong>光点AA・音反応をこのプリセットで指定</strong>がONのPresetだけがこれらを上書きし、OFFのPresetではControllerの値を維持します。両PresetがONのクロスフェードではAAと時間を補間し、使用切替は中央で切り替えます。</p>
 </section>
 <section id="history">
 <h2>履歴・伝播</h2>
@@ -320,9 +320,9 @@
 </p>
 </section>
 <section id="engine-audio">
-<h2>Engineの帯域反応と7ジャンル（R34）</h2>
+<h2>Engineの帯域反応と7ジャンル</h2>
 <p><code>useAudioReactive</code> を有効にし、AudioLinkを使う場合は <code>audioLinkBehaviour</code> を指定します。CPU読出しを使う <code>requestAudioLinkReadback</code> は明示的な選択で、AudioLinkのEnableReadbackを要求するためGPU readbackの負荷が増える場合があります。AudioLinkデータが使えないときは、再生中の <code>fallbackAudioSource</code> のSpectrumを使います。入力が無い場合も基本の光点・指定BPMの回転は使えます。</p>
-<p>R34.1から、Lighting Engineの導入ウィンドウがシーンのAudioLink（programの名前が「AudioLink」のUdonBehaviour）を探し、<code>audioLinkBehaviour</code> へつないで <code>requestAudioLinkReadback</code> を有効にします。設定済みの参照はそのままにします。R34ではこの接続が無く、手でつながないとEngineが音に反応しませんでした。手順は<a href="03_apply.html#engine-audiolink-wiring">AudioLinkの自動接続</a>を参照してください。</p>
+<p>Lighting Engineの導入ウィンドウがシーンのAudioLink（programの名前が「AudioLink」のUdonBehaviour）を探し、<code>audioLinkBehaviour</code> へつないで <code>requestAudioLinkReadback</code> を有効にします。設定済みの参照はそのままにします。手順は<a href="03_apply.html#engine-audiolink-wiring">AudioLinkの自動接続</a>を参照してください。</p>
 <p>Bassはサイズ（<code>bassSizeBoost</code>）、Midは回転変調（<code>midRotationBoost</code>）、HighはSparkle密度（<code>highDensityBoost</code>）、BeatはFlash（<code>beatFlashBoost</code>）に使います。<code>kickThreshold</code> はKick判定、<code>audioAttackSeconds</code>／<code>audioReleaseSeconds</code> は入力の立上り・減衰です。Bass・Mid・Highを個別に鳴らし、音量が0の状態と比較して調整してください。</p>
 <p>Engine Inspectorの<strong>用途別プリセット</strong>（<code>artisticPreset</code>）は0 NORMAL、1 CLUB、2 HIPHOP、3 HOUSE、4 TECHNO、5 DISCO、6 CHILLです。選択後に<strong>選択した用途別プリセットを適用</strong>を押すと、回転・光点・色・音反応の演出値を反映します。品質・Ray予算・対象参照は演出ジャンルに含めません。7回転パターンとBPMは<a href="05_motion.html#engine-motion">回転</a>を参照してください。</p>
 </section>

@@ -15,7 +15,7 @@
     - リポジトリ内の相対リンクが実在すること
 
     機能の履歴ラベル（「R25 表面Emission」など、どの版で入ったかを示す記述）は
-    検査対象外です。これらは書き換えてはいけません。
+    検査対象外です。本文は現行版の動作だけを書きます（CONTRIBUTING.md）。
 #>
 param(
     [string]$RepositoryPath = (Join-Path $PSScriptRoot ".."),

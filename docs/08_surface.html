@@ -93,7 +93,7 @@
 <p class="lead">光点を受ける不透明面の設定です。座標方式と材質の応答もここにまとめています。</p>
 <section id="s1">
 <h2>既存Materialとの互換性</h2>
-<p>これらの演出は初期値OFFまたは従来相当値です。UV、プリマルチプライ、環境反応0、材質反応0、Fresnel 0、色分散0、フォールバック発光0が既定値です。</p>
+<p>これらの演出は初期値OFFまたは効果なしの値です。UV、プリマルチプライ、環境反応0、材質反応0、Fresnel 0、色分散0、フォールバック発光0が既定値です。</p>
 <div class="tip">更新直後は見た目を維持したまま、必要な機能だけ少しずつ有効化してください。</div>
 </section>
 <section id="surface">
@@ -148,7 +148,7 @@
 <p>Controllerの「8. 高度な投影・Sceneプレビュー」で設定します。Material個別AudioLinkマスクと個別発光パターンの両方へ適用されます。</p>
 <table>
 <tr><th>方式</th><th>挙動</th><th>推奨用途</th></tr>
-<tr><td>UV</td><td>Mesh UVをそのまま使用</td><td>従来Material、壁、床</td></tr>
+<tr><td>UV</td><td>Mesh UVをそのまま使用</td><td>既存Material、壁、床</td></tr>
 <tr><td>ワールド平面</td><td>ワールドXZへ固定投影</td><td>複数Meshをまたぐ連続模様</td></tr>
 <tr><td>オブジェクト平面</td><td>ローカルXZへ投影</td><td>移動・回転する舞台装置</td></tr>
 <tr><td>トライプラナー</td><td>XY／XZ／YZを法線方向で合成</td><td>柱、岩、曲面、UVの歪んだMesh</td></tr>
