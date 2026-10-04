@@ -204,9 +204,6 @@
 <p>Setupは、programの名前が「AudioLink」のUdonBehaviourをシーンから探し、Engineの <code>audioLinkBehaviour</code> へ設定して <code>requestAudioLinkReadback</code> を有効にします。すでに <code>audioLinkBehaviour</code> を設定している場合は変更しません。見つからない場合は何も設定しません。R34では手でつながないとEngineが音に反応しませんでした。R34で導入したシーンは、もう一度<strong>一覧の対象へLighting Engineを設定</strong>を押すか、手で設定してください。詳しくは<a href="12_audiolink.html#engine-audio">Engineの帯域反応</a>を参照してください。</p>
 <p>Receiver Managerの <code>receiveFloor</code>／<code>receiveWalls</code>／<code>receiveCeiling</code>／<code>receiveStage</code>／<code>receiveObjects</code>／<code>receiveAvatars</code> でグループを選び、各 <code>*Intensity</code> で強さを調整します。Avatarは既定で無効です。登録はEditorで焼き込み、実行中のScene全体の自動探索や既存Materialの置換は行いません。階層・Colliderを変えたら一覧から再登録してください。</p>
 <p><code>engineEnabled</code> を有効にすると別描画の反射を使い、従来Receiver側の反射と重ねて二重に表示しないようControllerへ通知します。回転設定・品質は<a href="05_motion.html#engine-motion">回転</a>と<a href="19_heavy.html#engine-quality">負荷調整</a>を参照してください。</p>
-<h3 id="engine-surface-color">受光面の色の影響（R35）</h3>
-<p>R35から、Engineの光点は当たった面の色に合わせて明るさが変わります。暗い面では光点が控えめになり、白い面では従来と同じ見え方です。計算は「結果 = 面の色 + 光点 × ((1 − w) + w × 面の色)」です。</p>
-<p>wはEngine Inspectorの<strong>受光面の色の影響</strong>（0〜1、初期値0.5）です。0にすると従来どおりの単純な加算に戻ります。この値はEngineではなく <code>spotMaterial</code>（<code>MirrorBallLight/InstancedSpot</code>）に保存されるため、同じMaterialを使うEngineは同じ値になります。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="02_sample.html">← 設定済みサンプルで最短確認</a>
