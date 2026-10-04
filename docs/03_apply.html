@@ -35,6 +35,7 @@
 <li><a href="#reuse">自分の壁へ適用する</a></li>
 <li><a href="#list">Shader一覧</a></li>
 <li><a href="#materialgui">MaterialのInspectorの使い方</a></li>
+<li><a href="#lighting-engine">Lighting Engineで実形状へ反射を配置する（R34）</a></li>
 </ul>
 </li>
 </ul></div>
@@ -182,6 +183,20 @@
 </tbody>
 </table>
 <div class="warning"><strong>Controllerが書き込む項目を手で変えても、次にControllerが反映したときに上書きされます。</strong> どちらが正かは「Controller連動とMaterial直編集」を参照してください。Materialごとに決めたい設定（2番・6番など）は上書きされません。</div>
+</section>
+<section id="lighting-engine">
+<h2>Lighting Engineで実形状へ反射を配置する（R34）</h2>
+<p>壁・床・天井へ球面Facetの反射方向から光点を配置する機能です（R34）。既定の受光面Shaderによる描画とは別の経路で、使うときだけ導入します。</p>
+<ol>
+<li>Sceneを保存し、Controllerのミラーボール <code>mirrorBall</code> と入射Spot Light <code>spotLight</code> を設定します。Spotの向き・角度・範囲がボールへ届くことを確認します。</li>
+<li><strong>Tools → MirrorBall Light → Lighting Engineを導入</strong>を開き、Controllerと<strong>受光対象の階層</strong>を指定します。<strong>対象を検出・適用内容を確認</strong>を押します。</li>
+<li>一覧の対象チェックとFloor／Wall／Ceiling／Stage／Objects／Avatar分類を見直します。自動分類は候補なので、ステージなどは手動で訂正します。AvatarはSceneに配置したモデルのみです。実行時に参加するプレイヤーAvatarは登録対象に含めません。</li>
+<li><strong>必要なMeshColliderを追加</strong>を選ぶと、足りない対象へ実形状のColliderを追加します。有効な非Trigger Colliderが必要です。共有する親Colliderを異なるグループへ分類すると競合するため、一覧を整理してから<strong>一覧の対象へLighting Engineを設定</strong>を押します。適用はUndoで戻せます。</li>
+<li>追加された <code>MirrorBallLightingEngine</code> の <code>controller</code>／<code>receiverManager</code>／<code>ball</code>／<code>incomingSpot</code> を確認します。Setupが作る <code>spotMesh</code> はローカルXY平面・法線+ZのQuad、<code>spotMaterial</code> は <code>MirrorBallLight/InstancedSpot</code> とGPU Instancing有効の組み合わせです。ボールのFacet法線・中心もSetupで用意します。</li>
+<li><code>raycastLayers</code> にはReceiverだけでなく、反射を止める登録外の柱・家具・壁も含めます。最初に当たったColliderが未登録なら、その方向の光点を出しません。遮蔽物をLayerMaskから外すと光が通り抜けます。<code>maximumRayDistance</code> とSpot角度も実際の部屋に合わせます。</li>
+</ol>
+<p>Receiver Managerの <code>receiveFloor</code>／<code>receiveWalls</code>／<code>receiveCeiling</code>／<code>receiveStage</code>／<code>receiveObjects</code>／<code>receiveAvatars</code> でグループを選び、各 <code>*Intensity</code> で強さを調整します。Avatarは既定で無効です。登録はEditorで焼き込み、実行中のScene全体の自動探索や既存Materialの置換は行いません。階層・Colliderを変えたら一覧から再登録してください。</p>
+<p><code>engineEnabled</code> を有効にすると別描画の反射を使い、従来Receiver側の反射と重ねて二重に表示しないようControllerへ通知します。回転設定・品質は<a href="05_motion.html#engine-motion">回転</a>と<a href="19_heavy.html#engine-quality">負荷調整</a>を参照してください。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="02_sample.html">← 設定済みサンプルで最短確認</a>

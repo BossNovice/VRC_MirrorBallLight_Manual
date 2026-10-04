@@ -2,27 +2,11 @@
 
 [HTML版マニュアル（zip）](https://github.com/BossNovice/VRC_MirrorBallLight_Manual/raw/main/docs_html.zip)
 
-## R34のLighting Engineと用途別描画
-
-R34では、実際の壁・床・天井へ反射を配置するLighting Engineと、描画先（通常・鏡・撮影）ごとの品質設定を追加しました。Lighting Engineは任意で、導入しなければ従来どおり受光面Shaderだけで描画します。
-
-1. 実形状へ反射を配置する場合は **Tools → MirrorBall Light → Lighting Engineを導入** でControllerと受光対象の階層を選び、検出一覧のFloor／Wall／Ceiling／Stage／Objects／Avatar分類と対象チェックを修正して適用します。ball、入射Spot、Receiver Manager、InstancedSpot MaterialのGPU Instancing、有効な非Trigger Colliderを確認します。登録外の遮蔽物もRaycast Layerへ含めてください。[自分の壁へ適用する](../docs/03_apply.html#lighting-engine)に詳細があります。
-2. ControllerのBasic／Advanced／Debugで調整・詳細設定・Scene補助を使い分けます。Auto PerformanceはGraphics設定の読取で、GPU/FPSの測定ではありません。通常／Mirror／Face Mirror／Handheld／Screenshotの密度初期値は100／50／25／125／150%。Temporal Sparkle StabilityはRenderTextureを使わない解析的近似です。[Controller](../docs/04_controller.html#three-mode)と[回転・安定化](../docs/05_motion.html#engine-motion)を参照してください。
-3. Engineの品質はLOW32／MED64／HIGH128／ULTRA256／OFF0。PhotoCameraがActiveかつPhoto Mode有効のPCでは配置512を使えますが、撮影slotは通常・鏡へ増やさず、OFFは復活しません。AndroidはLOW／OFFです。[品質とProfiler](../docs/19_heavy.html#engine-quality)を参照してください。
-4. Audio反応はBassサイズ／Mid回転／High密度／Beat Flash。7ジャンルNORMAL／CLUB／HIPHOP／HOUSE／TECHNO／DISCO／CHILLと、7回転Constant／Accelerate／Decelerate／BeatSync／Pendulum／ReverseBeat／RandomAccentを選べます。BPM・位相は明示値です。[Audio](../docs/12_audiolink.html#engine-audio)を参照してください。
-5. Engine Inspectorの **現在の演出をAssetへ保存** と **保存した演出を読み込む** で演出値を扱います。ローカル品質・対象参照・Ray予算は保存しません。CPU更新時間とRay数・有効光点はGPU負荷やVRChat実機FPSとは別に読みます。[演出Asset](../docs/13_presets.html#engine-preset)を参照してください。
-
-## R33の光点・描画品質
-
-光点AAと用途別Attack／Releaseに加え、滑らかな視点距離LOD、Near Fade、Spot intensityの基準値による抑制、用途別AudioLink、利用者ごとの品質と鏡・撮影対応を追加しました。追加設定は既定で従来の描画を維持します。詳しくは本書のR33設定、HTML版の光点・AudioLink・動作が重い場合を参照してください。現行の新規Preset保存とPlay Mode一時記録は75項目です。VRChat実機・性能計測は動作確認表と区別してください。
-
 ## R32.7のアンバー3D操作パネル
 
 Blenderで作成したチャコール筐体と明るいアンバーの3Dパネルを採用しました。基本パネルは角丸四角の電源キー、ON／OFF、現在のプリセット名、PREV／NEXTを配置し、シーケンスは独立した6キーです。固定ラベルは英語のみで、任意のプリセット名は原文のまま表示します。操作できないボタンは記号と文字を減光します。
 
-通常の配置メニューから同梱の3Dパネルを設置します。厚みを持つモデルのため、壁面へ設置したあと背面が食い込んでいないか確認してください。背面は標準Scale 0.001で原点からローカル+Z側へ約26 mm、前面は-Z側です。前方1 cmのColliderを引き継ぎます。
-
-R33では、2Dパネルと標準サイズの3Dパネルは従来の前方1 cmを使います。拡大した3Dパネルの実ボタンUI面がそれより前にある場合は、当たり判定の中心ZをそのUI面に合わせます。外観・Transform・中心X/Y・Colliderの厚みとサイズ・参照は保持します。
+既設パネルはEdit Modeで選択し、`Tools > MirrorBall Light > 選択パネルをアンバー3D外観に更新` を実行してSceneを保存します。Controller／Sequence参照、OnClick、Local／Global、操作権限、設置位置・回転・Scaleを維持し、Undoに対応します。厚みを持つモデルのため、壁面へ設置したあと背面が食い込んでいないか確認してください。背面は標準Scale 0.001で原点からローカル+Z側へ約26 mm、前面は-Z側です。前方1 cmのColliderを引き継ぎます。
 
 ![Blender製の基本・シーケンスパネル](../docs/assets/control-panels-amber-3d.png)
 
@@ -41,7 +25,7 @@ R33では、2Dパネルと標準サイズの3Dパネルは従来の前方1 cmを
 ### Play Modeで調整した演出を残す
 
 1. Sceneを保存してからPlay Modeを開始し、Controllerの演出を調整します。
-2. Easy／Pro共通のInspector下部で保存名を入力し、**「Play Modeの設定を一時記録」**を押します。動いているUdonの演出値75項目を記録します。
+2. Easy／Pro共通のInspector下部で保存名を入力し、**「Play Modeの設定を一時記録」**を押します。動いているUdonの演出値54項目を記録します。
 3. Play Modeを終了し、同じControllerで **「記録したPlay Mode設定を新規プリセットとして保存」**を押します。
 4. Sceneを保存します。既存プリセット・Controllerの通常設定・電源・操作範囲は変わりません。
 
@@ -59,7 +43,7 @@ Materialの反映・保存、照明連携、Material変換は対象Materialだ�
 
 ## R32.4で追加した現在値のプリセット保存
 
-Edit ModeでControllerを選択し、Easy／Pro共通のInspector下部で「保存名」を入力して **「現在の設定を新規プリセットとして保存」** を押します。現在のController演出設定75項目を子MirrorBallLightPresetへコピーし、一覧の末尾へ追加します。空の名前はCustom Presetとなり、同名は連番で区別します。ライブプリセットOFFや一覧が空でも保存できます。
+Edit ModeでControllerを選択し、Easy／Pro共通のInspector下部で「保存名」を入力して **「現在の設定を新規プリセットとして保存」** を押します。現在のController演出設定54項目を子MirrorBallLightPresetへコピーし、一覧の末尾へ追加します。空の名前はCustom Presetとなり、同名は連番で区別します。ライブプリセットOFFや一覧が空でも保存できます。
 
 既存プリセットや未設定スロットを上書きせず、電源・Local／Global・選択番号・Controllerの選択を維持します。追加と一覧登録は1回のUndo／Redoで戻せます。保存後はScene（Prefab編集モードではPrefab）を保存してください。Play Modeでの保存は無効です。電源・参照・Material固有の設定など、従来のライブプリセット対象外の項目はコピーしません。
 
@@ -69,15 +53,13 @@ Edit ModeでControllerを選択し、Easy／Pro共通のInspector下部で「保
 
 同じミラーボールをGlobal共有で更新するControllerが親子に重複している場合、稼働中の親を優先し、子による描画・本体回転更新を抑止します。設定値は書き換えず、警告は1回だけ表示します。親が無効なら子の更新を継続します。プリセット用の子には **MirrorBallLightPreset** を付けてください。
 
-先頭がNoPresetの場合は、Edit ModeでControllerのPro表示から「2. ライブプリセット」を開き、**「現在値から先頭プリセットを復元」** を押してください。現在のController設定75項目からPreset1を作成して先頭へ割り当てます。他のスロットや操作範囲を保持し、Undo／Redoで戻せます。すでに割り当てられた先頭は上書きしません。コピーするのは、その時点でControllerに保存されている値です。
+先頭がNoPresetの場合は、Edit ModeでControllerのPro表示から「2. ライブプリセット」を開き、**「現在値から先頭プリセットを復元」** を押してください。現在のController設定54項目からPreset1を作成して先頭へ割り当てます。他のスロットや操作範囲を保持し、Undo／Redoで戻せます。すでに割り当てられた先頭は上書きしません。コピーするのは、その時点でControllerに保存されている値です。
 
-前面1cmの当たり判定を基本とし、拡大3Dで実ボタンUI面がさらに前なら中心ZをUI面へ合わせます。Shader Global共有は引き続きワールドで1系統にしてください。異なるミラーボール、Sceneルート間、外部ギミックとの競合は「診断・最適化」で確認します。高速点滅やプリセット間で異なる光点配置による位置の変化は演出設定であり、この修正で演出値を変更しません。
+前面1cmの当たり判定修正は引き継いでいます。Shader Global共有は引き続きワールドで1系統にしてください。異なるミラーボール、Sceneルート間、外部ギミックとの競合は「診断・最適化」で確認します。高速点滅やプリセット間で異なる光点配置による位置の変化は演出設定であり、この修正で演出値を変更しません。
 
 ## R32.2で変更した当たり判定
 
 R32.2では当たり判定の中心だけをパネル前面へ1cm移しています。外観・設置位置・Colliderの厚みは変わりません。壁にぴったり付けて設置でき、縮小・拡大した場合も前方への移動量は1cmです。既存パネルは実行時に自動調整されます。Canvasの前面はローカル-Z方向です。
-
-R33では、2Dパネルと標準サイズの3Dパネルは従来の前方1 cmを使います。拡大した3Dパネルの実ボタンUI面がそれより前にある場合は、当たり判定の中心ZをそのUI面に合わせます。外観・Transform・中心X/Y・Colliderの厚みとサイズ・参照は保持します。
 
 ## R32.1で変更した操作パネル
 
@@ -100,12 +82,6 @@ Easy / Pro表示、プリセットの比較・プレビュー・追加、3段階
 
 | MirrorBallLight | Unity | VRCLightVolumes | LTCGI | コンパイル確認 | 実機目視（PC） |
 | --- | --- | --- | --- | --- | --- |
-| R34 | 2022.3.22f1 | 2.1.3 | 1.7.2 | 済（注43） | 未実施（注43） |
-| R34 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注43） | 未実施（注43） |
-| R34 | 2022.3.22f1 | 未導入 | 未導入 | 済（UdonSharpのみ、注43） | 未実施（注43） |
-| R33 | 2022.3.22f1 | 2.1.3 | 1.7.2 | 済（注42） | 未実施（注42） |
-| R33 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注42） | 未実施（注42） |
-| R33 | 2022.3.22f1 | 未導入 | 未導入 | 済（注42） | 未実施（注42） |
 | R32.7 | 2022.3.22f1 | 3.0.0-dev.20 | 1.7.3 | 済（注41） | 未実施（注41） |
 | R32.6 | 2022.3.22f1 | 2.1.3 | 1.7.2 | 済（注40） | 未実施（注40） |
 | R32.6 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 済（注40） | 未実施（注40） |
@@ -272,13 +248,10 @@ Easy / Pro表示、プリセットの比較・プレビュー・追加、3段階
 - **注41**: 3Dパネル変更に必要な確認へ絞っています。Blender書き出し、Unity C#・実UdonSharp、実OnClickを使うClientSim31項目、旧パネル2つの更新・Scene保存／再読込、欠損Mesh故障注入2件、104 AssetsのmetaとGUIDを確認しました。World01の実際のLight Volumes 3.0.0-dev.20／LTCGI 1.7.3環境でもC#・Udonコンパイル、新外観と既存設定の保持、壁際の電源・PREV／NEXT判定を確認しています。コンパイル用includeを持つ専用プロジェクトの結果と、実パッケージを持つWorld01を区別しています。
   変更していないShader、プリセット演算、ネットワーク処理はR32.6の実績を参照し、全リリース検査や全連携構成の再検証は繰り返していません。VRChat PC実クライアント・複数人同期は未実施で、R31-UNEXEC-01を継続します。
 
-- **注43**: R34はUnity 2022.3.22f1で確認しました。実UdonSharpコンパイルは 2.1.3／1.7.2、3.0.0-dev.15／1.7.3、連携未導入の3構成でエラーなしです。製品Shaderは両連携構成で描画検査（91場面、連携版3本を含む）のプレイヤービルドと描画が成功しています。連携未導入構成ではShaderの再確認をしていません。Lighting Engine・Receiver Manager・描画先ごとの品質は実UnityのEditor/GPU検査（365／167／91項目）で確認しています。ClientSimでの実Udon実行、VRChat実機目視、HMD、複数人同期は未実施で、下記R31-UNEXEC-01を継続します。
-- **注42**: R33はUnity 2022.3.22f1で、2.1.3／1.7.2と3.0.0-dev.15／1.7.3の両連携構成の実UdonSharpコンパイルと製品Shader 6本のエラー0件を確認しています。連携未導入構成も実UdonSharpの成功を確認し、通常版Shaderが正常、連携版3本はinclude不在による想定内のコンパイル失敗です。根拠はR33の `core/.ci/reports/verify-R33.json` と `unity_no_integration.log` です。一括リリース検査全件の成功、VRChat実機目視、HMD、複数人同期・途中参加・所有者交代の成功を示すものではありません。後者は下記R31-UNEXEC-01の理由・担当・期限・次アクションを継続します。
-
 **未実施**: VRChat PC実クライアントの目視・複数人同期確認（R31から継続）
 - 追跡ID: R31-UNEXEC-01
 - 理由種別: ENV_UNAVAILABLE
-- 理由詳細: 実クライアントと複数人の確認は未実施。HMDでの見え方、最新版パネルの共有表示、操作権限の両モード、途中参加、所有者交代、★・♥などの光点形状も対象とする。実Unity・ClientSim・描画検査の結果を実機確認に読み替えない。
+- 理由詳細: 実クライアントと複数人の確認は未実施。最新版パネルの共有表示、操作権限の両モード、途中参加、所有者交代、★・♥などの光点形状も対象とする。実Unity・ClientSim・描画検査の結果を実機確認に読み替えない。
 - 期限: 2026-10-15
 - 担当: @BossNovice
 - 次アクション: 最新版unitypackageを検証ワールドへImportし、PC実クライアント2人でオーナーのみ／誰でも操作可能の両設定、基本／シーケンスパネル、所有者・非所有者・途中参加・所有権移動時の操作と光点形状を確認する。
@@ -1135,7 +1108,7 @@ Global共有はScene内で1系統です。異なる設定のControllerを複数�
 
 1. Edit ModeでControllerの演出値を調整します。
 2. Easy／Pro共通のInspector下部の `保存名` を入力します。
-3. `現在の設定を新規プリセットとして保存` を押します。現在の演出値75項目をコピーした子GameObjectとPresetが作成され、一覧の末尾へ追加されます。
+3. `現在の設定を新規プリセットとして保存` を押します。現在の演出値54項目をコピーした子GameObjectとPresetが作成され、一覧の末尾へ追加されます。
 4. 保存したい見た目ごとに手順1～3を繰り返し、Sceneを保存します。同名は連番となり、既存プリセットや未設定スロットは保持されます。
 5. ライブ切替に使うときはProの `2. ライブプリセット` を開き、`ライブプリセットを使用` をONにします。新規保存だけではこの設定や電源・操作範囲・選択番号は変わりません。
 6. 作成した子を選択すれば、保存済みのプリセット名や演出値を後から編集できます。追加と一覧登録は1回のUndo／Redoで戻せます。
@@ -1357,35 +1330,6 @@ TextureはProjectウィンドウ内へ保存された画像アセットを指定
 
 ShaderがAudioLinkのグローバルGPUテクスチャを直接読み取るため、ControllerへAudioLinkコンポーネントを割り当てる必要はありません。AudioLink未導入または未動作時は音声値を0として通常表示へ戻ります。
 
-### 光点アンチエイリアス（R33）
-
-ControllerのPro →「光点・ランダム点灯」で **光点アンチエイリアス** を0から1へ上げます。内蔵の四角・丸・ひし形・十字・六角形・★・リング・♥の輪郭を画素の大きさに合わせて補正し、遠くの細かい光点のちらつきを抑えます。1が完全適用、0は従来の描画です。形状Texture／Atlasは対象外です。解像度以下の形状は面積に応じた平均光量へ移行するため、輪郭やリングの穴を見分けられなくなります。
-
-### 音反応のAttack/Release（R33）
-
-ControllerのAudioLinkで **音反応のAttack/Releaseを使用** をONにし、明るさ・光点サイズ・色それぞれのAttack（立ち上がり）とRelease（余韻）を設定します。秒数は変化の99%へ到達する目安で、0秒は即応、最大0.35秒です。有効時は光点の従来の平滑化に代わって、この6項目が作用します。OFFでは従来の音声反応の平滑化を使います。初期値はOFFです。
-
-| 用途 | Attack | Release |
-| --- | --- | --- |
-| 明るさ | 0.02秒 | 0.25秒 |
-| 光点サイズ | 0.03秒 | 0.12秒 |
-| 色 | 0.05秒 | 0.30秒 |
-
-AudioLinkの既存履歴を最大48サンプル／用途で読みます。有効時はGPU負荷が増えるため、ワールドの解像度・描画面積に合わせて確認してください。基本遅延と光点ごとの遅延差が履歴の終端に近いと、利用できる過去データが減り、設定した余韻を再現できない場合があります。表面Emission・本体・アバター用実光には適用しません。AudioLinkテストモードの固定音量もこの時間処理を通さないため、立ち上がり・余韻の確認には実際のAudioLink入力を使います。
-
-新規保存するPresetにはAAと6つの時間、使用切替を保存します。**光点AA・音反応をこのプリセットで指定** がONのPresetだけがこれらを上書きします。既存PresetはOFFなので、Controllerの新設定を維持します。両PresetがONのクロスフェードではAAと時間を連続補間し、使用切替は中央で切り替えます。
-
-### 距離・品質・用途別AudioLink（R33）
-
-- 距離LODは視点から受光面までの距離で固定グリッドの光点を間引きます。既定OFF、開始10m、終了30m、遠方密度0.5。光点の間引きは滑らかなフェード、遠方の内蔵形状は丸への滑らかな補間です。完全に消えた光点ではAudioLink読取を省きます。距離LODだけでは履歴上限やCookie・色分散を切り替えません。
-- Near Fadeはミラーボールから受光面までの距離で近い光点を消します。既定OFF、開始0m、終了1m。Far Fadeもミラーボール基準で、視点基準のLODとは異なります。
-- 明るさ正規化は照射SpotLightのintensityを基準値で抑制します。反射強度・面の光点輝度・音反応などはその後に掛かるため、最終HDR光量の総上限ではありません。適用量1ではSpot intensityが基準値を超えず、中間値では元の強さと上限適用後を補間します。既定適用量0、基準値1。疑似反射が対象で、本体・表面Emission・アバター用実光には適用しません。
-- AudioLinkモードは従来／Band Roles／Beat Flash／両方。Band RolesはBassを明るさ、LowMidをサイズ、HighMidをSparkle、Highを光点の細さへ割り当てます。Beat FlashはBassの現在値と4サンプル前の正の差を使い、BPMや拍を推定しません。既定は従来、Sparkle増幅1、細部増幅0.5、Beat Flash増幅2。AudioLink不在時の追加反応は0です。
-- ローカル品質は既定無効で、同期やPresetへ保存しません。軽量／標準／高品質／CLUBの密度倍率は0.5／0.85／1／1、履歴上限は1／16／32／48。軽量は高負荷機能を省きます。有効時はAAを1へ上げます。
-- VRChat品質設定への追従と鏡・カメラ・スクリーンショット対応は個別に有効化します。鏡は密度をさらに既定0.7倍、履歴1、Cookie・Atlasの2回目のサンプル・色分散を省きます。カメラとスクリーンショットは品質の基準を密度1、履歴48と高負荷機能にします。カメラでは距離LODを引き続き適用し、スクリーンショットでは距離LODを省きます。
-- R33設定上書きがONのPresetだけがNear Fade・LOD・正規化・用途別音反応を適用します。既存PresetはControllerの追加設定を保持します。
-
-距離LOD・品質設定は見え方を変えます。GPU時間の改善率とVRChat実クライアントでの性能は未計測です。既存の壁・床・天井への疑似光点投影とアバター用実光を利用し、新たなアバター受光Shaderは追加しません。
 ### MaterialごとのAudioLink反応マスク・発光パターン
 
 同じControllerに登録した壁・床・ガラスでも、各Material Inspectorから異なる音声反応範囲と発光模様を設定できます。Controllerの `Shader Global共有を使用` がONでも、以下はMaterial固有値として維持されます。
@@ -1493,11 +1437,7 @@ VRCLightVolumes 3.xを使用する場合は `LightVolumeSH` へワールド法�
 
 ## アバターへの実光反映
 
-壁面のミラーボール光点はEmissionによる疑似投影なので、そのままではAvatarを照らしません。
-
-疑似光点は受光面ShaderのEmissionで描くため、UnityのPixel Lightを必要としません。照射SpotLightは任意で、未指定時はミラーボールの位置と下向きを使います。投影はLightの有効状態に依存せず、参照があるときはTransform・色・強度を読みます。照射SpotLightやアバター用リアルタイムライトを実際に有効にすると、別の実ライト負荷が生じます。アバター用の実光は、壁面の個々の反射光点をAvatarへ再現する機能ではありません。
-
-次の2経路を任意に追加できます。
+壁面のミラーボール光点はEmissionによる疑似投影なので、そのままではAvatarを照らしません。次の2経路を任意に追加できます。
 
 - `アバター用リアルタイムライト`: ミラーボール位置に置いたPoint Lightを割り当てます。一般的なLit系Avatar ShaderへUnityの実光として反映されます。
 - `VRCLightVolumes用オブジェクト`: Dynamic設定したPoint Light Volumeの子GameObjectを割り当てます。VRCLightVolumes対応Avatar Shaderへ反映されます。
@@ -1724,8 +1664,6 @@ ClientSimでの実Udon検証と、VRChat実機・複数人での検証は別で�
 5. ライブプリセットと、使用する場合はSequenceのステップを確認して有効にします。配置だけでは演出や自動再生は始まりません。
 
 R32.2では当たり判定の中心だけをパネル前面へ1cm移しています。外観・設置位置・Colliderの厚みは変わりません。壁にぴったり付けて設置でき、縮小・拡大した場合も前方への移動量は1cmです。既存パネルは実行時に自動調整されます。Canvasの前面はローカル-Z方向です。
-
-R33では、2Dパネルと標準サイズの3Dパネルは従来の前方1 cmを使います。拡大した3Dパネルの実ボタンUI面がそれより前にある場合は、当たり判定の中心ZをそのUI面に合わせます。外観・Transform・中心X/Y・Colliderの厚みとサイズ・参照は保持します。
 
 直接Prefabを置く場合は、基本パネル `Assets/MirrorBallLight/Prefabs/MirrorBallControlPanel.prefab` にControllerを指定して「Controllerへの参照を配線する」を押します。シーケンスパネル `MirrorBallSequencePanel.prefab` はControllerと演出シーケンスを指定し「参照を配線して共有表示を有効にする」を押します。参照先はすべて同じSceneに置きます。
 

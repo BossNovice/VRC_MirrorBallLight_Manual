@@ -85,6 +85,8 @@
 <li><a href="#budget">推奨負荷設定</a></li>
 <li><a href="#skip-hidden">自動で効く軽量化</a></li>
 <li><a href="#notes">知っておくと判断が早くなること</a></li>
+<li><a href="#engine-quality">Engineのローカル品質とPHOTO予算（R34）</a></li>
+<li><a href="#engine-profiler">Engineの測定表示を読む（R34）</a></li>
 </ul>
 </li>
 <li><a href="20_release.html">公開前チェック</a>
@@ -294,6 +296,18 @@
 <p>Cookie・形状アトラス・ランダム点滅・各種Maskは、OFFのときShaderの内部で分岐して読み飛ばしています。<strong>使っていない機能をOFFにして回るより、上の1〜5を先に見てください。</strong></p>
 <h3>Import時間と実行時の重さは別のものです</h3>
 <p>導入時のImportが長いことと、ワールドが実行時に重いことは無関係です。Importについては<a href="18_troubleshoot.html">最適化・対処</a>を参照してください。</p>
+</section>
+<section id="engine-quality">
+<h2>Engineのローカル品質とPHOTO予算（R34）</h2>
+<table><thead><tr><th>localQualityTier</th><th>品質</th><th>通常光点の上限</th></tr></thead><tbody><tr><td>0</td><td>LOW</td><td>32</td></tr><tr><td>1</td><td>MED</td><td>64</td></tr><tr><td>2</td><td>HIGH</td><td>128</td></tr><tr><td>3</td><td>ULTRA</td><td>256</td></tr><tr><td>4</td><td>OFF</td><td>0</td></tr></tbody></table>
+<p><code>followControllerQuality</code> が有効ならControllerの実効ローカル品質を使い、無効ならEngineの <code>localQualityTier</code> を使います。利用者ごとに選び、他ユーザーへ同期しません。AndroidはLOWに制限し、<code>androidOffByDefault</code> またはローカルOFFならOFFです。</p>
+<p>Camera Photo Modeを有効にし、SDKのPhotoCameraがActiveなときはPCの配置予算を最大512へ広げます。撮影用に追加したslotは通常描画や鏡へ漏らさず、通常Contextは32／64／128／256の上限を維持します。Photoの密度1.5・HDR1.2・LOD距離1.5と最大安定化は撮影Contextに適用します。PhotoCameraがnull・非Activeなら通常予算へ戻り、OFFでは512へ増やしません。AndroidにはPHOTO512を割り当てません。</p>
+<p><code>raysPerFrame</code>（初期値24）は毎フレームの候補・遮蔽Rayの予算、<code>rayUpdatesPerSecond</code>（初期値30）は配置更新の頻度です。<code>cachedHitLifetime</code> はHitを保持する時間です。光点数の上限と、1フレームに処理するRay数は別の値です。更新が追いつかない場合は品質・対象数・更新頻度を一つずつ変えて比較します。</p>
+</section>
+<section id="engine-profiler">
+<h2>Engineの測定表示を読む（R34）</h2>
+<p>Play ModeのEngine InspectorはRaycasts／フレーム、有効光点／配置予算、CPU更新時間を表示します。<code>lastFrameRaycasts</code>、<code>validSpotCount</code>／<code>allocatedSpotBudget</code>、<code>lastCpuMilliseconds</code> はその実行中の観測です。<code>maximumCpuMilliseconds</code> は最大のCPU更新時間です。floatタイマーの分解能も考慮し、短い値だけで速さを断定しません。</p>
+<p>これらはGPUフレーム時間・GPU使用率・FPS・GPU製品名の推定値ではありません。CPUはUnity Profiler、GPUとDraw CallはProfilerや描画統計で別に比較してください。従来Receiver方式と新Instancing方式は、同じ部屋・視点・光点品質・計測区間で比較し、数値と画像を記録します。Unity Editor／ClientSimの結果をVRChat実機の性能として扱いません。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="18_troubleshoot.html">← うまく動かないとき</a>
