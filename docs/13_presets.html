@@ -64,6 +64,7 @@
 <li><a href="#preset">Presetに保存される項目</a></li>
 <li><a href="#events">実行中の切替イベント</a></li>
 <li><a href="#crossfade">クロスフェードの注意</a></li>
+<li><a href="#engine-preset">Engineの演出をAssetへ保存・読込（R34）</a></li>
 <li><a href="#preset-browser">演出を選ぶ・比較する</a></li>
 <li><a href="#preset-sequence">時間指定の演出シーケンス</a></li>
 </ul>
@@ -97,7 +98,7 @@
 <p class="lead">演出をまとめて切り替えます。作り方と、実行中に切り替えるイベントです。</p>
 <section id="recover-first-preset">
 <h2>先頭がNoPresetになっている場合</h2>
-<p>Edit ModeでControllerのPro表示から「2. ライブプリセット」を開き、<strong>「現在値から先頭プリセットを復元」</strong>を押します。その時点のController設定54項目をコピーしたPreset1を作り、未設定の先頭スロットへ割り当てます。他のスロットや操作範囲は保持され、Undo／Redoに対応します。すでに割り当てられた先頭は上書きしません。</p>
+<p>Edit ModeでControllerのAdvanced表示から「2. ライブプリセット」を開き、<strong>「現在値から先頭プリセットを復元」</strong>を押します。その時点のController設定75項目をコピーしたPreset1を作り、未設定の先頭スロットへ割り当てます。他のスロットや操作範囲は保持され、Undo／Redoに対応します。すでに割り当てられた先頭は上書きしません。</p>
 <p>プリセット用の子には<strong>MirrorBallLightPreset</strong>を付けてください。MirrorBallLightControllerを付けると、ミラーボールを更新するControllerが増えます。</p>
 </section>
 <section id="controller">
@@ -132,7 +133,7 @@
 <td>選択プリセット番号（0から）</td>
 <td>0</td>
 <td>
-<code>ApplySelectedPreset</code>で適用する番号です。</td>
+Inspectorの「選択プリセットを適用」で適用する番号です。</td>
 </tr>
 <tr>
 <td>クロスフェード時間（秒）</td>
@@ -150,16 +151,16 @@
 <h2>プリセットを作る</h2>
 <ol class="steps">
 <li>Edit ModeでControllerの演出値を調整します。</li>
-<li>Easy／Pro共通のInspector下部の「保存名」を入力します。</li>
-<li><strong>「現在の設定を新規プリセットとして保存」</strong>を押します。現在の演出値54項目をコピーした子GameObjectとMirrorBallLightPresetが作成され、一覧の末尾へ追加されます。</li>
+<li>Inspector下部の「保存名」を入力します。</li>
+<li><strong>「現在の設定を新規プリセットとして保存」</strong>を押します。現在の演出値75項目をコピーした子GameObjectとMirrorBallLightPresetが作成され、一覧の末尾へ追加されます。</li>
 <li>保存したい見た目ごとに繰り返し、Scene（Prefab編集モードではPrefab）を保存します。</li>
-<li>ライブ切替に使う場合はProの「2. ライブプリセット」で「ライブプリセットを使用」をONにします。</li>
+<li>ライブ切替に使う場合はAdvancedの「2. ライブプリセット」で「ライブプリセットを使用」をONにします。</li>
 </ol>
 <p>ライブプリセットOFFや一覧が空でも保存できます。空の名前はCustom Presetとなり、同名は連番で区別します。既存プリセット・未設定スロット・電源・Local／Global・選択番号を維持し、追加と一覧登録を1回のUndo／Redoで戻せます。Controllerの選択も維持します。通常の新規保存はEdit Mode専用です。Play Modeの調整値は下の一時記録から保存できます。</p>
-<p>コピーするのは下表の演出設定54項目です。電源・参照・Material固有の設定などは含みません。既存プリセットを更新する場合は、Proで対象の「選択プリセット番号」を指定して「現在値を選択プリセットへ保存」を使います。「選択番号をプレビュー適用」でEdit Modeの見た目を確認できます。</p>
+<p>コピーするのは下表の演出設定75項目です。電源・参照・Material固有の設定などは含みません。既存プリセットを更新する場合は、Proで対象の「選択プリセット番号」を指定して「現在値を選択プリセットへ保存」を使います。「選択番号をプレビュー適用」でEdit Modeの見た目を確認できます。</p>
 <h3>Play Modeで調整した演出を保存</h3>
 <ol><li>Sceneを保存してからPlay Modeを開始し、Controllerの演出を調整します。</li><li>Inspector下部の「保存名」を入力し、<strong>「Play Modeの設定を一時記録」</strong>を押します。</li><li>Play Modeを終了して同じControllerを選択し、<strong>「記録したPlay Mode設定を新規プリセットとして保存」</strong>を押します。保存前に保存名を変更できます。</li><li>Sceneを保存します。既存プリセット・Controller設定・電源・操作範囲を維持して、新しいPresetを末尾へ追加します。</li></ol>
-<p>記録するのは実Udonの演出値54項目です。Texture／Cubemap参照を含み、電源・Material個別設定・AudioLink入力や再生位置は含みません。記録はControllerごとに1件で、再記録すると更新します。一時記録はPlay Modeの往復とスクリプト再読込をまたいで保持し、Unityを終了すると消えます。保存後もUndoに備えて残り、「一時記録を破棄」で削除できます。</p>
+<p>記録するのは実Udonの演出値75項目です。Texture／Cubemap参照を含み、電源・Material個別設定・AudioLink入力や再生位置は含みません。記録はControllerごとに1件で、再記録すると更新します。一時記録はPlay Modeの往復とスクリプト再読込をまたいで保持し、Unityを終了すると消えます。保存後もUndoに備えて残り、「一時記録を破棄」で削除できます。</p>
 <p>未保存Scene、実行中に作成したController、Projectに保存されていない一時Textureは記録できません。Textureを記録後に削除した場合は、元のアセットを復元してから保存してください。</p>
 <h3>プリセット管理</h3>
 <p>Controller下部の<strong>「プリセットを整理…」</strong>から、名前変更・複製・上／下への移動・一覧から削除を行います。複製は選択したPresetの値をコピーし、同名は連番で区別します。すべてUndo／Redoに対応します。</p>
@@ -264,13 +265,13 @@
 </tr>
 <tr>
 <td>
-<code>ApplySelectedPreset</code>
+<code>RequestSelectPreset</code>
 </td>
-<td>「選択プリセット番号」をクロスフェード適用します。</td>
+<td><code>apiPresetIndex</code> の番号をクロスフェード適用します。</td>
 </tr>
 <tr>
 <td>
-<code>ApplySelectedPresetImmediately</code>
+<code>RequestSelectPresetImmediately</code>
 </td>
 <td>同番号を補間なしで即時適用します。</td>
 </tr>
@@ -317,6 +318,12 @@
 <li>グローバルではサーバー時刻を基準にするため、参加者間の進行が揃います。</li>
 </ul>
 </section>
+<section id="engine-preset">
+<h2>Engineの演出をAssetへ保存・読込（R34）</h2>
+<ol><li>Engine Inspectorで回転・光点・Audioの演出を調整します。</li><li><strong>現在の演出をAssetへ保存</strong>を押し、Project内の保存先を選びます。<code>MirrorBallEnginePresetAsset</code> に演出値とControllerの反射色を保存します。保存は単一選択で行います。</li><li><strong>保存した演出</strong>にAssetを指定して<strong>保存した演出を読み込む</strong>を押します。複数Engineへの適用とUndoに対応する操作です。必要に応じてSceneを保存してください。</li></ol>
+<p>保存対象はBPM・位相・回転パターン、Kick／Drop、Audio反応、光点サイズ・密度・Softness・Sparkleなどの演出値です。ローカル品質、Controller／Receiver／ball／Spotなどの参照、Ray予算、プラットフォーム設定は保存対象外です。ControllerのライブプリセットやPlay Mode一時記録と、Engineの演出Assetは用途が異なります。</p>
+<p>用途別7ジャンルの一覧は<a href="12_audiolink.html#engine-audio">AudioLink連動</a>、測定表示の意味は<a href="19_heavy.html#engine-profiler">負荷調整</a>を参照してください。</p>
+</section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="12_audiolink.html">← AudioLink連動</a>
 <a href="14_udon.html">他のUdonから操作する →</a>
@@ -328,7 +335,7 @@
 <p>追加はライブプリセット・AudioLink・ランダム点灯を自動で有効にしません。Calm Rotationはゆっくりした回転、Sparse Glintsは小さく疎な光点、Music Responseは音への反応値を用意します。必要条件を確認してください。</p>
 <p>プレビューは閉じる・保存・Play Mode移行・スクリプト再読込で復元されます。別のInspectorで変更された値を保持して競合を警告します。Editorの比較と実音楽・VRChat実機の確認は別です。</p></section>
 <section id="preset-sequence"><h2>時間指定の演出シーケンス</h2>
-<p>Proの「2. ライブプリセット」で「時間指定の演出シーケンスを追加・選択…」を押します。使用OFF・自動再生OFF・ステップ0件で作られます。既存Prefabへ自動では追加しません。</p>
+<p>Advancedの「2. ライブプリセット」で「時間指定の演出シーケンスを追加・選択…」を押します。使用OFF・自動再生OFF・ステップ0件で作られます。既存Prefabへ自動では追加しません。</p>
 <ol><li>Controllerのライブプリセットを用意し、使用を有効にします。</li><li>Sequenceへステップを追加して「番号: 名前」の一覧と継続時間を設定します。番号の直接入力、上下移動・複製・削除ができます。</li><li>合計継続時間と入力診断を確認します。不正な番号・未設定プリセット・件数不一致・無効な時間は該当ステップを示します。</li><li>シーケンスの使用を有効にして、開始または自動再生を選びます。設定編集はEdit Modeで行います。</li></ol>
 <p>1〜256ステップ、継続時間0.05秒〜24時間。合計は設定値の和で、クロスフェード完了待ちを含む実測再生時間ではありません。継続時間は選択開始から数えます。遷移の完了を待つため、実際の次ステップ開始が遅れる場合があります。ループOFFでは最後の演出を保持して停止します。</p>
 <table><thead><tr><th>イベント</th><th>動作</th></tr></thead><tbody>

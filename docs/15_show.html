@@ -107,15 +107,8 @@
 <tr><td>2. ライブプリセット</td><td>開始時に選択中プリセットを適用</td><td>ワールドに入った時点の見た目を決めたいときON</td></tr>
 </tbody>
 </table>
-<h3>番号の指定には2つの入口があります</h3>
-<p><strong>ここを混同すると動きません。</strong> 入口ごとに、番号を書く変数が違います。</p>
-<table>
-<thead><tr><th>入口</th><th>番号を書く場所</th><th>使う場面</th></tr></thead>
-<tbody>
-<tr><td><code>ApplySelectedPreset</code><br><code>ApplySelectedPresetImmediately</code></td><td><code>presetSelectionIndex</code><br>（Inspectorの「イベント指定用プリセット番号」）</td><td>番号が固定のボタン。Unity UIのButtonから直接呼べます</td></tr>
-<tr><td><code>RequestSelectPreset</code></td><td><code>apiPresetIndex</code><br>（スクリプトから書きます）</td><td>番号を実行中に決める場合。<strong>スクリプトが要ります</strong></td></tr>
-</tbody>
-</table>
+<h3>番号の指定</h3>
+<p>番号は <code>apiPresetIndex</code> に書き、<code>RequestSelectPreset</code>（クロスフェードあり）または <code>RequestSelectPresetImmediately</code>（即時）を送ります。<strong>スクリプトが要ります。</strong></p>
 <h3>曲に合わせて番号を送るスクリプト</h3>
 <pre><code>public UdonBehaviour mirrorBall;
 public int[] presetPerTrack;   // 曲ごとに出したいプリセット番号
@@ -145,10 +138,9 @@ public void OnTrackChanged(int trackIndex)
 mirrorBall.SetProgramVariable("apiPresetIndex", 4);
 mirrorBall.SendCustomEvent("RequestSelectPreset");
 
-// 即座に切り替え。**書き換える変数が違います**
-mirrorBall.SetProgramVariable("presetSelectionIndex", 4);
-mirrorBall.SendCustomEvent("ApplySelectedPresetImmediately");</code></pre>
-<div class="warning"><strong>即時切替が見るのは <code>presetSelectionIndex</code> です。</strong> <code>apiPresetIndex</code> ではありません。書き換える変数を間違えると、前の番号のまま切り替わります。エラーは出ません。</div>
+// 即座に切り替え
+mirrorBall.SetProgramVariable("apiPresetIndex", 4);
+mirrorBall.SendCustomEvent("RequestSelectPresetImmediately");</code></pre>
 <div class="tip"><strong>クロスフェードは曲の繋ぎ、即時切替は打点に使います。</strong> 決めの瞬間にクロスフェードを挟むと、拍から遅れて到達するため合いません。</div>
 <div class="warning"><strong>連続で叩かないでください。</strong> クロスフェード中にさらに切替を投げると、結果コード3または4が返ります。タイムラインから機械的に投げる場合ほどここが詰まります。<strong>切替の間隔は、クロスフェード時間より長く取ってください。</strong></div>
 </section>

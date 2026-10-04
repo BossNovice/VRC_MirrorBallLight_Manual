@@ -40,6 +40,7 @@
 <li><a href="#basic">1. 基本設定・電源・対象Material</a></li>
 <li><a href="#buttons">共通ボタン</a></li>
 <li><a href="#controller">Controller連動とMaterial直編集</a></li>
+<li><a href="#three-mode">Basic／Advanced／Debugと用途別描画設定（R34）</a></li>
 <li><a href="#setup-wizard">導入セットアップ</a></li>
 </ul>
 </li>
@@ -91,13 +92,13 @@
 <div class="page">
 <div class="eyebrow">見え方を決める</div>
 <h1>ControllerのInspector</h1>
-<p class="lead">Easy／Proの表示モード、10個の折りたたみの構成と、設定を保存するボタンの使い方です。</p>
+<p class="lead">Basic／Advanced／Debugの表示モード、10個の折りたたみの構成と、設定を保存するボタンの使い方です。</p>
 <section id="inspector">
 <h2>ControllerのInspectorの使い方</h2>
-<p>初期表示の<strong>Pro</strong>では設定項目が10個の折りたたみに分かれています。<strong>最初は「1. 基本設定・電源・対象Material」だけが開いています。</strong> Easyでは導入と基本の見た目をまとめて設定できます。</p>
+<p>初期表示の<strong>Advanced</strong>では設定項目が10個の折りたたみに分かれています。<strong>最初は「1. 基本設定・電源・対象Material」だけが開いています。</strong> Basicでは導入と基本の見た目をまとめて設定できます。</p>
 <h3>表示モード</h3>
-<p>Inspector上部の<strong>「Pro：すべての設定」「Easy：基本設定」</strong>で表示を切り替えます。Easyには必須参照・電源・基本の見た目・AudioLinkの基本設定が並び、反映・保存ボタンはどちらでも使えます。</p>
-<p><strong>切替は設定値やMaterialを書き換えません。</strong> Easyで非表示になった設定も有効です。ライブプリセット、光点、投影、照明連携などの詳細はProで調整してください。ライブプリセットやAudioLinkテスト入力が有効な場合は、Easyにも案内が出ます。</p>
+<p>Inspector上部の<strong>「Basic：基本」「Advanced：詳細」「Debug：診断」</strong>で表示を切り替えます。Basicには必須参照・電源・基本の見た目・AudioLinkの基本設定が並び、Debugは描画の診断を表示します。反映・保存ボタンはどのモードでも使えます。</p>
+<p><strong>切替は設定値やMaterialを書き換えません。</strong> Basicで非表示になった設定も有効です。ライブプリセット、光点、投影、照明連携などの詳細はAdvancedで調整してください。ライブプリセットやAudioLinkテスト入力が有効な場合は、Basicにも案内が出ます。</p>
 <p>表示モードはこのPCのUnity Editorへプロジェクトごとに保存され、Unityを起動し直しても引き継ぎます。SceneやPrefabの設定には含まれません。これは下の折りたたみ状態の保存とは別です。</p>
 <h3>導入状態（設定の確認）</h3>
 <p>両モードの上部にミラーボール本体の参照、設定済みMaterialと未設定参照の件数を表示します。照明連携Materialを使用する場合は依存Packageと、有効な受光機能に必要なScene内のManager／Controllerを確認します。使用していない照明連携のSceneオブジェクトは要求しません。</p>
@@ -209,7 +210,7 @@
 <p>Sceneを保存してPlay Modeを開始し、「Play Modeの設定を一時記録」を押すと、終了後に「記録したPlay Mode設定を新規プリセットとして保存」から新しいPresetを作成できます。一時記録はUnity終了時に消えます。「プリセットを整理…」で名前変更・複製・並べ替え・一覧から削除を行えます。<a href="13_presets.html#create">詳しい手順と保存範囲</a>を確認してください。</p>
 <p>Materialの反映・保存、照明連携、Material変換は対象Materialだけを保存します。診断の自動修正は、実際に修正したMaterialだけを保存し、修正不要の対象Materialの未保存編集も保持します。パネル資源の生成とProgram Assetの修復も、関係するアセットだけを保存します。パッケージの保存処理ではプロジェクト内の無関係な未保存アセットをまとめて書き出しません。一時プレビューは適用・変換・診断の前に終了し、元の設定へ戻します。保存はアセットファイル単位なので、同じファイル内のサブアセットは一緒に保存されます。</p>
 <h3>現在の設定を新規プリセットとして保存</h3>
-<p>Easy／Pro共通のInspector下部で「保存名」を入力して押すと、現在の演出設定54項目を新しい子MirrorBallLightPresetへコピーし、一覧の末尾へ登録します。ライブプリセットOFFでも使えます。同名は連番で区別し、既存プリセットや電源・操作範囲・選択番号を維持します。追加は1回のUndo／Redoで戻せます。</p>
+<p>Inspector下部で「保存名」を入力して押すと、現在の演出設定75項目を新しい子MirrorBallLightPresetへコピーし、一覧の末尾へ登録します。ライブプリセットOFFでも使えます。同名は連番で区別し、既存プリセットや電源・操作範囲・選択番号を維持します。追加は1回のUndo／Redoで戻せます。</p>
 <p>保存後はScene（Prefab編集モードではPrefab）を保存してください。通常の新規保存はEdit Mode専用です。Play Modeでは一時記録を使います。電源・参照・Material個別の設定はプリセットの対象外です。<a href="13_presets.html#create">プリセット作成の詳しい手順</a>へ進みます。</p>
 <table>
 <tr><td>導入状態を更新</td><td>選択中のControllerの照明連携状態を読み直します。自動修正は行いません。</td></tr>
@@ -238,6 +239,14 @@
 <p>
 <a href="16_integrations.html">次へ：LTCGI・VRCLightVolumes →</a>
 </p>
+</section>
+<section id="three-mode">
+<h2>Basic／Advanced／Debugと用途別描画設定（R34）</h2>
+<p>Inspectorの上部でBasic／Advanced／Debugを選びます。Basicは対象バインド・明るさ・サイズ・密度・回転など日常の調整、Advancedは詳細な描画・品質、DebugはScene表示補助と診断に使います。モード変更は演出値やMaterialを変更する操作ではありません。DebugのGizmo表示、Reflection Ray表示、LOD距離表示、受光対象のBounds表示はEditorの補助です。Rayは球面12方向の例示で、実GPU画像やVRChat Contextの測定とは区別します。</p>
+<p><strong>ローカル品質を使用</strong>（<code>useLocalQualitySettings</code>）と<strong>ローカル品質プリセット</strong>（<code>localQualityPreset</code>）は利用者ごとの設定です。<strong>VRChat画質設定に追従</strong>（<code>followVRChatQualitySettings</code>）に加え、<strong>Auto Performance Controller</strong>（<code>useAutoPerformanceController</code>）はAA、Pixel Light Count、LOD Bias、Shadow Resolution／Distance、Realtime Reflection Probesを読み、Graphics設定が変わったときに品質を更新します。FPSやGPU使用率を測って判定する機能ではなく、他ユーザーへの品質同期も行いません。</p>
+<p><strong>VRChat Mirror・Camera品質を自動調整</strong>（<code>useVRChatRenderContext</code>）で用途別の倍率を使います。通常視点の密度倍率／Mirror光点密度倍率／Face Mirror密度倍率／Handheld Camera密度倍率／Screenshot密度倍率は、それぞれ <code>normalDensityMultiplier</code>／<code>mirrorDensityMultiplier</code>／<code>faceMirrorDensityMultiplier</code>／<code>handheldCameraDensityMultiplier</code>／<code>screenshotDensityMultiplier</code> です。初期値は100／50／25／125／150%。鏡判定を優先し、撮影中でも通常表示を一律に増やしません。</p>
+<p>Mirror履歴サンプル予算／Face Mirror履歴サンプル予算／Handheld履歴サンプル予算／Screenshot履歴サンプル予算は <code>mirrorHistorySampleBudget</code>／<code>faceMirrorHistorySampleBudget</code>／<code>handheldHistorySampleBudget</code>／<code>screenshotHistorySampleBudget</code>。1〜48で、初期値は鏡1・撮影48です。両眼のContext品質は同じ条件で扱います。</p>
+<p><strong>Camera Photo Mode</strong>（<code>useCameraPhotoMode</code>）のPhoto密度倍率／Photo HDR倍率／Photo LOD距離倍率は <code>cameraPhotoDensityMultiplier</code>／<code>cameraPhotoHDRMultiplier</code>／<code>cameraPhotoLODDistanceMultiplier</code>。初期値は1.5／1.2／1.5です。PhotoCameraがnull・非Activeなら通常品質を使い、ローカルOFFを撮影で復活させません。EngineのPHOTO512と通常Context制限は<a href="19_heavy.html#engine-quality">負荷調整</a>を参照してください。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="03_apply.html">← 自分の壁・床へ適用する</a>

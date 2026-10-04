@@ -91,7 +91,7 @@ foreach ($source in $sourceFiles) {
     $text = Get-Content -LiteralPath $path -Raw
     $editorText = Get-Content -LiteralPath (Join-Path $core $source.editor) -Raw
     $visibleNames = @{}
-    foreach ($hit in [regex]::Matches($editorText, '(?:DrawProperty|FindProperty)\("([^"]+)"')) {
+    foreach ($hit in [regex]::Matches($editorText, '(?:DrawProperty|DrawChoiceProperty|FindProperty)\("([^"]+)"')) {
         $visibleNames[$hit.Groups[1].Value] = $true
     }
     foreach ($hit in [regex]::Matches($text,

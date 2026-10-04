@@ -9,7 +9,6 @@ VRChat World向け `VRC_MirrorBallLight` のマニュアル専用リポジトリ
 
 - [GitHub版・導入から全設定まで](manual/README.md)
 - [HTML版・内容別マニュアル（zip）](https://github.com/BossNovice/VRC_MirrorBallLight_Manual/raw/main/docs_html.zip)
-- [過去の版の変更履歴・移行ガイド](archive/RELEASE_NOTES.md)（**最新版だけを使う場合は不要です**）
 - [サンプル形状アトラス](assets/ShapeAtlas/SampleShapeAtlas_4x2.png)
 - [サンプルCookie・マスク](assets/CookieMasks/README_サンプルCookie.html)
 
@@ -19,8 +18,7 @@ VRChat World向け `VRC_MirrorBallLight` のマニュアル専用リポジトリ
 - `docs/`: 最新版の複数ページHTMLマニュアル
 - `assets/`: GitHub版マニュアルで使用する画像・サンプルTexture
 - `docs/assets/`: HTML版マニュアル（`docs/`）から参照する同一サンプルの公開用コピー
-- `archive/`: 旧版のマニュアルと図解、[過去の版の変更履歴](archive/RELEASE_NOTES.md)
-- `R25/README.md`: 配布済みUnityPackage内のリンク互換用の移転案内。中身は最新版とアーカイブへの誘導だけです
+- `archive/`: R30以降の旧版GitHub版マニュアル
 
 ## 更新方針
 
