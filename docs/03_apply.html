@@ -204,6 +204,8 @@
 <tr><td>動画スクリーン（VideoPlayer・VRC動画プレイヤー）</td><td>自身・親・子に <code>VideoPlayer</code> かVRChatの動画プレイヤーがある、または <code>VRCAVProVideoScreen</code> がある</td></tr>
 <tr><td>テキスト（TextMesh・TextMeshPro）</td><td><code>TextMesh</code> か <code>TextMeshPro</code> がある</td></tr>
 <tr><td>半透明・加算のMaterial（Render Queue 3000以上）</td><td>1つ目のMaterialのRender Queueが3000以上</td></tr>
+<tr><td>EditorOnlyタグ（ビルドで削除）</td><td>自身か親に <code>EditorOnly</code> タグがある（ビルドで消える編集用の物）</td></tr>
+<tr><td>映像・カメラの出力画面（RenderTextureを表示）</td><td>1つ目のMaterialのテクスチャにRenderTextureが入っている（USharpVideoなど、プレイヤーが離れた階層にある動画画面やカメラ表示）。実行時にだけ入れるテクスチャは判定できません</td></tr>
 </tbody>
 </table>
 <p>除外された行の下には「自動除外：鏡（VRC Mirror）。受光させる場合はチェックを入れてください。」のように理由が出ます。チェックを入れれば登録できます。チェックの外れた対象は登録しません。<strong>必要なMeshColliderを追加</strong>がONでもColliderを追加しません。</p>
@@ -226,7 +228,7 @@
 <h3 id="engine-spot-shape">光点の形状</h3>
 <p>Engineの光点は、Controllerの<strong>光点の形状</strong>で描きます。内蔵の形状（四角・丸・ひし形・十字・六角形・星・リング・ハート）、<strong>光点形状テクスチャ</strong>、<strong>複数形状アトラスを使用</strong>のどれも、受光面Shaderの光点と同じように使えます。アトラスでは光点ごとに形状が決まり、その光点が消えるまで変わりません。Controllerの形状を変えると、実行中のEngineの光点も変わります。</p>
 <p><strong>光点の形状</strong>の既定は「四角」なので、Engineの光点も既定では四角です。丸い光点にするには、Controllerで「丸」を選び、<strong>複数形状アトラスを使用</strong>をOFFにします。受光面Shaderの光点も同じ形になります。形状が「丸」以外か、アトラスを使っているときは、Engine Inspectorに次の案内が出ます。</p>
-<p>「反射光点はControllerの「光点の形状」（形状テクスチャ・複数形状アトラス・光点アンチエイリアスを含む）で描かれます。以前のLighting Engineは常に丸でした。以前の丸い光点に戻すには、Controllerの「光点の形状」を「丸」にし、「複数形状アトラスを使用」をOFFにしてください（Controllerの受光面の光点も同じ形になります）。」</p>
+<p>「反射光点はControllerの「光点の形状」（形状テクスチャ・複数形状アトラス・光点アンチエイリアスを含む）で描かれます。丸い光点にするには、Controllerの「光点の形状」を「丸」にし、「複数形状アトラスを使用」をOFFにしてください（Controllerの受光面の光点も同じ形になります）。」</p>
 <p>Controllerの<strong>光点アンチエイリアス</strong>は、Engineの内蔵形状では輪郭をぼかす幅として効きます。0で約1画素、1で約2画素です。形状テクスチャとアトラスの輪郭はテクスチャのままです。内蔵形状には、Engineの <code>spotSoftness</code> による内側のぼかしも掛かります。</p>
 <p>Engineの光点は面に沿った一定の大きさで描くため、斜めの面でも引き伸ばされません。受光面Shaderの光点は、斜めの面では伸びて見えます。</p>
 <h3 id="engine-audiolink-wiring">AudioLinkの自動接続</h3>
