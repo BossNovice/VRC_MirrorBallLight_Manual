@@ -132,6 +132,7 @@ mirrorBall.SendCustomEvent("RequestSelectPreset");
 
 int result = (int)mirrorBall.GetProgramVariable("apiLastResultCode");
 // 0 なら成功</code></pre>
+<p>R35で <code>ApplySelectedPresetImmediately</code> を削除しました。番号を指定する切替は、<code>apiPresetIndex</code> と <code>RequestSelectPreset</code>／<code>RequestSelectPresetImmediately</code> を使ってください。</p>
 
 <h3>結果を確かめる</h3>
 <table>
