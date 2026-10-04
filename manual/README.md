@@ -2,6 +2,14 @@
 
 [HTML版マニュアル（zip）](https://github.com/BossNovice/VRC_MirrorBallLight_Manual/raw/main/docs_html.zip)
 
+## R35の変更点
+
+- 操作パネルの既定フォントを英数字・記号だけのStaticフォントにしました。ワールドのビルドに `NotoSansJP.ttf`（5.5 MB）が入りません。**更新後、日本語のプリセット名はパネルInspectorの「日本語フォントを追加」を押すまで表示されません。** [パネルのフォント](#パネルのフォントと日本語のプリセット名r35)を参照してください。
+- 操作できないときのパネル表示は `VIEW ONLY  -  OWNER CONTROLS` です。所有者の名前は表示しません。
+- Lighting Engineは、登録した受光対象が多くても受光グループの検索が遅くなりません。
+- Controllerの `選択プリセット番号（0から）` は開始時に適用する番号を直接選びます。開始時に表示されるプリセットは変わりません。[ライブプリセット](#作成手順)を参照してください。
+- `ApplySelectedPresetImmediately` を削除しました。`apiPresetIndex` と `RequestSelectPreset`／`RequestSelectPresetImmediately` を使ってください。Mirror／Face Mirror／Handheld／Screenshotの履歴サンプル予算は固定値（1／1／48／48）になりました。
+
 ## R34のLighting Engineと用途別描画
 
 R34では、実際の壁・床・天井へ反射を配置するLighting Engineと、描画先（通常・鏡・撮影）ごとの品質設定を追加しました。Lighting Engineは任意で、導入しなければ従来どおり受光面Shaderだけで描画します。
@@ -12,7 +20,7 @@ R34では、実際の壁・床・天井へ反射を配置するLighting Engine�
 2. ControllerのBasic／Advanced／Debugで調整・詳細設定・Scene補助を使い分けます。Auto PerformanceはGraphics設定の読取で、GPU/FPSの測定ではありません。通常／Mirror／Face Mirror／Handheld／Screenshotの密度初期値は100／50／25／125／150%。Temporal Sparkle StabilityはRenderTextureを使わない解析的近似です。[Controller](../docs/04_controller.html#three-mode)と[回転・安定化](../docs/05_motion.html#engine-motion)を参照してください。
 3. Engineの品質はLOW32／MED64／HIGH128／ULTRA256／OFF0。PhotoCameraがActiveかつPhoto Mode有効のPCでは配置512を使えますが、撮影slotは通常・鏡へ増やさず、OFFは復活しません。R34.1から、撮影カメラを開いている間も通常の画面の光点の更新間隔と寿命は変わりません。AndroidはLOW／OFFです。[品質とProfiler](../docs/19_heavy.html#engine-quality)を参照してください。
 4. Audio反応はBassサイズ／Mid回転／High密度／Beat Flash。7ジャンルNORMAL／CLUB／HIPHOP／HOUSE／TECHNO／DISCO／CHILLと、7回転Constant／Accelerate／Decelerate／BeatSync／Pendulum／ReverseBeat／RandomAccentを選べます。BPM・位相は明示値です。AudioLinkはR34.1から導入ウィンドウが自動でつなぎます（上の1）。[Audio](../docs/12_audiolink.html#engine-audio)を参照してください。
-5. Engine Inspectorの **現在の演出をAssetへ保存** と **保存した演出を読み込む** で演出値を扱います。ローカル品質・対象参照・Ray予算は保存しません。CPU更新時間とRay数・有効光点はGPU負荷やVRChat実機FPSとは別に読みます。CPUの目安（R34.1）: Unity EditorのPlay Mode（Udon VM、1人）で、品質ULTRA（256光点）・24 rays・毎秒30回更新・Facet 8,192個のとき、Engineの1フレームの平均は約1.1 msでした（R34は2.6〜6 ms）。Editorでの計測で、VRChatクライアントのCPUは計測していません。[演出Asset](../docs/13_presets.html#engine-preset)を参照してください。
+5. Engine Inspectorの **現在の演出をAssetへ保存** と **保存した演出を読み込む** で演出値を扱います。ローカル品質・対象参照・Ray予算は保存しません。CPU更新時間とRay数・有効光点はGPU負荷やVRChat実機FPSとは別に読みます。CPUの目安（R34.1）: Unity EditorのPlay Mode（Udon VM、1人）で、品質ULTRA（256光点）・24 rays・毎秒30回更新・Facet 8,192個のとき、Engineの1フレームの平均は約1.1 msでした（R34は2.6〜6 ms）。Editorでの計測で、VRChatクライアントのCPUは計測していません。R35から、当たったColliderの受光グループはRayごとに1回の辞書検索で探すため、登録した受光対象が多くても遅くなりません。[演出Asset](../docs/13_presets.html#engine-preset)を参照してください。
 
 ## R33の光点・描画品質
 
@@ -20,7 +28,7 @@ R34では、実際の壁・床・天井へ反射を配置するLighting Engine�
 
 ## R34の3D操作パネル
 
-黒い筐体とアンバーのアクセントを持つ3Dパネルです。基本パネルは角丸四角の電源キー、ON／OFF、現在のプリセット名と番号（例：2 / 7）、PREV／NEXTを配置します。シーケンスパネルはRESTART・STOP・PLAY/PAUSE・NEXT STEPの4キーで、PLAY/PAUSEは停止中なら開始、再生中なら一時停止、一時停止中なら再開します。電源ON・再生中は電源キーのリング・表示灯・プリセット名・進行バー・再生キーがアンバーに点灯し、OFF・停止中は灰色になります。固定ラベルは英語のみで、任意のプリセット名は原文のまま表示します。操作できないボタンは記号と文字を減光します。
+黒い筐体とアンバーのアクセントを持つ3Dパネルです。基本パネルは角丸四角の電源キー、ON／OFF、現在のプリセット名と番号（例：2 / 7）、PREV／NEXTを配置します。シーケンスパネルはRESTART・STOP・PLAY/PAUSE・NEXT STEPの4キーで、PLAY/PAUSEは停止中なら開始、再生中なら一時停止、一時停止中なら再開します。電源ON・再生中は電源キーのリング・表示灯・プリセット名・進行バー・再生キーがアンバーに点灯し、OFF・停止中は灰色になります。固定ラベルは英語のみです。R35からプリセット名の日本語は、日本語フォントを追加したときだけ表示します（[パネルのフォント](#パネルのフォントと日本語のプリセット名r35)）。操作できないボタンは記号と文字を減光します。
 
 通常の配置メニューから同梱の3Dパネルを設置します。厚みを持つモデルのため、壁面へ設置したあと背面が食い込んでいないか確認してください。背面は標準Scale 0.001で原点からローカル+Z側へ約26 mm、前面は-Z側です。当たり判定は前面から1 cm以上手前、キーの面より前に置きます。
 
@@ -28,7 +36,7 @@ R34では、実際の壁・床・天井へ反射を配置するLighting Engine�
 
 ![Blender製の基本・シーケンスパネル](../docs/assets/control-panels-amber-3d.png)
 
-画像は実Udon稼働中のUnity／ClientSim描画例です。VRChat実機の画面ではありません。新しい大判テクスチャやフォントは追加していません。
+画像は実Udon稼働中のUnity／ClientSim描画例です。VRChat実機の画面ではありません。新しい大判テクスチャは追加していません。フォントはR35で英数字だけの軽いものに変わりました。
 
 ## R32.6の操作権限と光点形状
 
@@ -102,6 +110,10 @@ Easy / Pro表示、プリセットの比較・プレビュー・追加、3段階
 
 | MirrorBallLight | Unity | VRCLightVolumes | LTCGI | コンパイル確認 | 実機目視（PC） |
 | --- | --- | --- | --- | --- | --- |
+| R35 | 2022.3.22f1 | 3.0.0-dev.20 | 1.7.3 | 済（注45） | 未実施（注45） |
+| R35 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | Shaderのみ（注45） | 未実施（注45） |
+| R35 | 2022.3.22f1 | 2.1.3 | 1.7.2 | Shaderのみ（注45） | 未実施（注45） |
+| R35 | 2022.3.22f1 | 未導入 | 未導入 | 未実施（注45） | 未実施（注45） |
 | R34.1 | 2022.3.22f1 | 3.0.0-dev.20 | 1.7.3 | 済（注44） | 構成は未記録（注44） |
 | R34.1 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | Shaderのみ（注44） | 構成は未記録（注44） |
 | R34.1 | 2022.3.22f1 | 2.1.3 | 1.7.2 | Shaderのみ（注44） | 構成は未記録（注44） |
@@ -279,6 +291,7 @@ Easy / Pro表示、プリセットの比較・プレビュー・追加、3段階
 - **注41**: 3Dパネル変更に必要な確認へ絞っています。Blender書き出し、Unity C#・実UdonSharp、実OnClickを使うClientSim31項目、旧パネル2つの更新・Scene保存／再読込、欠損Mesh故障注入2件、104 AssetsのmetaとGUIDを確認しました。World01の実際のLight Volumes 3.0.0-dev.20／LTCGI 1.7.3環境でもC#・Udonコンパイル、新外観と既存設定の保持、壁際の電源・PREV／NEXT判定を確認しています。コンパイル用includeを持つ専用プロジェクトの結果と、実パッケージを持つWorld01を区別しています。
   変更していないShader、プリセット演算、ネットワーク処理はR32.6の実績を参照し、全リリース検査や全連携構成の再検証は繰り返していません。VRChat PC実クライアント・複数人同期は未実施で、R31-UNEXEC-01を継続します。
 
+- **注45**: R35はUnity 2022.3.22f1、VRChat SDK 3.10.5で確認しました。3.0.0-dev.20／1.7.3 の構成で、実UdonSharpコンパイル、Editor検査、Lighting Engine・導入ウィンドウの検査（418／172項目）、パネル検査（117項目）が成功しています。3.0.0-dev.15／1.7.3 と 2.1.3／1.7.2 は描画検査（91場面）でShaderの描画を確認しました。連携未導入構成は確認していません。World01（3.0.0-dev.20）では、ビルドに `NotoSansJP.ttf` が入らないこと（41.6 MB → 38.9 MB）、パネルの文字表示、開始時のプリセットが変わらないことをEditor Play Modeとビルドレポートで確認しました。VRChat実機目視、HMD、複数人同期はR35では未実施です。
 - **注44**: R34.1はUnity 2022.3.22f1、VRChat SDK 3.10.5で確認しました。実UdonSharpコンパイル、Editor検査、Lighting Engine・導入ウィンドウの検査（371／172項目）は 3.0.0-dev.20／1.7.3 の構成で成功しています。3.0.0-dev.15／1.7.3 と 2.1.3／1.7.2 は描画検査（91場面）でShaderの描画を確認しました。連携未導入構成は今回確認していません。World01（3.0.0-dev.20）のEditor Play ModeでLighting EngineのCPUと鎖付きボールのFacet選別を確認しています。利用者がVRChat実クライアントで複数人同期・Photo Mode・鏡を確認し、問題は見つからなかったとの報告を受けました。確認した連携パッケージの版は記録していないため、注9と同じく特定の連携版へ紐付けず別の行に記録しています。HMDは未確認です。
 - **注43**: R34はUnity 2022.3.22f1で確認しました。実UdonSharpコンパイルは 2.1.3／1.7.2、3.0.0-dev.15／1.7.3、連携未導入の3構成でエラーなしです。製品Shaderは両連携構成で描画検査（91場面、連携版3本を含む）のプレイヤービルドと描画が成功しています。連携未導入構成ではShaderの再確認をしていません。Lighting Engine・Receiver Manager・描画先ごとの品質は実UnityのEditor/GPU検査（365／167／91項目）で確認しています。ClientSimでの実Udon実行、VRChat実機目視、HMD、複数人同期は未実施で、下記R31-UNEXEC-01を継続します。
 - **注42**: R33はUnity 2022.3.22f1で、2.1.3／1.7.2と3.0.0-dev.15／1.7.3の両連携構成の実UdonSharpコンパイルと製品Shader 6本のエラー0件を確認しています。連携未導入構成も実UdonSharpの成功を確認し、通常版Shaderが正常、連携版3本はinclude不在による想定内のコンパイル失敗です。根拠はR33の `core/.ci/reports/verify-R33.json` と `unity_no_integration.log` です。一括リリース検査全件の成功、VRChat実機目視、HMD、複数人同期・途中参加・所有者交代の成功を示すものではありません。後者は下記R31-UNEXEC-01の理由・担当・期限・次アクションを継続します。
@@ -1148,7 +1161,7 @@ Global共有はScene内で1系統です。異なる設定のControllerを複数�
 5. ライブ切替に使うときはProの `2. ライブプリセット` を開き、`ライブプリセットを使用` をONにします。新規保存だけではこの設定や電源・操作範囲・選択番号は変わりません。
 6. 作成した子を選択すれば、保存済みのプリセット名や演出値を後から編集できます。追加と一覧登録は1回のUndo／Redoで戻せます。
 
-`選択プリセット番号` は0から始まります。`選択番号をプレビュー適用` で編集時に確認できます。Controller側で作った調整結果をプリセットへ戻す場合は、対象番号を指定して `現在値を選択プリセットへ保存` を押します。
+`選択プリセット番号（0から）` は、開始時に適用するプリセットの番号（`currentPresetIndex`）を直接選びます。`選択番号をプレビュー適用` でこの番号を入れ直し、編集時に確認できます。Play Mode中は変更できません。R35からこの動作で、開始時に表示されるプリセットは変わりません。Controller側で作った調整結果をプリセットへ戻す場合は、対象番号を指定して `現在値を選択プリセットへ保存` を押します。
 
 ### 演出プリセット
 
@@ -1269,7 +1282,7 @@ int result = (int)mirrorBall.GetProgramVariable("apiLastResultCode");
 
 ### 従来の書き方も使えます
 
-外部から番号を指定するときは、`apiPresetIndex` と `RequestSelectPreset`（即時なら `RequestSelectPresetImmediately`）を使います。
+外部から番号を指定するときは、`apiPresetIndex` と `RequestSelectPreset`（即時なら `RequestSelectPresetImmediately`）を使います。`ApplySelectedPresetImmediately` はR35で削除しました。
 
 ## ガラス・透明・半透明オブジェクト
 
@@ -1744,19 +1757,29 @@ R32.2では当たり判定の中心だけをパネル前面へ1cm移していま
 | シーケンス | PLAY・PAUSE | 停止中なら先頭のステップで開始、再生中なら一時停止（残り時間を保持。回転・音楽反応・進行中のクロスフェードは継続）、一時停止中なら同じステップから再開 |
 | シーケンス | NEXT STEP | 次の演出を選択。一時停止中なら停止状態を保持し、そのステップの全継続時間を用意 |
 
-基本パネルは電源とプリセット名、シーケンスパネルは再生／停止／一時停止・ステップ・残り秒とバーを表示します。所有者や閲覧状態も表示します。共有範囲の操作権限はパネルInspectorの「Global操作権限」で選びます。既定の「オーナーのみ」では非所有者のボタンと操作要求を拒否します。「誰でも操作可能」では非所有者の操作をController所有者へ送信し、所有者が変更を実行して全員へ共有します。基本・シーケンスの各パネルに設定し、所有権は自動取得しません。反映まで通信の遅延があります。Controllerで電源とプリセットに異なる範囲が設定されている場合は、基本パネルInspectorに混在を表示します。範囲を選び直すと両方が揃います。
+基本パネルは電源とプリセット名、シーケンスパネルは再生／停止／一時停止・ステップ・残り秒とバーを表示します。自分が操作できないときは `VIEW ONLY  -  OWNER CONTROLS` と表示します。R35から所有者の名前は表示しません。共有範囲の操作権限はパネルInspectorの「Global操作権限」で選びます。既定の「オーナーのみ」では非所有者のボタンと操作要求を拒否します。「誰でも操作可能」では非所有者の操作をController所有者へ送信し、所有者が変更を実行して全員へ共有します。基本・シーケンスの各パネルに設定し、所有権は自動取得しません。反映まで通信の遅延があります。Controllerで電源とプリセットに異なる範囲が設定されている場合は、基本パネルInspectorに混在を表示します。範囲を選び直すと両方が揃います。
 
 「再生状況を共有パネルへ配信」を有効にすると、指定したControllerへ進行状態を送ります。パネル配置時の配線では有効にしますが、既存シーケンスの既定値はOFFです。共有配信元はControllerごとに1つで、同時に別のシーケンスを開始すると拒否します。
 開始・ステップ変更・停止・一時停止・再開時にControllerがスナップショットを配信し、各パネルはサーバー時刻から残り時間を表示します。毎フレームの表示更新では通信しません。途中参加者にも最新の状態を表示する設計ですが、VRChat実ネットワークでの途中参加は未実施です。所有者が変わると停止し、新しい所有者が明示的に開始します。
 
-CanvasはWorld Space、Defaultレイヤー、GraphicRaycaster・VRCUiShape・BoxCollider付きです。ボタンのNavigationはNone、SceneのEventSystemは1つを維持してください。フォントは日本語対応のNoto Sans JP Regularを同梱し、OFLと生成情報は `UI/Fonts/OFL.txt`、`SOURCE.txt` にあります。Worlds SDKのTMPを利用し、標準TMP資源が不足する場合は既存ファイルを保持して補います。
+CanvasはWorld Space、Defaultレイヤー、GraphicRaycaster・VRCUiShape・BoxCollider付きです。ボタンのNavigationはNone、SceneのEventSystemは1つを維持してください。フォントのOFLと生成情報は `UI/Fonts/OFL.txt`、`SOURCE.txt` にあります。Worlds SDKのTMPを利用し、標準TMP資源が不足する場合は既存ファイルを保持して補います。
 
 各パネルInspectorの「Global操作権限」は既定でオーナーのみです。必要なパネルを「誰でも操作可能」へ切り替えると、非オーナーも電源・プリセット・シーケンスを操作できます。操作要求はController所有者が実行し、所有権は移動しません。
 
-POWERの下の電源アイコンを押すとON／OFFを切り替えます。PRESETの下には現在選択されているプリセット名を表示し、PREV／NEXTやシーケンスによる切替に合わせて更新します。通常時は下部にREADY、共有範囲では所有者／閲覧状態を表示します。
+POWERの下の電源アイコンを押すとON／OFFを切り替えます。PRESETの下には現在選択されているプリセット名を表示し、PREV／NEXTやシーケンスによる切替に合わせて更新します。共有範囲で自分が操作できないときは、下部に `VIEW ONLY  -  OWNER CONTROLS` と表示します。
 
 ![電源・プリセットパネル](../docs/assets/control-panel-power-presets.png)
 
 ![シーケンスパネルの一時停止表示例](../docs/assets/control-panel-paused.png)
 
 画像は実PrefabをUnity Editorで描画した例です。VRChat実機のスクリーンショットではありません。
+
+### パネルのフォントと日本語のプリセット名（R35）
+
+R35から、パネルの既定フォント `Assets/MirrorBallLight/UI/Fonts/MirrorBallPanelFont.asset` は英数字・記号（ASCII）と「…」だけを持つStaticフォントです。ワールドのビルドに `NotoSansJP.ttf`（5.5 MB）が入らなくなりました。日本語のDynamicフォント `MirrorBallPanelFontJapanese.asset` は別に同梱しています。
+
+プリセット名に既定フォントで表示できない文字があると、パネルのInspectorに次の警告と **「日本語フォントを追加」** ボタンが出ます。（…）の部分には表示できない文字が入ります。
+
+> プリセット名に、パネルの既定フォントで表示できない文字があります（…）。R35からパネルのフォントは英数字と記号だけになりました。日本語フォントを追加すると表示されます（ビルドが約5.5 MB増えます）。
+
+ボタンを押すと、日本語フォントを既定フォントのフォールバックに追加します。ビルドは約5.5 MB増えます。**R35へ更新したワールドでは、このボタンを押すまで日本語のプリセット名がパネルに表示されません。** プリセット名が英数字だけなら追加は不要です。[HTML版](../docs/21_uibridge.html#panel-font)にも同じ説明があります。

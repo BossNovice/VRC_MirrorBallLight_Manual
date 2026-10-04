@@ -310,6 +310,7 @@
 <p>Play ModeのEngine InspectorはRaycasts／フレーム、有効光点／配置予算、CPU更新時間を表示します。<code>lastFrameRaycasts</code>、<code>validSpotCount</code>／<code>allocatedSpotBudget</code>、<code>lastCpuMilliseconds</code> はその実行中の観測です。<code>maximumCpuMilliseconds</code> は最大のCPU更新時間です。floatタイマーの分解能も考慮し、短い値だけで速さを断定しません。</p>
 <p>これらはGPUフレーム時間・GPU使用率・FPS・GPU製品名の推定値ではありません。CPUはUnity Profiler、GPUとDraw CallはProfilerや描画統計で別に比較してください。従来Receiver方式と新Instancing方式は、同じ部屋・視点・光点品質・計測区間で比較し、数値と画像を記録します。Unity Editor／ClientSimの結果をVRChat実機の性能として扱いません。</p>
 <p>CPUの目安（R34.1）：Unity EditorのPlay Mode（Udon VM、1人）で、品質ULTRA（<code>localQualityTier</code> 3、256光点）・<code>raysPerFrame</code> 24・<code>rayUpdatesPerSecond</code> 30・Facet 8,192個の条件では、Engineの1フレームの平均は約1.1 msでした（R34は2.6〜6 ms）。これはEditorでの計測です。VRChatクライアントのCPUは計測していません。</p>
+<p>R35から、当たったColliderの受光グループはRayごとに1回の辞書検索で探します。登録した受光対象が多くても、この検索は遅くなりません。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="18_troubleshoot.html">← うまく動かないとき</a>
