@@ -55,7 +55,8 @@ hotfix/YYYYMMDD-NN   緊急修正のみ
   版ごとの経緯や、置き換わった旧動作は書かない。機能の説明はその機能の節へまとめる。
   過去の版の内容は `archive/` に残っています（動作確認表・注・未実施の記録は除く）
 
-`.ci/Validate-Docs.ps1` がこれらを検査します（CIでも自動実行されます）。
+`.ci/Validate-Docs.ps1` が `<title>` の版・版付きファイル名・対象バージョンの単一ソースを検査します（CIでも自動実行されます）。
+**版ごとの経緯の記述は機械検査できないので、PRのレビューで見ます。**
 
 ```
 pwsh ./.ci/Validate-Docs.ps1
@@ -202,9 +203,10 @@ zip内のファイルは直接リンクできないため、本文からは「HT
 1. `work/YYYYMMDD-NN` ブランチを作る
 2. 更新前の `manual/README.md` を `archive/R<バージョン>_GitHub_Manual/README.md` へコピーする
 3. `manual/README.md` と `docs/` の各ページを新しい内容へ更新する
-   （`docs/` を変えたら `./.ci/Build-ManualZip.ps1` でzipを作り直す）
-4. `docs/index.html` の対象バージョン表記を更新する（**バージョンを書くのはここだけ**）
-5. `pwsh ./.ci/Validate-Docs.ps1` で表記とリンクを検証する
+   （`docs/` を変えたら `./.ci/Build-SearchIndex.ps1` と `./.ci/Build-ManualZip.ps1` で検索索引とzipを作り直す）
+4. `docs/index.html` の対象バージョン表記と、`compatibility.json` の `manual`／`coreExpected` を更新する
+   （**本文にバージョンを書くのは `docs/index.html` だけ**）
+5. `pwsh ./.ci/Validate-Docs.ps1` で表記とリンクを検証する（本体のcloneが隣にあれば `-CoreRepositoryPath` も付ける）
 6. PRを作成してマージする
 
 フォルダ名を固定したため、本体リポジトリ側のリンク張り替えは不要になりました。

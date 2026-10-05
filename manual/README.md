@@ -13,11 +13,11 @@
    - Setupはシーンのprogramの名前が「AudioLink」のUdonBehaviourを探してEngineの `audioLinkBehaviour` へつなぎ、`requestAudioLinkReadback` を有効にします。設定済みの参照はそのままにします。[AudioLinkの自動接続](../docs/03_apply.html#engine-audiolink-wiring)を参照してください。
    - 鏡（`VRCMirrorReflection`）・動画スクリーン（`VideoPlayer`・VRChatの動画プレイヤー）・テキスト（`TextMesh`・`TextMeshPro`）・RenderTextureを表示する画面・EditorOnlyタグの下の物・半透明と加算のMaterial（Render Queue 3000以上）は、チェックが外れた状態で一覧に出ます。行の下に「自動除外：鏡（VRC Mirror）。受光させる場合はチェックを入れてください。」のように理由が出ます。チェックを入れれば登録できます。チェックの外れた対象は登録せず、Colliderも追加しません。検出時と適用後の結果欄には「除外 鏡（VRC Mirror）：1個」「除外 動画スクリーン（VideoPlayer・VRC動画プレイヤー）：1個」「除外 テキスト（TextMesh・TextMeshPro）：2個」「除外 半透明・加算のMaterial（Render Queue 3000以上）：1個」のように理由ごとの件数が出ます。自分で外した対象は「除外 手動で除外」、一覧に出ないパーティクル・ライン等は「除外 パーティクル・ライン等のメッシュ以外のRenderer：4個（一覧に表示しません）」と数えます。[自動で除外される対象](../docs/03_apply.html#engine-exclusions)を参照してください。
    - Setupは登録するRendererごとに受光面の色を記録します。1つ目のMaterialの `_Color` と、メッシュが実際に使うUV範囲のメインテクスチャの平均を掛けた色です。テクスチャやメッシュのRead/WriteがOFFでも測れますが、グラフィックスありのEditorが必要です。Engineは光点に当たった面の色を掛けます。シーンのライティングには左右されず、暗いMaterialでは光点が暗く、色の付いたMaterialでは光点にその色が付きます。Engine Inspectorの **受光面の色の影響**（`receiverColorInfluence`、0〜1、既定1）を0にすると白い光点になります。色を記録していない対象（色の記録が入る前に導入したシーンなど）は白で描かれ、Engine Inspectorに「受光面の色が未登録の対象があります（白で表示されます）。受光対象の登録を開き、「一覧の対象へLighting Engineを設定」をもう一度実行してください。」と出ます。[受光面の色](../docs/03_apply.html#engine-surface-color)を参照してください。
-   - Engineの光点はControllerの **光点の形状**（内蔵形状・光点形状テクスチャ・複数形状アトラス）で描きます。既定は「四角」です。丸い光点にするにはControllerで「丸」を選び、**複数形状アトラスを使用** をOFFにします（受光面Shaderの光点も同じ形になります）。形状が「丸」以外のときはEngine Inspectorに案内が出ます。**光点アンチエイリアス** はEngineの内蔵形状で輪郭をぼかす幅（約1〜2画素）として効きます。Engineの光点は一定の大きさで、斜めの面でも引き伸ばされません。[光点の形状](../docs/03_apply.html#engine-spot-shape)を参照してください。
+   - Engineの光点はControllerの **光点の形状**（内蔵形状・光点形状テクスチャ・複数形状アトラス）で描きます。既定は「四角」です。丸い光点にするにはControllerで「丸」を選び、**複数形状アトラスを使用** をOFFにします（受光面Shaderの光点も同じ形になります）。形状が「丸」以外のとき、または複数形状アトラスを使用しているときは、Engine Inspectorに案内が出ます。**光点アンチエイリアス** はEngineの内蔵形状で輪郭をぼかす幅（約1〜2画素）として効きます。Engineの光点は一定の大きさで、斜めの面でも引き伸ばされません。[光点の形状](../docs/03_apply.html#engine-spot-shape)を参照してください。
 2. ControllerのBasic／Advanced／Debugで調整・詳細設定・Scene補助を使い分けます。Auto PerformanceはGraphics設定の読取で、GPU/FPSの測定ではありません。通常／Mirror／Face Mirror／Handheld／Screenshotの密度初期値は100／50／25／125／150%。Mirror／Face Mirror／Handheld／Screenshotの履歴サンプル予算は固定値（1／1／48／48）で、設定項目はありません。Temporal Sparkle StabilityはRenderTextureを使わない解析的近似です。[Controller](../docs/04_controller.html#three-mode)と[回転・安定化](../docs/05_motion.html#engine-motion)を参照してください。
 3. Engineの品質はLOW32／MED64／HIGH128／ULTRA256／OFF0。PhotoCameraがActiveかつPhoto Mode有効のPCでは配置512を使えますが、撮影slotは通常・鏡へ増やさず、OFFは復活しません。撮影カメラを開いている間も、通常の画面の光点の更新間隔と寿命は変わりません。AndroidはLOW／OFFです。[品質とProfiler](../docs/19_heavy.html#engine-quality)を参照してください。
 4. Audio反応はBassサイズ／Mid回転／High密度／Beat Flash。7ジャンルNORMAL／CLUB／HIPHOP／HOUSE／TECHNO／DISCO／CHILLと、7回転Constant／Accelerate／Decelerate／BeatSync／Pendulum／ReverseBeat／RandomAccentを選べます。BPM・位相は明示値です。AudioLinkは導入ウィンドウが自動でつなぎます（上の1）。[Audio](../docs/12_audiolink.html#engine-audio)を参照してください。
-5. Engine Inspectorの **現在の演出をAssetへ保存** と **保存した演出を読み込む** で演出値を扱います。ローカル品質・対象参照・Ray予算・受光面の色の影響は保存しません。CPU更新時間とRay数・有効光点はGPU負荷やVRChat実機FPSとは別に読みます。当たったColliderの受光グループはRayごとに1回の辞書検索で探すため、登録した受光対象が多くても遅くなりません。CPUの目安（R34.1で計測）: Unity EditorのPlay Mode（Udon VM、1人）で、品質ULTRA（256光点）・24 rays・毎秒30回更新・Facet 8,192個のとき、Engineの1フレームの平均は約1.1 msでした。Editorでの計測で、VRChatクライアントのCPUは計測していません。[演出Asset](../docs/13_presets.html#engine-preset)を参照してください。
+5. Engine Inspectorの **現在の演出をAssetへ保存** と **保存した演出を読み込む** で演出値を扱います。ローカル品質・対象参照・Ray予算・受光面の色の影響は保存しません。CPU更新時間とRay数・有効光点はGPU負荷やVRChat実機FPSとは別に読みます。当たったColliderの受光グループはRayごとに1回の辞書検索で探すため、登録した受光対象が多くても遅くなりません。CPUの目安（Unity Editorでの計測）: Unity EditorのPlay Mode（Udon VM、1人）で、品質ULTRA（256光点）・24 rays・毎秒30回更新・Facet 8,192個のとき、Engineの1フレームの平均は約1.1 msでした。Editorでの計測で、VRChatクライアントのCPUは計測していません。[演出Asset](../docs/13_presets.html#engine-preset)を参照してください。
 
 ## 動作確認済みの組み合わせ
 
@@ -758,7 +758,8 @@ Controllerの **「切替中の要求を1件だけ予約」** をONにすると�
 | --- | --- |
 | 電源をOFFにした | 予約を捨てます。再度ONにしても予約は実行されません |
 | プリセットが同期モードで、同期を受け取った | 受信した状態が正になります。予約は捨てます |
-| 「選択中プリセットを即時適用」「現在のプリセットを再読込」 | そちらが優先され、予約は捨てます |
+| `RequestSelectPresetImmediately`（即時適用）・`ReloadCurrentPreset`（再読込）を呼んだ | そちらが優先され、予約は捨てます |
+| プリセットの動作範囲（ローカル／グローバル）を変えた | 予約を捨てます。範囲をまたいで実行しません |
 | プリセット一覧が縮み、予約先が無くなった | 予約を捨てます |
 | 予約先が、進行中の切替先と同じ | 最初から予約しません |
 
@@ -1136,7 +1137,7 @@ Udonスイッチから任意番号を選ぶ場合は、Controllerの `apiPresetI
 
 同期ずれや連打による不連続を防ぐため、クロスフェード中の追加切替操作は完了まで無視されます。短い間隔で操作したい場合はクロスフェード時間を0.2～0.5秒へ設定してください。Inspectorの `選択番号をプレビュー適用` は編集用のため常に即時適用されます。
 
-プリセットには回転速度、色・明るさ、通常／透過面の表示、AudioLink帯域と反応量、光点形状、ランダム点灯、距離フェード、光点形状Atlasのシード設定を保存します。本体ファセットのシード設定は `本体シード設定をこのプリセットで指定` がONのプリセットだけが持ち込みます。ミラーボールTransform、対象Material、Light参照、電源設定などは安全のため切り替えません。
+プリセットには回転速度、色・明るさ、通常／透過面の表示、AudioLink帯域と反応量、光点形状、ランダム点灯、距離フェード、光点形状Atlasと本体ファセットのシード設定を保存し、切り替え時に全項目を適用します。ミラーボールTransform、対象Material、Light参照、電源設定などは安全のため切り替えません。
 
 Unity/UdonSharp側の自動表示名に依存せず、Custom Inspectorが全フィールドの日本語ラベルを明示します。`Rotation Speed`、`Reflection Range`、`Horizontal Tiles`などの英語表記は、それぞれ`回転速度`、`反射が届く距離`、`横方向の光点数`として表示されます。
 
@@ -1286,7 +1287,7 @@ TextureはProjectウィンドウ内へ保存された画像アセットを指定
 
 ### 光点アンチエイリアス
 
-ControllerのAdvanced →「光点・ランダム点灯」で **光点アンチエイリアス** を0から1へ上げます。内蔵の四角・丸・ひし形・十字・六角形・★・リング・♥の輪郭を画素の大きさに合わせて補正し、遠くの細かい光点のちらつきを抑えます。1が完全適用、0は補正なしです。形状Texture／Atlasには適用しません。解像度以下の形状は面積に応じた平均光量へ移行するため、輪郭やリングの穴を見分けられなくなります。Lighting Engineの光点にも効きます（[光点の形状](../docs/03_apply.html#engine-spot-shape)）。
+ControllerのAdvanced →「7. 光点・形状・ランダム点灯」で **光点アンチエイリアス** を0から1へ上げます。内蔵の四角・丸・ひし形・十字・六角形・★・リング・♥の輪郭を画素の大きさに合わせて補正し、遠くの細かい光点のちらつきを抑えます。1が完全適用、0は補正なしです。形状Texture／Atlasには適用しません。解像度以下の形状は面積に応じた平均光量へ移行するため、輪郭やリングの穴を見分けられなくなります。Lighting Engineの光点にも効きます（[光点の形状](../docs/03_apply.html#engine-spot-shape)）。
 
 ## 回転精度
 
@@ -1323,7 +1324,7 @@ ControllerのAudioLinkで **音反応のAttack/Releaseを使用** をONにし、
 
 AudioLinkの既存履歴を最大48サンプル／用途で読みます。有効時はGPU負荷が増えるため、ワールドの解像度・描画面積に合わせて確認してください。基本遅延と光点ごとの遅延差が履歴の終端に近いと、利用できる過去データが減り、設定した余韻を再現できない場合があります。表面Emission・本体・アバター用実光には適用しません。AudioLinkテストモードの固定音量もこの時間処理を通さないため、立ち上がり・余韻の確認には実際のAudioLink入力を使います。
 
-新規保存するPresetにはAAと6つの時間、使用切替を保存します。**光点AA・音反応をこのプリセットで指定** がONのPresetだけがこれらを上書きし、OFFのPresetではControllerの値を維持します。両PresetがONのクロスフェードではAAと時間を連続補間し、使用切替は中央で切り替えます。
+Presetには光点AAと6つの時間、使用切替を保存し、切り替え時に常に適用します。クロスフェードではAAと時間を連続補間し、使用切替は中央で切り替えます。
 
 ### 距離LOD・品質・用途別AudioLink
 
