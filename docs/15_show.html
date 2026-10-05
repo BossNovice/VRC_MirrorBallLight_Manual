@@ -202,7 +202,7 @@ public void RequestWithRetry()
 <div class="warning"><strong>回数の上限を必ず決めてください。</strong> 上限なしで呼び直すと、設定が直るまで永久に呼び続けます。<code>1</code> と <code>2</code> で試し直さないのも同じ理由です。</div>
 
 <h3>後から入ってきた人のUIを合わせる</h3>
-<p>途中参加した人のUIは、参加時点の状態を知りません。<code>apiStateRevision</code> の初期値を <code>-1</code> にしておけば、<strong>最初のUpdateで必ず1回描き直されます。</strong> 参加のタイミングを特別扱いする必要はありません。</p>
+<p>途中参加した人のUIは、参加時点の状態を知りません。UI側の <code>lastRevision</code> の初期値を <code>-1</code> にしておけば、<strong>最初のUpdateで必ず1回描き直されます。</strong> 参加のタイミングを特別扱いする必要はありません。</p>
 <p>上のUI追従のコードがそのまま使えます。<code>lastRevision</code> を <code>-1</code> で初期化しているのはこのためです。</p>
 
 <h3>失敗したときに黙って諦めない</h3>
