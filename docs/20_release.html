@@ -108,6 +108,13 @@
 <li>直せるものは<strong>「安全に自動修正」</strong>で直します。触るのは<strong>MaterialとTexture Import設定だけ</strong>です。Hierarchyの参照や電源などの設定値は書き換えません。</li>
 <li>修正後にConsoleと実際の見た目を確かめます。<strong>自動修正で直らなかった項目は、一覧に残ります。</strong></li>
 </ol>
+<h3>ビルドのときに行うこと</h3>
+<p>ワールドをビルドするたびに、同じ診断が自動で走ります。結果はConsoleに出ます。</p>
+<ul>
+<li><strong>Controllerに登録したMaterialと本体ファセットのMaterialのキーワードを、Controllerの設定（Shader Global共有・AudioLink）に揃えます。</strong> ずれていると、実行中に使う描き方がビルドで削られ、実機で効かなくなるためです。直したMaterialと、変えたキーワード・値を、Consoleに1件ずつ「修正:」で出します。</li>
+<li><strong>形状アトラスのTexture Import設定は、ビルドでは変えません。</strong> 推奨値（Clamp・MipMap OFF・Alpha Is Transparency ON）と違うときは、今の値と一緒に警告します。直すときは、このウィンドウの「安全に自動修正」を押してください。</li>
+<li>最後に「ビルド前Shaderバリアント監査完了: 警告n件／修正n件」が出ます。</li>
+</ul>
 <h3>誰かに見てもらうとき</h3>
 <p>一覧の内容はそのままテキストにできます。</p>
 <ol class="steps">
