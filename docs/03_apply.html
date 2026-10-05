@@ -231,6 +231,16 @@
 <p>「反射光点はControllerの「光点の形状」（形状テクスチャ・複数形状アトラス・光点アンチエイリアスを含む）で描かれます。丸い光点にするには、Controllerの「光点の形状」を「丸」にし、「複数形状アトラスを使用」をOFFにしてください（Controllerの受光面の光点も同じ形になります）。」</p>
 <p>Controllerの<strong>光点アンチエイリアス</strong>は、Engineの内蔵形状では輪郭をぼかす幅として効きます。0で約1画素、1で約2画素です。形状テクスチャとアトラスの輪郭はテクスチャのままです。内蔵形状には、Engineの <code>spotSoftness</code> による内側のぼかしも掛かります。</p>
 <p>Engineの光点は面に沿った一定の大きさで描くため、斜めの面でも引き伸ばされません。受光面Shaderの光点は、斜めの面では伸びて見えます。</p>
+<h3 id="engine-spot-motion">光点の動きと制限</h3>
+<p>R37から、Engineの光点はボールと一緒に回り、壁・天井・床の上を流れます。光点はそれぞれ1枚のFacetを受け持ち、Rayで撃ち直すたびに同じFacetを確かめます。撃ち直しの合間は、そのフレームのボールの向きでFacetの反射を計算し直し、前に当たった面の上で光点を動かします。Facetが光を受けなくなったとき（裏を向いた、スポットライトの円錐から出た、遮られた）や、反射が受光面から外れたときに、その光点は消え、別のFacetを受け持ちます。新しく受け持った光点は短く（0.15秒）フェードインします。</p>
+<p>R36.1までは、撃ち直すたびに別のFacetへ入れ替わる作りでした。光点は置かれた場所に止まったまま、約1秒に1回、別の場所へ跳んで見えました。</p>
+<p>次の点は仕様です。</p>
+<ul>
+<li><strong>受光面は静止している前提です。</strong> 動く受光面や動く遮蔽物では、撃ち直すまで光点が古い位置の面に沿って動きます。</li>
+<li>曲面や凹凸のある面では、面の延長と実際に当たる位置が少しずれるため、撃ち直したときに光点が小さく動きます。</li>
+<li>入射角による伸び（Engineの光点は伸ばしません）と、距離による大きさ・明るさは、撃ち直すまで更新されません。</li>
+<li>撃ち直しの合間に面の端を越えた光点は、当たった面の範囲から出た時点で消えます。次に撃ち直したとき、隣の面に当たれば、そこへ移ります。</li>
+</ul>
 <h3 id="engine-audiolink-wiring">AudioLinkの自動接続</h3>
 <p>Setupは、programの名前が「AudioLink」のUdonBehaviourをシーンから探し、Engineの <code>audioLinkBehaviour</code> へ設定して <code>requestAudioLinkReadback</code> を有効にします。すでに <code>audioLinkBehaviour</code> を設定している場合は変更しません。見つからない場合は何も設定しません。あとからAudioLinkを置いたときは、もう一度<strong>一覧の対象へLighting Engineを設定</strong>を押すか、手で設定してください。詳しくは<a href="12_audiolink.html#engine-audio">Engineの帯域反応</a>を参照してください。</p>
 <p>Receiver Managerの <code>receiveFloor</code>／<code>receiveWalls</code>／<code>receiveCeiling</code>／<code>receiveStage</code>／<code>receiveObjects</code>／<code>receiveAvatars</code> でグループを選び、各 <code>*Intensity</code> で強さを調整します。Avatarは既定で無効です。登録はEditorで焼き込み、実行中のScene全体の自動探索や既存Materialの置換は行いません。階層・Colliderを変えたら一覧から再登録してください。</p>

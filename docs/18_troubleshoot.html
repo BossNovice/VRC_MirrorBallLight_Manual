@@ -77,6 +77,7 @@
 <li><a href="#notvisible">光点が表示されない</a></li>
 <li><a href="#vrchat">Unityでは見えるがVRChatでは形状が反映されない</a></li>
 <li><a href="#black">ミラーボール本体が黒い</a></li>
+<li><a href="#looks-not-rotating">光点やボールが回っていないように見える</a></li>
 <li><a href="#rotation-stopped">回転が止まる</a></li>
 <li><a href="#button-dead">ボタンを押しても何も起きない</a></li>
 <li><a href="#duplicate-child-controller">プリセットを使うと光点が飛ぶ・設定が交互に変わる</a></li>
@@ -135,6 +136,14 @@
 <li>Cubemap未設定でも最低輝度が見えるか確認</li>
 <li>Controllerの電源ON、本体ファセット明るさ倍率1以上</li>
 <li>連携版ならLTCGI／LightVolumesの導入とMaterial整合を確認</li>
+</ol>
+</section>
+<section id="looks-not-rotating">
+<h2>光点やボールが回っていないように見える</h2>
+<h3>見るところ</h3>
+<ol>
+<li><b>Lighting Engineの回転パターンが「振り子」になっていませんか。</b> 振り子は一方向へは回らず、±25°（<code>pendulumDegrees</code>）の範囲を8秒（<code>motionCycleSeconds</code>）かけて往復するだけです。<code>baseRpm</code> は使いません。用途別プリセットのCHILLは振り子が既定です。回転して見せたいときは「一定回転」などを選ぶか、Engineの「回転を管理」をOFFにしてControllerで回してください。<a href="05_motion.html#engine-motion">Engineの回転パターン</a></li>
+<li><b>R36.1以前のLighting Engineを使っていませんか。</b> R36.1までのEngineの光点は、撃ち直すたびに別のFacetへ入れ替わる作りで、ボールと一緒に流れませんでした。光点は止まったまま、約1秒に1回、別の場所へ跳んで見えます。R37で直しました。<a href="03_apply.html#engine-spot-motion">光点の動きと制限</a></li>
 </ol>
 </section>
 <section id="rotation-stopped">
