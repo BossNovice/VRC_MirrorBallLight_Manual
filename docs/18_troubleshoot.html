@@ -80,6 +80,7 @@
 <li><a href="#rotation-stopped">回転が止まる</a></li>
 <li><a href="#button-dead">ボタンを押しても何も起きない</a></li>
 <li><a href="#duplicate-child-controller">プリセットを使うと光点が飛ぶ・設定が交互に変わる</a></li>
+<li><a href="#upgrade-warnings">更新後に診断でMBL-W032・MBL-W033が出る</a></li>
 <li><a href="#global-name-clash">光点や回転が、たまに一瞬だけ乱れる</a></li>
 <li><a href="#pattern-frozen">アニメーションでMaterialを切り替えても効かない</a></li>
 <li><a href="#udon">UdonSharp Program Assetのエラー</a></li>
@@ -172,6 +173,15 @@
 <p>プリセット用の子に<strong>MirrorBallLightController</strong>が付いていないか確認してください。同じミラーボールをGlobal共有で更新する親子Controllerが稼働すると、描画設定を上書きし合います。この構成では稼働中の親を優先し、子の描画・本体回転更新を抑止して警告を1回表示します。親が無効の場合は子の更新を継続します。</p>
 <p>プリセット用の子には<strong>MirrorBallLightPreset</strong>を使用します。先頭スロットがNoPresetの場合は、<a href="13_presets.html#recover-first-preset">現在値から先頭プリセットを復元</a>してください。誤って置いた子Controllerは、参照や独自の設定を確認してから取り除きます。</p>
 <p>この保護は同じミラーボールの親子Controllerに対するものです。Shader Global共有はワールドで1系統とし、異なるミラーボール、Sceneルート間、他ギミックとの競合は診断で確認してください。速い点滅、配置シードの変化、異なる光点配置のプリセット間の遷移による見え方は演出設定として残ります。</p>
+</section>
+<section id="upgrade-warnings">
+<h2>更新後に診断でMBL-W032・MBL-W033が出る</h2>
+<p>R36.1から、更新で見た目や動作が変わる設定が入っていると、診断ウィンドウとControllerのInspectorに警告を出します。該当する値が入っているときだけ出ます。</p>
+<table>
+<tr><th>コード</th><th>内容と直し方</th></tr>
+<tr><td><code>MBL-W032</code></td><td>R34でPresetの上書き切替を削除したため、Controllerと違う値が入っているライブプリセットの項目（光点AA、Attack/Release、近距離フェード、LOD、正規化、音反応の方式、本体シードなど）が、切替時に効くようになっています。更新前の見た目に戻すには、Presetの該当項目をControllerと同じ値にします。Presetの値が意図どおりなら、そのままで構いません</td></tr>
+<tr><td><code>MBL-W033</code></td><td>ButtonのOn Clickが、削除済みのイベント（<code>ApplySelectedPreset</code>／<code>ApplySelectedPresetImmediately</code>）を呼んでいます。押しても何も起きません。Controller InspectorのUI Bridge付きButtonの自動作成で作り直し、操作「番号を指定して適用」（即時版は「番号を指定して即時適用」）を選んでください。自前のUdonから呼ぶ場合は <code>apiPresetIndex</code> に番号を入れてから <code>RequestSelectPreset</code>（即時版は <code>RequestSelectPresetImmediately</code>）を送ります</td></tr>
+</table>
 </section>
 <section id="global-name-clash">
 <h2>光点や回転が、たまに一瞬だけ乱れる</h2>
