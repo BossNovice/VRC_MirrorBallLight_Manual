@@ -343,7 +343,7 @@
 <tr><td><code>PauseSequence</code></td><td>継続時間の残りを保持。回転・音楽反応・進行中のクロスフェードは継続</td></tr><tr><td><code>ResumeSequence</code></td><td>保持した残り時間で同じステップから再開</td></tr><tr><td><code>NextStep</code></td><td>次へ進む。一時停止中は一時停止を保持し、次の全継続時間を用意。クロスフェード中は拒否</td></tr></tbody></table>
 <p>SequenceのUdonBehaviourへ上表の名前をSendCustomEventで送ります。Play ModeのInspectorと<a href="21_uibridge.html#control-panel">設置型パネル</a>でも操作できます。UI Bridgeの既存操作番号は変更しません。</p>
 <p>ローカル範囲は手元で再生し、共有範囲はController所有者だけが再生します。「再生状況を共有パネルへ配信」とControllerの配信元を設定すると、状態・カーソル・残り時間をControllerへ配信します。既存Sequenceの共有表示は既定OFF、パネル配線時に有効にします。1つのControllerを別のSequenceが同時に駆動することはできません。</p>
-<p>所有権・範囲・Controller参照が変わると停止します。所有権の自動取得と所有者変更後の自動再開はありません。新しい所有者が明示的に開始します。途中参加の表示は最新の共有スナップショットを使う設計ですが、VRChat実ネットワークの確認は未実施です。</p>
+<p>範囲・Controller参照が変わると停止します。グローバル範囲で再生中は、Controllerの所有者が変わっても停止します。ローカル範囲の再生は所有者が変わっても止まりません。所有権の自動取得と所有者変更後の自動再開はありません。新しい所有者が明示的に開始します。途中参加の表示は最新の共有スナップショットを使う設計ですが、VRChat実ネットワークの確認は未実施です。</p>
 <p>空配列・範囲外／未設定のプリセット・不正な時間（NaN・Infを含む）は開始を拒否し、一時停止中も入力を検査します。lastResultCodeは0=成功、1=無効、2=Controller／プリセット無効、3=ステップ不正、4=所有権・範囲・参照変更、5=切替拒否、6=クロスフェード中、7=配信元／再生ドライバー競合です。</p></section>
 </main>
 </div>
