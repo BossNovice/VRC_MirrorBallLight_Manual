@@ -190,16 +190,47 @@
 <ol>
 <li>Sceneを保存し、Controllerのミラーボール <code>mirrorBall</code> と入射Spot Light <code>spotLight</code> を設定します。Spotの向き・角度・範囲がボールへ届くことを確認します。</li>
 <li><strong>Tools → MirrorBall Light → Lighting Engineを導入</strong>を開き、Controllerと<strong>受光対象の階層</strong>を指定します。<strong>対象を検出・適用内容を確認</strong>を押します。</li>
-<li>一覧の対象チェックとFloor／Wall／Ceiling／Stage／Objects／Avatar分類を見直します。自動分類は候補なので、ステージなどは手動で訂正します。AvatarはSceneに配置したモデルのみです。実行時に参加するプレイヤーAvatarは登録対象に含めません。</li>
+<li>一覧の対象チェックとFloor／Wall／Ceiling／Stage／Objects／Avatar分類を見直します。自動分類は候補なので、ステージなどは手動で訂正します。AvatarはSceneに配置したモデルのみです。実行時に参加するプレイヤーAvatarは登録対象に含めません。鏡・動画スクリーン・テキスト・半透明のMaterialは最初からチェックが外れています（<a href="#engine-exclusions">自動で除外される対象</a>）。</li>
 <li><strong>必要なMeshColliderを追加</strong>を選ぶと、足りない対象へ実形状のColliderを追加します。有効な非Trigger Colliderが必要です。共有する親Colliderを異なるグループへ分類すると競合するため、一覧を整理してから<strong>一覧の対象へLighting Engineを設定</strong>を押します。適用はUndoで戻せます。</li>
-<li>追加された <code>MirrorBallLightingEngine</code> の <code>controller</code>／<code>receiverManager</code>／<code>ball</code>／<code>incomingSpot</code> を確認します。Setupが作る <code>spotMesh</code> はローカルXY平面・法線+ZのQuad、<code>spotMaterial</code> は <code>MirrorBallLight/InstancedSpot</code> とGPU Instancing有効の組み合わせです。ボールのFacet法線・中心もSetupで用意します（下記）。シーンにAudioLinkがあれば <code>audioLinkBehaviour</code> へつなぎます（下記）。</li>
+<li>追加された <code>MirrorBallLightingEngine</code> の <code>controller</code>／<code>receiverManager</code>／<code>ball</code>／<code>incomingSpot</code> を確認します。Setupが作る <code>spotMesh</code> はローカルXY平面・法線+ZのQuad、<code>spotMaterial</code> は <code>MirrorBallLight/InstancedSpot</code> とGPU Instancing有効の組み合わせです。ボールのFacet法線・中心と、登録した対象ごとの受光面の色もSetupで用意します（下記）。シーンにAudioLinkがあれば <code>audioLinkBehaviour</code> へつなぎます（下記）。</li>
 <li><code>raycastLayers</code> にはReceiverだけでなく、反射を止める登録外の柱・家具・壁も含めます。最初に当たったColliderが未登録なら、その方向の光点を出しません。遮蔽物をLayerMaskから外すと光が通り抜けます。<code>maximumRayDistance</code> とSpot角度も実際の部屋に合わせます。</li>
 </ol>
+<h3 id="engine-exclusions">自動で除外される対象</h3>
+<p><strong>対象を検出・適用内容を確認</strong>を押すと、次のRendererはチェックが外れた状態で一覧に出ます。</p>
+<table>
+<thead><tr><th>一覧に出る理由</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>鏡（VRC Mirror）</td><td>自身か親に <code>VRCMirrorReflection</code> がある</td></tr>
+<tr><td>動画スクリーン（VideoPlayer・VRC動画プレイヤー）</td><td>自身・親・子に <code>VideoPlayer</code> かVRChatの動画プレイヤーがある、または <code>VRCAVProVideoScreen</code> がある</td></tr>
+<tr><td>テキスト（TextMesh・TextMeshPro）</td><td><code>TextMesh</code> か <code>TextMeshPro</code> がある</td></tr>
+<tr><td>半透明・加算のMaterial（Render Queue 3000以上）</td><td>1つ目のMaterialのRender Queueが3000以上</td></tr>
+<tr><td>EditorOnlyタグ（ビルドで削除）</td><td>自身か親に <code>EditorOnly</code> タグがある（ビルドで消える編集用の物）</td></tr>
+<tr><td>映像・カメラの出力画面（RenderTextureを表示）</td><td>1つ目のMaterialのテクスチャにRenderTextureが入っている（USharpVideoなど、プレイヤーが離れた階層にある動画画面やカメラ表示）。実行時にだけ入れるテクスチャは判定できません</td></tr>
+</tbody>
+</table>
+<p>除外された行の下には「自動除外：鏡（VRC Mirror）。受光させる場合はチェックを入れてください。」のように理由が出ます。チェックを入れれば登録できます。チェックの外れた対象は登録しません。<strong>必要なMeshColliderを追加</strong>がONでもColliderを追加しません。</p>
+<p>パーティクル・ラインなど、メッシュ以外のRendererは一覧に出しません。ボール本体とその子も一覧に出しません。</p>
+<p>除外の件数は、検出時と適用後の結果欄に理由ごとに出ます。表示例です。</p>
+<p>「3個のRendererを登録対象にしました。分類と除外対象を確認してから適用できます。<br>除外 鏡（VRC Mirror）：1個<br>除外 テキスト（TextMesh・TextMeshPro）：2個<br>除外 パーティクル・ライン等のメッシュ以外のRenderer：4個（一覧に表示しません）」</p>
+<p>自分でチェックを外した対象は「除外 手動で除外：1個」のように数えます。適用後の結果欄では「登録完了。MeshCollider追加 …」の後に同じ行が出ます。</p>
 <h3 id="engine-facets">ボールのFacet選別</h3>
 <p>Setupはボールのメッシュへ球を当てはめ、その球面上にある外向きの三角形だけを反射Facetとして焼き込みます。同じメッシュに入った鎖や吊り金具の三角形はFacetにしません。面積0の三角形も除外します。主に球でない形状は、すべての三角形をFacetにします。</p>
 <p>Facetの上限は8192個です。超える場合は球面全体から均等に間引きます。結果欄には反射Facet数・ボールMeshの三角形数・除外数が出ます。表示例です。</p>
 <p>「反射Facet 8192個を登録。ボールMeshの三角形 17156個のうち、鎖など球面から外れた三角形・面積0の三角形 508個を除外しました。上限8192個まで均等に間引いています。」</p>
 <p>最後の「上限8192個まで均等に間引いています。」は間引いたときだけ出ます。ボールにMeshがない場合は「ボールのMesh（三角形）がないため、実行時に球面のFacetを自動生成します。」と出ます。</p>
+<h3 id="engine-surface-color">受光面の色</h3>
+<p>Engineの光点は、当たった面のMaterialの色を掛けて描きます。暗いMaterialでは光点が暗くなり、色の付いたMaterialでは光点にその色が付きます。白いMaterialでは光点の色は変わりません。シーンのライティングには左右されません。</p>
+<p>色は<strong>一覧の対象へLighting Engineを設定</strong>を押したときに、登録するRendererごとに記録します。記録するのは、1つ目のMaterialの <code>_Color</code> と、メッシュが実際に使うUV範囲のメインテクスチャの平均を掛けた色です。<code>_Color</code> が無いShaderは白として扱います。2つ目以降のMaterialは使いません。テクスチャやメッシュのRead/WriteがOFFでも測れます。Materialやテクスチャを変えたら、もう一度押して記録し直します。</p>
+<p>テクスチャはGPUで読むため、グラフィックスありのEditorが必要です。読めない環境では何も変更せずに止まり、「受光面の色を測れません：GPUでのテクスチャ読み出し（RGBA Half の ReadPixels）が使えません。グラフィックスありのEditorで実行してください。」と出ます。</p>
+<p>効き具合はEngine Inspectorの<strong>受光面の色の影響</strong>（<code>receiverColorInfluence</code>、0〜1、既定1）で決めます。1で面の色をそのまま掛け、0では面の色を使わない白い光点になります。用途別プリセットと演出Assetはこの値を変えません。</p>
+<p>色を記録していない登録対象があると、Engine Inspectorに次の警告が出ます。色の記録が入る前に導入したシーンでも出ます。その対象の光点は白で描かれます。</p>
+<p>「受光面の色が未登録の対象があります（白で表示されます）。受光対象の登録を開き、「一覧の対象へLighting Engineを設定」をもう一度実行してください。」</p>
+<h3 id="engine-spot-shape">光点の形状</h3>
+<p>Engineの光点は、Controllerの<strong>光点の形状</strong>で描きます。内蔵の形状（四角・丸・ひし形・十字・六角形・星・リング・ハート）、<strong>光点形状テクスチャ</strong>、<strong>複数形状アトラスを使用</strong>のどれも、受光面Shaderの光点と同じように使えます。アトラスでは光点ごとに形状が決まり、その光点が消えるまで変わりません。Controllerの形状を変えると、実行中のEngineの光点も変わります。</p>
+<p><strong>光点の形状</strong>の既定は「四角」なので、Engineの光点も既定では四角です。丸い光点にするには、Controllerで「丸」を選び、<strong>複数形状アトラスを使用</strong>をOFFにします。受光面Shaderの光点も同じ形になります。形状が「丸」以外か、アトラスを使っているときは、Engine Inspectorに次の案内が出ます。</p>
+<p>「反射光点はControllerの「光点の形状」（形状テクスチャ・複数形状アトラス・光点アンチエイリアスを含む）で描かれます。丸い光点にするには、Controllerの「光点の形状」を「丸」にし、「複数形状アトラスを使用」をOFFにしてください（Controllerの受光面の光点も同じ形になります）。」</p>
+<p>Controllerの<strong>光点アンチエイリアス</strong>は、Engineの内蔵形状では輪郭をぼかす幅として効きます。0で約1画素、1で約2画素です。形状テクスチャとアトラスの輪郭はテクスチャのままです。内蔵形状には、Engineの <code>spotSoftness</code> による内側のぼかしも掛かります。</p>
+<p>Engineの光点は面に沿った一定の大きさで描くため、斜めの面でも引き伸ばされません。受光面Shaderの光点は、斜めの面では伸びて見えます。</p>
 <h3 id="engine-audiolink-wiring">AudioLinkの自動接続</h3>
 <p>Setupは、programの名前が「AudioLink」のUdonBehaviourをシーンから探し、Engineの <code>audioLinkBehaviour</code> へ設定して <code>requestAudioLinkReadback</code> を有効にします。すでに <code>audioLinkBehaviour</code> を設定している場合は変更しません。見つからない場合は何も設定しません。あとからAudioLinkを置いたときは、もう一度<strong>一覧の対象へLighting Engineを設定</strong>を押すか、手で設定してください。詳しくは<a href="12_audiolink.html#engine-audio">Engineの帯域反応</a>を参照してください。</p>
 <p>Receiver Managerの <code>receiveFloor</code>／<code>receiveWalls</code>／<code>receiveCeiling</code>／<code>receiveStage</code>／<code>receiveObjects</code>／<code>receiveAvatars</code> でグループを選び、各 <code>*Intensity</code> で強さを調整します。Avatarは既定で無効です。登録はEditorで焼き込み、実行中のScene全体の自動探索や既存Materialの置換は行いません。階層・Colliderを変えたら一覧から再登録してください。</p>

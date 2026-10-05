@@ -321,7 +321,7 @@
 <section id="engine-preset">
 <h2>Engineの演出をAssetへ保存・読込</h2>
 <ol><li>Engine Inspectorで回転・光点・Audioの演出を調整します。</li><li><strong>現在の演出をAssetへ保存</strong>を押し、Project内の保存先を選びます。<code>MirrorBallEnginePresetAsset</code> に演出値とControllerの反射色を保存します。保存は単一選択で行います。</li><li><strong>保存した演出</strong>にAssetを指定して<strong>保存した演出を読み込む</strong>を押します。複数Engineへの適用とUndoに対応する操作です。必要に応じてSceneを保存してください。</li></ol>
-<p>保存対象はBPM・位相・回転パターン、Kick／Drop、Audio反応、光点サイズ・密度・Softness・Sparkleなどの演出値です。ローカル品質、Controller／Receiver／ball／Spotなどの参照、Ray予算、プラットフォーム設定は保存対象外です。ControllerのライブプリセットやPlay Mode一時記録と、Engineの演出Assetは用途が異なります。</p>
+<p>保存対象はBPM・位相・回転パターン、Kick／Drop、Audio反応、光点サイズ・密度・Softness・Sparkleなどの演出値です。ローカル品質、Controller／Receiver／ball／Spotなどの参照、Ray予算、プラットフォーム設定、<strong>受光面の色の影響</strong>は保存対象外です。ControllerのライブプリセットやPlay Mode一時記録と、Engineの演出Assetは用途が異なります。</p>
 <p>用途別7ジャンルの一覧は<a href="12_audiolink.html#engine-audio">AudioLink連動</a>、測定表示の意味は<a href="19_heavy.html#engine-profiler">負荷調整</a>を参照してください。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
