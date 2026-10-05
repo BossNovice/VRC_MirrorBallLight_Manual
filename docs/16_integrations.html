@@ -180,6 +180,7 @@
 <div class="note">「VRCLightVolumes用オブジェクト」はMaterialのToggleとは別で、アバター向けDynamic Volume等のGameObjectを電源連動させる参照です。</div>
 <h3>ワールド法線の反映</h3>
 <p>VRCLightVolumes 3.x環境では、<code>LightVolumeSH</code>へワールド法線を渡し、法線方向に応じたライト・シャドウ評価が通常面・透過面・本体ファセットへ反映されます。曲面や斜面での陰影が自然になります。VRCLightVolumes 2.x環境では5引数APIで動作します。版の判定は自動で、追加の設定はありません。</p>
+<p>VRCLightVolumes 3.0.0-dev.21以降は、ワールドの設定で外した機能（通常のVolume・Point Light・影など）は、MirrorBallLightの連携Shaderでも使われません。そのワールドで使っていない機能なので、見た目は変わりません。</p>
 </section>
 <section id="ltcgi">
 <h2>LTCGI</h2>
