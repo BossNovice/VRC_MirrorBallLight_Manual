@@ -240,13 +240,37 @@
 <li><strong>R37.1より前に導入したシーンは、受光対象の登録を開き、「一覧の対象へLighting Engineを設定」をもう一度実行してください。</strong> Facetを均等に選べる並びに焼き直します。実行するまでは、Engine Inspectorに警告が出て、光点がボールの一部に偏ることがあります。</li>
 <li><strong>受光面は静止している前提です。</strong> 動く受光面や動く遮蔽物では、撃ち直すまで光点が古い位置の面に沿って動きます。</li>
 <li>曲面や凹凸のある面では、面の延長と実際に当たる位置が少しずれるため、撃ち直したときに光点が小さく動きます。</li>
-<li>入射角による伸びと明るさは、撃ち直しの合間もボールの向きに合わせて変わります。距離による大きさは、撃ち直すまで更新されません。</li>
+<li>入射角による伸びと明るさ、距離による大きさは、撃ち直しの合間もボールの向きに合わせて変わります（大きさはR37.2から）。</li>
 <li>撃ち直しの合間に面の端を越えた光点は、当たった面の範囲から出た時点で消えます。次に撃ち直したとき、隣の面に当たれば、そこへ移ります。</li>
+</ul>
+<h3 id="engine-spot-size">光点の大きさ</h3>
+<p>R37.2から、Engineの光点の直径は「鏡面1枚の大きさ＋ボールの中心からの距離×光点の角度」です。実際のミラーボールや受光面Shaderの光点と同じく、ボールに近い面では小さく、遠い面では大きくなります。</p>
+<ul>
+<li><strong>既定では、Controllerの「光点の大きさ」とタイル数に合わせます</strong>（<code>useControllerSpotSize</code>）。受光面Shaderの光点は、ボールから見た方向の1マスの「光点の大きさ」倍の角度に広がります。Engineも同じ角度を使うので、同じ値で両方式の光点が同じ距離で同じ大きさになります。</li>
+<li><code>useControllerSpotSize</code> をOFFにすると、Engineの <code>spotAngleDegrees</code>（度）を使います。用途別プリセットは、この角度を設定します（「3m先で前の版と同じ直径」になる値）。</li>
+<li>鏡面1枚の大きさは、ボールの半径と鏡面の数から求めます。低音（Bass）で光点が大きくなる演出は、この直径に掛かります。</li>
+<li>EngineのInspectorに、1m・3m・5m先での直径を表示します。</li>
+<li><strong>R37.2より前に導入したシーンでは、前の版の Spot Diameter・Beam Divergence は使われません。</strong> EngineのInspectorに警告が出るので、表示される直径を見て、必要ならControllerの「光点の大きさ」か <code>spotAngleDegrees</code> で調整し、「光点の大きさを確認した」を押してください。</li>
+</ul>
+<h3 id="engine-depth-clip">面の縁で切る（深度で切る）</h3>
+<p>光点が当たった面より大きいとき（細い梁、柱の角、段差、家具の縁）、はみ出した部分を描かないようにします。</p>
+<ul>
+<li><strong>深度で切る（<code>useDepthClip</code>、R37.2から既定ON）</strong>：Engineが画面のカメラに深度テクスチャを作らせ（VRChatの <code>VRCCameraSettings</code> の公式の機能）、光点のうち実際の面から外れた画素を描きません。梁・柱の角・段差・家具の縁のどれでも、面の形どおりに切れます。撮影カメラ（Photo Mode）は常に深度があります。</li>
+<li><strong>深度を使わないとき</strong>（<code>useDepthClip</code> がOFF、鏡の中）：当たったColliderの範囲で切ります。BoxColliderなら当たった面の範囲で切るので、BoxColliderの梁は梁の縁で切れます。それ以外のColliderは、Collider全体を囲む箱で切ります。</li>
+<li>確認用に <code>debugClipPath</code> をONにすると、深度で切っている光点は緑、Colliderの範囲で切っている光点は黄色で表示されます。実機でどちらの切り方になっているかを確かめるのに使い、確認が済んだらOFFに戻してください。</li>
+</ul>
+<p>次の点は制限です。</p>
+<ul>
+<li>深度を使わないとき、MeshColliderはCollider全体を囲む箱で切ります。梁と天井、または何本もの梁を1つのMeshColliderにまとめていると、その箱の中にある梁と梁の間の空間に光点が浮きます（R37.1までの見え方）。梁のような細い受光対象は、1本ずつBoxColliderを付けた別のオブジェクトに分けてください。</li>
+<li>鏡の中は斜めの投影で深度が当てにならないため、深度で切らずにColliderの範囲で切ります。</li>
+<li>アバターのカメラ（VRCLens・配信用カメラなど）は、VRChatの仕様で、画面のカメラが前に描いた深度を使います。そのカメラの画では、光点が欠けたり、切れなかったりすることがあります。</li>
+<li>画面のカメラに深度テクスチャを作らせると、不透明物の深度を描く処理が1回増えます。重さが気になるときは <code>useDepthClip</code> をOFFにしてください（Colliderの範囲で切ります）。一度要求した深度テクスチャは、そのインスタンスにいる間は残ります（ワールドの他の効果が使っている場合があるため、外しません）。</li>
+<li>VR（両眼を1回で描く方式）での深度の読み方は、Shaderは両眼用の書き方ですが、実機ではまだ確認していません。</li>
 </ul>
 <h3 id="engine-audiolink-wiring">AudioLinkの自動接続</h3>
 <p>Setupは、programの名前が「AudioLink」のUdonBehaviourをシーンから探し、Engineの <code>audioLinkBehaviour</code> へ設定して <code>requestAudioLinkReadback</code> を有効にします。すでに <code>audioLinkBehaviour</code> を設定している場合は変更しません。見つからない場合は何も設定しません。あとからAudioLinkを置いたときは、もう一度<strong>一覧の対象へLighting Engineを設定</strong>を押すか、手で設定してください。詳しくは<a href="12_audiolink.html#engine-audio">Engineの帯域反応</a>を参照してください。</p>
 <p>Receiver Managerの <code>receiveFloor</code>／<code>receiveWalls</code>／<code>receiveCeiling</code>／<code>receiveStage</code>／<code>receiveObjects</code>／<code>receiveAvatars</code> でグループを選び、各 <code>*Intensity</code> で強さを調整します。Avatarは既定で無効です。登録はEditorで焼き込み、実行中のScene全体の自動探索や既存Materialの置換は行いません。階層・Colliderを変えたら一覧から再登録してください。</p>
-<p><code>engineEnabled</code> を有効にすると別描画の反射を使い、受光面Shader側の反射と重ねて二重に表示しないようControllerへ通知します。回転設定・品質は<a href="05_motion.html#engine-motion">回転</a>と<a href="19_heavy.html#engine-quality">負荷調整</a>を参照してください。</p>
+<p><code>engineEnabled</code> を有効にすると別描画の反射を使い、受光面Shader側の反射と重ねて二重に表示しないようControllerへ通知します。<strong>Unityで <code>engineEnabled</code> をOFFにすると、従来の受光面Shaderの光点に戻ります。</strong>Engineの設定と登録した受光対象はそのまま残るので、ONに戻せば元のEngineの光点になります。回転設定・品質は<a href="05_motion.html#engine-motion">回転</a>と<a href="19_heavy.html#engine-quality">負荷調整</a>を参照してください。</p>
 </section>
 <nav class="pagenav" aria-label="前後のページ">
 <a href="02_sample.html">← 設定済みサンプルで最短確認</a>
