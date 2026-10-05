@@ -152,7 +152,7 @@
 <h3>見るところ</h3>
 <ol>
 <li><b>R37.1以前のLighting Engineを使っていませんか。</b> R37.1までは、光点の直径が距離によらずほぼ一定で、当たったCollider全体を囲む箱でしか切らなかったため、梁や柱の縁から光点がはみ出しました。R37.2で、直径が距離に比例し、深度で面の縁を切るようになりました（<a href="03_apply.html#engine-spot-size">光点の大きさ</a>、<a href="03_apply.html#engine-depth-clip">面の縁で切る</a>）。</li>
-<li><b>Engineの <code>useDepthClip</code> がOFFになっていませんか。</b> OFFのときはColliderの範囲で切るので、梁と天井が1つのMeshColliderだと、梁の縁の外が切れません。ONにするか、梁にBoxColliderを付けて別のオブジェクトに分けてください。</li>
+<li><b>Engineの <code>useDepthClip</code> がOFFになっていませんか。</b> OFFのときはColliderの範囲で切ります。MeshColliderはCollider全体を囲む箱で切るので、何本もの梁や、梁と天井を1つのMeshColliderにまとめていると、梁と梁の間の空間に光点が浮きます。ONにするか、梁を1本ずつBoxColliderを付けた別のオブジェクトに分けてください。</li>
 <li><b>実機でどちらの切り方になっているかは、<code>debugClipPath</code> で確かめられます。</b> 深度で切っている光点は緑、Colliderの範囲で切っている光点は黄色です。鏡の中は、いつも黄色です。</li>
 </ol>
 </section>
