@@ -187,14 +187,14 @@
 </section>
 <section id="occlusion">
 <h2>遮蔽キューブマップで遮蔽物の裏に光点を出さない</h2>
-<p>受光面Shaderの光点はそのままに、柱・カウンター・梁の裏に光点が出ないようにする機能です。ボールの中心から見た最寄りの面までの距離をキューブマップ（6面）へ焼いておき、受光面Shaderが画素までの距離と比べて、手前に遮蔽物があれば光点を描きません。光点の配置・大きさ・形・回転は変わらず、遮蔽の縁は画素単位で切れます。既定ではOFFで、焼いて初めて効きます。</p>
+<p>受光面Shaderの光点はそのままに、柱・カウンター・梁の裏に光点が出ないようにする機能です。ボールの中心から見た最寄りの面までの距離を6面ぶん（+X・-X・+Y・-Y・+Z・-Z）、縦に並べた1枚のテクスチャへ焼いておき、受光面Shaderが画素までの距離と比べて、手前に遮蔽物があれば光点を描きません。光点の配置・大きさ・形・回転は変わらず、遮蔽の縁は画素単位で切れます。既定ではOFFで、焼いて初めて効きます。</p>
 <h3 id="occlusion-bake">焼き方</h3>
 <ol>
 <li>Sceneを保存し、Controllerのミラーボール <code>mirrorBall</code> を設定します。遮蔽物（柱・カウンター・梁・壁）が最終の位置にあることを確かめます。</li>
 <li><strong>Tools → MirrorBall Light → 遮蔽キューブマップを焼く</strong>を開き、Controllerを指定します。Controllerの「8. 高度な投影・Sceneプレビュー」の<strong>遮蔽キューブマップを焼く…</strong>と、導入セットアップの「3. 動作の確認」からも開けます。</li>
 <li><strong>焼く遮蔽物のLayer</strong>で、遮蔽物のあるLayerを選びます（既定はすべて）。<strong>焼く解像度</strong>は128／256（既定）／512 px/面です。取り付け具など、自動で除外されない物があれば<strong>焼くときに除外する物</strong>へ入れます。</li>
 <li><strong>焼く対象を確認</strong>で、焼く遮蔽物の数と除外の内訳を見ます。</li>
-<li><strong>焼いて Controller に設定</strong>を押します。キューブマップは <code>Assets/MirrorBallLight/Generated/Occlusion/</code> に保存され（RHalf、Point）、Controllerの<strong>遮蔽キューブマップ</strong>に入り、<strong>遮蔽キューブマップを使用</strong>がONになります。結果欄とConsoleに、遮蔽物の数・除外の内訳・軸方向6本の照合が出ます。Undoで戻せます。</li>
+<li><strong>焼いて Controller に設定</strong>を押します。キューブマップは <code>Assets/MirrorBallLight/Generated/Occlusion/</code> に保存され（RHalf、6面を縦に並べた1枚のテクスチャ）、Controllerの<strong>遮蔽キューブマップ（6面アトラス）</strong>に入り、<strong>遮蔽キューブマップを使用</strong>がONになります。結果欄とConsoleに、遮蔽物の数・除外の内訳・軸方向6本の照合が出ます。Undoで戻せます。</li>
 </ol>
 <p>表示例です。</p>
 <p>「遮蔽キューブマップを焼きました: Assets/MirrorBallLight/Generated/Occlusion/World_MirrorBallLight_Occlusion.asset（256 px/面、RHalf）。遮蔽物 48個<br>除外 ミラーボール本体・取り付け具（本体とControllerの階層、本体に触れている物、除外に指定した物）：3個<br>除外 動く物（Pickup・ObjectSync・動くRigidbody・SkinnedMesh）：2個<br>除外 半透明・透過（Render Queue 3000以上、受光面の透過版Shader）：4個<br>軸方向6本の照合: 5/6 一致（Collider と描画Meshが違う物は一致しません。参考値です）。」</p>
