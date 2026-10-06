@@ -202,7 +202,7 @@
 <table>
 <thead><tr><th>除外の理由</th><th>判定</th></tr></thead>
 <tbody>
-<tr><td>ミラーボール本体・取り付け具</td><td>本体とControllerの階層、本体のRendererの範囲（半径の1.5倍）に触れている物、<strong>焼くときに除外する物</strong>に指定した物とその子。自分で自分を遮らないためです</td></tr>
+<tr><td colspan="2">判定の順は、半透明・透過 → 動く物 → EditorOnly → LayerMaskの外 → 本体の階層と除外に指定した物 → 本体に触れている物です。ボールを囲む半透明の箱は「半透明・透過」として除外されます。</td></tr><tr><td>ミラーボール本体・取り付け具</td><td>本体とControllerの階層、本体のRendererの範囲（半径の1.5倍）に触れている物、<strong>焼くときに除外する物</strong>に指定した物とその子。自分で自分を遮らないためです。壁・床・天井を1つにまとめた部屋の殻のように、外形の箱がボールの中心を含む物は、Collider（Box・Sphere・Capsule・凸のMesh）に実際の表面までの距離を聞き、答えられない物は囲んでいるだけとみなして遮蔽物に残します</td></tr>
 <tr><td>動く物</td><td>自身か親に <code>VRC Pickup</code>・<code>VRC Object Sync</code>・Kinematic でない <code>Rigidbody</code> がある物、<code>SkinnedMeshRenderer</code></td></tr>
 <tr><td>半透明・透過</td><td>Materialの Render Queue が3000以上、または受光面の透過版Shader（ガラス・貼り紙の板ポリは遮蔽物にしません）</td></tr>
 <tr><td>EditorOnlyタグ</td><td>自身か親に <code>EditorOnly</code> タグがある（ビルドで消える物）</td></tr>
