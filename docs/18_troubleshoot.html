@@ -79,6 +79,7 @@
 <li><a href="#black">ミラーボール本体が黒い</a></li>
 <li><a href="#looks-not-rotating">光点やボールが回っていないように見える</a></li>
 <li><a href="#engine-spot-edge">Engineの光点が宙に浮く・大きさが一定に見える</a></li>
+<li><a href="#engine-rotation-center">Engineの光点の回転の中心がボールの真上に無い</a></li>
 <li><a href="#rotation-stopped">回転が止まる</a></li>
 <li><a href="#button-dead">ボタンを押しても何も起きない</a></li>
 <li><a href="#duplicate-child-controller">プリセットを使うと光点が飛ぶ・設定が交互に変わる</a></li>
@@ -154,6 +155,14 @@
 <li><b>R37.1以前のLighting Engineを使っていませんか。</b> R37.1までは、光点の直径が距離によらずほぼ一定で、当たったCollider全体を囲む箱でしか切らなかったため、梁や柱の縁から光点がはみ出しました。R37.2で、直径が距離に比例し、深度で面の縁を切るようになりました（<a href="03_apply.html#engine-spot-size">光点の大きさ</a>、<a href="03_apply.html#engine-depth-clip">面の縁で切る</a>）。</li>
 <li><b>Engineの <code>useDepthClip</code> がOFFになっていませんか。</b> OFFのときはColliderの範囲で切ります。MeshColliderはCollider全体を囲む箱で切るので、何本もの梁や、梁と天井を1つのMeshColliderにまとめていると、梁と梁の間の空間に光点が浮きます。ONにするか、梁を1本ずつBoxColliderを付けた別のオブジェクトに分けてください。</li>
 <li><b>実機でどちらの切り方になっているかは、<code>debugClipPath</code> で確かめられます。</b> 深度で切っている光点は緑、Colliderの範囲で切っている光点は黄色です。鏡の中は、いつも黄色です。</li>
+</ol>
+</section>
+<section id="engine-rotation-center">
+<h2>Engineの光点の回転の中心がボールの真上に無い</h2>
+<h3>見るところ</h3>
+<ol>
+<li><b>スポットライトがボールの真上（回転軸上）にありますか。</b> Lighting Engineは光源からの反射を実際に追うので、光源が真上から水平に x だけずれ、ボールの中心から y の高さにあると、天井（ボールから高さ H）での回転の中心は光源の反対側へ約 x×(H÷y) ずれ、軌跡は円ではなく歪みます。実物のミラーボールと同じ挙動で、不具合ではありません。光源を真上に置いてまっすぐ下へ向けると、中心は真上に戻ります。<a href="03_apply.html#lighting-engine">Lighting Engine</a></li>
+<li><b>受光面Shaderの見た目のまま、遮蔽だけ欲しいのではありませんか。</b> 受光面Shaderの光点は光源の位置を使わず、常にボールの真上を中心に回ります。Engineの <code>engineEnabled</code> をOFFにして受光面Shaderに戻し、<a href="03_apply.html#occlusion">遮蔽キューブマップ</a>を焼いてください。柱・カウンター・梁の裏に光点が出なくなります。</li>
 </ol>
 </section>
 <section id="rotation-stopped">

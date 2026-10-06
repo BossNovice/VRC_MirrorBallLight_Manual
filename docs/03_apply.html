@@ -35,6 +35,7 @@
 <li><a href="#reuse">自分の壁へ適用する</a></li>
 <li><a href="#list">Shader一覧</a></li>
 <li><a href="#materialgui">MaterialのInspectorの使い方</a></li>
+<li><a href="#occlusion">遮蔽キューブマップで遮蔽物の裏に光点を出さない</a></li>
 <li><a href="#lighting-engine">Lighting Engineで実形状へ反射を配置する</a></li>
 </ul>
 </li>
@@ -184,9 +185,51 @@
 </table>
 <div class="warning"><strong>Controllerが書き込む項目を手で変えても、次にControllerが反映したときに上書きされます。</strong> どちらが正かは「Controller連動とMaterial直編集」を参照してください。Materialごとに決めたい設定（2番・6番など）は上書きされません。</div>
 </section>
+<section id="occlusion">
+<h2>遮蔽キューブマップで遮蔽物の裏に光点を出さない</h2>
+<p>受光面Shaderの光点はそのままに、柱・カウンター・梁の裏に光点が出ないようにする機能です。ボールの中心から見た最寄りの面までの距離をキューブマップ（6面）へ焼いておき、受光面Shaderが画素までの距離と比べて、手前に遮蔽物があれば光点を描きません。光点の配置・大きさ・形・回転は変わらず、遮蔽の縁は画素単位で切れます。既定ではOFFで、焼いて初めて効きます。</p>
+<h3 id="occlusion-bake">焼き方</h3>
+<ol>
+<li>Sceneを保存し、Controllerのミラーボール <code>mirrorBall</code> を設定します。遮蔽物（柱・カウンター・梁・壁）が最終の位置にあることを確かめます。</li>
+<li><strong>Tools → MirrorBall Light → 遮蔽キューブマップを焼く</strong>を開き、Controllerを指定します。Controllerの「8. 高度な投影・Sceneプレビュー」の<strong>遮蔽キューブマップを焼く…</strong>と、導入セットアップの「3. 動作の確認」からも開けます。</li>
+<li><strong>焼く遮蔽物のLayer</strong>で、遮蔽物のあるLayerを選びます（既定はすべて）。<strong>焼く解像度</strong>は128／256（既定）／512 px/面です。取り付け具など、自動で除外されない物があれば<strong>焼くときに除外する物</strong>へ入れます。</li>
+<li><strong>焼く対象を確認</strong>で、焼く遮蔽物の数と除外の内訳を見ます。</li>
+<li><strong>焼いて Controller に設定</strong>を押します。キューブマップは <code>Assets/MirrorBallLight/Generated/Occlusion/</code> に保存され（RHalf、Point）、Controllerの<strong>遮蔽キューブマップ</strong>に入り、<strong>遮蔽キューブマップを使用</strong>がONになります。結果欄とConsoleに、遮蔽物の数・除外の内訳・軸方向6本の照合が出ます。Undoで戻せます。</li>
+</ol>
+<p>表示例です。</p>
+<p>「遮蔽キューブマップを焼きました: Assets/MirrorBallLight/Generated/Occlusion/World_MirrorBallLight_Occlusion.asset（256 px/面、RHalf）。遮蔽物 48個<br>除外 ミラーボール本体・取り付け具（本体とControllerの階層、本体に触れている物、除外に指定した物）：3個<br>除外 動く物（Pickup・ObjectSync・動くRigidbody・SkinnedMesh）：2個<br>除外 半透明・透過（Render Queue 3000以上、受光面の透過版Shader）：4個<br>軸方向6本の照合: 5/6 一致（Collider と描画Meshが違う物は一致しません。参考値です）。」</p>
+<h3 id="occlusion-exclusions">焼かない物</h3>
+<table>
+<thead><tr><th>除外の理由</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>ミラーボール本体・取り付け具</td><td>本体とControllerの階層、本体のRendererの範囲（半径の1.5倍）に触れている物、<strong>焼くときに除外する物</strong>に指定した物とその子。自分で自分を遮らないためです</td></tr>
+<tr><td>動く物</td><td>自身か親に <code>VRC Pickup</code>・<code>VRC Object Sync</code>・Kinematic でない <code>Rigidbody</code> がある物、<code>SkinnedMeshRenderer</code></td></tr>
+<tr><td>半透明・透過</td><td>Materialの Render Queue が3000以上、または受光面の透過版Shader（ガラス・貼り紙の板ポリは遮蔽物にしません）</td></tr>
+<tr><td>EditorOnlyタグ</td><td>自身か親に <code>EditorOnly</code> タグがある（ビルドで消える物）</td></tr>
+<tr><td>LayerMaskの外</td><td><strong>焼く遮蔽物のLayer</strong>に入っていないLayer</td></tr>
+<tr><td>メッシュ以外のRenderer</td><td>パーティクル・ライン・トレイルなど</td></tr>
+</tbody>
+</table>
+<h3 id="occlusion-settings">調整</h3>
+<ul>
+<li><strong>遮蔽キューブマップを使用</strong>：ON／OFF。キューブマップが無いときは効きません（診断 MBL-W034）。</li>
+<li><strong>距離の許容幅（m）</strong>と<strong>距離1mあたりの許容幅</strong>（既定 0.03 と 0.01）：受光面自身を遮蔽物とみなさないための幅です。焼いた距離が「画素までの距離 − 許容幅」より手前のときだけ遮ります。既定（3cm＋距離の1%）で、床・壁・天井は黒く抜けず、両面の壁や仕切り板の裏側（厚み3cm程度まで）も黒く抜けません。受光面が黒く抜けるときは広げ、薄い物の裏に光点が漏れるときは狭めてください。</li>
+<li><strong>縁を4タップで平均</strong>：既定OFF（1タップ、縁はテクセルの段になります）。ONにすると、縁を1テクセルぶん平均してジャギーを和らげます。受光面の画素ごとにキューブマップを4回引きます。</li>
+<li>Shader Global共有がONでもOFFでも、効くのはControllerの<strong>遮蔽キューブマップ</strong>だけです。Material側に別のキューブマップが入っていると診断 MBL-W037 が出ます。</li>
+</ul>
+<h3 id="occlusion-limits">制限と焼き直し</h3>
+<ul>
+<li><strong>静的な遮蔽物だけが対象です。</strong> アバター・Pickup・動く物・開閉するドアは遮りません。半透明の物は遮蔽物にしません。</li>
+<li><strong>ボールが動く構成は対象外です。</strong> キューブマップはボールの中心から見た距離なので、ボールを動かすと合わなくなります。焼いた後にボールが1cm以上動くと、診断に MBL-W035 が出ます。</li>
+<li>柱や家具を動かした・増やした・消したときは焼き直してください。焼く対象の遮蔽物の数・位置・向き・大きさ・Meshが変わると、診断に MBL-W036 が出ます。警告だけで、自動では焼き直しません。</li>
+<li>焼いたときの状態は Controller に残ります（<code>occlusionBakedBallPosition</code>・<code>occlusionBakedSceneHash</code>）。Prefab にして別の Scene へ置くときは、置いた先で焼き直してください。</li>
+<li>Lighting Engineと併用できますが、Engineの光点はEngine自身がRaycastで遮蔽を判定し、キューブマップは使いません。</li>
+</ul>
+</section>
 <section id="lighting-engine">
 <h2>Lighting Engineで実形状へ反射を配置する</h2>
 <p>壁・床・天井へ球面Facetの反射方向から光点を配置する機能です。既定の受光面Shaderによる描画とは別の経路で、使うときだけ導入します。</p>
+<p>Engineの光点はスポットライトからの反射を実際に追うので、見た目は物理反射になります。光源がボールの真上（回転軸上）に無いと、光点の回転の中心は光源の反対側へ「光源の水平ずれ×（天井の高さ÷光源の高さ）」だけずれ、軌跡も円ではなく歪みます（実物のミラーボールと同じ）。受光面Shaderの光点は光源の位置を使わず、常にボールの真上を中心に回ります。既存の見た目のまま、遮蔽物の裏に光点を出したくないだけなら、<a href="#occlusion">遮蔽キューブマップ</a>を使ってください。</p>
 <ol>
 <li>Sceneを保存し、Controllerのミラーボール <code>mirrorBall</code> と入射Spot Light <code>spotLight</code> を設定します。Spotの向き・角度・範囲がボールへ届くことを確認します。</li>
 <li><strong>Tools → MirrorBall Light → Lighting Engineを導入</strong>を開き、Controllerと<strong>受光対象の階層</strong>を指定します。<strong>対象を検出・適用内容を確認</strong>を押します。</li>

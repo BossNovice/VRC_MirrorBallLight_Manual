@@ -8,6 +8,8 @@
 
 実際の壁・床・天井へ反射を配置するLighting Engineと、描画先（通常・鏡・撮影）ごとの品質設定があります。Lighting Engineは任意で、導入しなければ受光面Shaderだけで描画します。
 
+**遮蔽だけが目的なら、Lighting Engineより先に遮蔽キューブマップを検討してください。** 受光面Shaderの見た目はそのままに、ボールの中心から見た最寄りの面までの距離をキューブマップへ焼き、柱・カウンター・梁の裏に光点を出さなくします（**Tools → MirrorBall Light → 遮蔽キューブマップを焼く**。静的な遮蔽物だけが対象で、アバターや動く物は遮りません。ボールや遮蔽物を動かしたら焼き直しが要り、診断が MBL-W035／W036 で知らせます）。Lighting Engineはスポットライトからの反射を実際に追う物理反射の見た目で、光源がボールの真上に無いと光点の回転の中心が真上からずれます（実物と同じ）。[遮蔽キューブマップ](../docs/03_apply.html#occlusion)を参照してください。
+
 1. 実形状へ反射を配置する場合は **Tools → MirrorBall Light → Lighting Engineを導入** でControllerと受光対象の階層を選び、検出一覧のFloor／Wall／Ceiling／Stage／Objects／Avatar分類と対象チェックを修正して適用します。ball、入射Spot、Receiver Manager、InstancedSpot MaterialのGPU Instancing、有効な非Trigger Colliderを確認します。登録外の遮蔽物もRaycast Layerへ含めてください。[自分の壁へ適用する](../docs/03_apply.html#lighting-engine)に詳細があります。
    - **一覧の対象へLighting Engineを設定** はボールのメッシュへ球を当てはめ、球面上の外向きの三角形だけを反射Facetにします。同じメッシュの鎖や吊り金具、面積0の三角形は除外します。主に球でない形状は、すべての三角形をFacetにします。上限は8192個で、超える分は均等に間引きます。結果欄の例:「反射Facet 8192個を登録。ボールMeshの三角形 17156個のうち、鎖など球面から外れた三角形・面積0の三角形 508個を除外しました。上限8192個まで均等に間引いています。」最後の一文は間引いたときだけ出ます。[Facet選別](../docs/03_apply.html#engine-facets)を参照してください。
    - Setupはシーンのprogramの名前が「AudioLink」のUdonBehaviourを探してEngineの `audioLinkBehaviour` へつなぎ、`requestAudioLinkReadback` を有効にします。設定済みの参照はそのままにします。[AudioLinkの自動接続](../docs/03_apply.html#engine-audiolink-wiring)を参照してください。
@@ -25,6 +27,9 @@
 
 | MirrorBallLight | Unity | VRCLightVolumes | LTCGI | コンパイル確認 | 実機目視（PC） |
 | --- | --- | --- | --- | --- | --- |
+| R37.3 | 2022.3.22f1 | 2.1.3 | 1.7.2 | 未確認 | 未確認 |
+| R37.3 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | 未確認 | 未確認 |
+| R37.3 | 2022.3.22f1 | 未導入 | 未導入 | 未確認 | 未確認 |
 | R37.2 | 2022.3.22f1 | 3.0.0-dev.20 | 1.7.3 | 済（注52） | 未実施（注52） |
 | R37.2 | 2022.3.22f1 | 3.0.0-dev.15 | 1.7.3 | Shaderのみ（注52） | 未実施（注52） |
 | R37.2 | 2022.3.22f1 | 2.1.3 | 1.7.2 | Shaderのみ（注52） | 未実施（注52） |
